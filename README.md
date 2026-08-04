@@ -2,7 +2,9 @@
 
 **Version:** 0.1.0  
 **Stand:** 4. August 2026  
-**Status:** Erstes vollständiges Einstiegskapitel
+**Status:** Erstes vollständiges Einstiegskapitel  
+**Live:** https://weblab-sawazki.jakob-sawazki.chatgpt.site  
+**Repository:** https://github.com/JakobSawazki/WebLab
 
 WebLab ist eine browserbasierte Lernumgebung für Schülerinnen und Schüler des
 beruflichen Gymnasiums und der Berufskollegs. Sie verbindet kurze Erklärungen,
@@ -74,4 +76,3 @@ unter `.openai/hosting.json`; D1 und R2 werden in Version 0.1.0 nicht benötigt.
 Öffentliche Inhalte müssen eigenständig formuliert sein. Verlinkte oder lokale
 Unterrichtsmaterialien dienen nur als fachliche Referenz und werden nicht
 ungeprüft übernommen.
-

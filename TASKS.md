@@ -15,6 +15,8 @@
 - [x] lokalen, lösungsvermeidenden Lerncoach als datensparsamen Standard ergänzt
 - [x] eigenständige Kapitel- und Social-Preview-Illustration erstellt
 - [x] responsive Desktop-/Tablet-/Smartphone-Gestaltung umgesetzt
+- [x] öffentliches GitHub-Repository erstellt und Grundversion veröffentlicht
+- [x] erste Live-Version über Sites bereitgestellt
 
 ## Derzeitiger Fokus
 
@@ -48,4 +50,3 @@
 - Lernstandsänderungen immer in Autospeicherung und JSON-Format nachziehen.
 - Keine Secrets, Musterlösungen oder ungeprüften Originalmaterialien committen.
 - Vor Veröffentlichung mindestens Build, Diff-Prüfung und Live-Aufruf durchführen.
-

@@ -12,6 +12,23 @@ type LearningState = {
   updatedAt: string;
 };
 
+type DeviceInfo = {
+  id: string;
+  createdAt: string;
+};
+
+type TransferAudit = {
+  sourceDeviceId: string;
+  importedAt: string;
+};
+
+const VERSION = "0.3.0";
+const VERSION_HISTORY = [
+  { version: "0.3.0", date: "04.08.2026", text: "Navigation zusammengeführt, Schnellzugriff auf Sichern und Laden, lokale Gerätekennung sowie aufklappbare Versionsinformationen ergänzt." },
+  { version: "0.2.0", date: "04.08.2026", text: "Blau-metallisches Design, Dark und Light Mode, Kapitelmenü, neues Logo und fotorealistische Kapitelgrafik umgesetzt." },
+  { version: "0.1.0", date: "04.08.2026", text: "Erste vollständige Fassung von Kapitel 01 mit HTML-Studio, vier Missionen, XP und lokalem Lernstand veröffentlicht." },
+];
+
 const STARTER_HTML = `<h1>Meine erste Webseite</h1>
 
 <p>Hier entsteht meine persönliche Seite.</p>`;
@@ -103,6 +120,13 @@ function makeInitialState(): LearningState {
   return { profile: "", html: STARTER_HTML, css: STARTER_CSS, completed: [], updatedAt: new Date().toISOString() };
 }
 
+function makeDeviceInfo(): DeviceInfo {
+  const id = typeof crypto !== "undefined" && "randomUUID" in crypto
+    ? crypto.randomUUID()
+    : `weblab-${Date.now()}-${Math.random().toString(36).slice(2, 12)}`;
+  return { id, createdAt: new Date().toISOString() };
+}
+
 function parseStudentHtml(html: string) {
   return new DOMParser().parseFromString(html, "text/html");
 }
@@ -131,6 +155,9 @@ export default function Home() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [profileDraft, setProfileDraft] = useState("");
   const [profileError, setProfileError] = useState("");
+  const [device, setDevice] = useState<DeviceInfo>({ id: "", createdAt: "" });
+  const [transferAudit, setTransferAudit] = useState<TransferAudit | null>(null);
+  const [versionOpen, setVersionOpen] = useState(false);
   const [toast, setToast] = useState("");
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -139,6 +166,34 @@ export default function Home() {
     const nextTheme = savedTheme === "light" ? "light" : "dark";
     setTheme(nextTheme);
     document.documentElement.dataset.theme = nextTheme;
+    let nextDevice = makeDeviceInfo();
+    const savedDevice = localStorage.getItem("weblab-device-v1");
+    if (savedDevice) {
+      try {
+        const parsedDevice = JSON.parse(savedDevice) as Partial<DeviceInfo>;
+        if (typeof parsedDevice.id === "string" && parsedDevice.id.length >= 8) {
+          nextDevice = {
+            id: parsedDevice.id,
+            createdAt: typeof parsedDevice.createdAt === "string" ? parsedDevice.createdAt : new Date().toISOString(),
+          };
+        }
+      } catch {
+        localStorage.removeItem("weblab-device-v1");
+      }
+    }
+    localStorage.setItem("weblab-device-v1", JSON.stringify(nextDevice));
+    setDevice(nextDevice);
+    const savedTransferAudit = localStorage.getItem("weblab-transfer-audit-v1");
+    if (savedTransferAudit) {
+      try {
+        const parsedAudit = JSON.parse(savedTransferAudit) as Partial<TransferAudit>;
+        if (typeof parsedAudit.sourceDeviceId === "string" && typeof parsedAudit.importedAt === "string") {
+          setTransferAudit({ sourceDeviceId: parsedAudit.sourceDeviceId, importedAt: parsedAudit.importedAt });
+        }
+      } catch {
+        localStorage.removeItem("weblab-transfer-audit-v1");
+      }
+    }
     const saved = localStorage.getItem("weblab-state-v1");
     if (saved) {
       try {
@@ -239,13 +294,27 @@ export default function Home() {
   }
 
   function exportProgress() {
-    const payload = { app: "WebLab", formatVersion: 1, exportedAt: new Date().toISOString(), state };
+    const payload = {
+      app: "WebLab",
+      appVersion: VERSION,
+      formatVersion: 2,
+      exportedAt: new Date().toISOString(),
+      device: {
+        ...device,
+        platform: navigator.platform || "unbekannt",
+        browser: navigator.userAgent,
+        language: navigator.language,
+        screen: `${window.screen.width}x${window.screen.height}`,
+      },
+      transferAudit,
+      state,
+    };
     const link = document.createElement("a");
     link.href = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
-    link.download = `weblab-${state.profile || "lernstand"}.json`;
+    link.download = `weblab-${state.profile || "lernstand"}.weblab`;
     link.click();
     URL.revokeObjectURL(link.href);
-    setToast("Lernstand als JSON gespeichert");
+    setToast("Lernstand gespeichert");
   }
 
   function importProgress(event: ChangeEvent<HTMLInputElement>) {
@@ -255,7 +324,20 @@ export default function Home() {
     reader.onload = () => {
       try {
         const payload = JSON.parse(String(reader.result));
-        if (payload.app !== "WebLab" || payload.formatVersion !== 1 || !payload.state) throw new Error("format");
+        if (payload.app !== "WebLab" || ![1, 2].includes(payload.formatVersion) || !payload.state) throw new Error("format");
+        const sourceDeviceId = typeof payload.device?.id === "string" ? payload.device.id : "";
+        let nextTransferAudit: TransferAudit | null = null;
+        if (sourceDeviceId && device.id && sourceDeviceId !== device.id) {
+          const loadForeignBackup = window.confirm("Diese Sicherung wurde auf einem anderen Gerät erstellt. Möchtest du sie trotzdem laden?");
+          if (!loadForeignBackup) {
+            setToast("Laden abgebrochen: anderes Gerät");
+            event.target.value = "";
+            return;
+          }
+          nextTransferAudit = { sourceDeviceId, importedAt: new Date().toISOString() };
+        } else if (typeof payload.transferAudit?.sourceDeviceId === "string" && typeof payload.transferAudit?.importedAt === "string") {
+          nextTransferAudit = payload.transferAudit as TransferAudit;
+        }
         const imported = payload.state as LearningState;
         setState({
           profile: typeof imported.profile === "string" ? imported.profile : "",
@@ -266,7 +348,10 @@ export default function Home() {
             : [],
           updatedAt: new Date().toISOString(),
         });
-        setToast("Lernstand geladen");
+        setTransferAudit(nextTransferAudit);
+        if (nextTransferAudit) localStorage.setItem("weblab-transfer-audit-v1", JSON.stringify(nextTransferAudit));
+        else localStorage.removeItem("weblab-transfer-audit-v1");
+        setToast(sourceDeviceId && device.id && sourceDeviceId !== device.id ? "Fremde Sicherung geladen" : "Lernstand geladen");
       } catch {
         setToast("Diese Datei gehört nicht zu WebLab");
       }
@@ -285,50 +370,53 @@ export default function Home() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a className="brand" href="#start" aria-label="WebLab Startseite">
-          <img className="brand-logo" src="/weblab-logo.png" alt="" />
-          <span><strong>WebLab</strong><small>Build the web.</small></span>
-        </a>
-        <nav className="topnav" aria-label="Hauptnavigation">
-          <a href="#start">Start</a>
-          <div className="chapters-menu">
-            <button className="chapters-trigger">Kapitel <span>⌄</span></button>
-            <div className="chapters-dropdown">
-              <div className="dropdown-intro"><small>Lernpfad</small><strong>Kapitel auswählen</strong><p>Arbeite Schritt für Schritt. Neue Kapitel werden nach und nach freigeschaltet.</p></div>
-              <div className="chapter-groups">
-                {CHAPTER_GROUPS.map((group) => (
-                  <div className="chapter-category" key={group.title}>
-                    <button>{group.title}<span>›</span></button>
-                    <div className="chapter-submenu">
-                      <small>{group.title}</small>
-                      {group.chapters.map((chapter) => chapter.status === "active"
-                        ? <a href="#start" className="active" key={chapter.number}><span>{chapter.number}</span><b>{chapter.title}</b><i>Aktiv</i></a>
-                        : <div className="planned" key={chapter.number}><span>{chapter.number}</span><b>{chapter.title}</b><i>Geplant</i></div>)}
+        <div className="topbar-main">
+          <a className="brand" href="#start" aria-label="WebLab Startseite">
+            <img className="brand-logo" src="/weblab-logo.png" alt="" />
+            <span><strong>WebLab</strong><small>Build the web.</small></span>
+          </a>
+          <nav className="topnav" aria-label="Hauptnavigation">
+            <a href="#start">Start</a>
+            <div className="chapters-menu">
+              <button className="chapters-trigger">Kapitel <span className="nav-chevron" aria-hidden="true" /></button>
+              <div className="chapters-dropdown">
+                <div className="dropdown-intro"><small>Lernpfad</small><strong>Kapitel auswählen</strong><p>Arbeite Schritt für Schritt. Neue Kapitel werden nach und nach freigeschaltet.</p></div>
+                <div className="chapter-groups">
+                  {CHAPTER_GROUPS.map((group) => (
+                    <div className="chapter-category" key={group.title}>
+                      <button>{group.title}<span className="category-chevron" aria-hidden="true" /></button>
+                      <div className="chapter-submenu">
+                        <small>{group.title}</small>
+                        {group.chapters.map((chapter) => chapter.status === "active"
+                          ? <a href="#start" className="active" key={chapter.number}><span>{chapter.number}</span><b>{chapter.title}</b><i>Aktiv</i></a>
+                          : <div className="planned" key={chapter.number}><span>{chapter.number}</span><b>{chapter.title}</b><i>Geplant</i></div>)}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
+            <a href="#studio">Studio</a>
+            <a href="#missionen">Fortschritt</a>
+          </nav>
+          <div className="top-actions">
+            <div className="top-chapter-progress" title="Kapitel 01 von 10"><span className="progress-long">Kapitel 01 von 10</span><span className="progress-short">01/10</span><i><u style={{ width: "10%" }} /></i></div>
+            <div className="xp-pill"><span>✦</span><b>{xp}</b> XP</div>
+            <button className="action-button save-button" onClick={exportProgress} aria-label="Lernstand speichern" title="Lernstand speichern"><span aria-hidden="true">↓</span></button>
+            <button className="action-button load-button" onClick={() => fileInput.current?.click()} aria-label="Lernstand laden" title="Lernstand laden"><span aria-hidden="true">↑</span></button>
+            <button className="action-button theme-toggle" onClick={toggleTheme} aria-label={theme === "dark" ? "Light Mode aktivieren" : "Dark Mode aktivieren"} title={theme === "dark" ? "Light Mode" : "Dark Mode"}>
+              <span>{theme === "dark" ? "☀" : "☾"}</span>
+            </button>
+            <button className="action-button profile-button" onClick={() => { setProfileDraft(state.profile); setProfileOpen(true); }} aria-label={state.profile ? `Profil ${state.profile} öffnen` : "Kürzel anlegen"} title={state.profile || "Kürzel anlegen"}>
+              <span>{state.profile ? state.profile.slice(0, 2).toUpperCase() : "+"}</span>
+            </button>
+            <input ref={fileInput} type="file" accept=".weblab,application/json,.json" onChange={importProgress} hidden />
           </div>
-          <a href="#studio">Studio</a>
-          <a href="#missionen">Fortschritt</a>
-        </nav>
-        <div className="top-actions">
-          <div className="xp-pill"><span>✦</span><b>{xp}</b> XP</div>
-          <button className="theme-toggle" onClick={toggleTheme} aria-label={theme === "dark" ? "Light Mode aktivieren" : "Dark Mode aktivieren"} title={theme === "dark" ? "Light Mode" : "Dark Mode"}>
-            <span>{theme === "dark" ? "☀" : "☾"}</span>
-          </button>
-          <button className="profile-button" onClick={() => { setProfileDraft(state.profile); setProfileOpen(true); }}>
-            <span>{state.profile ? state.profile.slice(0, 2).toUpperCase() : "+"}</span>
-            {state.profile || "Kürzel anlegen"}
-          </button>
+        </div>
+        <div className="chapter-context" aria-label="Aktueller Lernort">
+          <div className="breadcrumbs"><span>HTML verstehen</span><span className="breadcrumb-chevron" aria-hidden="true">›</span><strong>01 · Deine erste Webseite</strong></div>
         </div>
       </header>
-
-      <div className="chapter-context" aria-label="Aktueller Lernort">
-        <div className="breadcrumbs"><a href="#start">Start</a><span>›</span><span>HTML verstehen</span><span>›</span><strong>01 · Deine erste Webseite</strong></div>
-        <div className="context-progress"><span>Kapitel 01 von 10</span><i><u style={{ width: "10%" }} /></i></div>
-      </div>
 
       <main>
         <section className="hero" id="start">
@@ -445,18 +533,19 @@ export default function Home() {
             })}
           </div>
           <div className="save-card">
-            <div><span>◎</span><div><h3>Dein Fortschritt gehört dir.</h3><p>WebLab speichert auf diesem Gerät. Mit einer JSON-Datei nimmst du deinen Lernstand mit.</p></div></div>
-            <div className="save-actions"><button onClick={exportProgress}>↓ Lernstand speichern</button><button onClick={() => fileInput.current?.click()}>↑ Lernstand laden</button><input ref={fileInput} type="file" accept="application/json,.json" onChange={importProgress} hidden /></div>
+            <div><span>◎</span><div><h3>Dein Fortschritt gehört dir.</h3><p>WebLab speichert auf diesem Gerät. Mit einer Sicherungsdatei nimmst du deinen Lernstand mit.</p></div></div>
+            <div className="save-actions"><button onClick={exportProgress}>↓ Lernstand speichern</button><button onClick={() => fileInput.current?.click()}>↑ Lernstand laden</button></div>
           </div>
         </section>
       </main>
 
-      <footer><a className="brand footer-brand" href="#start"><img className="brand-logo" src="/weblab-logo.png" alt="" /><span><strong>WebLab</strong><small>Version 0.2.0 · 04.08.2026</small></span></a><p>Lernen. Bauen. Verstehen.</p><span className="copyright">Designed by <b>Sawazki Electronics</b> · © 2026</span></footer>
+      <footer><button className="brand footer-brand version-button" onClick={() => setVersionOpen(true)} aria-label={`Informationen zu WebLab Version ${VERSION}`}><img className="brand-logo" src="/weblab-logo.png" alt="" /><span><strong>WebLab</strong><small>Version {VERSION}</small></span></button><p>Lernen. Bauen. Verstehen.</p><span className="copyright">Designed by <a href="https://jakobsawazki.github.io/sawazki-electronics/" target="_blank" rel="noreferrer">Sawazki Electronics</a> · © 2026</span></footer>
 
       <button className="coach-fab" onClick={askCoach}><span>✦</span><div><b>Lerncoach</b><small>lokale Hilfe</small></div></button>
       {coachOpen && <aside className="coach-panel" aria-live="polite"><div className="coach-head"><span>✦</span><div><b>WebLab Lerncoach</b><small>Hinweis statt Lösung</small></div><button onClick={() => setCoachOpen(false)}>×</button></div><p>{coachMessage}</p><button onClick={() => setCoachOpen(false)}>Weiter ausprobieren</button><small>Der lokale Coach sendet keinen Code ins Internet.</small></aside>}
 
-      {profileOpen && <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="profile-title"><div className="profile-modal"><button className="modal-close" onClick={() => setProfileOpen(false)}>×</button><span className="modal-symbol">W</span><h2 id="profile-title">Dein WebLab-Profil</h2><p>Das Kürzel bleibt auf diesem Gerät und wird nur in deiner JSON-Sicherung gespeichert.</p><label htmlFor="profile">Kürzel</label><input id="profile" value={profileDraft} onChange={(event) => setProfileDraft(event.target.value)} placeholder="max.mus" maxLength={7} autoFocus /><small>Drei Buchstaben · Punkt · drei Buchstaben</small>{profileError && <div className="form-error">{profileError}</div>}<button className="button primary modal-save" onClick={saveProfile}>Profil speichern</button></div></div>}
+      {profileOpen && <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="profile-title"><div className="profile-modal"><button className="modal-close" onClick={() => setProfileOpen(false)} aria-label="Profil schließen">×</button><span className="modal-symbol">W</span><h2 id="profile-title">Dein WebLab-Profil</h2><p>Dein Kürzel und Lernstand bleiben auf diesem Gerät und werden in deiner Sicherung mitgenommen.</p><label htmlFor="profile">Kürzel</label><input id="profile" value={profileDraft} onChange={(event) => setProfileDraft(event.target.value)} placeholder="max.mus" maxLength={7} autoFocus /><small>Drei Buchstaben · Punkt · drei Buchstaben</small><div className={transferAudit ? "device-note foreign" : "device-note"}><span>Gerätekennung</span><code>{device.id ? device.id.slice(0, 8).toUpperCase() : "WIRD ERSTELLT"}</code><p>{transferAudit ? `Dieser Lernstand enthält eine Übertragung vom Gerät ${transferAudit.sourceDeviceId.slice(0, 8).toUpperCase()}.` : "Sie hilft zu erkennen, wenn eine Sicherung von einem anderen Gerät stammt."}</p></div>{profileError && <div className="form-error">{profileError}</div>}<button className="button primary modal-save" onClick={saveProfile}>Profil speichern</button></div></div>}
+      {versionOpen && <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="version-title"><div className="profile-modal version-modal"><button className="modal-close" onClick={() => setVersionOpen(false)} aria-label="Versionsinformationen schließen">×</button><span className="modal-symbol">V</span><h2 id="version-title">WebLab Version {VERSION}</h2><p>Hier siehst du, was sich wann geändert hat.</p><div className="version-history">{VERSION_HISTORY.map((entry) => <article key={entry.version}><div><strong>Version {entry.version}</strong><time>{entry.date}</time></div><p>{entry.text}</p></article>)}</div></div></div>}
       {toast && <div className="toast" role="status">{toast}</div>}
     </div>
   );

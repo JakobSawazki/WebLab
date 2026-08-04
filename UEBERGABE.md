@@ -11,18 +11,25 @@ werden.
 
 ## Aktueller Stand
 
-Version 0.2.0 enthält das vollständige Einstiegskapitel **„Deine erste
+Version 0.3.0 enthält das vollständige Einstiegskapitel **„Deine erste
 Webseite“** mit dunklem Standardmodus, Light Mode, hierarchischer Navigation,
-fotorealistischer Bildwelt und klarer Kapitelanzeige. Alles liegt in
+fotorealistischer Bildwelt, kompakter Kopfzeile, direktem Sichern/Laden,
+pseudonymer Gerätekennung und klarer Kapitelanzeige. Alles liegt in
 `app/page.tsx` und `app/globals.css`. Der Lernstand
-wird lokal unter `weblab-state-v1` gespeichert und als WebLab-JSON mit
-`formatVersion: 1` exportiert. Es gibt vier Missionen mit zusammen 320 XP.
+wird lokal unter `weblab-state-v1` gespeichert und als WebLab-Sicherung mit
+`formatVersion: 2` exportiert. Es gibt vier Missionen mit zusammen 320 XP.
 Kapitel 01 verwendet nur `h1`, `p`, `strong` und `br`; CSS ist im Studio bis
 Kapitel 05 bewusst gesperrt.
 
+Neue Sicherungen verwenden `formatVersion: 2`; Importe akzeptieren aus
+Kompatibilitätsgründen weiterhin Version 1. Die Gerätekennung erkennt lediglich
+einen Gerätewechsel; ein Herkunftshinweis bleibt bei erneutem Export erhalten.
+Dies ist ausdrücklich kein manipulationssicherer Leistungsnachweis.
+
 ## Einstieg
 
-1. `README.md`, `TASKS.md` und diese Datei lesen.
+1. `README.md`, `TASKS.md` und diese Datei lesen. Claude liest zusätzlich
+   `CLAUDE.md`; dort stehen seine priorisierten Arbeitspakete.
 2. `git status -sb` und die letzten Commits prüfen.
 3. `app/page.tsx`, `app/globals.css` und `.openai/hosting.json` öffnen.
 4. Den vorhandenen Stil und den Ein-Seiten-Lernzyklus beibehalten.
@@ -46,3 +53,7 @@ Kapitel 05 bewusst gesperrt.
 > Baue es wieder als zusammenhängende Kapitel-Seite mit kurzer Erklärung,
 > visuellen Beispielen, Spickzettel, Studio-Aufgaben und lokaler Prüfung. Passe
 > Lernstand, XP, JSON-Import/-Export und Dokumentation konsistent an.
+
+Für Claude ist die Reihenfolge bewusst genauer festgelegt: zuerst mobile und
+barrierefreie Navigation, danach robustere Kapitel-01-Prüfungen und erst dann
+Kapitel 02. Details und Akzeptanzkriterien stehen in `CLAUDE.md`.

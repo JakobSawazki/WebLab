@@ -1,6 +1,6 @@
 # WebLab
 
-**Version:** 0.2.0 · **Stand:** 4. August 2026
+**Version:** 0.3.0 · **Stand:** 4. August 2026
 
 **Status:** Erstes vollständiges Einstiegskapitel
 
@@ -20,12 +20,14 @@ einen datensparsamen Lernstand.
 - fokussierter HTML-Editor mit isolierter Live-Vorschau; CSS folgt bewusst später
 - vier automatisch prüfbare Missionen mit insgesamt 320 XP
 - hierarchische Kapitel-Navigation und dauerhaft sichtbarer aktueller Lernort
+- kompakte Kopfzeile mit Kapitelstand, XP sowie direktem Sichern und Laden
 - dunkler Modus als Standard sowie umschaltbarer Light Mode
 - eigenständige, fotorealistische Bildwelt in Blau, Chrom und dunklem Metall
 - lokaler Lerncoach mit gestuften Hinweisen, ohne Datenübertragung
 - lokales Profil im Format `abc.xyz`
 - automatische Speicherung im Browser
 - versionierter JSON-Export und -Import des vollständigen Lernstands
+- pseudonyme Gerätekennung, Warnung und übertragener Herkunftshinweis bei fremden Sicherungen
 - responsive Oberfläche für Desktop, Tablet und Smartphone
 
 ## Didaktische Leitidee
@@ -47,7 +49,8 @@ nichtgewerbliche berufliche Gymnasium in Baden-Württemberg ausgerichtet.
 ## Lernstand und Datenschutz
 
 Der Stand liegt unter `weblab-state-v1` im `localStorage`. Gespeichert werden
-Kürzel, HTML-Entwurf und gelöste Missionen. Es gibt derzeit kein zentrales
+Kürzel, HTML-Entwurf, gelöste Missionen und eine zufällige lokale Gerätekennung.
+Es gibt derzeit kein zentrales
 Schülerkonto und keine manipulationssichere Leistungsbewertung. Über JSON können
 Lernende ihren Stand auf einen anderen Rechner übertragen.
 
@@ -57,6 +60,16 @@ API-Schlüssel dürfen nie im Browsercode oder Repository liegen.
 
 ## Entwicklung
 
+### Lokaler Schnellstart unter Windows
+
+`start.cmd` im WebLab-Ordner per Doppelklick öffnen. Der Starter übernimmt den
+aktuellen Projektstand in eine schnelle lokale Arbeitskopie, bereitet fehlende
+Bibliotheken bei Bedarf einmalig vor und öffnet anschließend
+`http://localhost:3000`. Das Konsolenfenster muss während der Nutzung geöffnet
+bleiben; `Strg+C` beendet den lokalen Server.
+
+### Manuelle Entwicklung
+
 ```bash
 npm install
 npm run dev
@@ -64,7 +77,7 @@ npm run build
 ```
 
 Die Anwendung nutzt React, TypeScript und vinext. Hosting-Konfiguration liegt
-unter `.openai/hosting.json`; D1 und R2 werden in Version 0.2.0 nicht benötigt.
+unter `.openai/hosting.json`; D1 und R2 werden in Version 0.3.0 nicht benötigt.
 
 ## Projektdateien
 

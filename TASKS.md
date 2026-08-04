@@ -1,6 +1,6 @@
 # WebLab – Projektstand
 
-**Version:** 0.2.0 · **Stand:** 4. August 2026
+**Version:** 0.3.0 · **Stand:** 4. August 2026
 
 ## Erledigt
 
@@ -10,7 +10,12 @@
 - [x] Hero- und Social-Preview-Grafik durch ein eigenständiges fotorealistisches Motiv ersetzt
 - [x] hierarchische Hover-Navigation mit Kapitelgruppen und Untermenüs ergänzt
 - [x] Breadcrumbs und Kapitelstand als dauerhaft sichtbare Orientierung ergänzt
+- [x] Kapitelkontext in die Kopfzeile integriert und doppelten Start-Eintrag entfernt
+- [x] direkten Schnellzugriff auf Sichern und Laden in der Kopfzeile ergänzt
+- [x] pseudonyme Gerätekennung mit Warnung bei fremden Sicherungen ergänzt
+- [x] klickbare Versionshistorie und Verlinkung zu Sawazki Electronics ergänzt
 - [x] erstes Kapitel in **„Deine erste Webseite“** umbenannt und neu konzipiert
+- [x] Windows-Schnellstarter `start.cmd` für den lokalen Test per Doppelklick ergänzt
 - [x] Erklärstrecke zu HTML-Bedeutung, Tag-Aufbau und drei Grundregeln erstellt
 - [x] Kapitel 01 bewusst auf vier HTML-Bausteine reduziert
 - [x] HTML-Studio mit isolierter Live-Vorschau umgesetzt; CSS bis Kapitel 05 gesperrt
@@ -27,6 +32,7 @@
 - [ ] Kapitel 01 mit Schülerinnen und Schülern erproben
 - [ ] Aufgabentexte und Fehlermeldungen anhand realer Missverständnisse schärfen
 - [ ] Barrierefreiheit und Tastaturabläufe im echten Unterrichtseinsatz prüfen
+- [ ] Claude-Arbeitspakete aus `CLAUDE.md` nacheinander bearbeiten und jeweils prüfen
 
 ## Als Nächstes
 

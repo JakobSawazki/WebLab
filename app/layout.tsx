@@ -8,8 +8,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const origin = `${host.includes("localhost") ? "http" : "https"}://${host}`;
   return {
     title: "WebLab · Deine erste Webseite",
-    description: "Moderne Lernumgebung für HTML und CSS mit Live-Editor, Missionen, Punkten und Lerncoach.",
-    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    description: "Moderne Lernumgebung für Webentwicklung mit Kapiteln, Live-Editor, Missionen, Punkten und Lerncoach.",
+    icons: { icon: "/weblab-logo.png", shortcut: "/weblab-logo.png", apple: "/weblab-logo.png" },
     openGraph: {
       title: "WebLab · Deine erste Webseite",
       description: "HTML verstehen, direkt ausprobieren und 320 XP sammeln.",

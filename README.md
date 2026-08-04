@@ -1,6 +1,6 @@
 # WebLab
 
-**Version:** 0.1.0 · **Stand:** 4. August 2026
+**Version:** 0.2.0 · **Stand:** 4. August 2026
 
 **Status:** Erstes vollständiges Einstiegskapitel
 
@@ -15,10 +15,13 @@ einen datensparsamen Lernstand.
 ## Aktueller Umfang
 
 - Kapitel **„Deine erste Webseite“** statt technischer Bezeichnungen wie „K1“
-- schülergerechte Einführung in HTML-Elemente, Tags und Attribute
-- kompakter Spickzettel mit acht zentralen HTML-Bausteinen
-- HTML- und CSS-Editor mit isolierter Live-Vorschau
+- schülergerechte Einführung in HTML-Elemente und den Aufbau von Tags
+- kompakter Spickzettel mit `h1`, `p`, `strong` und `br`
+- fokussierter HTML-Editor mit isolierter Live-Vorschau; CSS folgt bewusst später
 - vier automatisch prüfbare Missionen mit insgesamt 320 XP
+- hierarchische Kapitel-Navigation und dauerhaft sichtbarer aktueller Lernort
+- dunkler Modus als Standard sowie umschaltbarer Light Mode
+- eigenständige, fotorealistische Bildwelt in Blau, Chrom und dunklem Metall
 - lokaler Lerncoach mit gestuften Hinweisen, ohne Datenübertragung
 - lokales Profil im Format `abc.xyz`
 - automatische Speicherung im Browser
@@ -44,7 +47,7 @@ nichtgewerbliche berufliche Gymnasium in Baden-Württemberg ausgerichtet.
 ## Lernstand und Datenschutz
 
 Der Stand liegt unter `weblab-state-v1` im `localStorage`. Gespeichert werden
-Kürzel, HTML-/CSS-Entwurf und gelöste Missionen. Es gibt derzeit kein zentrales
+Kürzel, HTML-Entwurf und gelöste Missionen. Es gibt derzeit kein zentrales
 Schülerkonto und keine manipulationssichere Leistungsbewertung. Über JSON können
 Lernende ihren Stand auf einen anderen Rechner übertragen.
 
@@ -61,7 +64,7 @@ npm run build
 ```
 
 Die Anwendung nutzt React, TypeScript und vinext. Hosting-Konfiguration liegt
-unter `.openai/hosting.json`; D1 und R2 werden in Version 0.1.0 nicht benötigt.
+unter `.openai/hosting.json`; D1 und R2 werden in Version 0.2.0 nicht benötigt.
 
 ## Projektdateien
 
@@ -69,6 +72,7 @@ unter `.openai/hosting.json`; D1 und R2 werden in Version 0.1.0 nicht benötigt.
 - `app/globals.css` – vollständige visuelle Gestaltung und responsive Regeln
 - `app/layout.tsx` – Metadaten und Social Preview
 - `public/weblab-hero.png` – Kapitelillustration
+- `public/weblab-logo.png` – WebLab-Markenzeichen mit transparentem Hintergrund
 - `TASKS.md` – erledigte Arbeit, aktueller Fokus und Ideen
 - `UEBERGABE.md` – kompakter Einstieg für weitere KI-Agenten
 

@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 
-type MissionId = "headline" | "paragraph" | "strong" | "list";
+type MissionId = "headline" | "paragraph" | "strong" | "breaks";
 
 type LearningState = {
   profile: string;
@@ -12,42 +12,19 @@ type LearningState = {
   updatedAt: string;
 };
 
-const STARTER_HTML = `<main class="profile-card">
-  <p class="eyebrow">Meine erste Webseite</p>
-  <h1>Hallo Web!</h1>
-  <p>Hier entsteht meine persönliche Seite.</p>
-</main>`;
+const STARTER_HTML = `<h1>Meine erste Webseite</h1>
+
+<p>Hier entsteht meine persönliche Seite.</p>`;
 
 const STARTER_CSS = `body {
-  margin: 0;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  font-family: system-ui, sans-serif;
-  color: #172033;
-  background: #dff8ee;
-}
-
-.profile-card {
-  width: min(520px, 82vw);
-  padding: 42px;
-  border-radius: 24px;
-  background: white;
-  box-shadow: 0 24px 70px rgba(28, 63, 52, .18);
-}
-
-.eyebrow {
-  color: #657084;
-  text-transform: uppercase;
-  letter-spacing: .14em;
-  font-size: 12px;
+  font-family: Arial, sans-serif;
 }`;
 
 const MISSION_POINTS: Record<MissionId, number> = {
   headline: 60,
   paragraph: 80,
   strong: 80,
-  list: 100,
+  breaks: 100,
 };
 
 const MISSIONS: Array<{
@@ -60,42 +37,66 @@ const MISSIONS: Array<{
   {
     id: "headline",
     step: "01",
-    title: "Mach die Seite zu deiner",
-    text: "Ersetze „Hallo Web!“ durch eine eigene Überschrift.",
-    hint: "Ändere nur den Text zwischen <h1> und </h1>.",
+    title: "Stell dich vor",
+    text: "Schreibe deinen Namen als Hauptüberschrift.",
+    hint: "Ersetze den Text zwischen <h1> und </h1> durch deinen Namen.",
   },
   {
     id: "paragraph",
     step: "02",
-    title: "Erzähl etwas",
-    text: "Schreibe einen Absatz mit mindestens 25 Zeichen.",
+    title: "Schreibe einen kurzen Satz",
+    text: "Ergänze einen Absatz mit mindestens 25 Zeichen über dich.",
     hint: "Ein Absatz beginnt mit <p> und endet mit </p>.",
   },
   {
     id: "strong",
     step: "03",
-    title: "Setze einen Fokus",
-    text: "Hebe ein wichtiges Wort mit <strong> hervor.",
+    title: "Betone etwas Wichtiges",
+    text: "Hebe in deinem Absatz ein wichtiges Wort mit <strong> hervor.",
     hint: "Du kannst <strong> mitten in einem Absatz verwenden.",
   },
   {
-    id: "list",
+    id: "breaks",
     step: "04",
-    title: "Baue eine Liste",
-    text: "Ergänze eine Liste mit mindestens drei Einträgen.",
-    hint: "Nutze <ul> außen und für jeden Punkt ein <li>.",
+    title: "Ordne mehrere Zeilen",
+    text: "Ergänze zwei Zeilenumbrüche mit <br>, zum Beispiel für Ort und Schule.",
+    hint: "<br> steht allein und benötigt kein End-Tag. Verwende es mindestens zweimal.",
   },
 ];
 
 const TAGS = [
-  { tag: "h1", name: "Hauptüberschrift", note: "Einmal pro Seite – sie sagt, worum es geht.", example: "<h1>Mein Lieblingsort</h1>" },
-  { tag: "p", name: "Absatz", note: "Für normale, zusammenhängende Texte.", example: "<p>Hier beginnt mein Text.</p>" },
-  { tag: "strong", name: "Wichtig", note: "Markiert einen inhaltlich wichtigen Teil.", example: "<strong>Unbedingt merken</strong>" },
-  { tag: "a", name: "Link", note: "Verbindet deine Seite mit einem anderen Ziel.", example: "<a href=\"ziel.html\">Weiter</a>" },
-  { tag: "img", name: "Bild", note: "Zeigt ein Bild; alt beschreibt es verständlich.", example: "<img src=\"bild.jpg\" alt=\"Berge\">" },
-  { tag: "ul + li", name: "Liste", note: "ul sammelt, li enthält die einzelnen Punkte.", example: "<ul><li>Idee</li></ul>" },
-  { tag: "section", name: "Bereich", note: "Gruppiert Inhalte, die thematisch zusammengehören.", example: "<section>…</section>" },
-  { tag: "button", name: "Schaltfläche", note: "Eine Aktion, die später JavaScript auslösen kann.", example: "<button>Los geht’s</button>" },
+  { tag: "h1", name: "Hauptüberschrift", note: "Sie zeigt sofort, worum es auf der Seite geht.", example: "<h1>Meine erste Webseite</h1>" },
+  { tag: "p", name: "Absatz", note: "Er fasst zusammengehörende Sätze zu einem Textblock zusammen.", example: "<p>Das ist mein erster Absatz.</p>" },
+  { tag: "strong", name: "Wichtiger Inhalt", note: "Damit markierst du ein Wort oder einen Satzteil als wichtig.", example: "<strong>Das ist wichtig</strong>" },
+  { tag: "br", name: "Zeilenumbruch", note: "Er beginnt eine neue Zeile und braucht ausnahmsweise kein End-Tag.", example: "Stuttgart<br>Baden-Württemberg" },
+];
+
+const CHAPTER_GROUPS = [
+  {
+    title: "HTML verstehen",
+    chapters: [
+      { number: "01", title: "Deine erste Webseite", status: "active" },
+      { number: "02", title: "Attribute richtig nutzen", status: "planned" },
+      { number: "03", title: "Text sinnvoll strukturieren", status: "planned" },
+      { number: "04", title: "Links und Bilder", status: "planned" },
+    ],
+  },
+  {
+    title: "CSS gestalten",
+    chapters: [
+      { number: "05", title: "Dein erstes CSS", status: "planned" },
+      { number: "06", title: "Farben und Schriften", status: "planned" },
+      { number: "07", title: "Abstände und Boxen", status: "planned" },
+      { number: "08", title: "Moderne Layouts", status: "planned" },
+    ],
+  },
+  {
+    title: "Web-Projekte",
+    chapters: [
+      { number: "09", title: "Persönliche Profilseite", status: "planned" },
+      { number: "10", title: "Campus Dashboard", status: "planned" },
+    ],
+  },
 ];
 
 function makeInitialState(): LearningState {
@@ -110,19 +111,20 @@ function missionPassed(id: MissionId, html: string) {
   const document = parseStudentHtml(html);
   if (id === "headline") {
     const title = document.querySelector("h1")?.textContent?.trim() ?? "";
-    return title.length >= 4 && title.toLowerCase() !== "hallo web!";
+    return title.length >= 4 && title.toLowerCase() !== "meine erste webseite";
   }
   if (id === "paragraph") {
     return [...document.querySelectorAll("p")].some((node) => (node.textContent?.trim().length ?? 0) >= 25);
   }
   if (id === "strong") return Boolean(document.querySelector("strong"));
-  return document.querySelectorAll("ul li").length >= 3;
+  return document.querySelectorAll("br").length >= 2;
 }
 
 export default function Home() {
   const [state, setState] = useState<LearningState>(makeInitialState);
   const [hydrated, setHydrated] = useState(false);
   const [activeFile, setActiveFile] = useState<"html" | "css">("html");
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [previewKey, setPreviewKey] = useState(0);
   const [coachOpen, setCoachOpen] = useState(false);
   const [coachMessage, setCoachMessage] = useState("Ich schaue mir deinen Code an und gebe dir einen kleinen nächsten Schritt – nie sofort die ganze Lösung.");
@@ -133,14 +135,18 @@ export default function Home() {
   const fileInput = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    const savedTheme = localStorage.getItem("weblab-theme-v1");
+    const nextTheme = savedTheme === "light" ? "light" : "dark";
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
     const saved = localStorage.getItem("weblab-state-v1");
     if (saved) {
       try {
         const parsed = JSON.parse(saved) as Partial<LearningState>;
         setState({
           profile: typeof parsed.profile === "string" ? parsed.profile : "",
-          html: typeof parsed.html === "string" ? parsed.html : STARTER_HTML,
-          css: typeof parsed.css === "string" ? parsed.css : STARTER_CSS,
+          html: typeof parsed.html === "string" && !parsed.html.includes("profile-card") ? parsed.html : STARTER_HTML,
+          css: STARTER_CSS,
           completed: Array.isArray(parsed.completed)
             ? parsed.completed.filter((id): id is MissionId => MISSIONS.some((mission) => mission.id === id))
             : [],
@@ -152,6 +158,13 @@ export default function Home() {
     }
     setHydrated(true);
   }, []);
+
+  function toggleTheme() {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    localStorage.setItem("weblab-theme-v1", nextTheme);
+  }
 
   useEffect(() => {
     if (!hydrated) return;
@@ -208,7 +221,7 @@ export default function Home() {
     } else if (next) {
       setCoachMessage(`${next.title}: ${next.hint} Probiere es aus und prüfe danach genau diese Mission.`);
     } else {
-      setCoachMessage("Alle vier Missionen sind gelöst. Verändere jetzt Farben und Abstände im CSS-Tab – deine Seite darf unverwechselbar werden.");
+      setCoachMessage("Alle vier Missionen sind gelöst. Speichere deinen Lernstand und freue dich auf Kapitel 02 – dort lernst du Attribute kennen.");
     }
     setCoachOpen(true);
   }
@@ -247,7 +260,7 @@ export default function Home() {
         setState({
           profile: typeof imported.profile === "string" ? imported.profile : "",
           html: typeof imported.html === "string" ? imported.html : STARTER_HTML,
-          css: typeof imported.css === "string" ? imported.css : STARTER_CSS,
+          css: STARTER_CSS,
           completed: Array.isArray(imported.completed)
             ? imported.completed.filter((id): id is MissionId => MISSIONS.some((mission) => mission.id === id))
             : [],
@@ -273,17 +286,38 @@ export default function Home() {
     <div className="app-shell">
       <header className="topbar">
         <a className="brand" href="#start" aria-label="WebLab Startseite">
-          <span className="brand-mark">W</span>
+          <img className="brand-logo" src="/weblab-logo.png" alt="" />
           <span><strong>WebLab</strong><small>Build the web.</small></span>
         </a>
-        <nav className="topnav" aria-label="Kapitelnavigation">
-          <a href="#verstehen">Verstehen</a>
-          <a href="#bausteine">Befehle</a>
+        <nav className="topnav" aria-label="Hauptnavigation">
+          <a href="#start">Start</a>
+          <div className="chapters-menu">
+            <button className="chapters-trigger">Kapitel <span>⌄</span></button>
+            <div className="chapters-dropdown">
+              <div className="dropdown-intro"><small>Lernpfad</small><strong>Kapitel auswählen</strong><p>Arbeite Schritt für Schritt. Neue Kapitel werden nach und nach freigeschaltet.</p></div>
+              <div className="chapter-groups">
+                {CHAPTER_GROUPS.map((group) => (
+                  <div className="chapter-category" key={group.title}>
+                    <button>{group.title}<span>›</span></button>
+                    <div className="chapter-submenu">
+                      <small>{group.title}</small>
+                      {group.chapters.map((chapter) => chapter.status === "active"
+                        ? <a href="#start" className="active" key={chapter.number}><span>{chapter.number}</span><b>{chapter.title}</b><i>Aktiv</i></a>
+                        : <div className="planned" key={chapter.number}><span>{chapter.number}</span><b>{chapter.title}</b><i>Geplant</i></div>)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
           <a href="#studio">Studio</a>
-          <a href="#missionen">Missionen</a>
+          <a href="#missionen">Fortschritt</a>
         </nav>
         <div className="top-actions">
           <div className="xp-pill"><span>✦</span><b>{xp}</b> XP</div>
+          <button className="theme-toggle" onClick={toggleTheme} aria-label={theme === "dark" ? "Light Mode aktivieren" : "Dark Mode aktivieren"} title={theme === "dark" ? "Light Mode" : "Dark Mode"}>
+            <span>{theme === "dark" ? "☀" : "☾"}</span>
+          </button>
           <button className="profile-button" onClick={() => { setProfileDraft(state.profile); setProfileOpen(true); }}>
             <span>{state.profile ? state.profile.slice(0, 2).toUpperCase() : "+"}</span>
             {state.profile || "Kürzel anlegen"}
@@ -291,10 +325,15 @@ export default function Home() {
         </div>
       </header>
 
+      <div className="chapter-context" aria-label="Aktueller Lernort">
+        <div className="breadcrumbs"><a href="#start">Start</a><span>›</span><span>HTML verstehen</span><span>›</span><strong>01 · Deine erste Webseite</strong></div>
+        <div className="context-progress"><span>Kapitel 01 von 10</span><i><u style={{ width: "10%" }} /></i></div>
+      </div>
+
       <main>
         <section className="hero" id="start">
           <div className="hero-copy">
-            <div className="chapter-label"><span>Kapitel 01</span><i></i><span>HTML · Einstieg</span></div>
+            <div className="chapter-label"><span>Kapitel 01</span><i></i><span>HTML verstehen · Einstieg</span></div>
             <h1>Deine erste<br /><em>Webseite.</em></h1>
             <p>Du brauchst keine Vorkenntnisse. In diesem Kapitel baust du aus einfachen HTML-Bausteinen eine echte Seite – und siehst jede Änderung sofort.</p>
             <div className="hero-actions">
@@ -306,7 +345,7 @@ export default function Home() {
             </div>
           </div>
           <div className="hero-art">
-            <img src="/weblab-hero.png" alt="HTML-Bausteine werden zu einer Webseite zusammengesetzt" />
+            <img src="/weblab-hero.png" alt="Fotorealistischer Web-Arbeitsplatz mit HTML-Code und Browser-Vorschau" />
             <div className="floating-progress"><span>Kapitel-Fortschritt</span><b>{progress}%</b><i><u style={{ width: `${progress}%` }} /></i></div>
           </div>
         </section>
@@ -315,7 +354,7 @@ export default function Home() {
           <div className="section-kicker">Dein Ziel</div>
           <h2 id="outcome-title">Am Ende kannst du …</h2>
           <div className="outcome-grid">
-            <article><span>01</span><h3>Inhalte strukturieren</h3><p>Du weißt, warum Überschriften, Absätze und Listen unterschiedliche Aufgaben haben.</p></article>
+            <article><span>01</span><h3>Inhalte strukturieren</h3><p>Du weißt, warum Überschriften und Absätze unterschiedliche Aufgaben haben.</p></article>
             <article><span>02</span><h3>Tags sicher schreiben</h3><p>Du erkennst Start-Tag, Inhalt und End-Tag – und vermeidest typische Fehler.</p></article>
             <article><span>03</span><h3>Eine Seite bauen</h3><p>Du veränderst echten Code und gestaltest daraus deine persönliche erste Webseite.</p></article>
           </div>
@@ -325,7 +364,7 @@ export default function Home() {
           <div className="explain-copy">
             <div className="section-kicker mint">Ganz einfach</div>
             <h2>HTML gibt Inhalten eine Bedeutung.</h2>
-            <p className="lead">HTML ist keine Zaubersprache. Du markierst Text und sagst dem Browser: „Das ist eine Überschrift“, „Das ist ein Absatz“ oder „Das ist eine Liste“.</p>
+            <p className="lead">HTML ist keine Zaubersprache. Du markierst Inhalte und sagst dem Browser: „Das ist eine Überschrift“, „Das ist ein Absatz“ oder „Das ist besonders wichtig“.</p>
             <div className="analogy">
               <span className="analogy-icon">▦</span>
               <div><b>Denk an LEGO®-Bausteine.</b><p>Jeder Stein hat eine Aufgabe. Erst zusammen entsteht eine vollständige Seite.</p></div>
@@ -351,7 +390,7 @@ export default function Home() {
         </section>
 
         <section className="tag-library section-pad" id="bausteine">
-          <div className="section-head"><div><div className="section-kicker violet">Spickzettel</div><h2>Die 8 wichtigsten HTML-Bausteine.</h2></div><p>Für den Start brauchst du nicht mehr. Klicke auf „Einsetzen“, um ein Beispiel direkt im Studio auszuprobieren.</p></div>
+          <div className="section-head"><div><div className="section-kicker violet">Spickzettel für Kapitel 01</div><h2>Vier HTML-Bausteine für heute.</h2></div><p>Mehr brauchst du in diesem Kapitel noch nicht. Klicke auf „Einsetzen“, um ein Beispiel direkt im Studio auszuprobieren.</p></div>
           <div className="tag-grid">
             {TAGS.map((item, index) => (
               <article className="tag-card" key={item.tag}>
@@ -361,29 +400,29 @@ export default function Home() {
               </article>
             ))}
           </div>
-          <div className="attribute-note">
-            <div><span>+</span></div>
-            <div><h3>Attribute geben Zusatzinfos</h3><p>Ein Link braucht ein Ziel, ein Bild eine Quelle. Solche Zusatzinfos stehen im Start-Tag.</p></div>
-            <code>&lt;a <b>href=&quot;kontakt.html&quot;</b>&gt;Kontakt&lt;/a&gt;</code>
+          <div className="next-chapter-note">
+            <div><span>02</span></div>
+            <div><small>Ausblick</small><h3>Attribute kommen im nächsten Kapitel.</h3><p>Dann lernst du, wie ein HTML-Element zusätzliche Informationen erhält. Wir gehen bewusst Schritt für Schritt.</p></div>
+            <span className="next-lock">Noch gesperrt</span>
           </div>
         </section>
 
         <section className="studio-section" id="studio">
-          <div className="studio-intro section-pad"><div className="section-kicker mint">WebLab Studio</div><h2>Jetzt bist du dran.</h2><p>Ändere links den Code. Starte die Vorschau und beobachte rechts, was daraus wird.</p></div>
+          <div className="studio-intro section-pad"><div className="section-kicker mint">WebLab Studio · Nur HTML</div><h2>Jetzt bist du dran.</h2><p>Ändere links den HTML-Code. CSS erklären wir erst in einem späteren Kapitel.</p></div>
           <div className="studio">
             <div className="editor-pane">
               <div className="pane-bar">
                 <div className="file-tabs">
                   <button className={activeFile === "html" ? "active" : ""} onClick={() => setActiveFile("html")}><span className="html-dot">◇</span> index.html</button>
-                  <button className={activeFile === "css" ? "active" : ""} onClick={() => setActiveFile("css")}><span className="css-dot">#</span> style.css</button>
+                  <button className="locked-file" disabled title="CSS wird in Kapitel 05 erklärt"><span className="css-dot">#</span> style.css <small>Kapitel 05</small></button>
                 </div>
                 <button className="run-button" onClick={runPreview}>▶ Ausführen</button>
               </div>
               <div className="editor-wrap">
-                <div className="line-numbers" aria-hidden="true">{(activeFile === "html" ? state.html : state.css).split("\n").map((_, index) => <span key={index}>{index + 1}</span>)}</div>
-                <textarea aria-label={`${activeFile.toUpperCase()}-Editor`} spellCheck={false} value={activeFile === "html" ? state.html : state.css} onChange={(event) => updateCode(event.target.value)} />
+                <div className="line-numbers" aria-hidden="true">{state.html.split("\n").map((_, index) => <span key={index}>{index + 1}</span>)}</div>
+                <textarea aria-label="HTML-Editor" spellCheck={false} value={state.html} onChange={(event) => updateCode(event.target.value)} />
               </div>
-              <div className="editor-status"><span><i></i> automatisch lokal gespeichert</span><span>{activeFile.toUpperCase()}</span></div>
+              <div className="editor-status"><span><i></i> automatisch lokal gespeichert</span><span>HTML</span></div>
             </div>
             <div className="preview-pane">
               <div className="pane-bar preview-bar"><span>Live-Vorschau</span><button onClick={runPreview} aria-label="Vorschau neu laden">↻</button></div>
@@ -412,7 +451,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer><a className="brand footer-brand" href="#start"><span className="brand-mark">W</span><span><strong>WebLab</strong><small>Version 0.1.0 · 04.08.2026</small></span></a><p>Lernen. Bauen. Verstehen.</p><span>Designed for the classroom.</span></footer>
+      <footer><a className="brand footer-brand" href="#start"><img className="brand-logo" src="/weblab-logo.png" alt="" /><span><strong>WebLab</strong><small>Version 0.2.0 · 04.08.2026</small></span></a><p>Lernen. Bauen. Verstehen.</p><span className="copyright">Designed by <b>Sawazki Electronics</b> · © 2026</span></footer>
 
       <button className="coach-fab" onClick={askCoach}><span>✦</span><div><b>Lerncoach</b><small>lokale Hilfe</small></div></button>
       {coachOpen && <aside className="coach-panel" aria-live="polite"><div className="coach-head"><span>✦</span><div><b>WebLab Lerncoach</b><small>Hinweis statt Lösung</small></div><button onClick={() => setCoachOpen(false)}>×</button></div><p>{coachMessage}</p><button onClick={() => setCoachOpen(false)}>Weiter ausprobieren</button><small>Der lokale Coach sendet keinen Code ins Internet.</small></aside>}

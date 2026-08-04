@@ -11,10 +11,14 @@ werden.
 
 ## Aktueller Stand
 
-Version 0.1.0 enthält das vollständige Einstiegskapitel **„Deine erste
-Webseite“**. Alles liegt in `app/page.tsx` und `app/globals.css`. Der Lernstand
+Version 0.2.0 enthält das vollständige Einstiegskapitel **„Deine erste
+Webseite“** mit dunklem Standardmodus, Light Mode, hierarchischer Navigation,
+fotorealistischer Bildwelt und klarer Kapitelanzeige. Alles liegt in
+`app/page.tsx` und `app/globals.css`. Der Lernstand
 wird lokal unter `weblab-state-v1` gespeichert und als WebLab-JSON mit
 `formatVersion: 1` exportiert. Es gibt vier Missionen mit zusammen 320 XP.
+Kapitel 01 verwendet nur `h1`, `p`, `strong` und `br`; CSS ist im Studio bis
+Kapitel 05 bewusst gesperrt.
 
 ## Einstieg
 
@@ -32,13 +36,13 @@ wird lokal unter `weblab-state-v1` gespeichert und als WebLab-JSON mit
   anbinden. Niemals einen API-Schlüssel in Browsercode oder GitHub ablegen.
 - Das Kürzel ist kein echtes Konto. Fortschritt ist veränderbar und nicht für
   benotete Leistungsnachweise geeignet.
-- Bei einem neuen Kapitel zuerst Inhalt und Aufgaben festlegen, dann erst die
-  Navigation erweitern.
+- Kapitel in `CHAPTER_GROUPS` erst dann als aktiv verlinken, wenn Inhalt,
+  Aufgabenprüfung und Lernstand vollständig umgesetzt sind.
+- Die Navigation bildet derzeit den geplanten Lernpfad 01–10 ab.
 
 ## Nächster sinnvoller Auftrag
 
-> Entwickle Kapitel 02 „Text, Links und Bilder“ im bestehenden WebLab-Stil.
+> Entwickle Kapitel 02 „Attribute richtig nutzen“ im bestehenden WebLab-Stil.
 > Baue es wieder als zusammenhängende Kapitel-Seite mit kurzer Erklärung,
 > visuellen Beispielen, Spickzettel, Studio-Aufgaben und lokaler Prüfung. Passe
 > Lernstand, XP, JSON-Import/-Export und Dokumentation konsistent an.
-

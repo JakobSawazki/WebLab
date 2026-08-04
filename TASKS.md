@@ -1,19 +1,23 @@
 # WebLab – Projektstand
 
-**Version:** 0.1.0 · **Stand:** 4. August 2026
+**Version:** 0.2.0 · **Stand:** 4. August 2026
 
 ## Erledigt
 
 - [x] Projekt im vorgesehenen WebLab-Ordner angelegt
-- [x] modernes Designsystem mit Dunkelblau, Mint, Koralle und Violett aufgebaut
+- [x] blau-metallisches Designsystem mit Glanz, dunklem Standardmodus und Light Mode aufgebaut
+- [x] fotorealistisches Rasterlogo erstellt, oben links eingebunden und mit der Startseite verknüpft
+- [x] Hero- und Social-Preview-Grafik durch ein eigenständiges fotorealistisches Motiv ersetzt
+- [x] hierarchische Hover-Navigation mit Kapitelgruppen und Untermenüs ergänzt
+- [x] Breadcrumbs und Kapitelstand als dauerhaft sichtbare Orientierung ergänzt
 - [x] erstes Kapitel in **„Deine erste Webseite“** umbenannt und neu konzipiert
 - [x] Erklärstrecke zu HTML-Bedeutung, Tag-Aufbau und drei Grundregeln erstellt
-- [x] acht wichtige HTML-Bausteine als kompakte, direkt nutzbare Karten ergänzt
-- [x] HTML-/CSS-Studio mit isolierter Live-Vorschau umgesetzt
+- [x] Kapitel 01 bewusst auf vier HTML-Bausteine reduziert
+- [x] HTML-Studio mit isolierter Live-Vorschau umgesetzt; CSS bis Kapitel 05 gesperrt
 - [x] vier prüfbare Missionen und 320 erreichbare XP umgesetzt
 - [x] lokales Kürzelprofil, Autospeicherung sowie JSON-Export/-Import umgesetzt
 - [x] lokalen, lösungsvermeidenden Lerncoach als datensparsamen Standard ergänzt
-- [x] eigenständige Kapitel- und Social-Preview-Illustration erstellt
+- [x] Copyright-Hinweis „Designed by Sawazki Electronics · © 2026“ ergänzt
 - [x] responsive Desktop-/Tablet-/Smartphone-Gestaltung umgesetzt
 - [x] öffentliches GitHub-Repository erstellt und Grundversion veröffentlicht
 - [x] erste Live-Version über Sites bereitgestellt
@@ -26,11 +30,12 @@
 
 ## Als Nächstes
 
-1. Kapitel **„Text, Links und Bilder“** mit einem kleinen Profilseiten-Projekt
-2. Kapitel **„Dein erstes Design mit CSS“** mit Farben, Schriften und Abständen
-3. zusammenhängendes Projekt „Digitaler Schulplaner“ als roter Faden
-4. Kapitelübersicht mit Lernpfad, Leveln, Erfolgen und Gesamtfortschritt
-5. optionale echte KI-Hilfe über einen sicheren Server-Endpunkt
+1. Kapitel **„Attribute richtig nutzen“** mit `href`, `src`, `alt` und kleinen Übungen
+2. Kapitel **„Text sinnvoll strukturieren“** mit semantisch passender Gliederung
+3. Kapitel **„Links und Bilder“** mit einem kleinen Profilseiten-Projekt
+4. Kapitel **„Dein erstes CSS“** mit bewusst wenigen Regeln und visueller Erklärung
+5. zusammenhängendes Projekt „Digitaler Schulplaner“ als roter Faden
+6. optionale echte KI-Hilfe über einen sicheren Server-Endpunkt
 
 ## Ideen
 

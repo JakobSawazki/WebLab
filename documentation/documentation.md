@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.5.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
+Version: **1.6.0** · Status: **lokal geprüft, Veröffentlichung vorbereitet**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.5.0 |
+| Bereich | Version 1.6.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Lernfortschritten; alle frei erreichbar |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -101,7 +101,7 @@ WebLab/
     tools/                   Bundler, Build und lokaler Browserprüfserver
     tests/                   15 Node-Tests und Browserprüfseite
   documentation/documentation.md
-  documentation/WebLab-1.5.0.png
+  documentation/WebLab-1.6.0.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
   README.md                  kurze Startanleitung
   CLAUDE.md                  Wegweiser auf diese Dokumentation
@@ -173,6 +173,13 @@ Offene Erweiterungen, nach Priorität:
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.6.0
+
+Auf Jakobs Auftrag gebürstete Metalloptik umgesetzt. Gemeinsame CSS-Variablen für feine horizontale Körnung, Stahl-/Aluminium-Verläufe und Lichtkanten. Oberflächen, Seitenleiste, Kopfzeile, Karten, Dialoge, Werkstattkopf und Dateireiter abgestimmt. Primäre Aktionen behalten ihren deutlichen Akzent, sekundäre Buttons erhalten Metallflächen mit feiner Einfassung. Dunkles Schema: gebürsteter Stahl; helles Schema: silbernes Aluminium. Schreibflächen und Webseitenvorschau ohne Körnung. Alles als statisches CSS, keine neuen Assets, Bibliotheken oder Netzwerkanfragen.
+
+Prüfungen: 15 Node-Tests bestanden. Beide Farbschemata visuell kontrolliert; Kontrast der Nebenbeschriftung gegen die jeweils kritischste Metall-Grundfarbe: dunkel 4,93:1, hell 5,01:1 (ohne die dezente transparente Körnung). 110 Browserprüfungen bestanden, darunter beide Farbschemata bei 360 Pixeln, Buttons, Kontrast und alle bisherigen Lernfunktionen. Veröffentlichung folgt. Klassischer Dateistart und unverändertes Sicherungsformat bleiben erhalten; direkter file://-Test auf dem Schul-PC und Bildschirmlesertest bleiben offen.
+
 
 ### 12.10.2026 – Codex – Version 1.5.0
 

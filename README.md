@@ -18,6 +18,8 @@ Seit Version 1.4.0: WebLab direkt durch Doppelklick auf `index.html` starten. De
 
 Seit Version 1.5.0: einheitliche SVG-Icons, edlere Buttons, ruhigere Flächen und abgestimmte helle/dunkle Gestaltung. Quellcode, Tests und Werkzeuge liegen aufgeräumt unter `development/`; diese Dateien werden für die Weiterentwicklung und Prüfung benötigt.
 
+Seit Version 1.6.0: gebürstete Stahl- und Aluminiumflächen mit feiner Körnung, metallischen Buttons und Lichtkanten. Die Gestaltung entsteht vollständig lokal in CSS.
+
 Entwicklung und Browserprüfungen:
 
 ```text

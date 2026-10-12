@@ -222,14 +222,63 @@ small,
   color: var(--muted);
   font-size: 0.94rem;
 }
-.nav-item span {
-  width: 23px;
-  text-align: center;
-  color: var(--brand);
-  flex: 0 0 23px;
+.nav-item > [data-icon] {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  border: 1px solid #8596a7;
+  border-radius: 11px;
+  color: #213a52;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      #ffffff18 0 1px,
+      #52677b0a 1px 2px,
+      transparent 2px 4px
+    ),
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #dce4ec 25%,
+      #aebdcb 53%,
+      #e4eaf0 78%,
+      #9aaaba 100%
+    );
+  box-shadow:
+    inset 0 1px 1px #fff,
+    inset 0 -2px 2px #34495e55,
+    0 2px 4px #0003;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+.nav-item > [data-icon]::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid #ffffff70;
+  border-radius: 7px;
+  pointer-events: none;
+}
+.nav-item > [data-icon] .ui-icon {
+  width: 21px;
+  height: 21px;
+  stroke-width: 1.9;
+  filter: drop-shadow(0 1px 0 #ffffffb3);
+}
+.nav-item:hover > [data-icon],
+.nav-item[aria-current="page"] > [data-icon] {
+  border-color: var(--brand);
+  box-shadow:
+    inset 0 1px 1px #fff,
+    inset 0 -2px 2px #34495e55,
+    0 0 0 2px color-mix(in srgb, var(--brand) 22%, transparent),
+    0 3px 6px #0003;
+  color: #123e68;
 }
 .nav-item:hover,
 .nav-item[aria-current="page"] {
@@ -1137,8 +1186,23 @@ dialog::backdrop {
     gap: 0.35rem;
     font-size: 0.75rem;
   }
-  .nav-item span {
-    width: auto;
+  .nav-item {
+    flex-direction: column;
+    text-align: center;
+    min-width: 0;
+  }
+  .nav-item > [data-icon] {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+    border-radius: 9px;
+  }
+  .nav-item > [data-icon]::after {
+    border-radius: 5px;
+  }
+  .nav-item > [data-icon] .ui-icon {
+    width: 19px;
+    height: 19px;
   }
   .sidebar-bottom {
     display: none;

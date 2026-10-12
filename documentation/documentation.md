@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.7.5** · Status: **veröffentlicht und online geprüft**.
+Version: **1.8.0** · Status: **veröffentlicht und online geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,10 +16,10 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.7.5 |
+| Bereich | Version 1.8.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
-| Ablauf je Einheit | Ziel, Erklärung, Beispiel, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
+| Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
 | Roter Faden | Nächster offener Lernschritt, 16 Schritte mit aktueller Position, Vorwissen, drei konkrete Arbeitsschritte und Beobachtungsauftrag; eigene Webseite wächst durch Kopien des vorherigen Entwurfs |
 | Orientierung | Vier Etappen mit Fortschritt auf der Startseite; direkte Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern in den Einheiten |
 | Schülerprofil | Lokales Kürzel `MUS.MAX` und Klasse; kein Passwort und kein Serverkonto |
@@ -84,7 +84,7 @@ Aktuell geprüfte offizielle Referenzen für Einheit 14:
 - https://creativecommons.org/cc-licenses/ – Lizenzbedingungen, insbesondere BY und SA.
 - https://www.gesetze-im-internet.de/ddg/__5.html – Anbieterinformationen; Anwendbarkeit ist vom Angebot abhängig und wird für die konkrete Schulveröffentlichung mit der Lehrkraft geklärt.
 
-Die WebLab-Texte und Aufgaben sind eigenständig formuliert. Logo und Hero stammen aus der bisherigen WebLab-Fassung. Keine Unterrichtsoriginale, Lösungen oder Schülerzuordnungen werden ins Repository oder in das Veröffentlichungspaket aufgenommen.
+Die WebLab-Texte und Aufgaben sind eigenständig formuliert. Das aktuelle Metalllogo wurde mit dem integrierten Bildgenerator erstellt (Bildprompt im Protokoll zu 1.7.1); das Hero stammt aus der früheren WebLab-Fassung. Keine Unterrichtsoriginale, Lösungen oder Schülerzuordnungen werden ins Repository oder in das Veröffentlichungspaket aufgenommen.
 
 ## 4. Softwarestruktur und Start
 
@@ -99,9 +99,9 @@ WebLab/
   development/
     src/                     gepflegte Quellmodule, Inhalte und SVG-Icons
     tools/                   Bundler, Build und lokaler Browserprüfserver
-    tests/                   18 Node-Tests und Browserprüfseite
+    tests/                   19 Node-Tests und Browserprüfseite
   documentation/documentation.md
-  documentation/WebLab-1.7.4.png
+  documentation/WebLab-1.8.0.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
   README.md                  kurze Startanleitung
   CLAUDE.md                  Wegweiser auf diese Dokumentation
@@ -159,12 +159,12 @@ Google Drive erzeugt gelegentlich `desktop.ini` innerhalb `.git/refs`. Git deute
 
 Geprüft durch Codex am 12.10.2026:
 
-- 18 Node-Tests bestanden (zusätzlich drei Freischaltungsprüfungen): Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur, Einrückung, Code-Dateiimport sowie vollständige Lernkette und Erhalt vorhandener Entwürfe.
+- 19 Node-Tests bestanden (einschließlich Freischaltung und vollständiger Fehlersuchaufgaben): Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur, Einrückung, Code-Dateiimport sowie vollständige Lernkette und Erhalt vorhandener Entwürfe.
 - Browserprüfungen: die bisherigen 86 Funktions- und Layoutprüfungen sowie zusätzliche Kontrollen für beide Farbschemata, SVG-Navigation, Buttonhöhen und Textkontrast. Ergebnis siehe neuestes Arbeitsprotokoll.
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
-- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.5.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
+- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.8.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
 - Responsive Prüfung: Startseite, Einheiten 1 und 12 sowie Glossar bei tatsächlich 360 Pixel breiten eingebetteten Browserfenstern ohne horizontalen Überlauf. Der direkte Viewport-Schalter des Browserwerkzeugs änderte die native Ansicht nicht; deshalb wurde die Breite unabhängig in der lokalen Browser-Testseite geprüft. Physische Mobilgeräte und Bildschirmleser bleiben noch ungetestet.
 
 Offene Erweiterungen, nach Priorität:
@@ -172,12 +172,20 @@ Offene Erweiterungen, nach Priorität:
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
 2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
-4. **Didaktische Vertiefung:** mehr Fehlersuchaufträge, visuelle Box-Modell-/Selektorhilfen, gestufte HTML-Aufgaben, Tabellenformatierung und weitere Medienaufgaben.
+4. **Didaktische Vertiefung:** Zwölf optionale Fehlersuchaufträge sind seit 1.8.0 vorhanden; noch offen sind vertiefende Korrekturaufgaben, visuelle Box-Modell-/Selektorhilfen, gestufte HTML-Aufgaben, Tabellenformatierung und weitere Medienaufgaben.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser, optionale Offline-Kopie und Browserprüfungen in CI.
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.8.0
+
+Autonome didaktische Weiterentwicklung: Zwölf kurze Fehlersuchübungen in den HTML-/CSS-Grundlageneinheiten 01–12. Jede zeigt einen typischen Fehler, drei Korrekturvorschläge und eine eigene konkrete Begründung für jede Auswahl. Themen: Verschachtelung, head/body, Überschriften, Listeneinträge, Sprungziele, Bildpfade, Tabellenzellen, Medienbedienung, CSS-Dateinamen, Selektoren, Längeneinheiten und Außenabstand.
+
+Die Aufgaben sind im Abschnitt Verstehen als native aufklappbare Details zugänglich und zunächst geschlossen. Sie sind freiwillige Diagnoseübungen ohne Zusatzpunkte; Entwürfe, Verständnischeck, Abschlüsse und Freischaltungen werden nicht verändert. Rückmeldung als vorlesbarer Status, HTML-Beispiele maskiert. Nicht in den Projekteinheiten 13–16, keine neue Pflicht zum Abschluss und kein neues Speicherformat. Quellmodul `development/src/debugging.js` wird in das klassische Offline-Skript gebündelt, keine Laufzeitabhängigkeit.
+
+19 Node-Tests bestanden, Build erfolgreich. Lokale Fehlersuche mit falscher und richtiger Auswahl visuell geprüft. 131 Browserprüfungen bestanden, darunter falsche/richtige Diagnose, ausbleibende Änderungen am Lernstand und die geöffnete Fehlersuche bei 360 Pixeln ohne horizontalen Überlauf. Veröffentlichung folgt.
 
 ### 12.10.2026 – Codex – Version 1.7.5
 

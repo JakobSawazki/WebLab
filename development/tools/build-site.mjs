@@ -13,6 +13,7 @@ const modules = [
   "export.js",
   "editor.js",
   "journey.js",
+  "debugging.js",
   "app.js",
   "icons.js",
 ];

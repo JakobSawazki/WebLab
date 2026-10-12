@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.7.5";
+const VERSION = "1.8.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -2050,7 +2050,201 @@ function startingDraft(drafts, id) {
 
 return {journey,startingDraft};
 },
+"debugging.js": function(require) {
+// Optional diagnosis exercises. These never modify drafts or award points.
+const debugging = {
+  l1: {
+    code: "<p>Wir lernen <strong>HTML</p></strong>",
+    question:
+      "Welche Änderung bringt die verschachtelten Elemente in die richtige Reihenfolge?",
+    options: [
+      "Zuerst </strong>, danach </p> schließen.",
+      "Den Absatz mit <br> statt </p> beenden.",
+      "Alle End-Tags weglassen.",
+    ],
+    answer: 0,
+    feedback: [
+      "Richtig: Was zuletzt geöffnet wurde, wird zuerst geschlossen. So wird daraus <p>Wir lernen <strong>HTML</strong></p>.",
+      "br erzeugt einen Zeilenumbruch. Es beendet weder strong noch einen Absatz. Prüfe, welches Element zuletzt geöffnet wurde.",
+      "strong braucht ein End-Tag. Schreibe auch das Absatzende ausdrücklich, damit die Verschachtelung klar bleibt.",
+    ],
+  },
+  l2: {
+    code: "<head>\n  <title>Meine AG</title>\n  <h1>Willkommen</h1>\n</head>\n<body></body>",
+    question:
+      "Die sichtbare Überschrift steht im falschen Bereich. Was änderst du?",
+    options: [
+      "title durch h1 ersetzen.",
+      "h1 in den body verschieben; title bleibt im head.",
+      "body entfernen, weil head schon Text enthält.",
+    ],
+    answer: 1,
+    feedback: [
+      "title und h1 haben verschiedene Aufgaben: title benennt den Browser-Tab, h1 die sichtbare Hauptüberschrift.",
+      "Richtig: Sichtbare Seiteninhalte gehören in den body. Der Browser kann falsches HTML zwar reparieren, aber darauf solltest du dich nicht verlassen.",
+      "Die Seite braucht einen Inhaltsbereich. head enthält Metadaten und Verweise, nicht den sichtbaren Seiteninhalt.",
+    ],
+  },
+  l3: {
+    code: "<h1>Unsere AG</h1>\n<h4>Termine</h4>\n<p>Wir treffen uns freitags.</p>",
+    question:
+      "Termine ist ein direktes Unterthema der Hauptüberschrift. Welche Änderung passt?",
+    options: [
+      "h4 beibehalten, weil die Schrift kleiner ist.",
+      "Termine mit strong auszeichnen, damit es fett ist.",
+      "h2 statt h4 für die direkte Unterüberschrift verwenden.",
+    ],
+    answer: 2,
+    feedback: [
+      "Wähle die Überschriftenebene nach der Gliederung. Für die Schriftgröße ist später CSS zuständig.",
+      "strong betont wichtige Wörter, markiert aber keine Überschrift in der Seitenstruktur.",
+      "Richtig: h2 folgt als direkte Unterebene auf h1. Die Struktur bestimmt das Tag, die Gestaltung folgt später mit CSS.",
+    ],
+  },
+  l4: {
+    code: "<ul>\n  <p>Schrauben</p>\n  <p>Kabel</p>\n</ul>",
+    question:
+      "Die beiden Materialien sollen Listeneinträge sein. Welche Tags brauchst du?",
+    options: [
+      "li anstelle von p für jeden Eintrag.",
+      "br anstelle von p für jeden Eintrag.",
+      "Nur die ul in ol ändern.",
+    ],
+    answer: 0,
+    feedback: [
+      "Richtig: ul enthält li-Elemente. ol wäre eine nummerierte Liste und braucht ebenfalls li für ihre Einträge.",
+      "br bricht eine Zeile um, macht daraus aber keinen Listeneintrag.",
+      "ol ändert die Art der Liste. Die Einträge selbst brauchen weiterhin li.",
+    ],
+  },
+  l5: {
+    code: '<a href="#termine">Zu den Terminen</a>\n<h2 id="termin">Termine</h2>',
+    question: "Warum führt der Sprunglink nicht zur Überschrift?",
+    options: [
+      "In href fehlt https://.",
+      "Das Sprungziel muss ein p statt h2 sein.",
+      "Der Name hinter # stimmt nicht mit der id überein.",
+    ],
+    answer: 2,
+    feedback: [
+      "Ein Sprung innerhalb derselben Seite beginnt mit #. Dafür brauchst du keine vollständige Webadresse.",
+      "Auch eine Überschrift kann eine id und damit ein Sprungziel haben.",
+      'Richtig: termine und termin sind unterschiedliche Namen. Verwende zum Beispiel id="termine", passend zu href="#termine".',
+    ],
+  },
+  l6: {
+    code: '<!-- Im Ordner bilder liegt die Datei team.jpg. -->\n<img src="bilder/team.png" alt="Unser Team beim Aufbau">',
+    question: "Das Bild fehlt, obwohl der Ordner stimmt. Was prüfst du zuerst?",
+    options: [
+      "alt entfernen.",
+      "Die Dateiendung in src an die vorhandene JPG-Datei anpassen.",
+      "img durch image ersetzen.",
+    ],
+    answer: 1,
+    feedback: [
+      "alt ist die Textalternative und sollte erhalten bleiben. Es steuert nicht, welche Datei geladen wird.",
+      "Richtig: Der Pfad muss zum tatsächlichen Dateinamen einschließlich Endung und Schreibweise passen. Hier lautet er bilder/team.jpg.",
+      "Das HTML-Element heißt img. Der Fehler liegt hier im angegebenen Dateinamen.",
+    ],
+  },
+  l7: {
+    code: "<table>\n  <tr><th>Tag</th><th>Raum</th></tr>\n  <tr><td>Montag</td></tr>\n</table>",
+    question:
+      "In dieser einfachen Tabelle soll jeder Termin einen Tag und einen Raum haben. Was fehlt?",
+    options: [
+      "Ein Rahmen um table.",
+      "Ein br hinter Montag.",
+      "Eine zweite td-Zelle mit dem Raum in der Datenzeile.",
+    ],
+    answer: 2,
+    feedback: [
+      "Ein Rahmen ist Gestaltung. Er ergänzt keine fehlenden Datenzellen.",
+      "Ein Zeilenumbruch innerhalb einer Zelle erzeugt keine zweite Spalte.",
+      "Richtig: Die Kopfzeile beschreibt zwei Spalten. Ergänze in derselben tr eine zweite td-Zelle für den Raum.",
+    ],
+  },
+  l8: {
+    code: '<audio src="medien/interview.mp3"></audio>',
+    question:
+      "Der Dateipfad ist korrekt. Wie bekommen Besucher eine sichtbare Bedienung zum Abspielen?",
+    options: [
+      "Das Attribut controls ergänzen.",
+      "audio in img ändern.",
+      "Die Datei in interview.html umbenennen.",
+    ],
+    answer: 0,
+    feedback: [
+      "Richtig: controls blendet die Bedienung ein. Ergänze außerdem eine Textfassung der gesprochenen Informationen für Menschen, die den Ton nicht hören können.",
+      "img zeigt Bilder und kann keine Audiodatei abspielen.",
+      "Umbenennen verändert das Dateiformat nicht. Die Audiodatei bleibt eine MP3-Datei; es fehlt hier die Bedienung.",
+    ],
+  },
+  l9: {
+    code: '<!-- Die Datei style.css liegt neben index.html. -->\n<link rel="stylesheet" href="styles.css">',
+    question:
+      "Die externe Gestaltung wird nicht geladen. Welche Korrektur passt zu dieser Ordnerstruktur?",
+    options: [
+      'rel="stylesheet" entfernen.',
+      'href="style.css" schreiben.',
+      "Die CSS-Regeln in title schreiben.",
+    ],
+    answer: 1,
+    feedback: [
+      'rel="stylesheet" erklärt dem Browser den Zweck des Verweises. Das Attribut soll erhalten bleiben.',
+      "Richtig: style.css und styles.css sind verschiedene Dateinamen. href muss genau die vorhandene CSS-Datei nennen.",
+      "title ist für den Titel des Browser-Tabs. Externe CSS-Regeln bleiben in der CSS-Datei.",
+    ],
+  },
+  l10: {
+    code: '<p class="hinweis">Bitte anmelden.</p>\n\n/* In style.css: */\n#hinweis { color: navy; }',
+    question:
+      "Der Absatz hat eine Klasse, aber die Regel trifft ihn nicht. Was muss sich ändern?",
+    options: [
+      "Dem Klassennamen im HTML einen Punkt voranstellen.",
+      "Die geschweiften Klammern entfernen.",
+      "Im CSS .hinweis statt #hinweis verwenden.",
+    ],
+    answer: 2,
+    feedback: [
+      "Im class-Attribut steht der Name ohne Punkt. Der Punkt gehört zum CSS-Selektor.",
+      "Die geschweiften Klammern begrenzen den CSS-Regelblock. Sie sind hier richtig.",
+      'Richtig: .hinweis trifft class="hinweis". #hinweis wäre für ein Element mit id="hinweis".',
+    ],
+  },
+  l11: {
+    code: "h1 {\n  font-size: 24;\n}",
+    question:
+      "Die Überschrift soll eine feste Schriftgröße von 24 Pixeln bekommen. Was fehlt?",
+    options: [
+      "Die Einheit px: font-size: 24px;",
+      "Anführungszeichen um 24.",
+      "Ein # vor 24.",
+    ],
+    answer: 0,
+    feedback: [
+      "Richtig: Bei diesem Längenwert brauchst du eine Einheit. 24px ist gültig; 24 ohne Einheit wird für font-size verworfen.",
+      "Anführungszeichen machen daraus keine gültige Schriftgröße. Ergänze die gewünschte Längeneinheit.",
+      "Die Raute gehört zum Beispiel zu Hex-Farben und ID-Selektoren, nicht zu einer Schriftgröße.",
+    ],
+  },
+  l12: {
+    code: ".karte {\n  padding: 20px;\n  margin: 0;\n}",
+    question:
+      "Der Abstand zu benachbarten Karten soll wachsen, der Innenabstand aber gleich bleiben. Welche Eigenschaft änderst du?",
+    options: ["padding erhöhen.", "margin erhöhen.", "font-size erhöhen."],
+    answer: 1,
+    feedback: [
+      "padding schafft Platz zwischen Inhalt und Rahmen. Das verändert den Innenabstand.",
+      "Richtig: margin ist der Außenabstand. padding bleibt für den Innenabstand unverändert.",
+      "font-size verändert die Schriftgröße. Sie ist kein gezielter Ersatz für den Abstand zwischen Karten.",
+    ],
+  },
+};
+
+return {debugging};
+},
 "app.js": function(require) {
+const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
 const { VERSION, groups, lessons, byId } = require("content.js");
 const { glossary } = require("glossary.js");
@@ -2260,9 +2454,14 @@ function lessonPractice(l) {
   const step = journey[l.id];
   return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3><ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor">Jetzt direkt im Code ausprobieren</a></section>`;
 }
+function debugChallenge(l) {
+  const exercise = debugging[l.id];
+  if (!exercise) return "";
+  return `<details class="debug-challenge"><summary>Fehler finden: eine kurze Denkaufgabe</summary><p class="muted">Finde die Ursache, bevor du deinen eigenen Code weiterentwickelst. Diese Übung verändert deinen Entwurf nicht und vergibt keine Zusatzpunkte.</p><pre><code>${esc(exercise.code)}</code></pre><p id="debugQuestion">${esc(exercise.question)}</p><div class="quiz-options" role="group" aria-labelledby="debugQuestion">${exercise.options.map((option, i) => `<button type="button" class="button secondary quiz-option" data-debug-answer="${i}">${esc(option)}</button>`).join("")}</div><p id="debugResult" role="status" aria-atomic="true"></p></details>`;
+}
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre></section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -2652,6 +2851,15 @@ function render() {
           target.scrollIntoView({ behavior: "smooth", block: "start" });
         }),
     );
+    document.querySelectorAll("[data-debug-answer]").forEach((button) => {
+      button.onclick = () => {
+        const selected = Number(button.dataset.debugAnswer);
+        const exercise = debugging[l.id];
+        const result = $("#debugResult");
+        result.textContent = exercise.feedback[selected];
+        result.className = selected === exercise.answer ? "pass" : "muted";
+      };
+    });
     $("#lessonBackup").onclick = () => {
       capture();
       backup();

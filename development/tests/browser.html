@@ -167,6 +167,13 @@
       document.body.append(frame);
       await loaded;
       const root = frame.contentDocument.documentElement;
+      if (route === "#lesson/l1") {
+        frame.contentDocument.querySelector(".debug-challenge summary").click();
+        assert(
+          frame.contentDocument.querySelector(".debug-challenge").open,
+          "Fehlersuche laesst sich bei 360 Pixeln oeffnen",
+        );
+      }
       assert(
         frame.contentWindow.innerWidth === 360,
         route + " hat echten 360-Pixel-Viewport",
@@ -491,6 +498,31 @@
       threadDoc.querySelectorAll(".phase-card").length === 4 &&
         threadDoc.querySelectorAll(".learning-thread").length === 1,
       "Startseite zeigt vier Etappen und genau eine Empfehlung zum Weiterlernen",
+    );
+    await navigateThread("#lesson/l2");
+    const beforeDebug = localStorage.getItem(STORAGE_KEY);
+    const ownCodeBefore = item("htmlEditor").value;
+    threadDoc.querySelector(".debug-challenge summary").click();
+    threadDoc.querySelector('[data-debug-answer="0"]').click();
+    assert(
+      item("debugResult").textContent.includes("verschiedene Aufgaben"),
+      "Fehlersuche erklaert eine falsche Antwort konkret",
+    );
+    threadDoc.querySelector('[data-debug-answer="1"]').click();
+    assert(
+      item("debugResult").textContent.startsWith("Richtig:") &&
+        item("debugResult").classList.contains("pass"),
+      "Fehlersuche bestaetigt die richtige Korrektur mit Begruendung",
+    );
+    assert(
+      localStorage.getItem(STORAGE_KEY) === beforeDebug &&
+        item("htmlEditor").value === ownCodeBefore,
+      "Fehlersuche veraendert weder Entwurf noch Punkte, Quiz oder Freischaltungen",
+    );
+    assert(
+      item("debugResult").getAttribute("role") === "status" &&
+        threadDoc.querySelectorAll("[data-debug-answer]").length === 3,
+      "Fehlersuche hat drei bedienbare Antworten und eine vorlesbare Rueckmeldung",
     );
     threadFrame.remove();
     if (savedState === null) localStorage.removeItem(STORAGE_KEY);

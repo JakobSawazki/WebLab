@@ -1340,3 +1340,25 @@ dialog::backdrop {
     gap: 0.65rem;
   }
 }
+
+.debug-challenge {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.debug-challenge summary {
+  color: var(--brand);
+  font-weight: 650;
+  cursor: pointer;
+}
+.debug-challenge [role="status"] {
+  padding-left: 0.8rem;
+  border-left: 3px solid var(--line);
+}
+.debug-challenge [role="status"]:empty {
+  display: none;
+}
+.debug-challenge [role="status"].pass {
+  color: var(--green);
+  border-color: var(--green);
+}

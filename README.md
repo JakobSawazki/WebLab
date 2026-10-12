@@ -35,3 +35,5 @@ Keine Installation von Bibliotheken notwendig. Node.js ab Version 22 wird nur f�
 Originalmaterialien unter `ressources/BPE2/` bleiben lokal und werden nicht veröffentlicht. Profile sind lokale Lernstände, keine Serverkonten oder manipulationssicheren Leistungsnachweise.
 
 Seit Version 1.7.1: neues fotorealistisches Metalllogo; dasselbe Motiv dient als PNG-Tab-Icon.
+
+Seit Version 1.8.0: kurze freiwillige Fehlersuchübungen mit erklärenden Rückmeldungen in den Einheiten 01–12.

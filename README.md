@@ -14,12 +14,16 @@ Seit Version 1.2.0: durchgehender Lernpfad mit nächstem Lernschritt, Vorwissen,
 
 Seit Version 1.3.0: kompakte Startseite mit vier Etappen, Fortschrittsanzeigen und hervorgehobenem nächsten Schritt. Jede Lerneinheit erhält die Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern nach dem Vorbild WorkbenchLab.
 
+Seit Version 1.4.0: WebLab direkt durch Doppelklick auf `index.html` starten. Der gesamte Projektordner muss zusammenbleiben; Node.js und ein lokaler Server sind zum Lernen nicht erforderlich.
+
+Entwicklung und Browserprüfungen:
+
 ```text
 npm test
 npm run build
 npm run serve
 ```
 
-Keine Installation von Bibliotheken notwendig. Node.js ab Version 22 reicht aus. Unter Windows öffnet `start.cmd` die lokale Vorschau.
+Keine Installation von Bibliotheken notwendig. Node.js ab Version 22 wird nur für Entwicklung, Tests und Neubau benötigt. `npm run build` erzeugt die mitgelieferte klassische Skriptdatei `weblab.js` und das Veröffentlichungspaket. `start.cmd` ist nur eine optionale Abkürzung zum Öffnen von `index.html`.
 
 Originalmaterialien unter `ressources/BPE2/` bleiben lokal und werden nicht veröffentlicht. Profile sind lokale Lernstände, keine Serverkonten oder manipulationssicheren Leistungsnachweise.

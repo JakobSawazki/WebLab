@@ -1,9 +1,27 @@
 import fs from "node:fs";
 import path from "node:path";
 import { VERSION } from "../content.js";
+import { bundleModules } from "./bundle.mjs";
 const root = path.resolve(import.meta.dirname, ".."),
   out = path.join(root, "dist");
 fs.mkdirSync(out, { recursive: true });
+const modules = [
+  "content.js",
+  "state.js",
+  "checks.js",
+  "glossary.js",
+  "export.js",
+  "editor.js",
+  "journey.js",
+  "app.js",
+];
+const bundle = bundleModules(
+  Object.fromEntries(
+    modules.map((f) => [f, fs.readFileSync(path.join(root, f), "utf8")]),
+  ),
+);
+fs.writeFileSync(path.join(root, "weblab.js"), bundle);
+fs.writeFileSync(path.join(out, "weblab.js"), bundle);
 for (const f of [
   "index.html",
   "styles.css",
@@ -27,7 +45,7 @@ for (const f of [
   if (f === "index.html")
     source = source
       .replace('href="styles.css"', `href="styles.css?v=${VERSION}"`)
-      .replace('src="app.js"', `src="app.js?v=${VERSION}"`);
+      .replace('src="weblab.js"', `src="weblab.js?v=${VERSION}"`);
   fs.writeFileSync(path.join(out, f), source);
 }
 fs.mkdirSync(path.join(out, "assets"), { recursive: true });
@@ -35,6 +53,7 @@ for (const f of ["favicon.svg", "weblab-logo.png", "weblab-hero.png"])
   fs.copyFileSync(path.join(root, "assets", f), path.join(out, "assets", f));
 fs.writeFileSync(path.join(out, ".nojekyll"), "");
 const allowed = new Set([
+  "weblab.js",
   "index.html",
   "styles.css",
   "app.js",

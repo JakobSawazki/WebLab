@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.4.0** · Status: **lokal geprüft, Veröffentlichung vorbereitet**.
+Version: **1.4.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -187,7 +187,7 @@ Offene Erweiterungen, nach Priorität:
 
 Direkter Start durch `index.html`: klassisches, lokal mitgeliefertes `weblab.js` ersetzt ES-Module im Seitenrahmen. Die Quellmodule bleiben für Entwicklung und Tests erhalten. `start.cmd` ist nur noch eine Abkürzung, Node.js bleibt ein Entwicklungswerkzeug. Der Vorschau-Sandboxschutz bleibt erhalten.
 
-15 Node-Tests bestanden. 86/86 Browserprüfungen mit dem neuen klassischen Skript bestanden; Live-Vorschau, Dateireiter, Lernkette, Speichern und Vorschau-Isolation geprüft. Veröffentlichung folgt. Direkter `file://`-Aufruf kann mit dem integrierten Agentenbrowser nicht getestet werden, weil dessen URL-Regeln nur HTTP/HTTPS erlauben. Doppelklick-Test im normalen Schulbrowser bleibt offen.
+15 Node-Tests bestanden. 86/86 Browserprüfungen mit dem neuen klassischen Skript bestanden; Live-Vorschau, Dateireiter, Lernkette, Speichern und Vorschau-Isolation geprüft. Veröffentlicht mit Implementierungscommit `38d39dfbbe6be12a16d72a008abe7035a153ad09`; [Pages-Workflow 38285087487](https://github.com/JakobSawazki/WebLab/actions/runs/38285087487) erfolgreich. Live-Version 1.4.0 und Startseite geprüft; Screenshot `WebLab-1.4.0.png`. Direkter `file://`-Aufruf kann mit dem integrierten Agentenbrowser nicht getestet werden, weil dessen URL-Regeln nur HTTP/HTTPS erlauben. Doppelklick-Test im normalen Schulbrowser bleibt offen.
 
 ### 12.10.2026 – Codex – Version 1.3.0
 

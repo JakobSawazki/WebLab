@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de" data-theme="dark">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <meta name="description" content="WebLab: HTML und CSS verstehen, üben und eine eigene statische Webseite entwickeln. BPE2 Informatik.">
+ <meta name="theme-color" content="#08182f"><title>WebLab · BPE2 Internetseiten</title>
+ <link rel="icon" href="assets/favicon.svg"><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+ <a class="skip-link" href="#mainContent">Zum Inhalt springen</a>
+ <div class="app-shell">
+  <aside class="sidebar" id="sidebar">
+   <a class="brand" href="#home"><img src="assets/weblab-logo.png" width="48" height="48" alt=""><span><strong>WebLab</strong><small>BPE2 · Internetseiten</small></span></a>
+   <nav class="main-nav" aria-label="Hauptnavigation">
+    <a class="nav-item" href="#home"><span aria-hidden="true">⌂</span> Übersicht</a>
+    <a class="nav-item" href="#path"><span aria-hidden="true">◇</span> Lernpfad</a>
+    <a class="nav-item" href="#lab"><span aria-hidden="true">&lt;/&gt;</span> HTML- & CSS-Labor</a>
+    <a class="nav-item" href="#reference"><span aria-hidden="true">≡</span> Nachschlagen</a>
+    <a class="nav-item" href="#achievements"><span aria-hidden="true">☆</span> Erfolge & NAGOLD</a>
+    <a class="nav-item" href="#notes"><span aria-hidden="true">▤</span> Meine Notizen</a>
+   </nav>
+   <div class="sidebar-bottom"><p class="eyebrow">Von der Idee zur Webseite</p><p>Verstehen. Ausprobieren.<br>Selbständig entwickeln.</p><small>WebLab <span id="version"></span><br>Lernstand auf diesem Gerät</small></div>
+  </aside>
+  <div class="page-column">
+   <header class="topbar"><div><p class="eyebrow">Deine Webwerkstatt</p><h1 id="viewTitle">Übersicht</h1></div><div class="topbar-actions">
+    <button id="themeButton" class="icon-button" aria-label="Farbschema wechseln" title="Farbschema wechseln">◐</button>
+    <button id="backupButton" class="button secondary">Sichern / Laden</button>
+    <button id="profileButton" class="button profile-trigger" aria-haspopup="dialog"><strong id="profileName">Gast</strong><small id="profileStats">0 XP · 0 NAG</small></button>
+   </div></header>
+   <main id="mainContent" tabindex="-1"></main>
+   <footer class="portal-footer">Designed by <a href="https://jakobsawazki.github.io/sawazki-electronics/" target="_blank" rel="noopener">Sawazki Electronics</a> · WebLab <span class="version"></span></footer>
+  </div>
+ </div>
+ <dialog id="profileDialog" aria-labelledby="profileTitle"><form id="profileForm"><div class="dialog-heading"><h2 id="profileTitle">Dein Lernprofil</h2><button type="button" class="icon-button" data-close aria-label="Profil schließen">×</button></div><p>Wie in WorkbenchLab: ein lokales Profil mit Kürzel und Klasse. Nutze drei Buchstaben deines Nachnamens, einen Punkt und drei Buchstaben deines Vornamens, zum Beispiel MUS.MAX.</p><label for="studentName">Schülerkürzel</label><input id="studentName" maxlength="7" placeholder="MUS.MAX" autocomplete="off" required><label for="studentClass">Klasse</label><input id="studentClass" maxlength="20" placeholder="z. B. EG-1" autocomplete="off" required><p class="muted">Kein Serverkonto. Sichere deinen Lernstand vor einem Gerätewechsel. XP und NAGOLD sind lokal erfasst und durch die Lehrkraft zu prüfen.</p><p id="profileError" role="alert"></p><button class="button" type="submit">Profil speichern</button></form></dialog>
+ <dialog id="backupDialog" aria-labelledby="backupTitle"><div class="dialog-heading"><h2 id="backupTitle">Lernstand sichern und laden</h2><button class="icon-button" data-close aria-label="Sicherung schließen">×</button></div><p>Die JSON-Datei enthält dein Profil, Code, Notizen und Fortschritt. Bewahre sie auf deinem Informatik-Stick auf.</p><button id="exportButton" class="button">Lernstand herunterladen</button><label for="importFile">WebLab-Sicherung auswählen</label><input type="file" id="importFile" accept=".json,application/json"><p id="importSummary" role="status"></p><button id="confirmImport" class="button" hidden>Aktuellen Stand sichern und ausgewählte Datei laden</button><p class="muted">Auch Sicherungen der alten Formate 1 und 2 bleiben ladbar. Beim Laden wird zuerst dein aktueller Stand heruntergeladen.</p></dialog>
+ <div id="toast" role="status" aria-live="polite"></div>
+ <script type="module" src="app.js"></script>
+</body></html>

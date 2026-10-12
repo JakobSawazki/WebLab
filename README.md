@@ -1,96 +1,19 @@
 # WebLab
 
-**Version:** 0.3.0 · **Stand:** 4. August 2026
+Statische Lernumgebung zu **BPE2: Entwicklung von Internetseiten**, im Aufbau und Design an WorkbenchLab angelehnt.
 
-**Status:** Erstes vollständiges Einstiegskapitel
-
-- **Live:** https://weblab-sawazki.jakob-sawazki.chatgpt.site
+- **Live:** https://jakobsawazki.github.io/WebLab/
 - **Repository:** https://github.com/JakobSawazki/WebLab
+- **Gemeinsamer Arbeitsstand:** [documentation/documentation.md](documentation/documentation.md)
 
-WebLab ist eine browserbasierte Lernumgebung für Schülerinnen und Schüler des
-beruflichen Gymnasiums und der Berufskollegs. Sie verbindet kurze Erklärungen,
-einen Live-Editor, direkte Vorschau, automatische Aufgabenprüfung, Punkte und
-einen datensparsamen Lernstand.
+16 Lerneinheiten, lokales Schülerprofil, HTML-/CSS-Labor, 84 Glossareinträge, XP, NAGOLD, JSON-Lernstandsicherung und Projektexport.
 
-## Aktueller Umfang
-
-- Kapitel **„Deine erste Webseite“** statt technischer Bezeichnungen wie „K1“
-- schülergerechte Einführung in HTML-Elemente und den Aufbau von Tags
-- kompakter Spickzettel mit `h1`, `p`, `strong` und `br`
-- fokussierter HTML-Editor mit isolierter Live-Vorschau; CSS folgt bewusst später
-- vier automatisch prüfbare Missionen mit insgesamt 320 XP
-- hierarchische Kapitel-Navigation und dauerhaft sichtbarer aktueller Lernort
-- kompakte Kopfzeile mit Kapitelstand, XP sowie direktem Sichern und Laden
-- dunkler Modus als Standard sowie umschaltbarer Light Mode
-- eigenständige, fotorealistische Bildwelt in Blau, Chrom und dunklem Metall
-- lokaler Lerncoach mit gestuften Hinweisen, ohne Datenübertragung
-- lokales Profil im Format `abc.xyz`
-- automatische Speicherung im Browser
-- versionierter JSON-Export und -Import des vollständigen Lernstands
-- pseudonyme Gerätekennung, Warnung und übertragener Herkunftshinweis bei fremden Sicherungen
-- responsive Oberfläche für Desktop, Tablet und Smartphone
-
-## Didaktische Leitidee
-
-Jedes Kapitel soll auf **einer zusammenhängenden Seite** funktionieren:
-
-1. Ziel und Nutzen verstehen
-2. wenige zentrale Begriffe visuell kennenlernen
-3. wichtige Befehle kompakt nachschlagen
-4. Code direkt verändern und ausführen
-5. kleine Missionen prüfen und XP sammeln
-6. Lernstand lokal sichern
-
-Die Seite orientiert sich fachlich am Aufbau des verlinkten HTML-Grundkurses,
-formuliert Erklärungen und Aufgaben aber eigenständig, kürzer und schülernäher.
-Der fachliche Anspruch wird perspektivisch am Bildungsplan Informatik für das
-nichtgewerbliche berufliche Gymnasium in Baden-Württemberg ausgerichtet.
-
-## Lernstand und Datenschutz
-
-Der Stand liegt unter `weblab-state-v1` im `localStorage`. Gespeichert werden
-Kürzel, HTML-Entwurf, gelöste Missionen und eine zufällige lokale Gerätekennung.
-Es gibt derzeit kein zentrales
-Schülerkonto und keine manipulationssichere Leistungsbewertung. Über JSON können
-Lernende ihren Stand auf einen anderen Rechner übertragen.
-
-Der erste Coach arbeitet vollständig lokal. Eine echte KI-Anbindung wird erst
-nach einer separaten Datenschutz-, Kosten- und Secret-Entscheidung ergänzt.
-API-Schlüssel dürfen nie im Browsercode oder Repository liegen.
-
-## Entwicklung
-
-### Lokaler Schnellstart unter Windows
-
-`start.cmd` im WebLab-Ordner per Doppelklick öffnen. Der Starter übernimmt den
-aktuellen Projektstand in eine schnelle lokale Arbeitskopie, bereitet fehlende
-Bibliotheken bei Bedarf einmalig vor und öffnet anschließend
-`http://localhost:3000`. Das Konsolenfenster muss während der Nutzung geöffnet
-bleiben; `Strg+C` beendet den lokalen Server.
-
-### Manuelle Entwicklung
-
-```bash
-npm install
-npm run dev
+```text
+npm test
 npm run build
+npm run serve
 ```
 
-Die Anwendung nutzt React, TypeScript und vinext. Hosting-Konfiguration liegt
-unter `.openai/hosting.json`; D1 und R2 werden in Version 0.3.0 nicht benötigt.
+Keine Installation von Bibliotheken notwendig. Node.js ab Version 22 reicht aus. Unter Windows öffnet `start.cmd` die lokale Vorschau.
 
-## Projektdateien
-
-- `app/page.tsx` – Kapitelinhalt, Editor, Missionen und Lernstand
-- `app/globals.css` – vollständige visuelle Gestaltung und responsive Regeln
-- `app/layout.tsx` – Metadaten und Social Preview
-- `public/weblab-hero.png` – Kapitelillustration
-- `public/weblab-logo.png` – WebLab-Markenzeichen mit transparentem Hintergrund
-- `TASKS.md` – erledigte Arbeit, aktueller Fokus und Ideen
-- `UEBERGABE.md` – kompakter Einstieg für weitere KI-Agenten
-
-## Herkunft und Veröffentlichung
-
-Öffentliche Inhalte müssen eigenständig formuliert sein. Verlinkte oder lokale
-Unterrichtsmaterialien dienen nur als fachliche Referenz und werden nicht
-ungeprüft übernommen.
+Originalmaterialien unter `ressources/BPE2/` bleiben lokal und werden nicht veröffentlicht. Profile sind lokale Lernstände, keine Serverkonten oder manipulationssicheren Leistungsnachweise.

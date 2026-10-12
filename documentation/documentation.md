@@ -1,0 +1,182 @@
+# WebLab – gemeinsame Projektdokumentation
+
+Stand: **12. Oktober 2026, Europe/Berlin · Codex**
+
+Version: **1.0.0** · Status: implementiert und lokal geprüft; Veröffentlichung wird im Arbeitsprotokoll unten bestätigt.
+
+Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
+
+## 1. Ziel und aktueller Funktionsumfang
+
+Schülerinnen und Schüler verstehen HTML und CSS und entwickeln selbständig eine eigene statische Webseite. Die Gestaltung übernimmt Seitenrahmen, Farbwerte, Metallflächen, dunklen Standardmodus, helles Farbschema, Profilkopf und Navigationsidee von WorkbenchLab. Die Anwendung selbst ist auf Webentwicklung zugeschnitten und enthält keine SQL-/Datenbankmodule.
+
+Repository: https://github.com/JakobSawazki/WebLab
+
+Zieladresse für die aktuelle Version: https://jakobsawazki.github.io/WebLab/
+
+Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
+
+| Bereich | Version 1.0.0 |
+| --- | --- |
+| Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Lernfortschritten; alle frei erreichbar |
+| Ablauf je Einheit | Ziel, Erklärung, Beispiel, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
+| Schülerprofil | Lokales Kürzel `MUS.MAX` und Klasse; kein Passwort und kein Serverkonto |
+| XP | 100 je abgeschlossenem Auftrag, einmalig; frühere K1-Missions-XP bleiben zusätzlich erhalten |
+| NAGOLD | 5 je abgeschlossener Einheit; datierte automatische Einträge und manuelle Einträge von −10 bis +5 ohne 0 |
+| Abschluss | Technische Kriterien erfüllt, Quiz richtig, alle Selbstkontrollen bestätigt, Profil vollständig |
+| Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich |
+| Labor | Getrennte HTML-/CSS-Felder, automatische isolierte Vorschau, eigenständiger freier Entwurf |
+| Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
+| Nachschlagen | 84 übernommene eigene Glossareinträge aus WebLab 0.5.0, Suche und Bereichsfilter |
+| Datenschutz | Lernstand auf dem Gerät; kein Tracking, keine externe KI, keine zentrale Schülerdatenbank |
+
+**Grenze:** Die Selbstkontrolle ist eine eigene Erklärung der Lernenden. Sie ist keine authentifizierte Lehrkraftfreigabe. LocalStorage, Sicherungsdateien, XP und NAGOLD sind veränderbar. Sie dürfen nicht ungeprüft als Leistungsbewertung verwendet werden. Automatische Kriterien erkennen ausgewählte Bausteine, keine vollständige HTML-Konformität, Eigenständigkeit oder gestalterische Qualität.
+
+## 2. Bildungsplan und Lernpfad
+
+Grundlage ist der von Jakob benannte Bildungsplan Informatik, berufliches Gymnasium, Ausgabe 23.07.2020. **BPE2 steht auf PDF-Seite 11 und hat einen Zeitrichtwert von 14 Unterrichtsstunden.** Eine lokale Kopie liegt unter `ressources/BPE2/Bildungsplan-Informatik.pdf`. Die Lernzeiten sind Richtwerte und einschließlich individueller Vertiefung und Projektarbeit zu verstehen; sie sind keine Behauptung, dass sämtliche Aufgaben innerhalb der 14 Stunden abgeschlossen werden müssen.
+
+| Einheit | Inhalt | Bezug |
+| --- | --- | --- |
+| 1 | Erste Webseite, Tags, Elemente, Absatz, Betonung | BPE 2.1 |
+| 2 | Grundgerüst, UTF-8, Dateinamen, Groß-/Kleinschreibung | BPE 2.1 |
+| 3 | Überschriftenstruktur und Absätze | BPE 2.1 |
+| 4 | Ungeordnete und geordnete Listen | BPE 2.1 |
+| 5 | Relative/absolute Pfade, interne/externe Links, Download-Attribut erklärt | BPE 2.1 |
+| 6 | Bilder, Quellenpfad, Alternativtext | BPE 2.1 |
+| 7 | Tabellen ohne Formatierung | BPE 2.1 |
+| 8 | Audio/Video, Bedienung und Textalternativen | BPE 2.1 |
+| 9 | Trennung von Inhalt und Design, externe Datei/head/Tag | BPE 2.2 |
+| 10 | Tag-, Klassen- und ID-Selektoren | BPE 2.2 |
+| 11 | Farben, Schriftfamilie/-größe, Zeilenhöhe und Ausrichtung | BPE 2.2 |
+| 12 | Box-Modell, Innen-/Außenabstand, Rahmen, Bereiche | BPE 2.2 |
+| 13 | Zielgruppe, Seitenplan, semantische Bereiche | Anwendung 2.1/2.2 |
+| 14 | Urheberrecht, CC-Lizenzen, Quellen, Anbieterinformationen/Disclaimer | BPE 2.3 |
+| 15 | Lokaler Test, vollständige Ordnerstruktur, geschützte Unterrichtsplattform, FTP-Übung mit Lehrkraft | BPE 2.3 |
+| 16 | Eigene statische Webseite, Präsentation und Codeerklärung | Anwendung 2.1–2.3 |
+
+Der eigentliche Upload der Schülerseite ist eine praktische Unterrichtsaufgabe mit der Lehrkraft. Er ist im Browser-Labor nicht automatisiert. Die öffentlich zugängliche Lernplattform auf GitHub Pages ist nicht die im Bildungsplan verlangte nicht öffentliche Abgabeplattform.
+
+Das Abschlussprojekt fordert in dieser ersten WebLab-Fassung zwei verknüpfte Seiten und eine gemeinsame CSS-Datei. Der bisherige BPE3-Auftrag in OneNote nennt als Mindestbestand index.html und style.css; die zweite Seite ist eine hier gewählte Vertiefung. Empfehlenswerte Projektthemen sind Client-Server, WLAN, Datensicherheit oder Datenschutz. Der separate EC-Webshop-Auftrag aus OneNote mit fünf Seiten gehört zu einer anderen Lerngruppe und wird nicht unbemerkt als Pflicht für BPE2 übernommen.
+
+## 3. Unterrichtsquellen und Herkunft
+
+OneNote: Notizbuch **Lernfelder**, Abschnitt **2. Internetseiten**. Alle sechs Seiten wurden über die bereits geöffnete, angemeldete Browseransicht gelesen. Sichtbare Seiteninhalte wurden als UTF-8-Text nach `ressources/BPE2/` gesichert:
+
+- `01-Teil-1.txt`: Grundlagenübersicht mit Informations-/Aufgaben-/Lösungsanhängen, Kompetenzraster, Ich-Kann-Liste und Befehlssammlung.
+- `02-Teil-2.txt`: Recht, Impressum, Webserver, Veröffentlichung, Urheberrecht und Creative Commons.
+- `03-Projekt-Informationshomepage.txt`: BPE3-Informationshomepage, Projektphasen, Quellen-/KI-Angaben, Bewertung 30/30/40. Die dortigen Termine im Juni 2026 sind historisch und werden nicht als neue Fristen übernommen.
+- `04-Projekt-EC-Webshop.txt`: gesonderte EC-Projektarbeit. Kann Schülernamen enthalten und bleibt ausschließlich lokal.
+- `05-Replit.txt` und `06-ThommyWeb.txt`: sichtbare Referenzen/Vorlagenhinweise.
+- `Bildungsplan-Informatik.pdf`: lokale Kopie des Bildungsplans aus WorkbenchLab.
+
+**Noch offen: Originalanhänge als DOCX/ZIP herunterladen.** Ein Anhang wurde über „Speichern unter“ und die normale OneNote-Downloadwarnung angefordert. Der Browser lieferte jedoch kein abrufbares Downloadartefakt. Die gesicherten Textdateien sind Auszüge der sichtbaren Seiten, kein Ersatz für die eingebetteten Informations-, Aufgaben- und Lösungsdateien. Diese Anhänge wurden nicht als gelesen oder inhaltlich ausgewertet verbucht. Lösungen sollen auch künftig lokal bleiben.
+
+ThommyWeb: https://informatik.systems/thommyWeb/grundkurs.html
+
+Der Direktabruf über das Webwerkzeug war in diesem Arbeitsblock nicht erfolgreich. Der Link ist in OneNote bestätigt. Frühere WebLab-Themen und das eigene Glossar sind erhalten; fremde Texte oder Bilder wurden nicht kopiert. Eine spätere Integration erfolgt als eigenständig formulierte Ergänzung nach fachlicher Prüfung und mit geklärter Herkunft.
+
+Aktuell geprüfte offizielle Referenzen für Einheit 14:
+
+- https://creativecommons.org/cc-licenses/ – Lizenzbedingungen, insbesondere BY und SA.
+- https://www.gesetze-im-internet.de/ddg/__5.html – Anbieterinformationen; Anwendbarkeit ist vom Angebot abhängig und wird für die konkrete Schulveröffentlichung mit der Lehrkraft geklärt.
+
+Die WebLab-Texte und Aufgaben sind eigenständig formuliert. Logo und Hero stammen aus der bisherigen WebLab-Fassung. Keine Unterrichtsoriginale, Lösungen oder Schülerzuordnungen werden ins Repository oder in das Veröffentlichungspaket aufgenommen.
+
+## 4. Softwarestruktur und Start
+
+Wie WorkbenchLab und Excel-Lab ist WebLab jetzt eine **statische Anwendung aus HTML, CSS und JavaScript**. React, Next, vinext, Cloudflare-Worker, D1, Drizzle und deren Vorlagendateien sind aus dem aktiven Projekt entfernt. Es gibt keine Laufzeitbibliotheken, keinen Installationsschritt und keine API-Schlüssel.
+
+```text
+WebLab/
+  index.html                 Seitenrahmen, Navigation, Dialoge
+  styles.css                 Gestaltung und responsive Regeln
+  app.js                     Ansichten, Interaktion und Editor
+  content.js                 16 Einheiten, Aufträge und Kriterien
+  checks.js                  DOM-/CSSOM-Aufgabenprüfung, Vorschau
+  state.js                   Lernstand, Migration, Punkte
+  export.js                  Projektexport als ZIP
+  glossary.js                84 Glossareinträge
+  assets/                    vorhandenes Logo, Hero, Favicon
+  tools/build-site.mjs        explizite Veröffentlichungsliste
+  tools/serve.mjs             lokaler Vorschau- und Prüfserver
+  tests/state.test.mjs        acht Node-Tests
+  tests/browser.html         51 Browserprüfungen, nur lokal
+  documentation/documentation.md
+  ressources/BPE2/           lokale, nicht versionierte Quellen
+  .github/workflows/pages.yml
+  start.cmd
+```
+
+Voraussetzung für Entwicklung: **Node.js ab 22**. In PowerShell im Projektordner:
+
+```powershell
+npm test
+npm run build
+npm run serve
+```
+
+Vorschau: `http://127.0.0.1:4188/`. Browserprüfungen: `http://127.0.0.1:4188/__qa`. Nach Quelländerungen neu bauen und im Browser neu laden. `start.cmd` baut und öffnet die Vorschau per Doppelklick. Ein direktes Doppelklicken auf index.html ist wegen ES-Modulen kein unterstützter Startweg.
+
+Der Build schreibt ausschließlich zwölf erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions testet den Lernstand, baut das Paket und veröffentlicht ausschließlich dist. Die 51 Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
+
+## 5. Lernstand, Migration und Sicherheit
+
+- Neuer Speicher: `weblab-state-v3`; separate Entwürfe pro Einheit und freiem Labor, Notizen, Quiz/Selbstkontrolle, Abschlussdatum und NAGOLD-Einträge.
+- Export: `{ app: "WebLab", formatVersion: 3, exportedAt, state }`. Importformate 1 und 2 werden als alter K1-Stand migriert. Alter Code und die ursprünglichen Missionswerte 60/80/80/100 XP bleiben erhalten. Es entstehen daraus keine erfundenen neuen Einheitenabschlüsse oder NAGOLD-Punkte.
+- Der alte LocalStorage-Schlüssel wird bei der Migration nicht gelöscht. Ein Origin-Wechsel benötigt einen manuellen JSON-Transfer.
+- Ein Kürzelwechsel beginnt nach Sicherungsdownload und Bestätigung mit einem neuen Stand. Eine Klassenkorrektur bei gleichem Kürzel erhält den Fortschritt.
+- Laden und Zurücksetzen sichern den aktuellen Stand vorher als Datei. Der Browser kann einen Download blockieren; Nutzer müssen die Datei tatsächlich aufbewahren. Eine erfolgreich ausgelöste Downloadaktion beweist nicht, dass der Stick beschrieben wurde.
+- Defekter vorhandener Speicher wird nicht automatisch überschrieben. Bei Veränderungen durch einen anderen Tab wird weiteres Speichern bis zum Neuladen blockiert. Speicherfehler werden sichtbar gemeldet.
+- Sicherungen werden auf App/Version und erwartete Felder geprüft. Texte, Entwürfe und Eintragszahlen werden begrenzt; unbekannte IDs und doppelte Abschlüsse entfernt. Dateigrenze für den Import: 32 MB.
+- Die Vorschau verwendet ein iframe mit leerem sandbox-Attribut und CSP. Skripte, Formulare, entfernte Bilder, Fonts und Medien werden blockiert. Lokale Bilder bis 500 KB werden ohne Upload als Datenadresse eingebettet. Relative Dateien/Links werden im exportierten Projekt getestet.
+- Schülertext wird beim Anzeigen als HTML maskiert; CSV-Zellen werden gegen übliche Formelpräfixe geschützt. Der HTML-Projektexport enthält bewusst den eigenen Code der Lernenden und ist keine bereinigte Webveröffentlichung. Fremde Skripte gehören nicht in ein Unterrichtsprojekt.
+- Es werden keine Dienste zur KI-Codebewertung oder Analyse verwendet. Hilfe besteht aus lokalen Hinweisen.
+
+## 6. Sicherung und Aufräumen
+
+Vor dem Umbau wurden auch die vorhandenen uncommitteten Änderungen gesichert:
+
+```text
+C:\Users\PC\WebLab-Sicherungen\vor-umbau-2026-10-12\
+C:\Users\PC\WebLab-Sicherungen\vor-umbau-2026-10-12.bundle
+C:\Users\PC\WebLab-Sicherungen\aus-projekt-entfernt-2026-10-12\
+C:\Users\PC\WebLab-Sicherungen\dist-vor-statischem-build-2026-10-12\
+```
+
+Das Git-Bundle enthält den bisherigen main-Verlauf. Die Arbeitskopie enthält zusätzlich die zuvor uncommitteten Dateien. Entfernte Quelldateien liegen im externen Archiv; damit bleibt der aktive Ordner übersichtlich und alte Arbeit wiederherstellbar. Die bisherigen Dokumente TASKS.md und UEBERGABE.md wurden dort archiviert und durch diese Dokumentation ersetzt. CLAUDE.md bleibt als kurzer Wegweiser erhalten.
+
+Google Drive erzeugt gelegentlich `desktop.ini` innerhalb `.git/refs`. Git deutet diese als ungültige Referenzen. Solche Dateien werden bei Bedarf ausschließlich aus dem geprüften refs-Unterbaum ins externe Archiv verschoben; fachliche Git-Referenzen bleiben erhalten.
+
+## 7. Prüfstand und verbleibende Arbeit
+
+Geprüft durch Codex am 12.10.2026:
+
+- Acht Node-Tests bestanden: Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur.
+- 51 Browserprüfungen bestanden: je Einheit Startcode/positiver Auftrag/Kommentarattrappe; zusätzlich ungültige CSS-Werte, falsches Sprungziel und leere Bildbeschreibung.
+- Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
+- Weiterer Browser- und Veröffentlichungsstand folgt im Protokoll unten.
+
+Offene Erweiterungen, nach Priorität:
+
+1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
+2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
+3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
+4. **Didaktische Vertiefung:** mehr Fehlersuchaufträge, visuelle Box-Modell-/Selektorhilfen, gestufte HTML-Aufgaben, Tabellenformatierung und weitere Medienaufgaben.
+5. **Projektwerkstatt:** mehrere Dateien direkt im Browser bearbeiten, statt die Unterseite außerhalb anzulegen; geschützte Übertragung weiterhin mit schulischem Betriebskonzept.
+6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser, optionale Offline-Kopie und Browserprüfungen in CI.
+7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
+
+## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.0.0
+
+Auftrag: WebLab nach dem Vorbild WorkbenchLab/Excel-Lab aufräumen, BPE2-Lernpfad, lokales Profil, XP/NAGOLD, gemeinsame Dokumentation und eigenständig gewählter Veröffentlichungszeitpunkt.
+
+Ergebnis: statische Anwendung, 16 Einheiten, freies Labor, Glossar, Sicherungen und Projektexporte. Alte Änderungen vorab gesichert, ungenutzte Framework-/Serverdateien außerhalb des Projekts archiviert. Sechs OneNote-Seitentexte und der Bildungsplan lokal gesichert. Die eingebetteten Originalanhänge sind noch offen.
+
+Prüfungen: acht Node-Tests und 51 Browserprüfungen bestanden. Abschließende Layout-, Export- und Deploymentprüfung wird hier ergänzt.
+
+Veröffentlichung: vorgesehen als **1.0.0 auf main** im bestehenden Repository; Live-Bestätigung folgt nach erfolgreichem Pages-Workflow. Kein Force-Push.
+
+Nächster sinnvoller Schritt: Jakob erprobt den Lernablauf mit Schülern; parallel werden die Originalanhänge nachgesichert und die fachlichen Erläuterungen anhand realer Rückfragen vertieft.

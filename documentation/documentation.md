@@ -73,13 +73,24 @@ OneNote: Notizbuch **Lernfelder**, Abschnitt **2. Internetseiten**. Alle sechs S
 - `05-Replit.txt` und `06-ThommyWeb.txt`: sichtbare Referenzen/Vorlagenhinweise.
 - `Bildungsplan-Informatik.pdf`: lokale Kopie des Bildungsplans aus WorkbenchLab.
 
-Das lokale Anhang-Inventar `ressources/BPE2/Anhang-Inventar.json` erfasst 81 sichtbare Dateiverweise: 49 in Teil 1 und 32 in Teil 2. Gleiche Dateinamen in Informations-, Aufgaben- und Lösungsspalten sind unterschiedliche Anhänge. Erfasst wurden nur sichtbare Metadaten, keine Dateiinhalte. Der erneute Downloadversuch für den Informationsanhang 1.docx zum HTML-Grundgerüst lieferte auch nach Bestätigung keine Datei; im normalen Downloads-Ordner lag keine entsprechende Datei. Ein erneuter Login ist derzeit nicht nötig.
+Das lokale Anhang-Inventar `ressources/BPE2/Anhang-Inventar.json` erfasst 81 sichtbare Dateiverweise: 49 in Teil 1 und 32 in Teil 2. Gleiche Dateinamen in Informations-, Aufgaben- und Lösungsspalten sind unterschiedliche Anhänge. Erfasst wurden nur sichtbare Metadaten, keine Dateiinhalte. Der erneute Downloadversuch für den Informationsanhang 1.docx zum HTML-Grundgerüst lieferte auch nach Bestätigung keine Datei; im normalen Downloads-Ordner lag keine entsprechende Datei. Ein erneuter Login ist derzeit nicht nötig. Auch der direkte Öffnungsversuch führt zur OneNote-Meldung, dass die Datei nicht geöffnet, sondern nur als Kopie heruntergeladen werden kann. Es wurde kein Word-Dokument geöffnet und kein Originalinhalt gelesen.
 
 **Noch offen: Originalanhänge als DOCX/ZIP herunterladen.** Ein Anhang wurde über „Speichern unter“ und die normale OneNote-Downloadwarnung angefordert. Der Browser lieferte jedoch kein abrufbares Downloadartefakt. Die gesicherten Textdateien sind Auszüge der sichtbaren Seiten, kein Ersatz für die eingebetteten Informations-, Aufgaben- und Lösungsdateien. Diese Anhänge wurden nicht als gelesen oder inhaltlich ausgewertet verbucht. Lösungen sollen auch künftig lokal bleiben.
 
 ThommyWeb: https://informatik.systems/thommyWeb/grundkurs.html
 
-Der Direktabruf über das Webwerkzeug war in diesem Arbeitsblock nicht erfolgreich. Der Link ist in OneNote bestätigt. Frühere WebLab-Themen und das eigene Glossar sind erhalten; fremde Texte oder Bilder wurden nicht kopiert. Eine spätere Integration erfolgt als eigenständig formulierte Ergänzung nach fachlicher Prüfung und mit geklärter Herkunft.
+Der direkte Abruf über das Webwerkzeug scheitert weiterhin. Am 12.10.2026 war die Seite dagegen im integrierten Browser erreichbar. Die sichtbare Übersicht enthält 13 Wissenskapitel und 11 Projektabschnitte. Das lokale Inventar mit Prüfstatus liegt in ressources/BPE2/ThommyWeb-Abgleich.json. Im Detail gelesen wurden bisher K2 (Attribute) und K6 (CSS-Einbindung); alle übrigen Kapitel sind bisher nur über die Übersicht erfasst. Keine Texte, Bilder oder Aufgaben wurden in WebLab kopiert.
+
+| ThommyWeb-Thema aus der Übersicht | WebLab-Bezug / Vorgehen |
+| --- | --- |
+| HTML-Grundlagen, Grundgerüst, Textstruktur | Einheiten 01–03 |
+| Attribute | Einheiten 05–06 und Glossar; Syntax in eigenen Beispielen vertiefen |
+| CSS-Regeln und Einbindung | Einheiten 09–10; drei Einbindungsarten mit eigenen Vergleichsbeispielen ausbauen |
+| Links, Bilder, Tabellen, Listen, Medien | Einheiten 04–08; Tabellenformatierung in Einheit 12 |
+| Externe Fonts und Karten | Freiwillige spätere Themen; keine externe Ressource in das offlinefähige Laufzeitpaket aufgenommen |
+| Schulplaner-Projektabschnitte | Mögliche Themenalternative für Einheiten 13–16; keine unveränderte Projektübernahme |
+
+Fachliche Anpassungen vor einer späteren Übernahme: In K2 werden unter anderem ältere Gestaltungsattribute für Bilder und Absätze verwendet. WebLab verwendet dafür CSS und behält alt als Bildbeschreibung bei. K6 beschreibt die Einbindungsarten passend zu BPE2, behauptet aber eine pauschale Rangfolge intern vor extern. Diese Vereinfachung wird nicht übernommen: Wichtigkeit, Selektorgewicht und Reihenfolge der Regeln sind zu beachten. Abgeglichen mit [WHATWG: veraltete HTML-Funktionen](https://html.spec.whatwg.org/multipage/obsolete.html#non-conforming-features) und [W3C: CSS-Kaskade](https://www.w3.org/TR/css-cascade-5/#cascade-sort). Die bisherigen WebLab-Texte behaupten eine solche pauschale Rangfolge nicht.
 
 Aktuell geprüfte offizielle Referenzen für Einheit 14:
 
@@ -177,7 +188,7 @@ Offene Erweiterungen, nach Priorität:
 4. **Didaktische Vertiefung:** Zwölf optionale Fehlersuchaufträge sind seit 1.8.0 vorhanden; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Noch offen sind vertiefende Korrekturaufgaben, visuelle Selektorhilfen, gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser, optionale Offline-Kopie und Browserprüfungen in CI.
-7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
+7. **ThommyWeb:** Browserzugriff ist möglich, K2/K6 geprüft. Übrige Kapitel gezielt prüfen und geeignete Ergänzungen eigenständig ausarbeiten; keine pauschale Inhaltsübernahme.
 
 ### Anforderungsabgleich am 12.10.2026
 
@@ -203,7 +214,7 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 | Menü ein- und ausklappen | menuButton mit aria-expanded, desktop Iconleiste und mobilem Einblenden; acht Browserprüfungen für Zustand/Neuladen/Layout | Umgesetzt |
 | Elemente oben rechts gleich hoch | topbar-actions mit gemeinsamer Streckung; zuletzt im echten Online-Tab alle drei Elemente mit 56 px und gleicher Oberkante gemessen | Umgesetzt |
 | OneNote-Materialien lokal sichern | Sechs Seitenauszüge, Bildungsplan und Inventar von 81 Anhangverweisen lokal vorhanden; Originaldownload liefert weiterhin keine Datei | Teilweise; Dateiinhalte der Anhänge noch nicht geprüft |
-| ThommyWeb mit der Zeit ergänzen | Link vorhanden; erneuter Direktabruf weiterhin nicht erreichbar; keine Fremdinhalte ungeprüft übernommen | Spätere Ergänzung, kein behaupteter Inhaltsimport |
+| ThommyWeb mit der Zeit ergänzen | Browserzugriff erfolgreich; Übersicht inventarisiert und K2/K6 fachlich geprüft; Abweichungen zu aktuellen Standards dokumentiert | Quellenabgleich begonnen; kein behaupteter vollständiger Inhaltsimport |
 
 Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 

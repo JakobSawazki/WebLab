@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.5.0** · Status: **lokal geprüft, Veröffentlichung vorbereitet**.
+Version: **1.5.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -176,11 +176,11 @@ Offene Erweiterungen, nach Priorität:
 
 ### 12.10.2026 – Codex – Version 1.5.0
 
-Auf Jakobs Auftrag weiter aufgeräumt: die weiterhin nötigen Tests und Werkzeuge sowie alle Quellmodule liegen gesammelt in `development/`. Hauptordner bleibt der klare Startpunkt über `index.html`. Paketbefehle, Modulpfade und lokaler Prüfserver angepasst. Öffentliches Paket von 15 auf sieben Dateien verkleinert: index.html, styles.css, weblab.js, .nojekyll und drei Assets. Quellmodule werden nur lokal für Browserprüfungen angeboten.
+Auf Jakobs Auftrag weiter aufgeräumt: die weiterhin nötigen Tests und Werkzeuge sowie alle Quellmodule liegen gesammelt in `development/`. Hauptordner bleibt der klare Startpunkt über `index.html`. Der vorherige Screenshot 1.4.0 und das zur Prüfung erzeugte dist-Paket liegen außerhalb des Projekts unter `C:\Users\PC\WebLab-Sicherungen\Design-1.5.0`. Paketbefehle, Modulpfade und lokaler Prüfserver angepasst. Öffentliches Paket von 15 auf sieben Dateien verkleinert: index.html, styles.css, weblab.js, .nojekyll und drei Assets. Quellmodule werden nur lokal für Browserprüfungen angeboten.
 
 Design: ruhige Marineblau-Flächen, dezenter Verlauf im Hintergrund, abgestimmtes helles Farbschema, lokale Systemschrift mit klarer Hierarchie, größere Radien und feinere Schatten. Wichtige Aktionen im dunklen Schema warm akzentuiert, sekundäre Aktionen zurückhaltend. Einheitliche Inline-SVG-Icons für Navigation und Aktionen, keine externe Bibliothek, keine Font- oder CDN-Abhängigkeit. Buttons mit Hover-, Aktiv-, Fokus- und Deaktiviert-Zustand; reduzierte Bewegung wird beachtet. Lernstandformat und Vorschau-Sandbox unverändert.
 
-Prüfungen: 15 Node-Tests und 110 Browserprüfungen bestanden, darunter beide Farbschemata bei echten 360 Pixeln, mindestens 44 Pixel hohe sichtbare Buttons, dekorative SVG-Navigation und primärer Button-Textkontrast von mindestens 4,5:1. Startseite in Hell/Dunkel und Werkstatt visuell geprüft. Veröffentlichung folgt. Direkter file://-Test bleibt wegen der URL-Beschränkung des Agentenbrowsers offen; klassischer Skripteinstieg bleibt erhalten.
+Prüfungen: 15 Node-Tests und 110 Browserprüfungen bestanden, darunter beide Farbschemata bei echten 360 Pixeln, mindestens 44 Pixel hohe sichtbare Buttons, dekorative SVG-Navigation und primärer Button-Textkontrast von mindestens 4,5:1. Startseite in Hell/Dunkel und Werkstatt visuell geprüft. Veröffentlicht mit Implementierungscommit `b0556847fe987c2e7e1c757a7066290fe4746c04`; [Pages-Workflow 38286555951](https://github.com/JakobSawazki/WebLab/actions/runs/38286555951) erfolgreich. Online-Version 1.5.0, SVG-Icons und neue Buttons geprüft. Aktueller Screenshot: `WebLab-1.5.0.png`. Direkter file://-Test bleibt wegen der URL-Beschränkung des Agentenbrowsers offen; klassischer Skripteinstieg bleibt erhalten.
 
 
 ### 12.10.2026 – Codex – Aufräumen nach Umstellung auf index.html

@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.9.1** · Status: **lokal geprüft; Veröffentlichung in Vorbereitung**.
+Version: **1.9.1** · Status: **veröffentlicht und online geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -185,7 +185,7 @@ Offene Erweiterungen, nach Priorität:
 
 Die sichtbare OneNote-Übersicht nennt Tabellenformatierung ausdrücklich. Im bisherigen Lernpfad fehlte die Rückkehr zur Datentabelle nach Einführung von CSS. Einheit 12 erhält deshalb einen aufklappbaren Transferauftrag zur eigenen Tabelle aus Einheit 07: Zellrahmen, padding, gemeinsame Rahmen mit border-collapse, Kopfzeile, schmale Vorschau und Bearbeitung der exportierten Dateien mit Notepad++/Strg+S/F5. Eigenständig formulierter Inhalt; die nicht heruntergeladenen Originalaufgaben wurden nicht als gelesen ausgegeben. Die Vertiefung verändert weder Pflichtkriterien noch bestehende Abschlüsse oder Punkte.
 
-Fachliche Referenz: [MDN border-collapse](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-collapse), am 12.10.2026 geprüft. Lokales Anhang-Inventar mit 81 Dateiverweisen ergänzt; Originaldateien bleiben offen. 21 Node-Tests und 140 Browserprüfungen bestanden. Der aufgeklappte Transferauftrag bleibt bei 360 Pixeln in beiden Farbschemata ohne horizontalen Überlauf. Build erfolgreich. Screenshot documentation/WebLab-1.9.1.png zeigt die lokale Prüfansicht mit freigeschalteter Einheit 12. Veröffentlichung und Live-Abgleich folgen.
+Fachliche Referenz: [MDN border-collapse](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-collapse), am 12.10.2026 geprüft. Lokales Anhang-Inventar mit 81 Dateiverweisen ergänzt; Originaldateien bleiben offen. 21 Node-Tests und 140 Browserprüfungen bestanden. Der aufgeklappte Transferauftrag bleibt bei 360 Pixeln in beiden Farbschemata ohne horizontalen Überlauf. Build erfolgreich. Screenshot documentation/WebLab-1.9.1.png zeigt die lokale Prüfansicht mit freigeschalteter Einheit 12. Veröffentlicht mit Commit 8d72433; [Pages-Workflow 38293105039](https://github.com/JakobSawazki/WebLab/actions/runs/38293105039) erfolgreich. Das online ausgelieferte weblab.js stimmt per SHA-256 exakt mit der lokal getesteten Datei überein; Online-Version 1.9.1 bestätigt. Vorheriger Screenshot und erzeugte dist-Ausgabe sind extern unter C:/Users/PC/WebLab-Sicherungen/Tabellen-1.9.1 archiviert.
 
 ### 12.10.2026 – Codex – Version 1.9.0
 

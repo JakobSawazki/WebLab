@@ -185,7 +185,7 @@ Autonome didaktische Weiterentwicklung: Zwölf kurze Fehlersuchübungen in den H
 
 Die Aufgaben sind im Abschnitt Verstehen als native aufklappbare Details zugänglich und zunächst geschlossen. Sie sind freiwillige Diagnoseübungen ohne Zusatzpunkte; Entwürfe, Verständnischeck, Abschlüsse und Freischaltungen werden nicht verändert. Rückmeldung als vorlesbarer Status, HTML-Beispiele maskiert. Nicht in den Projekteinheiten 13–16, keine neue Pflicht zum Abschluss und kein neues Speicherformat. Quellmodul `development/src/debugging.js` wird in das klassische Offline-Skript gebündelt, keine Laufzeitabhängigkeit.
 
-19 Node-Tests bestanden, Build erfolgreich. Lokale Fehlersuche mit falscher und richtiger Auswahl visuell geprüft. 131 Browserprüfungen bestanden, darunter falsche/richtige Diagnose, ausbleibende Änderungen am Lernstand und die geöffnete Fehlersuche bei 360 Pixeln ohne horizontalen Überlauf. Veröffentlichung folgt.
+19 Node-Tests bestanden, Build erfolgreich. Lokale Fehlersuche mit falscher und richtiger Auswahl visuell geprüft. 131 Browserprüfungen bestanden, darunter falsche/richtige Diagnose, ausbleibende Änderungen am Lernstand und die geöffnete Fehlersuche bei 360 Pixeln ohne horizontalen Überlauf. Veröffentlicht mit Commit fdb6584; [Pages-Workflow 38290664277](https://github.com/JakobSawazki/WebLab/actions/runs/38290664277) erfolgreich. Online falsche und richtige Auswahl in Einheit 01 geprüft. Screenshot documentation/WebLab-1.8.0.png; vorheriger Screenshot und Build-Ausgabe liegen extern unter C:/Users/PC/WebLab-Sicherungen/Fehlersuche-1.8.0.
 
 ### 12.10.2026 – Codex – Version 1.7.5
 

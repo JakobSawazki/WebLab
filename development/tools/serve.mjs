@@ -1,7 +1,7 @@
 import http from "node:http";
 import fs from "node:fs";
 import path from "node:path";
-const root = path.resolve(import.meta.dirname, "..", "dist"),
+const root = path.resolve(import.meta.dirname, "../..", "dist"),
   port = Number(process.env.PORT || 4188);
 const types = {
   ".html": "text/html; charset=utf-8",
@@ -17,6 +17,20 @@ http
     if (req.url === "/__qa") {
       res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
       res.end(fs.readFileSync(qa));
+      return;
+    }
+    // Source modules are available only on the local test server, never in dist.
+    const sourceName = new URL(req.url, "http://localhost").pathname.slice(1);
+    if (["content.js", "checks.js", "state.js"].includes(sourceName)) {
+      res.writeHead(200, {
+        "Content-Type": types[".js"],
+        "Cache-Control": "no-store",
+      });
+      res.end(
+        fs.readFileSync(
+          path.resolve(import.meta.dirname, "../src", sourceName),
+        ),
+      );
       return;
     }
     let target;

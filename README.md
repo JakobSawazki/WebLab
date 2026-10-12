@@ -16,6 +16,8 @@ Seit Version 1.3.0: kompakte Startseite mit vier Etappen, Fortschrittsanzeigen u
 
 Seit Version 1.4.0: WebLab direkt durch Doppelklick auf `index.html` starten. Der gesamte Projektordner muss zusammenbleiben; Node.js und ein lokaler Server sind zum Lernen nicht erforderlich.
 
+Seit Version 1.5.0: einheitliche SVG-Icons, edlere Buttons, ruhigere Flächen und abgestimmte helle/dunkle Gestaltung. Quellcode, Tests und Werkzeuge liegen aufgeräumt unter `development/`; diese Dateien werden für die Weiterentwicklung und Prüfung benötigt.
+
 Entwicklung und Browserprüfungen:
 
 ```text

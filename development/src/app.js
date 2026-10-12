@@ -1,3 +1,4 @@
+import { decorateIcons } from "./icons.js";
 import { VERSION, groups, lessons, byId } from "./content.js";
 import { glossary } from "./glossary.js";
 import {
@@ -92,12 +93,12 @@ function card(l) {
   const done = state.completed.includes(l.id),
     recommended =
       lessons.find((item) => !state.completed.includes(item.id))?.id === l.id;
-  return `<article class="card ${recommended ? "is-next" : ""}"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${done ? "✓ Abgeschlossen" : recommended ? "Dein nächster Schritt" : "Zum Nachschlagen"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 NAGOLD</small><a class="button secondary" href="#lesson/${l.id}">${done ? "Wiederholen" : "Einheit öffnen"} <span aria-hidden="true">↗</span></a></article>`;
+  return `<article class="card ${recommended ? "is-next" : ""}"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${done ? "✓ Abgeschlossen" : recommended ? "Dein nächster Schritt" : "Zum Nachschlagen"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 NAGOLD</small><a class="button secondary" href="#lesson/${l.id}">${done ? "Wiederholen" : "Einheit öffnen"} </a></article>`;
 }
 function overview() {
   const next =
     lessons.find((l) => !state.completed.includes(l.id)) || lessons[0];
-  return `<section class="hero"><div class="hero-copy"><p class="eyebrow">BPE2 · Deine eigene Webseite beginnt hier</p><h2>Aus deinen Ideen<br>wird eine Webseite.</h2><p>Lerne HTML und CSS Schritt für Schritt. Probiere deinen Code direkt aus und entwickle am Ende eine eigene statische Webseite.</p><div class="actions"><a class="button" href="#lesson/${next.id}">${state.completed.length ? "Weiterlernen" : "Jetzt starten"} <span aria-hidden="true">↗</span></a><a class="button secondary" href="#lab">Freies Labor</a></div></div><div class="hero-art"><span>&lt;idee&gt; → &lt;webseite&gt;</span></div></section>
+  return `<section class="hero"><div class="hero-copy"><p class="eyebrow">BPE2 · Deine eigene Webseite beginnt hier</p><h2>Aus deinen Ideen<br>wird eine Webseite.</h2><p>Lerne HTML und CSS Schritt für Schritt. Probiere deinen Code direkt aus und entwickle am Ende eine eigene statische Webseite.</p><div class="actions"><a class="button" href="#lesson/${next.id}">${state.completed.length ? "Weiterlernen" : "Jetzt starten"} </a><a class="button secondary" href="#lab">Freies Labor</a></div></div><div class="hero-art"><span>&lt;idee&gt; → &lt;webseite&gt;</span></div></section>
  <div class="stats"><div class="stat"><strong>${state.completed.length} / ${lessons.length}</strong><small>Lerneinheiten abgeschlossen</small></div><div class="stat"><strong>${xp(state)}</strong><small>XP gesammelt</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD lokal erfasst</small></div><div class="stat"><strong>Dein Projekt</strong><small>Eine eigene statische Webseite</small></div></div>
  ${resumePanel()}${phaseOverview()}`;
 }
@@ -530,6 +531,7 @@ function render() {
   $("#viewTitle").textContent = title;
   document.title = `${title} · WebLab`;
   $("#mainContent").innerHTML = html;
+  decorateIcons();
   stats();
   document.querySelectorAll(".nav-item").forEach((a) => {
     const current =

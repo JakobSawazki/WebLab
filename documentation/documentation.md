@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.4.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
+Version: **1.5.0** · Status: **lokal geprüft, Veröffentlichung vorbereitet**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.4.0 |
+| Bereich | Version 1.5.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Lernfortschritten; alle frei erreichbar |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -92,28 +92,20 @@ Wie WorkbenchLab und Excel-Lab ist WebLab jetzt eine **statische Anwendung aus H
 
 ```text
 WebLab/
-  index.html                 Seitenrahmen, Navigation, Dialoge
-  weblab.js                  erzeugtes klassisches Skript für direkten Dateistart
-  tools/bundle.mjs           begrenzter Bundler ohne externe Abhängigkeit
-  tests/bundle.test.mjs      zwei Tests zu Modulisolation und Fehlererkennung
-  styles.css                 Gestaltung und responsive Regeln
-  app.js                     Ansichten, Interaktion und Editor
-  editor.js                  Klartext-Editor, Einrückung, Code-Dateiimport
-  content.js                 16 Einheiten, Aufträge und Kriterien
-  journey.js                 Roter Faden, Arbeitsschritte, sichere Entwurfskopien
-  checks.js                  DOM-/CSSOM-Aufgabenprüfung, Vorschau
-  state.js                   Lernstand, Migration, Punkte
-  export.js                  Projektexport als ZIP
-  glossary.js                84 Glossareinträge
-  assets/                    vorhandenes Logo, Hero, Favicon
-  tools/build-site.mjs        explizite Veröffentlichungsliste
-  tools/serve.mjs             lokaler Vorschau- und Prüfserver
-  tests/state.test.mjs        acht Node-Tests
-  tests/editor.test.mjs       drei Node-Tests zu Editor und Code-Dateien
-  tests/journey.test.mjs      zwei Node-Tests zu Lernkette und Entwurfserhalt
-  tests/browser.html         86 Browserprüfungen, nur lokal
+  index.html                 direkt per Doppelklick starten
+  weblab.js                  erzeugtes klassisches Skript
+  styles.css                 gemeinsame Gestaltung
+  assets/                    Logo, Titelbild, Favicon
+  development/
+    src/                     gepflegte Quellmodule, Inhalte und SVG-Icons
+    tools/                   Bundler, Build und lokaler Browserprüfserver
+    tests/                   15 Node-Tests und Browserprüfseite
   documentation/documentation.md
-  ressources/BPE2/           lokale, nicht versionierte Quellen
+  documentation/WebLab-1.5.0.png
+  ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
+  README.md                  kurze Startanleitung
+  CLAUDE.md                  Wegweiser auf diese Dokumentation
+  package.json               Befehle für Entwicklung und Veröffentlichung
   .github/workflows/pages.yml
 ```
 
@@ -127,7 +119,7 @@ npm run serve
 
 Vorschau: `http://127.0.0.1:4188/`. Browserprüfungen: `http://127.0.0.1:4188/__qa`. Nach Quelländerungen neu bauen und im Browser neu laden. Zum Lernen reicht seit 1.4.0 ein Doppelklick auf `index.html` im Projektordner. Der ganze Ordner mit `weblab.js`, `styles.css` und `assets/` muss zusammenbleiben. Node.js und Server sind dafür nicht erforderlich. `start.cmd` wurde beim anschließenden Aufräumen entfernt; der einzige Einstieg für Lernende ist `index.html`. Der Build fasst die weiterhin modular gepflegten Quellen in ein klassisches Skript zusammen; nach Quelländerungen immer neu bauen und `weblab.js` mit committen. Lokaler Dateistart, localhost und Online-Seite haben getrennte Lernstände; bei einem Wechsel JSON-Sicherung verwenden.
 
-Der Build schreibt ausschließlich 15 erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket und veröffentlicht ausschließlich dist. Die 86 Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
+Der Build schreibt ausschließlich sieben erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket und veröffentlicht ausschließlich dist. Die Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
 
 ## 5. Lernstand, Migration und Sicherheit
 
@@ -163,11 +155,11 @@ Google Drive erzeugt gelegentlich `desktop.ini` innerhalb `.git/refs`. Git deute
 Geprüft durch Codex am 12.10.2026:
 
 - 15 Node-Tests bestanden (zusätzlich Modulisolation und Ablehnung nicht unterstützter Modulsyntax): Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur, Einrückung, Code-Dateiimport sowie vollständige Lernkette und Erhalt vorhandener Entwürfe.
-- 86 Browserprüfungen bestanden: bisherige 81 Prüfungen plus vier Ablauf-Sprungmarken mit Fokus und Routenerhalt sowie die kompakte Startseite mit vier Etappen und einer Weiterlernempfehlung.
+- Browserprüfungen: die bisherigen 86 Funktions- und Layoutprüfungen sowie zusätzliche Kontrollen für beide Farbschemata, SVG-Navigation, Buttonhöhen und Textkontrast. Ergebnis siehe neuestes Arbeitsprotokoll.
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
-- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.4.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
+- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.5.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
 - Responsive Prüfung: Startseite, Einheiten 1 und 12 sowie Glossar bei tatsächlich 360 Pixel breiten eingebetteten Browserfenstern ohne horizontalen Überlauf. Der direkte Viewport-Schalter des Browserwerkzeugs änderte die native Ansicht nicht; deshalb wurde die Breite unabhängig in der lokalen Browser-Testseite geprüft. Physische Mobilgeräte und Bildschirmleser bleiben noch ungetestet.
 
 Offene Erweiterungen, nach Priorität:
@@ -181,6 +173,15 @@ Offene Erweiterungen, nach Priorität:
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.5.0
+
+Auf Jakobs Auftrag weiter aufgeräumt: die weiterhin nötigen Tests und Werkzeuge sowie alle Quellmodule liegen gesammelt in `development/`. Hauptordner bleibt der klare Startpunkt über `index.html`. Paketbefehle, Modulpfade und lokaler Prüfserver angepasst. Öffentliches Paket von 15 auf sieben Dateien verkleinert: index.html, styles.css, weblab.js, .nojekyll und drei Assets. Quellmodule werden nur lokal für Browserprüfungen angeboten.
+
+Design: ruhige Marineblau-Flächen, dezenter Verlauf im Hintergrund, abgestimmtes helles Farbschema, lokale Systemschrift mit klarer Hierarchie, größere Radien und feinere Schatten. Wichtige Aktionen im dunklen Schema warm akzentuiert, sekundäre Aktionen zurückhaltend. Einheitliche Inline-SVG-Icons für Navigation und Aktionen, keine externe Bibliothek, keine Font- oder CDN-Abhängigkeit. Buttons mit Hover-, Aktiv-, Fokus- und Deaktiviert-Zustand; reduzierte Bewegung wird beachtet. Lernstandformat und Vorschau-Sandbox unverändert.
+
+Prüfungen: 15 Node-Tests und 110 Browserprüfungen bestanden, darunter beide Farbschemata bei echten 360 Pixeln, mindestens 44 Pixel hohe sichtbare Buttons, dekorative SVG-Navigation und primärer Button-Textkontrast von mindestens 4,5:1. Startseite in Hell/Dunkel und Werkstatt visuell geprüft. Veröffentlichung folgt. Direkter file://-Test bleibt wegen der URL-Beschränkung des Agentenbrowsers offen; klassischer Skripteinstieg bleibt erhalten.
+
 
 ### 12.10.2026 – Codex – Aufräumen nach Umstellung auf index.html
 

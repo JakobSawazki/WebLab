@@ -10,9 +10,9 @@ import {
   xp,
   nagold,
   load,
-} from "../state.js";
-import { lessons } from "../content.js";
-import { zipFiles } from "../export.js";
+} from "../src/state.js";
+import { lessons } from "../src/content.js";
+import { zipFiles } from "../src/export.js";
 test("16 vollständige und eindeutige BPE2-Einheiten", () => {
   assert.equal(lessons.length, 16);
   assert.equal(new Set(lessons.map((l) => l.id)).size, 16);

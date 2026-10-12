@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { journey, startingDraft } from "../journey.js";
-import { lessons } from "../content.js";
+import { journey, startingDraft } from "../src/journey.js";
+import { lessons } from "../src/content.js";
 test("All 16 learning steps form one complete chain with actionable preview tasks", () => {
   assert.equal(Object.keys(journey).length, 16);
   lessons.forEach((lesson, i) => {

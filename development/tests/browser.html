@@ -93,6 +93,16 @@
       ).every((c) => c.passed),
       "Leere Bildbeschreibung reicht nicht",
     );
+    const savedTheme = localStorage.getItem("weblab-theme-v1");
+    const luminance = (hex) => {
+      const values = hex.trim().replace("#", "");
+      const full =
+        values.length === 3 ? [...values].map((c) => c + c).join("") : values;
+      return [0, 2, 4]
+        .map((i) => parseInt(full.slice(i, i + 2), 16) / 255)
+        .map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4))
+        .reduce((sum, c, i) => sum + c * [0.2126, 0.7152, 0.0722][i], 0);
+    };
     // Echte CSS-Viewports innerhalb der lokalen Prüfseite, unabhängig vom
     // Browserwerkzeug. Kein Ersatz für einen Test auf einem physischen Gerät.
     for (const route of ["#home", "#lesson/l1", "#lesson/l12", "#reference"]) {
@@ -115,6 +125,39 @@
         root.scrollWidth <= root.clientWidth + 1,
         route + " ohne horizontalen Überlauf",
       );
+      for (const theme of ["dark", "light"]) {
+        const doc = frame.contentDocument,
+          win = frame.contentWindow;
+        if (doc.documentElement.dataset.theme !== theme)
+          doc.querySelector("#themeButton").click();
+        const visibleButtons = [
+          ...doc.querySelectorAll(".button, .icon-button"),
+        ].filter((n) => n.getClientRects().length);
+        assert(
+          doc.documentElement.scrollWidth <= 360 &&
+            visibleButtons.every((n) => n.getBoundingClientRect().height >= 44),
+          route + " " + theme + ": kein Ueberlauf und Buttons mindestens 44px",
+        );
+        assert(
+          doc.querySelectorAll('.main-nav svg[aria-hidden="true"]').length ===
+            6,
+          route + " " + theme + ": einheitliche dekorative Navigationsicons",
+        );
+        const style = win.getComputedStyle(doc.documentElement);
+        const a = luminance(style.getPropertyValue("--accent-text")),
+          b = luminance(style.getPropertyValue("--accent-end")),
+          c = luminance(style.getPropertyValue("--accent"));
+        assert(
+          Math.min(
+            (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
+            (Math.max(a, c) + 0.05) / (Math.min(a, c) + 0.05),
+          ) >= 4.5,
+          route +
+            " " +
+            theme +
+            ": primaere Buttonschrift mit Kontrast mindestens 4.5:1",
+        );
+      }
       frame.remove();
     }
     // Exercise the actual editor, including async input, with disposable QA code.
@@ -331,6 +374,8 @@
     threadFrame.remove();
     if (savedState === null) localStorage.removeItem(STORAGE_KEY);
     else localStorage.setItem(STORAGE_KEY, savedState);
+    if (savedTheme === null) localStorage.removeItem("weblab-theme-v1");
+    else localStorage.setItem("weblab-theme-v1", savedTheme);
     document.querySelector("#results").textContent =
       `${count - failed}/${count} Prüfungen bestanden, ${failed} fehlgeschlagen.\n\n` +
       out.join("\n");

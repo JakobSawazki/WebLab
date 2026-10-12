@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { indentEdit, readCodeFiles } from "../editor.js";
+import { indentEdit, readCodeFiles } from "../src/editor.js";
 const file = (name, text) => ({
   name,
   size: Buffer.byteLength(text),

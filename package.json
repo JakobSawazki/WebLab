@@ -1,6 +1,6 @@
 {
   "name": "weblab",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "type": "module",
   "description": "Statische Lernumgebung zu BPE2: Entwicklung von Internetseiten",
@@ -8,9 +8,9 @@
     "node": ">=22"
   },
   "scripts": {
-    "build": "node tools/build-site.mjs",
-    "build:site": "node tools/build-site.mjs",
-    "serve": "node tools/serve.mjs",
-    "test": "node --test tests/*.test.mjs"
+    "build": "node development/tools/build-site.mjs",
+    "build:site": "node development/tools/build-site.mjs",
+    "serve": "node development/tools/serve.mjs",
+    "test": "node --test development/tests/*.test.mjs"
   }
 }

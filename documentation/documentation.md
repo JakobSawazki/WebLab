@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.7.1** · Status: **lokal geprüft, Veröffentlichung vorbereitet**.
+Version: **1.7.1** · Status: **veröffentlicht und online geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -183,7 +183,7 @@ Offene Erweiterungen, nach Priorität:
 
 Neues fotorealistisches Logo auf Jakobs Wunsch: breites W aus gebürstetem Silber/Titan mit HTML-Winkelklammern und dezenten blauen Reflexen. Mit dem integrierten image_gen-Werkzeug erstellt; transparenter Hintergrund. Das generierte Original liegt unter C:/Users/PC/.codex/generated_images/01a12ffc-8dc4-7670-b306-fdd3448d7504/exec-66014b85-b5f0-475b-ad7e-02dd5aa08243.png. Die Projektdateien sind assets/weblab-logo.png (512 x 512) und assets/favicon.png (64 x 64), beide mit Alpha; das Tab-Icon zeigt dasselbe Motiv. Technischer Export mit Sharp: transparente Ränder gekürzt, proportional skaliert und quadratisch mit Transparenz aufgefüllt. Keine Bildgenerierungs-API oder neue Laufzeitabhängigkeit.
 
-Logo und Icon haben versionsgebundene URLs gegen alte Browser-Caches. Das alte SVG-Icon ist entfernt und die Build-Allowlist entsprechend auf PNG umgestellt, weiterhin sieben veröffentlichte Dateien. Alte Assets gesichert unter C:/Users/PC/WebLab-Sicherungen/Logo-1.7.1. 18 Node-Tests bestanden; Build erfolgreich; Logo und Icon-Verweis im lokalen Browser geprüft. Veröffentlichung folgt.
+Logo und Icon haben versionsgebundene URLs gegen alte Browser-Caches. Das alte SVG-Icon ist entfernt und die Build-Allowlist entsprechend auf PNG umgestellt, weiterhin sieben veröffentlichte Dateien. Alte Assets gesichert unter C:/Users/PC/WebLab-Sicherungen/Logo-1.7.1. 18 Node-Tests bestanden; Build erfolgreich; Logo in beiden Farbschemata und Icon-Verweis im lokalen Browser geprüft. Veröffentlicht mit Commit f46b28e; [Pages-Workflow 38288928671](https://github.com/JakobSawazki/WebLab/actions/runs/38288928671) erfolgreich. Online-Version 1.7.1, geladenes Logo und PNG-Icon-Verweis bestätigt. Screenshot: documentation/WebLab-1.7.1.png. Vorheriger Screenshot und erzeugtes dist-Paket sind ebenfalls im externen Sicherungsordner archiviert.
 
 Finaler Bildprompt (integriertes image_gen, kein CLI-Fallback):
 

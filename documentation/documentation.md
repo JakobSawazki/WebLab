@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.3.0** · Status: **lokal geprüft, Veröffentlichung in Vorbereitung** auf GitHub Pages.
+Version: **1.3.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -192,7 +192,7 @@ Einheiten: Oben führt die Ablaufnavigation direkt zu Verstehen, Anwenden, Prüf
 
 Prüfungen: 13 Node-Tests und 86 Browserprüfungen bestanden. Neue Navigation mit Fokus und Routenerhalt geprüft; Startseite und Einheiten bei 360 Pixeln ohne horizontalen Überlauf. Startseite visuell im hellen Design kontrolliert. Physischer Schul-PC und Bildschirmleser bleiben offen. Keine neue Abhängigkeit, unverändertes Sicherungsformat und weiterhin 14 veröffentlichte Dateien.
 
-Veröffentlichung: in Vorbereitung für main und v1.3.0, anschließend Live-Prüfung und Screenshots.
+Veröffentlichung: **1.3.0 auf main**, Implementierungscommit `f5786f179c68592fca353c536421002d0bc16c95`; [Pages-Workflow 38280125680](https://github.com/JakobSawazki/WebLab/actions/runs/38280125680) erfolgreich. Live unter `/WebLab/?v=1.3.0#home` geprüft: vier Etappen und Fortschritt sichtbar; erste Einheit geöffnet, Sichern-Sprungmarke erhält Route und setzt Fokus auf den Sicherungsabschnitt. Screenshots: `WebLab-1.3.0-Start.png` und `WebLab-1.3.0.png`. Abschließender Dokumentationsstand unter `v1.3.0`.
 
 ### 12.10.2026 – Codex – Version 1.2.0
 

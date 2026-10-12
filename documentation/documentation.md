@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.1.0** · Status: **lokal geprüft, Veröffentlichung in Vorbereitung** auf GitHub Pages.
+Version: **1.1.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.0.0 |
+| Bereich | Version 1.1.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Lernfortschritten; alle frei erreichbar |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -25,7 +25,8 @@ Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein
 | NAGOLD | 5 je abgeschlossener Einheit; datierte automatische Einträge und manuelle Einträge von −10 bis +5 ohne 0 |
 | Abschluss | Technische Kriterien erfüllt, Quiz richtig, alle Selbstkontrollen bestätigt, Profil vollständig |
 | Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich |
-| Labor | Getrennte HTML-/CSS-Felder, automatische isolierte Vorschau, eigenständiger freier Entwurf |
+| Labor | HTML-/CSS-Dateireiter, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau und Handyansicht, eigenständiger freier Entwurf |
+| Informatik-Stick | HTML-/CSS-Import und Export, Notepad++-Transferauftrag mit Strg+S/F5 und Dateiverknüpfung |
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
 | Nachschlagen | 84 übernommene eigene Glossareinträge aus WebLab 0.5.0, Suche und Bereichsfilter |
 | Datenschutz | Lernstand auf dem Gerät; kein Tracking, keine externe KI, keine zentrale Schülerdatenbank |
@@ -92,6 +93,7 @@ WebLab/
   index.html                 Seitenrahmen, Navigation, Dialoge
   styles.css                 Gestaltung und responsive Regeln
   app.js                     Ansichten, Interaktion und Editor
+  editor.js                  Klartext-Editor, Einrückung, Code-Dateiimport
   content.js                 16 Einheiten, Aufträge und Kriterien
   checks.js                  DOM-/CSSOM-Aufgabenprüfung, Vorschau
   state.js                   Lernstand, Migration, Punkte
@@ -101,7 +103,8 @@ WebLab/
   tools/build-site.mjs        explizite Veröffentlichungsliste
   tools/serve.mjs             lokaler Vorschau- und Prüfserver
   tests/state.test.mjs        acht Node-Tests
-  tests/browser.html         59 Browserprüfungen, nur lokal
+  tests/editor.test.mjs       drei Node-Tests zu Editor und Code-Dateien
+  tests/browser.html         72 Browserprüfungen, nur lokal
   documentation/documentation.md
   ressources/BPE2/           lokale, nicht versionierte Quellen
   .github/workflows/pages.yml
@@ -118,7 +121,7 @@ npm run serve
 
 Vorschau: `http://127.0.0.1:4188/`. Browserprüfungen: `http://127.0.0.1:4188/__qa`. Nach Quelländerungen neu bauen und im Browser neu laden. `start.cmd` baut und öffnet die Vorschau per Doppelklick. Ein direktes Doppelklicken auf index.html ist wegen ES-Modulen kein unterstützter Startweg.
 
-Der Build schreibt ausschließlich zwölf erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions testet den Lernstand, baut das Paket und veröffentlicht ausschließlich dist. Die 59 Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
+Der Build schreibt ausschließlich 13 erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket und veröffentlicht ausschließlich dist. Die 72 Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
 
 ## 5. Lernstand, Migration und Sicherheit
 
@@ -185,9 +188,9 @@ Dateiimport: eine HTML-/HTM-Datei und/oder eine CSS-Datei, lokal über File API,
 
 Geänderte Dateien: app.js, styles.css, editor.js, content.js (Version), package.json, Build-Allowlist, tests/editor.test.mjs, tests/browser.html, README und diese Dokumentation. editor.js wird ausdrücklich in das Veröffentlichungspaket kopiert. Keine neue Abhängigkeit, kein neues Lernstandformat. Vorhandene Profile und Lernfortschritte bleiben kompatibel.
 
-Prüfungen: 11 Node-Tests und 72 Browserprüfungen bestanden. Der erste Import-Test verwendete dieselbe DataTransfer-Dateiliste nach dem Leeren des Inputs erneut; ein frischer Dateiauswahlvorgang behebt den Test. Visuelle Kontrolle des Editors im hellen Farbschema. Schul-PC/Notepad++ 7.5.1 und physische Mobilgeräte bleiben offen.
+Prüfungen: 11 Node-Tests und 72 Browserprüfungen bestanden. Visuelle Kontrolle des Editors im hellen Farbschema, Live-Seite mit Dateireiterwechsel geprüft. Schul-PC/Notepad++ 7.5.1 und physische Mobilgeräte bleiben offen.
 
-Veröffentlichung: in Vorbereitung, main und v1.1.0 nach bestandenem Build. Screenshot wird unter WebLab-1.1.0.png ergänzt.
+Veröffentlichung: **1.1.0 auf main**, Implementierungscommit `1cbc24c103b9c273cd9588ac3686fa63dc9c72a4`; [Pages-Workflow 38251400596](https://github.com/JakobSawazki/WebLab/actions/runs/38251400596) erfolgreich. Live unter /WebLab/#lab geöffnet und Version sowie Dateireiter geprüft. Der abschließende Dokumentationsstand wird unter `v1.1.0` geführt. Screenshot: `WebLab-1.1.0.png`.
 
 ### 12.10.2026 – Codex – Version 1.0.0
 

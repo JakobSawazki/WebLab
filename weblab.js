@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.7.1";
+const VERSION = "1.7.2";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -2792,7 +2792,6 @@ window.addEventListener("storage", (e) => {
     toast(storageError);
   }
 });
-$("#version").textContent = VERSION;
 document
   .querySelectorAll(".version")
   .forEach((el) => (el.textContent = VERSION));

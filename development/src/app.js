@@ -739,7 +739,6 @@ window.addEventListener("storage", (e) => {
     toast(storageError);
   }
 });
-$("#version").textContent = VERSION;
 document
   .querySelectorAll(".version")
   .forEach((el) => (el.textContent = VERSION));

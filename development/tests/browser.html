@@ -525,6 +525,72 @@
       "Fehlersuche hat drei bedienbare Antworten und eine vorlesbare Rueckmeldung",
     );
     threadFrame.remove();
+    const boxState = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    boxState.completed = lessons.slice(0, 11).map((l) => l.id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(boxState));
+    const boxFrame = document.createElement("iframe");
+    boxFrame.style.cssText = "width:360px;height:800px;border:0;display:block";
+    boxFrame.title = "Box-Modell bei 360 Pixeln";
+    const boxLoaded = new Promise((resolve) => (boxFrame.onload = resolve));
+    boxFrame.src = "/?box-model-check=1#lesson/l12";
+    document.body.append(boxFrame);
+    await boxLoaded;
+    const boxDoc = boxFrame.contentDocument,
+      boxWin = boxFrame.contentWindow;
+    boxDoc.querySelector(".box-model-helper summary").click();
+    const boxSaved = localStorage.getItem(STORAGE_KEY);
+    const box = (id) => boxDoc.getElementById(id);
+    const diagram = () =>
+      boxDoc.querySelector(".box-demo-border").getBoundingClientRect().width;
+    assert(
+      Math.abs(diagram() - 160) < 1 &&
+        box("boxDimensions").textContent.includes("184 px"),
+      "Box-Modell: content-box zeigt die tatsaechliche Breite inklusive padding und border",
+    );
+    box("boxSizing").click();
+    assert(
+      Math.abs(diagram() - 120) < 1 &&
+        box("boxDimensions").textContent.includes("Inhalt: 80 px"),
+      "Box-Modell: border-box behaelt die Breite und verkleinert den Inhalt",
+    );
+    for (const [id, value] of [
+      ["boxPadding", 24],
+      ["boxBorder", 8],
+      ["boxMargin", 24],
+    ]) {
+      box(id).value = value;
+      box(id).dispatchEvent(new boxWin.Event("input", { bubbles: true }));
+    }
+    assert(
+      box("boxDimensions").textContent.includes("Inhalt: 56 px") &&
+        box("boxModelCode").textContent.includes("padding: 24px"),
+      "Box-Modell: Regler aktualisieren Breiten und CSS-Beispiel gemeinsam",
+    );
+    box("boxSizing").click();
+    assert(
+      Math.abs(diagram() - 184) < 1 &&
+        box("boxDimensions").textContent.includes("232 px"),
+      "Box-Modell: maximale Werte stimmen mit der gerenderten CSS-Breite ueberein",
+    );
+    for (const theme of ["dark", "light"]) {
+      if (boxDoc.documentElement.dataset.theme !== theme)
+        box("themeButton").click();
+      assert(
+        boxDoc.documentElement.scrollWidth <= 360,
+        "Box-Modell: aufgeklappt bei maximalen Werten ohne Ueberlauf in " +
+          theme,
+      );
+    }
+    assert(
+      localStorage.getItem(STORAGE_KEY) === boxSaved,
+      "Box-Modell: Modell veraendert weder Entwurf noch Punkte oder Freischaltungen",
+    );
+    // Keep only the teaching model visible on explicit local visual-review runs.
+    if (location.hash === "#box-preview") {
+      boxFrame.style.width = "1200px";
+      boxFrame.style.height = "900px";
+    } else boxFrame.remove();
+
     if (savedState === null) localStorage.removeItem(STORAGE_KEY);
     else localStorage.setItem(STORAGE_KEY, savedState);
     if (savedTheme === null) localStorage.removeItem("weblab-theme-v1");

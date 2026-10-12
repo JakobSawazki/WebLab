@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.8.0** · Status: **veröffentlicht und online geprüft**.
+Version: **1.9.0** · Status: **veröffentlicht und online geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.8.0 |
+| Bereich | Version 1.9.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -99,9 +99,9 @@ WebLab/
   development/
     src/                     gepflegte Quellmodule, Inhalte und SVG-Icons
     tools/                   Bundler, Build und lokaler Browserprüfserver
-    tests/                   19 Node-Tests und Browserprüfseite
+    tests/                   21 Node-Tests und Browserprüfseite
   documentation/documentation.md
-  documentation/WebLab-1.8.0.png
+  documentation/WebLab-1.9.0.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
   README.md                  kurze Startanleitung
   CLAUDE.md                  Wegweiser auf diese Dokumentation
@@ -159,12 +159,12 @@ Google Drive erzeugt gelegentlich `desktop.ini` innerhalb `.git/refs`. Git deute
 
 Geprüft durch Codex am 12.10.2026:
 
-- 19 Node-Tests bestanden (einschließlich Freischaltung und vollständiger Fehlersuchaufgaben): Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur, Einrückung, Code-Dateiimport sowie vollständige Lernkette und Erhalt vorhandener Entwürfe.
+- 21 Node-Tests bestanden (einschließlich Box-Modell, Freischaltung und vollständiger Fehlersuchaufgaben): Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur, Einrückung, Code-Dateiimport sowie vollständige Lernkette und Erhalt vorhandener Entwürfe.
 - Browserprüfungen: die bisherigen 86 Funktions- und Layoutprüfungen sowie zusätzliche Kontrollen für beide Farbschemata, SVG-Navigation, Buttonhöhen und Textkontrast. Ergebnis siehe neuestes Arbeitsprotokoll.
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
-- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.8.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
+- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.9.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
 - Responsive Prüfung: Startseite, Einheiten 1 und 12 sowie Glossar bei tatsächlich 360 Pixel breiten eingebetteten Browserfenstern ohne horizontalen Überlauf. Der direkte Viewport-Schalter des Browserwerkzeugs änderte die native Ansicht nicht; deshalb wurde die Breite unabhängig in der lokalen Browser-Testseite geprüft. Physische Mobilgeräte und Bildschirmleser bleiben noch ungetestet.
 
 Offene Erweiterungen, nach Priorität:
@@ -172,12 +172,20 @@ Offene Erweiterungen, nach Priorität:
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
 2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
-4. **Didaktische Vertiefung:** Zwölf optionale Fehlersuchaufträge sind seit 1.8.0 vorhanden; noch offen sind vertiefende Korrekturaufgaben, visuelle Box-Modell-/Selektorhilfen, gestufte HTML-Aufgaben, Tabellenformatierung und weitere Medienaufgaben.
+4. **Didaktische Vertiefung:** Zwölf optionale Fehlersuchaufträge sind seit 1.8.0 vorhanden; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Noch offen sind vertiefende Korrekturaufgaben, visuelle Selektorhilfen, gestufte HTML-Aufgaben, Tabellenformatierung und weitere Medienaufgaben.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser, optionale Offline-Kopie und Browserprüfungen in CI.
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.9.0
+
+Autonome didaktische Vertiefung in Einheit 12: optionale aufklappbare Box-Modell-Ansicht mit Reglern für padding (0–24), border (0–8) und margin (0–24 Pixel) sowie Schalter für content-box/border-box. Echte CSS-Darstellung mit 120 Pixel Ausgangsbreite, farbigen Bereichen, beschrifteter Legende, berechneter Inhalts-/Rahmen-/Gesamtbreite und synchronem CSS-Beispiel. Die Ansicht erklärt ausdrücklich waagerechte Breiten; das Zusammenfallen senkrechter Margins wird nicht simuliert. Ein Beobachtungsauftrag verbindet die Regler mit der eigenen Anwendung im Editor.
+
+Keine Änderungen an eigenen Entwürfen, Punkten, Quiz oder Freischaltungen, keine zusätzliche Abschlusspflicht, keine gespeicherte Modelleinstellung. Die Hilfe erscheint nur in der freigeschalteten Einheit 12. Native beschriftete Regler und Checkbox, textliche Statusausgabe ergänzt die rein dekorative Grafik. Quellmodul development/src/box-model.js, weiterhin klassischer Offline-Build ohne Laufzeitabhängigkeiten.
+
+21 Node-Tests bestanden. Die Berechnung wird für alle zulässigen Reglerkombinationen geprüft. 138 Browserprüfungen bestanden, darunter Abgleich mit tatsächlich gerenderten Breiten in beiden Box-Modi, maximale Werte, 360-Pixel-Layout in beiden Farbschemata und unveränderter Lernstand. Die lokale Browserprüfseite kann mit /__qa#box-preview das Modell nach dem Prüflauf zur visuellen Kontrolle stehen lassen; der vorherige Browserspeicher wird dabei wie im normalen Prüflauf wiederhergestellt. Die Prüfseite wird nie veröffentlicht. Build erfolgreich. Veröffentlichung folgt.
 
 ### 12.10.2026 – Codex – Version 1.8.0
 

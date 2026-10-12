@@ -37,3 +37,5 @@ Originalmaterialien unter `ressources/BPE2/` bleiben lokal und werden nicht ver�
 Seit Version 1.7.1: neues fotorealistisches Metalllogo; dasselbe Motiv dient als PNG-Tab-Icon.
 
 Seit Version 1.8.0: kurze freiwillige Fehlersuchübungen mit erklärenden Rückmeldungen in den Einheiten 01–12.
+
+Seit Version 1.9.0: interaktive Box-Modell-Hilfe in Einheit 12 mit Innen-/Außenabstand, Rahmen und Vergleich von content-box und border-box.

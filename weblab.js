@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.8.0";
+const VERSION = "1.9.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -2243,7 +2243,70 @@ const debugging = {
 
 return {debugging};
 },
+"box-model.js": function(require) {
+// A separate teaching model; it never reads or writes student drafts.
+function boxDimensions(padding, border, margin, borderBox) {
+  const content = borderBox ? 120 - 2 * padding - 2 * border : 120;
+  const element = content + 2 * padding + 2 * border;
+  return { content, element, space: element + 2 * margin };
+}
+
+function boxModelView() {
+  return `<details class="box-model-helper"><summary>Box-Modell ausprobieren: Wo entsteht der Abstand?</summary>
+    <p>Verändere immer nur einen Wert und beobachte die farbigen Bereiche. Die Beispielkarte hat <code>width: 120px</code>. Alle Abstände sind auf beiden Seiten gleich.</p>
+    <div class="box-model-controls">
+      <label for="boxPadding">Innenabstand · padding <output id="boxPaddingValue" for="boxPadding">16 px</output></label>
+      <input type="range" id="boxPadding" min="0" max="24" value="16" step="1">
+      <label for="boxBorder">Rahmen · border <output id="boxBorderValue" for="boxBorder">4 px</output></label>
+      <input type="range" id="boxBorder" min="0" max="8" value="4" step="1">
+      <label for="boxMargin">Außenabstand · margin <output id="boxMarginValue" for="boxMargin">12 px</output></label>
+      <input type="range" id="boxMargin" min="0" max="24" value="12" step="1">
+      <label class="check-row"><input type="checkbox" id="boxSizing"><span>box-sizing: border-box verwenden</span></label>
+    </div>
+    <div class="box-model-stage" aria-hidden="true"><div class="box-demo-margin"><div class="box-demo-border"><div class="box-demo-content">Inhalt</div></div></div></div>
+    <ul class="box-model-legend"><li><span class="box-key content"></span>Blau: Inhalt</li><li><span class="box-key padding"></span>Grün: Innenabstand</li><li><span class="box-key border"></span>Silber: Rahmen</li><li><span class="box-key margin"></span>Orange: Außenabstand</li></ul>
+    <p id="boxDimensions" role="status" aria-atomic="true"></p>
+    <pre><code id="boxModelCode"></code></pre>
+    <p class="muted">Bei content-box bezieht sich width auf den Inhalt. Bei border-box sind Innenabstand und Rahmen in width enthalten. Außenabstand kommt in beiden Fällen dazu. Vergleiche hier die waagerechten Breiten; das Zusammenfallen senkrechter Außenabstände wird nicht gezeigt.</p>
+    <p><strong>Dein Versuch:</strong> Stelle margin auf 0 und vergrößere padding. Was verändert sich innerhalb des Rahmens? Aktiviere danach border-box. Erkläre, weshalb der Inhalt schmaler wird.</p>
+  </details>`;
+}
+
+function bindBoxModel(root = document) {
+  if (!root.querySelector("#boxPadding")) return;
+  const get = (id) => root.querySelector("#" + id);
+  const update = () => {
+    const padding = Number(get("boxPadding").value);
+    const border = Number(get("boxBorder").value);
+    const margin = Number(get("boxMargin").value);
+    const borderBox = get("boxSizing").checked;
+    const sizing = borderBox ? "border-box" : "content-box";
+    for (const [name, value] of [
+      ["Padding", padding],
+      ["Border", border],
+      ["Margin", margin],
+    ])
+      get("box" + name + "Value").textContent = value + " px";
+    const model = root.querySelector(".box-demo-border");
+    model.style.padding = padding + "px";
+    model.style.borderWidth = border + "px";
+    model.style.boxSizing = sizing;
+    root.querySelector(".box-demo-margin").style.padding = margin + "px";
+    const sizes = boxDimensions(padding, border, margin, borderBox);
+    get("boxDimensions").textContent =
+      `Inhalt: ${sizes.content} px · Karte mit Innenabstand und Rahmen: ${sizes.element} px · Platz mit Außenabstand links und rechts: ${sizes.space} px.`;
+    get("boxModelCode").textContent =
+      `.karte {\n  width: 120px;\n  padding: ${padding}px;\n  border: ${border}px solid gray;\n  margin: ${margin}px;\n  box-sizing: ${sizing};\n}`;
+  };
+  for (const id of ["boxPadding", "boxBorder", "boxMargin", "boxSizing"])
+    get(id).addEventListener("input", update);
+  update();
+}
+
+return {boxDimensions,boxModelView,bindBoxModel};
+},
 "app.js": function(require) {
+const { boxModelView, bindBoxModel } = require("box-model.js");
 const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
 const { VERSION, groups, lessons, byId } = require("content.js");
@@ -2461,7 +2524,7 @@ function debugChallenge(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -2841,6 +2904,7 @@ function render() {
   });
   if ($("#htmlEditor")) bindStudio(l || byId("l1"));
   if (l) {
+    bindBoxModel();
     document.querySelectorAll("[data-lesson-anchor]").forEach(
       (link) =>
         (link.onclick = (e) => {

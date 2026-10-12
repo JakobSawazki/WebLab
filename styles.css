@@ -1362,3 +1362,89 @@ dialog::backdrop {
   color: var(--green);
   border-color: var(--green);
 }
+
+.box-model-helper {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.box-model-helper summary {
+  color: var(--brand);
+  font-weight: 650;
+  cursor: pointer;
+}
+.box-model-controls {
+  display: grid;
+  gap: 0.35rem;
+  margin-block: 1rem;
+}
+.box-model-controls label:not(.check-row) {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.box-model-controls output {
+  font-family: var(--mono);
+  color: var(--brand);
+}
+.box-model-controls input[type="range"] {
+  width: 100%;
+  min-height: 32px;
+  padding: 0;
+  accent-color: var(--brand);
+}
+.box-model-stage {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  background: var(--bg);
+  border-radius: 12px;
+}
+.box-demo-margin {
+  background: #f4bc7f;
+  width: max-content;
+  box-sizing: content-box;
+}
+.box-demo-border {
+  width: 120px;
+  border-style: solid;
+  border-color: #8898a8;
+  background: #a5d8b3;
+}
+.box-demo-content {
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: #9bcef2;
+  color: #173047;
+  font-size: 12px;
+  line-height: 1.2;
+}
+.box-model-legend {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  font-size: 0.8rem;
+}
+.box-key {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 0.3rem;
+  border: 1px solid #667;
+}
+.box-key.content {
+  background: #9bcef2;
+}
+.box-key.padding {
+  background: #a5d8b3;
+}
+.box-key.border {
+  background: #8898a8;
+}
+.box-key.margin {
+  background: #f4bc7f;
+}

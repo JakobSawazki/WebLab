@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.1.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
+Version: **1.2.0** · Status: **lokal geprüft, Veröffentlichung in Vorbereitung** auf GitHub Pages.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,16 +16,17 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.1.0 |
+| Bereich | Version 1.2.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Lernfortschritten; alle frei erreichbar |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
+| Roter Faden | Nächster offener Lernschritt, 16 Schritte mit aktueller Position, Vorwissen, drei konkrete Arbeitsschritte und Beobachtungsauftrag; eigene Webseite wächst durch Kopien des vorherigen Entwurfs |
 | Schülerprofil | Lokales Kürzel `MUS.MAX` und Klasse; kein Passwort und kein Serverkonto |
 | XP | 100 je abgeschlossenem Auftrag, einmalig; frühere K1-Missions-XP bleiben zusätzlich erhalten |
 | NAGOLD | 5 je abgeschlossener Einheit; datierte automatische Einträge und manuelle Einträge von −10 bis +5 ohne 0 |
 | Abschluss | Technische Kriterien erfüllt, Quiz richtig, alle Selbstkontrollen bestätigt, Profil vollständig |
 | Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich |
-| Labor | HTML-/CSS-Dateireiter, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau und Handyansicht, eigenständiger freier Entwurf |
+| Labor | HTML-/CSS-Dateireiter, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
 | Informatik-Stick | HTML-/CSS-Import und Export, Notepad++-Transferauftrag mit Strg+S/F5 und Dateiverknüpfung |
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
 | Nachschlagen | 84 übernommene eigene Glossareinträge aus WebLab 0.5.0, Suche und Bereichsfilter |
@@ -95,6 +96,7 @@ WebLab/
   app.js                     Ansichten, Interaktion und Editor
   editor.js                  Klartext-Editor, Einrückung, Code-Dateiimport
   content.js                 16 Einheiten, Aufträge und Kriterien
+  journey.js                 Roter Faden, Arbeitsschritte, sichere Entwurfskopien
   checks.js                  DOM-/CSSOM-Aufgabenprüfung, Vorschau
   state.js                   Lernstand, Migration, Punkte
   export.js                  Projektexport als ZIP
@@ -104,7 +106,8 @@ WebLab/
   tools/serve.mjs             lokaler Vorschau- und Prüfserver
   tests/state.test.mjs        acht Node-Tests
   tests/editor.test.mjs       drei Node-Tests zu Editor und Code-Dateien
-  tests/browser.html         72 Browserprüfungen, nur lokal
+  tests/journey.test.mjs      zwei Node-Tests zu Lernkette und Entwurfserhalt
+  tests/browser.html         81 Browserprüfungen, nur lokal
   documentation/documentation.md
   ressources/BPE2/           lokale, nicht versionierte Quellen
   .github/workflows/pages.yml
@@ -121,7 +124,7 @@ npm run serve
 
 Vorschau: `http://127.0.0.1:4188/`. Browserprüfungen: `http://127.0.0.1:4188/__qa`. Nach Quelländerungen neu bauen und im Browser neu laden. `start.cmd` baut und öffnet die Vorschau per Doppelklick. Ein direktes Doppelklicken auf index.html ist wegen ES-Modulen kein unterstützter Startweg.
 
-Der Build schreibt ausschließlich 13 erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket und veröffentlicht ausschließlich dist. Die 72 Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
+Der Build schreibt ausschließlich 14 erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket und veröffentlicht ausschließlich dist. Die 81 Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
 
 ## 5. Lernstand, Migration und Sicherheit
 
@@ -156,8 +159,8 @@ Google Drive erzeugt gelegentlich `desktop.ini` innerhalb `.git/refs`. Git deute
 
 Geprüft durch Codex am 12.10.2026:
 
-- Elf Node-Tests bestanden: Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur sowie Einrückung und Import von Code-Dateien.
-- 72 Browserprüfungen bestanden: bisherige 59 Prüfungen plus Live-Vorschau, CSS-Wirkung, manuelle Aktualisierung, Dateireiter und Entwurfserhalt, Zeilennummern, Tab-Einrückung, Escape/Tab-Ausgang, echte 360-Pixel-Vorschau, Isolation sowie Abbruch und dateitypspezifische Übernahme beim Import.
+- 13 Node-Tests bestanden: Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur, Einrückung, Code-Dateiimport sowie vollständige Lernkette und Erhalt vorhandener Entwürfe.
+- 81 Browserprüfungen bestanden: bisherige 72 Prüfungen plus HTML-/CSS-Übernahme, aktuelle Lernposition, Editor-Fokus ohne Routenwechsel, große Browseransicht, schmale isolierte Dialogansicht, Rückkehr zum Code sowie fortlaufendes Projekt und Wiederöffnen ohne Überschreiben.
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
@@ -175,6 +178,24 @@ Offene Erweiterungen, nach Priorität:
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.2.0
+
+Auftrag: verständliche Grundlagen mit einem durchgehenden roten Faden von Einheit zu Einheit, direkter Anwendung im Editor und echter Browserdarstellung der eigenen Webseite.
+
+Ergebnis: Startseite und Lernpfad empfehlen den ersten noch offenen Schritt. Jede der 16 Einheiten erhält Vorwissen, den neuen Projektbaustein, drei konkrete Arbeitsanweisungen und einen Beobachtungsauftrag. Eine nummerierte Lernkette zeigt die aktuelle Einheit und abgeschlossene Schritte. Vorwissen wird mit der vorherigen Einheit verlinkt; nach Abschluss führt ein direkter Link weiter. Einheiten bleiben zum Wiederholen und Vorab-Ansehen erreichbar, die empfohlene Reihenfolge ist ausdrücklich sichtbar.
+
+Fortlaufendes Projekt: Beim ersten Öffnen einer neuen Einheit werden HTML und CSS aus der unmittelbar vorherigen Einheit kopiert, sofern dort ein Entwurf vorliegt. Bereits vorhandene Entwürfe – auch leere – werden nicht überschrieben; frühere Einheiten bleiben als eigene Zwischenstände erhalten. Ohne vorherigen Entwurf erscheint der bisherige Startcode. Bei vorhandenen älteren Entwürfen lässt sich die vorige Einheit bewusst übernehmen: Bestätigung und Sicherungsdownload gehen dem Ersetzen voraus. Es gibt keine automatische Rückübertragung späterer Änderungen und keine neue Lernstandversion.
+
+Didaktik: Die Schüler wählen ein Thema und erweitern dieselbe Webseite von Texten über Listen/Links/Bilder/Tabellen/Medien zu CSS, Struktur, Quellen und Test. Die Schritte erklären erwartete Browserreaktionen und typische Grenzen: alt ist keine sichtbare Bildunterschrift, Tabellen brauchen keine Dekorationsrahmen, Semantik erzeugt allein kein Layout. Relative Dateien und externe CSS-Verknüpfung werden zusätzlich im exportierten Projekt auf dem Informatik-Stick geprüft. Der Export ergänzt technisch die CSS-Verknüpfung; die Aufgabenprüfung verlangt, dass die Schüler sie selbst im HTML verstehen und setzen.
+
+Editor: „Webseite groß ansehen“ öffnet den aktuellen HTML-/CSS-Code in einer großen Browseransicht mit Rückkehr zum Editor. Auch diese Vorschau hat ein leeres sandbox-Attribut und die bestehende CSP. Keine Skript-/Netzwerkfreigabe und keine Veröffentlichung des Schülercodes. Über das Projekt-ZIP lässt sich die Seite weiterhin als echte Datei im Browser öffnen. Physischer Schul-PC und Notepad++ bleiben noch zu erproben.
+
+Technik: journey.js ergänzt die Content-Daten um Lernschritte und eine reine Funktion für Entwurfskopien. Build-Allowlist auf 14 Dateien erweitert. Vorhandene Profile, XP/NAGOLD und Sicherungsformate bleiben kompatibel. Keine zusätzliche Abhängigkeit.
+
+Prüfungen: 13 Node-Tests und 81 Browserprüfungen bestanden, darunter der Übergang l1 → l2 → l3 und zurück mit HTML/CSS-Erhalt. Große Vorschau und Rückkehr zum Code visuell geprüft; 360-Pixel-Layoutprüfung bestanden. Unterrichtserprobung und Bildschirmlesertest bleiben offen.
+
+Veröffentlichung: in Vorbereitung für main und v1.2.0 nach bestandenem Build und anschließender Live-Kontrolle.
 
 ### 12.10.2026 – Codex – Version 1.1.0
 

@@ -14,6 +14,7 @@ import {
 import { checkLesson, preview } from "./checks.js";
 import { zipFiles } from "./export.js";
 import { bindCodeEditor, readCodeFiles } from "./editor.js";
+import { journey, startingDraft } from "./journey.js";
 const $ = (s) => document.querySelector(s),
   esc = (s) =>
     String(s ?? "").replace(
@@ -98,6 +99,10 @@ function overview() {
  <div class="stats"><div class="stat"><strong>${state.completed.length} / ${lessons.length}</strong><small>Lerneinheiten abgeschlossen</small></div><div class="stat"><strong>${xp(state)}</strong><small>XP gesammelt</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD lokal erfasst</small></div><div class="stat"><strong>Dein Projekt</strong><small>Eine eigene statische Webseite</small></div></div>
  <section class="panel"><p class="eyebrow">Dein nächster Schritt</p><h3>${esc(next.title)}</h3><p>${esc(next.goal)}</p><div class="progress" role="progressbar" aria-label="Lernfortschritt" aria-valuenow="${state.completed.length}" aria-valuemin="0" aria-valuemax="16"><span style="width:${(state.completed.length / 16) * 100}%"></span></div><small>Arbeite nach Empfehlung in Reihenfolge. Alle Einheiten bleiben zum Nachschlagen erreichbar.</small></section>${path()}`;
 }
+function resumePanel() {
+  const next = lessons.find((l) => !state.completed.includes(l.id));
+  return `<section class="panel learning-thread"><p class="eyebrow">Dein roter Faden · ${state.completed.length} / ${lessons.length} abgeschlossen</p><h2>${next ? `Weiter mit Einheit ${lessons.indexOf(next) + 1}: ${esc(next.title)}` : "Deine eigene Webseite ist gewachsen"}</h2><p>Ein Thema, eine Webseite: Du beginnst mit Text, ergänzt Inhalte und gestaltest sie mit CSS. Am Ende testest und präsentierst du dein eigenes Projekt. Arbeite die Einheiten der Reihe nach durch.</p><a class="button" href="#lesson/${next?.id || "l1"}">${next ? "Nächsten Lernschritt öffnen" : "Grundlagen wiederholen"}</a></section>`;
+}
 function path() {
   return (
     `<p class="lead">Vom Grundgerüst über Inhalte und Gestaltung bis zur eigenen Veröffentlichung. BPE2 umfasst 14 Unterrichtsstunden; die Zeitangaben sind Richtwerte für Aufgaben, Vertiefung und Projektarbeit.</p>` +
@@ -123,14 +128,24 @@ function studio(id, free = false) {
       <p class="muted" id="editorHelp">Tab: zwei Leerzeichen einrücken · Umschalt+Tab: ausrücken · Escape, dann Tab: Editor verlassen. Schreibe den Code selbst – wie später in Notepad++.</p>
       <div class="actions"><button id="imageButton" class="button secondary">Bild einfügen</button><input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button id="resetButton" class="button secondary">Startcode laden</button></div>
       <p class="muted">Entwürfe werden auf diesem Gerät gespeichert. Sichere deinen Lernstand regelmäßig im Profil. HTML und CSS bleiben beim Reiterwechsel erhalten.</p>
-    </div><div class="preview-area"><div class="preview-tools"><label class="check-row"><input id="livePreview" type="checkbox" checked> Live-Vorschau</label><label for="previewWidth">Ansicht <select id="previewWidth"><option value="full">Verfügbare Breite</option><option value="360">Handy · 360 px</option></select></label></div><div class="preview-viewport"><iframe id="previewFrame" title="Isolierte Vorschau deiner Webseite" sandbox=""></iframe></div><p id="previewStatus" role="status"></p><p class="muted">HTML beschreibt Inhalte, CSS gestaltet sie. Externe Medien und Skripte sind hier blockiert. Relative Links, Unterseiten und Medien prüfst du nach dem Export im Browser.</p></div></div>
-    <div class="panel"><h3>Vom WebLab zum Informatik-Stick</h3><p>Hier übst du mit direkter Vorschau. Für die Klassenarbeit trainierst du auch mit <strong>Notepad++ 7.5.1 auf dem Informatik-Stick</strong>. Dort ist der Informatik-Stick das erlaubte Werkzeug; WebLab gehört nicht dazu.</p><div class="actions"><button class="button secondary" id="htmlExport">index.html</button><button class="button secondary" id="cssExport">style.css</button><button class="button" id="zipExport">Projekt-ZIP herunterladen</button><button class="button secondary" id="codeImportButton">HTML / CSS vom Stick laden</button><input id="codeImportFile" type="file" accept=".html,.htm,.css" multiple hidden></div><p class="muted">Geladene Dateien ersetzen nach Bestätigung nur die ausgewählten Dateitypen im aktuellen Entwurf. Sie werden lokal verarbeitet. Exportnamen: index.html und style.css.</p>
+    </div><div class="preview-area"><div class="preview-tools"><label class="check-row"><input id="livePreview" type="checkbox" checked> Live-Vorschau</label><button class="button secondary" id="largePreviewButton">Webseite groß ansehen</button><label for="previewWidth">Ansicht <select id="previewWidth"><option value="full">Verfügbare Breite</option><option value="360">Handy · 360 px</option></select></label></div><div class="preview-viewport"><iframe id="previewFrame" title="Isolierte Vorschau deiner Webseite" sandbox=""></iframe></div><p id="previewStatus" role="status"></p><p class="muted">HTML beschreibt Inhalte, CSS gestaltet sie. Externe Medien und Skripte sind hier blockiert. Relative Links, Unterseiten und Medien prüfst du nach dem Export im Browser.</p></div></div>
+    <dialog id="largePreviewDialog" class="large-preview" aria-labelledby="largePreviewTitle"><div class="studio-header"><h3 id="largePreviewTitle">Deine Webseite im Browser</h3><button class="button secondary" id="closeLargePreview">Zurück zum Code</button></div><iframe id="largePreviewFrame" title="Große Browseransicht deiner Webseite" sandbox=""></iframe><p>Das ist dein aktueller HTML- und CSS-Code als Webseite. Relative Dateien und Links testest du nach dem Export im Projektordner.</p></dialog><div class="panel"><h3>Vom WebLab zum Informatik-Stick</h3><p>Hier übst du mit direkter Vorschau. Für die Klassenarbeit trainierst du auch mit <strong>Notepad++ 7.5.1 auf dem Informatik-Stick</strong>. Dort ist der Informatik-Stick das erlaubte Werkzeug; WebLab gehört nicht dazu.</p><div class="actions"><button class="button secondary" id="htmlExport">index.html</button><button class="button secondary" id="cssExport">style.css</button><button class="button" id="zipExport">Projekt-ZIP herunterladen</button><button class="button secondary" id="codeImportButton">HTML / CSS vom Stick laden</button><input id="codeImportFile" type="file" accept=".html,.htm,.css" multiple hidden></div><p class="muted">Geladene Dateien ersetzen nach Bestätigung nur die ausgewählten Dateitypen im aktuellen Entwurf. Sie werden lokal verarbeitet. Exportnamen: index.html und style.css.</p>
     <details><summary>Notepad++ üben: speichern → Browser → prüfen</summary><ol><li>Lade das Projekt-ZIP herunter und entpacke es in einen eigenen Projektordner auf deinem Stick. index.html und style.css liegen im selben Ordner.</li><li>Starte Notepad++ vom Informatik-Stick. Öffne beide Dateien in Notepad++ und index.html zusätzlich im Browser.</li><li>Ändere deinen Code in Notepad++. Speichere die bearbeitete Datei mit <kbd>Strg</kbd> + <kbd>S</kbd>. Wechsle zum Browser und aktualisiere mit <kbd>F5</kbd>.</li><li>Prüfe Dateinamen und Endungen: index.html, nicht index.html.txt. Verwende UTF-8. Der HTML-Kopf verknüpft die Gestaltung mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li><li>Teste auch Links und Bilder im Projektordner. Über „HTML / CSS vom Stick laden“ kannst du deinen Code später wieder in dieser Einheit weiterbearbeiten.</li></ol><p><strong>Transfer-Auftrag:</strong> Ändere eine Überschrift und eine CSS-Farbe ausschließlich in Notepad++. Speichere beide Dateien, aktualisiere den Browser und erkläre, welche Datei welche Änderung bewirkt hat.</p></details>
     </div></section>`;
 }
+function lessonJourney(l) {
+  const step = journey[l.id],
+    index = lessons.indexOf(l),
+    next = lessons.find((item) => !state.completed.includes(item.id));
+  return `<section class="panel learning-thread" aria-label="Dein roter Faden"><p class="eyebrow">Deine eigene Webseite wächst weiter</p><h3>Schritt ${index + 1} von ${lessons.length}: ${esc(step.addition)}</h3><ol class="journey-steps" aria-label="Reihenfolge der Lerneinheiten">${lessons.map((item, i) => `<li><a href="#lesson/${item.id}" ${item.id === l.id ? 'aria-current="step"' : ""} class="${state.completed.includes(item.id) ? "done" : ""}" aria-label="Einheit ${i + 1}: ${esc(item.title)}${state.completed.includes(item.id) ? ", abgeschlossen" : ""}">${i + 1}</a></li>`).join("")}</ol><p><strong>Daran knüpfst du an:</strong> ${esc(step.recall)}</p>${step.previous && !state.completed.includes(step.previous) ? `<p class="teacher-note">Bearbeite zuerst <a href="#lesson/${step.previous}">Einheit ${index}: ${esc(byId(step.previous).title)}</a>. Du kannst diese Einheit bereits ansehen.</p>` : ""}<p>Behalte dein Thema bei und erweitere deine eigene Webseite. Beim ersten Öffnen beginnt diese Einheit mit einer Kopie deines vorherigen Entwurfs, sofern einer vorhanden ist. Bereits bearbeitete Einheiten behalten ihren eigenen Stand.</p>${step.previous && state.drafts[step.previous] ? `<div class="actions"><button class="button secondary" id="takePrevious">Entwurf aus Einheit ${index} übernehmen</button></div>` : ""}${next && next.id !== l.id ? `<a href="#lesson/${next.id}">Zu meinem nächsten offenen Schritt: ${esc(next.title)}</a>` : ""}</section>`;
+}
+function lessonPractice(l) {
+  const step = journey[l.id];
+  return `<section class="panel practice-steps"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3><ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor">Jetzt direkt im Code ausprobieren</a></section>`;
+}
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><div class="lesson-layout"><section class="panel"><h3>Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre></section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${studio(l.id)}<section class="panel"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel"><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `<a class="button" href="#lesson/l${lessons.indexOf(l) + 2}">Nächste Einheit</a>` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonJourney(l)}<div class="lesson-layout"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre></section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${studio(l.id)}<section class="panel"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel"><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `<a class="button" href="#lesson/l${lessons.indexOf(l) + 2}">Nächste Einheit</a>` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -183,6 +198,31 @@ function files() {
 }
 function bindStudio(l) {
   $("#runButton").onclick = run;
+  $("#largePreviewButton").onclick = () => {
+    run();
+    $("#largePreviewFrame").srcdoc = preview(draft().html, draft().css);
+    $("#largePreviewDialog").showModal();
+  };
+  $("#closeLargePreview").onclick = () => $("#largePreviewDialog").close();
+  $("#jumpEditor")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    $("#studioTitle").scrollIntoView({ behavior: "smooth" });
+    $("#htmlEditor").focus({ preventScroll: true });
+  });
+  $("#takePrevious")?.addEventListener("click", () => {
+    const previous = journey[l.id].previous;
+    if (
+      !confirm(
+        "Den aktuellen Entwurf durch eine Kopie aus der vorherigen Einheit ersetzen? Dein Lernstand wird zuerst als Datei gesichert.",
+      )
+    )
+      return;
+    capture();
+    backup();
+    state.drafts[l.id] = { ...state.drafts[previous] };
+    save();
+    render();
+  });
   const updates = {};
   const selectFile = (kind, focus = false) => {
     for (const type of ["html", "css"]) {
@@ -425,11 +465,13 @@ function render() {
     html = "";
   if (l) {
     activeId = l.id;
+    if (!state.drafts[l.id])
+      state.drafts[l.id] = startingDraft(state.drafts, l.id);
     title = l.title;
     html = lessonView(l);
   } else if (route === "path") {
     title = "Dein Lernpfad";
-    html = path();
+    html = resumePanel() + path();
   } else if (route === "lab") {
     activeId = "lab";
     title = "Freies Labor";
@@ -449,7 +491,7 @@ function render() {
       )
       .join("");
   } else {
-    html = overview();
+    html = resumePanel() + overview();
     if (route !== "home")
       html =
         '<p role="status">Diese Seite gibt es nicht. Hier findest du den Lernpfad.</p>' +
@@ -511,6 +553,14 @@ function render() {
         $("#completeButton").textContent = "✓ Abgeschlossen";
         $("#completionResult").textContent =
           "100 XP und 5 NAGOLD einmalig erfasst. Sichere deinen Lernstand.";
+        const next = journey[l.id].next;
+        if (next) {
+          const link = document.createElement("a");
+          link.className = "button";
+          link.href = `#lesson/${next}`;
+          link.textContent = `Weiter: ${byId(next).title}`;
+          $("#completionResult").append(document.createElement("br"), link);
+        }
       } else
         $("#completionResult").textContent =
           "Beantworte den Verständnischeck und bestätige die Selbstkontrolle.";

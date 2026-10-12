@@ -614,6 +614,52 @@ textarea#cssEditor {
 .studio-grid > * {
   min-width: 0;
 }
+.journey-steps {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  gap: 0.4rem;
+  padding: 0;
+}
+.journey-steps a {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+.journey-steps a.done {
+  border-color: var(--green);
+}
+.journey-steps a[aria-current="step"] {
+  background: var(--brand);
+  color: var(--bg);
+  font-weight: 800;
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+.learning-thread {
+  border-left: 4px solid var(--brand);
+}
+.practice-steps li {
+  margin-bottom: 0.7rem;
+}
+.large-preview {
+  width: min(1200px, 96vw);
+  max-width: 96vw;
+  padding: 0;
+}
+.large-preview iframe {
+  display: block;
+  height: 70vh;
+  border: 0;
+  border-radius: 0;
+}
+.large-preview > p {
+  padding: 0.7rem 1rem;
+  margin: 0;
+}
 .studio [hidden] {
   display: none !important;
 }

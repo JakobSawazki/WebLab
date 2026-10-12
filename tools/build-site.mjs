@@ -13,6 +13,7 @@ for (const f of [
   "glossary.js",
   "export.js",
   "editor.js",
+  "journey.js",
 ])
   fs.copyFileSync(path.join(root, f), path.join(out, f));
 fs.mkdirSync(path.join(out, "assets"), { recursive: true });
@@ -29,6 +30,7 @@ const allowed = new Set([
   "glossary.js",
   "export.js",
   "editor.js",
+  "journey.js",
   ".nojekyll",
   "assets/favicon.svg",
   "assets/weblab-logo.png",

@@ -6,6 +6,7 @@
   <script type="module">
     import { lessons } from "/content.js";
     import { checkLesson } from "/checks.js";
+    import { blank, STORAGE_KEY } from "/state.js";
     const samples = [
       "<h1>Robotik AG</h1><p>Wir bauen <strong>gemeinsam</strong> Roboter für unsere Schule.</p>",
       '<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Robotik AG</title></head><body><h1>Robotik AG</h1></body></html>',
@@ -237,6 +238,83 @@
     input("htmlEditor", previousHTML);
     input("cssEditor", previousCSS);
     editorFrame.remove();
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    const practiceState = blank();
+    practiceState.drafts.l1 = {
+      html: "<h1>Mein Garten</h1><p>Unser eigenes Projekt.</p>",
+      css: "h1 {color:green;}",
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(practiceState));
+    const threadFrame = document.createElement("iframe");
+    threadFrame.style.cssText = "width:360px;height:800px;border:0";
+    const threadLoaded = new Promise(
+      (resolve) => (threadFrame.onload = resolve),
+    );
+    threadFrame.src = "/#lesson/l2";
+    document.body.append(threadFrame);
+    await threadLoaded;
+    const threadDoc = threadFrame.contentDocument,
+      threadWin = threadFrame.contentWindow;
+    const item = (id) => threadDoc.getElementById(id);
+    assert(
+      item("htmlEditor").value === practiceState.drafts.l1.html &&
+        item("cssEditor").value === practiceState.drafts.l1.css,
+      "Neue Einheit uebernimmt HTML und CSS des vorherigen Projekts",
+    );
+    assert(
+      threadDoc.querySelectorAll(".journey-steps a").length === 16 &&
+        threadDoc.querySelector('.journey-steps [aria-current="step"]')
+          .textContent === "2",
+      "Roter Faden zeigt alle Schritte und die aktuelle Einheit",
+    );
+    item("jumpEditor").click();
+    assert(
+      threadWin.location.hash === "#lesson/l2" &&
+        threadDoc.activeElement === item("htmlEditor"),
+      "Praxislink fokussiert Editor ohne die Einheit zu verlassen",
+    );
+    item("largePreviewButton").click();
+    assert(
+      item("largePreviewDialog").open &&
+        item("largePreviewFrame").srcdoc.includes("Mein Garten"),
+      "Grosse Browseransicht zeigt den aktuellen eigenen Code",
+    );
+    assert(
+      item("largePreviewFrame").getAttribute("sandbox") === "" &&
+        item("largePreviewDialog").getBoundingClientRect().width <= 360,
+      "Grosse Vorschau bleibt isoliert und passt in schmalen Viewport",
+    );
+    item("closeLargePreview").click();
+    assert(
+      !item("largePreviewDialog").open,
+      "Rueckkehr von der Webseite zum Code funktioniert",
+    );
+    item("htmlEditor").value = "<h1>Mein Garten waechst</h1>";
+    item("htmlEditor").dispatchEvent(
+      new threadWin.Event("input", { bubbles: true }),
+    );
+    const navigateThread = async (hash) => {
+      threadWin.location.hash = hash;
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    };
+    await navigateThread("#lesson/l3");
+    assert(
+      item("htmlEditor").value.includes("waechst"),
+      "Naechste Einheit setzt das erweiterte Projekt fort",
+    );
+    await navigateThread("#lesson/l1");
+    assert(
+      item("htmlEditor").value === practiceState.drafts.l1.html,
+      "Vorherige Einheit behaelt ihren gesicherten Stand",
+    );
+    await navigateThread("#lesson/l2");
+    assert(
+      item("htmlEditor").value.includes("waechst"),
+      "Erneutes Oeffnen ueberschreibt vorhandenen Entwurf nicht",
+    );
+    threadFrame.remove();
+    if (savedState === null) localStorage.removeItem(STORAGE_KEY);
+    else localStorage.setItem(STORAGE_KEY, savedState);
     document.querySelector("#results").textContent =
       `${count - failed}/${count} Prüfungen bestanden, ${failed} fehlgeschlagen.\n\n` +
       out.join("\n");

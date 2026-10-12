@@ -10,6 +10,8 @@ Statische Lernumgebung zu **BPE2: Entwicklung von Internetseiten**, im Aufbau un
 
 Seit Version 1.1.0: Editor mit Dateireitern, Zeilennummern, Live-/Handyvorschau, lokalem HTML-/CSS-Import und Übungsablauf für Notepad++ 7.5.1 auf dem Informatik-Stick.
 
+Seit Version 1.2.0: durchgehender Lernpfad mit nächstem Lernschritt, Vorwissen, drei Arbeitsschritten und Beobachtungsauftrag je Einheit. Neue Einheiten übernehmen eine Kopie des vorherigen Entwurfs; die eigene Webseite wächst weiter. Die Vorschau kann als große Browseransicht geöffnet werden.
+
 ```text
 npm test
 npm run build

@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.10.0";
+const VERSION = "1.11.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -2413,6 +2413,52 @@ $("#menuButton").onclick = () => {
     );
   } catch {}
 };
+// The lesson list below "Lernpfad" is rendered only while it is open, so a
+// closed menu never leaves hidden links in the navigation.
+let lessonMenuOpen = false;
+try {
+  lessonMenuOpen = localStorage.getItem("weblab-lessonmenu-v1") === "open";
+} catch {}
+function updateLessonMenu() {
+  const button = $("#lessonMenuButton"),
+    menu = $("#lessonMenu"),
+    label = lessonMenuOpen
+      ? "Lerneinheiten ausblenden"
+      : "Lerneinheiten anzeigen";
+  button.setAttribute("aria-expanded", String(lessonMenuOpen));
+  button.setAttribute("aria-label", label);
+  button.title = label;
+  menu.hidden = !lessonMenuOpen;
+  menu.innerHTML = lessonMenuOpen
+    ? lessons
+        .map((l) => {
+          const number = l.id.slice(1).padStart(2, "0"),
+            access = lessonAccess(state, l.id),
+            done = state.completed.includes(l.id),
+            current = location.hash === "#lesson/" + l.id,
+            status = !access.unlocked
+              ? "is-locked"
+              : done
+                ? "is-done"
+                : "is-next",
+            body = `<span class="lesson-menu-num">${number}</span><span class="lesson-menu-title">${esc(l.title)}</span>`;
+          return access.unlocked
+            ? `<a class="lesson-menu-item ${status}" href="#lesson/${l.id}" aria-label="Einheit ${number}: ${esc(l.title)}${done ? " (abgeschlossen)" : ""}"${current ? ' aria-current="page"' : ""}>${body}</a>`
+            : `<span class="lesson-menu-item ${status}" title="Ab ${access.requiredXP} Lernpfad-XP">${body}<span class="sr-only"> – gesperrt, ab ${access.requiredXP} Lernpfad-XP</span></span>`;
+        })
+        .join("")
+    : "";
+}
+$("#lessonMenuButton").onclick = () => {
+  lessonMenuOpen = !lessonMenuOpen;
+  updateLessonMenu();
+  try {
+    localStorage.setItem(
+      "weblab-lessonmenu-v1",
+      lessonMenuOpen ? "open" : "closed",
+    );
+  } catch {}
+};
 function toast(message) {
   $("#toast").textContent = message;
   clearTimeout(toastTimer);
@@ -2929,6 +2975,7 @@ function render() {
   $("#mainContent").innerHTML = html;
   decorateIcons();
   stats();
+  updateLessonMenu();
   document.querySelectorAll(".nav-item").forEach((a) => {
     const current =
       a.hash === location.hash ||
@@ -3124,9 +3171,8 @@ window.addEventListener("storage", (e) => {
     toast(storageError);
   }
 });
-document
-  .querySelectorAll(".version")
-  .forEach((el) => (el.textContent = VERSION));
+// The version is no longer printed; it stays available as a tooltip.
+$(".portal-footer").title = "WebLab " + VERSION;
 render();
 if (storageError) toast(storageError);
 

@@ -40,14 +40,26 @@
             ><span data-icon="home" aria-hidden="true"></span
             ><span class="nav-label">Übersicht</span></a
           >
-          <a
-            class="nav-item"
-            href="#path"
-            title="Lernpfad"
-            aria-label="Lernpfad"
-            ><span data-icon="path" aria-hidden="true"></span
-            ><span class="nav-label">Lernpfad</span></a
-          >
+          <div class="nav-group">
+            <a
+              class="nav-item"
+              href="#path"
+              title="Lernpfad"
+              aria-label="Lernpfad"
+              ><span data-icon="path" aria-hidden="true"></span
+              ><span class="nav-label">Lernpfad</span></a
+            >
+            <button
+              type="button"
+              class="nav-toggle"
+              id="lessonMenuButton"
+              aria-controls="lessonMenu"
+              aria-expanded="false"
+              aria-label="Lerneinheiten anzeigen"
+              title="Lerneinheiten anzeigen"
+            ></button>
+          </div>
+          <div class="lesson-menu" id="lessonMenu" hidden></div>
           <a
             class="nav-item"
             href="#lab"
@@ -85,10 +97,6 @@
             ><span class="nav-label">Meine Notizen</span></a
           >
         </nav>
-        <div class="sidebar-bottom">
-          <p class="eyebrow">Von der Idee zur Webseite</p>
-          <p>Verstehen. Ausprobieren.<br />Selbständig entwickeln.</p>
-        </div>
       </aside>
       <div class="page-column">
         <header class="topbar">
@@ -117,9 +125,13 @@
             >
               ◐
             </button>
-            <button id="backupButton" class="button secondary">
-              Sichern / Laden
-            </button>
+            <button
+              id="backupButton"
+              class="icon-button"
+              aria-label="Lernstand sichern oder laden"
+              title="Lernstand sichern oder laden"
+              aria-haspopup="dialog"
+            ></button>
             <button
               id="profileButton"
               class="button profile-trigger"
@@ -139,7 +151,6 @@
             rel="noopener"
             >Sawazki Electronics</a
           >
-          · WebLab <span class="version"></span>
         </footer>
       </div>
     </div>

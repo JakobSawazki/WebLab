@@ -1,11 +1,11 @@
 :root {
   color-scheme: dark;
-  --bg: #070f1c;
-  --panel: #101e35;
-  --panel-strong: #1b3152;
+  --bg: #050b15;
+  --panel: #0c182b;
+  --panel-strong: #152742;
   --text: #f1f5fb;
   --muted: #b4c3d8;
-  --line: #2f4767;
+  --line: #2a405f;
   --brand: #afd1ff;
   --green: #8bd5ab;
   --amber: #e6b76e;
@@ -15,15 +15,15 @@
   --accent: #ead3a9;
   --accent-end: #d6b67e;
   --accent-text: #242016;
-  --glow: #3f7fd930;
-  --metal-top: #2a4470;
-  --metal-mid: #172b4a;
-  --metal-bottom: #0d1a2f;
-  --metal-rim: #54719a;
+  --glow: #3f7fd926;
+  --metal-top: #1d3255;
+  --metal-mid: #11213a;
+  --metal-bottom: #091424;
+  --metal-rim: #4a668e;
   --metal-glint: #cfe2ff33;
   --grain-light: #cfe0ff0b;
   --grain-dark: #00081826;
-  --sheen: #bcd6ff12;
+  --sheen: #bcd6ff0f;
   --bevel-dark: #00040c8c;
   --panel-shadow: 0 10px 28px #0008;
   --mono: Consolas, monospace;
@@ -244,13 +244,13 @@ small,
 }
 .main-nav {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.2rem;
 }
 .nav-item {
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  padding: 0.85rem;
+  padding: 0.45rem 0.85rem;
   border: 1px solid transparent;
   border-radius: 8px;
   color: var(--muted);
@@ -346,11 +346,118 @@ small,
     inset 0 1px var(--metal-glint),
     inset 0 -1px var(--bevel-dark);
 }
-.sidebar-bottom {
-  margin-top: auto;
-  padding: 1.5rem 0.85rem 0.5rem;
-  border-top: 1px solid var(--line);
-  font-size: 0.9rem;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+/* "Lernpfad" with a fold-out list of the sixteen lessons. */
+.nav-group {
+  position: relative;
+  display: grid;
+  min-width: 0;
+}
+.nav-group > .nav-item {
+  padding-right: 2.9rem;
+}
+.nav-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.45rem;
+  width: 34px;
+  height: 34px;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: none;
+  color: var(--muted);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+.nav-toggle::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 160ms ease;
+}
+.nav-toggle[aria-expanded="true"]::before {
+  transform: translateY(2px) rotate(-135deg);
+}
+.nav-toggle:hover,
+.nav-toggle[aria-expanded="true"] {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--brand) 34%, var(--line));
+  background: color-mix(in srgb, var(--brand) 12%, transparent);
+}
+.lesson-menu {
+  display: grid;
+  gap: 1px;
+  margin: 0.1rem 0 0.35rem 1.95rem;
+  padding-left: 0.7rem;
+  border-left: 1px solid color-mix(in srgb, var(--brand) 30%, var(--line));
+}
+.lesson-menu[hidden] {
+  display: none;
+}
+.lesson-menu-item {
+  display: grid;
+  grid-template-columns: 1.9rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 34px;
+  padding: 0.2rem 0.5rem;
+  border: 0;
+  border-radius: 7px;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.3;
+}
+.lesson-menu-num {
+  display: grid;
+  place-items: center;
+  height: 22px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: 600 0.72rem var(--mono);
+  font-variant-numeric: tabular-nums;
+}
+.lesson-menu-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+a.lesson-menu-item:hover,
+.lesson-menu-item[aria-current="page"] {
+  text-decoration: none;
+  color: var(--text);
+  background: color-mix(in srgb, var(--brand) 13%, transparent);
+}
+.lesson-menu-item[aria-current="page"] {
+  font-weight: 600;
+  box-shadow: inset 2px 0 var(--brand);
+}
+.lesson-menu-item.is-done .lesson-menu-num {
+  color: var(--green);
+  border-color: color-mix(in srgb, var(--green) 55%, var(--line));
+}
+.lesson-menu-item.is-next .lesson-menu-num {
+  color: var(--bg);
+  background: var(--brand);
+  border-color: var(--brand);
+}
+.lesson-menu-item.is-locked {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .eyebrow {
   text-transform: uppercase;
@@ -1179,6 +1286,7 @@ th {
 }
 .portal-footer {
   padding: 1.5rem 2rem;
+  text-align: right;
   color: var(--muted);
   font-size: 0.8rem;
   border-top: 1px solid var(--line);
@@ -1283,7 +1391,23 @@ dialog::backdrop {
   }
   .main-nav {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-flow: dense;
     gap: 0.25rem;
+  }
+  .nav-group > .nav-item {
+    padding-right: 0.55rem;
+  }
+  .nav-toggle {
+    top: 0.2rem;
+    right: 0.1rem;
+    transform: none;
+  }
+  .lesson-menu {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0.2rem 0;
+    padding-left: 0;
+    border-left: 0;
   }
   .nav-item {
     padding: 0.55rem;
@@ -1307,9 +1431,6 @@ dialog::backdrop {
   .nav-item > [data-icon] .ui-icon {
     width: 19px;
     height: 19px;
-  }
-  .sidebar-bottom {
-    display: none;
   }
   .topbar {
     flex-wrap: wrap;
@@ -1413,14 +1534,17 @@ dialog::backdrop {
     justify-content: center;
   }
   :root[data-menu="collapsed"] .brand > span,
-  :root[data-menu="collapsed"] .nav-label,
-  :root[data-menu="collapsed"] .sidebar-bottom {
+  :root[data-menu="collapsed"] .nav-label {
     display: none;
   }
   :root[data-menu="collapsed"] .nav-item {
     justify-content: center;
     padding: 0.65rem 0;
     gap: 0;
+  }
+  :root[data-menu="collapsed"] .nav-toggle,
+  :root[data-menu="collapsed"] .lesson-menu {
+    display: none;
   }
 }
 @media (max-width: 760px) {

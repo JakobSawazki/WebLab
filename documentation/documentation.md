@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.10.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.11.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.10.0 |
+| Bereich | Version 1.11.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -114,7 +114,7 @@ WebLab/
     tools/                   Bundler, Build und lokaler Browserprüfserver
     tests/                   21 Node-Tests und Browserprüfseite
   documentation/documentation.md
-  documentation/WebLab-1.10.0.png
+  documentation/WebLab-1.11.0.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
   README.md                  kurze Startanleitung
   CLAUDE.md                  Wegweiser auf diese Dokumentation
@@ -190,7 +190,7 @@ Geprüft durch Codex am 12.10.2026:
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
-- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.10.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
+- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.11.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
 - Responsive Prüfung: Startseite, Einheiten 1 und 12 sowie Glossar bei tatsächlich 360 Pixel breiten eingebetteten Browserfenstern ohne horizontalen Überlauf. Der direkte Viewport-Schalter des Browserwerkzeugs änderte die native Ansicht nicht; deshalb wurde die Breite unabhängig in der lokalen Browser-Testseite geprüft. Physische Mobilgeräte und Bildschirmleser bleiben noch ungetestet.
 
 Offene Erweiterungen, nach Priorität:
@@ -232,6 +232,21 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Claude – Version 1.11.0
+
+Weitere Rückmeldungen von Jakob aus Edge, direkt nach 1.10.0 umgesetzt:
+
+- **Dunkler:** Die Tokens des dunklen Farbschemas (`--bg`, `--panel`, `--panel-strong`, `--line`, `--metal-*`, `--sheen`, `--glow`) sind eine Stufe dunkler; das helle Schema ist unverändert.
+- **Menü kompakter:** Abstand zwischen den Menüpunkten und deren Innenabstand verringert (Zeilenhöhe 54 statt 67 Pixel).
+- **Lerneinheiten im Menü:** Neben „Lernpfad“ sitzt ein Pfeilschalter (`#lessonMenuButton`, `aria-expanded`, `aria-controls`). Aufgeklappt listet `#lessonMenu` alle 16 Einheiten mit Nummer und Titel. Freigeschaltete Einheiten sind Links, die aktuelle ist markiert, abgeschlossene haben eine grüne Nummer, die nächste offene eine hervorgehobene. Gesperrte Einheiten sind keine Links, sondern abgeblendete Einträge mit dem Hinweis auf die nötigen Lernpfad-XP; maßgeblich ist weiterhin allein `lessonAccess()`. Die Liste wird nur im aufgeklappten Zustand ins DOM geschrieben und bei jedem `render()` aktualisiert. Zustand separat unter `weblab-lessonmenu-v1` im Browserspeicher, standardmäßig eingeklappt, unabhängig vom Lernstand. In der eingeklappten Iconleiste sind Schalter und Liste ausgeblendet; bis 760 Pixel erscheint die Liste zweispaltig über die volle Breite. Die Liste enthält bewusst keine SVGs, damit die Prüfung „sechs dekorative Navigationsicons“ gültig bleibt.
+- **Sichern / Laden:** In der Kopfzeile nur noch das Disketten-Symbol (56 x 56 Pixel) mit `aria-label` und Tooltip „Lernstand sichern oder laden“.
+- **Seitenleiste unten:** Der Block „Von der Idee zur Webseite …“ ist auf Jakobs Wunsch samt CSS entfernt.
+- **Fußzeile:** nur noch „Designed by Sawazki Electronics“ mit Link auf https://jakobsawazki.github.io/sawazki-electronics/, rechtsbündig. Die Versionsnummer wird nicht mehr gedruckt; sie steht als Tooltip (`title`) an der Fußzeile und in `package.json` bzw. `content.js`.
+
+Zur Frage der Sperre: Einheiten 02–16 sind bereits seit 1.7.0 anfangs gesperrt und werden nacheinander freigeschaltet; das wurde nicht verändert und gilt auch für das neue Menü.
+
+Prüfung: 21 Node-Tests und Build bestanden; 140/140 Browserprüfungen. Zusätzlich im Browser geprüft: Menü aufgeklappt bei frischem Profil zeigt genau einen Link (Einheit 01) und 15 gesperrte Einträge, kein horizontaler Überlauf bei 573 und 1280 Pixeln, weiterhin sechs SVG-Icons in der Navigation, Fußzeile rechtsbündig mit Link und Versions-Tooltip, keine Konsolenfehler. Screenshot: `documentation/WebLab-1.11.0.png`. Offen: Für das Lerneinheiten-Menü gibt es noch keine eigene automatische Browserprüfung in `development/tests/browser.html`. Hinweis: Der Prüflauf unter `/__qa` löst über die Sicherungsfunktion einen echten JSON-Download aus (`WebLab-Gast-….json`); je nach Browsereinstellung erscheint dabei ein Speichern-Dialog. Die Datei ist ein Test-Lernstand und kann gelöscht werden.
 
 ### 12.10.2026 – Claude – Version 1.10.0
 

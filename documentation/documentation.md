@@ -193,6 +193,8 @@ Editor: „Webseite groß ansehen“ öffnet den aktuellen HTML-/CSS-Code in ein
 
 Technik: journey.js ergänzt die Content-Daten um Lernschritte und eine reine Funktion für Entwurfskopien. Build-Allowlist auf 14 Dateien erweitert. Vorhandene Profile, XP/NAGOLD und Sicherungsformate bleiben kompatibel. Keine zusätzliche Abhängigkeit.
 
+Veröffentlichungs-Cache: Der Build versieht App-Einstieg, CSS und alle lokalen ES-Modulimporte mit der aktuellen Versionskennung. Der Live-Test zeigte zuvor noch einzeln zwischengespeicherte Module aus 1.1.0. Die Versionskennung gilt für den gesamten Modulgraphen; Quelldateien bleiben unverändert. Bei jeder Codeänderung für eine Veröffentlichung die Version erhöhen. Veraltetes HTML kann weiterhin ein Neuladen benötigen.
+
 Prüfungen: 13 Node-Tests und 81 Browserprüfungen bestanden, darunter der Übergang l1 → l2 → l3 und zurück mit HTML/CSS-Erhalt. Große Vorschau und Rückkehr zum Code visuell geprüft; 360-Pixel-Layoutprüfung bestanden. Unterrichtserprobung und Bildschirmlesertest bleiben offen.
 
 Veröffentlichung: in Vorbereitung für main und v1.2.0 nach bestandenem Build und anschließender Live-Kontrolle.

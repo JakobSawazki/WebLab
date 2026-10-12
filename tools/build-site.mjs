@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { VERSION } from "../content.js";
 const root = path.resolve(import.meta.dirname, ".."),
   out = path.join(root, "dist");
 fs.mkdirSync(out, { recursive: true });
@@ -14,8 +15,21 @@ for (const f of [
   "export.js",
   "editor.js",
   "journey.js",
-])
-  fs.copyFileSync(path.join(root, f), path.join(out, f));
+]) {
+  let source = fs.readFileSync(path.join(root, f), "utf8");
+  // Version the entire module graph, not only the entry point: school browsers
+  // may otherwise retain an earlier, individually cached JavaScript module.
+  if (f.endsWith(".js"))
+    source = source.replace(
+      /(["'])(\.\/[a-z-]+\.js)\1/g,
+      (_, quote, file) => `${quote}${file}?v=${VERSION}${quote}`,
+    );
+  if (f === "index.html")
+    source = source
+      .replace('href="styles.css"', `href="styles.css?v=${VERSION}"`)
+      .replace('src="app.js"', `src="app.js?v=${VERSION}"`);
+  fs.writeFileSync(path.join(out, f), source);
+}
 fs.mkdirSync(path.join(out, "assets"), { recursive: true });
 for (const f of ["favicon.svg", "weblab-logo.png", "weblab-hero.png"])
   fs.copyFileSync(path.join(root, "assets", f), path.join(out, "assets", f));

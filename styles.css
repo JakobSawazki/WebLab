@@ -319,7 +319,15 @@ small,
 .topbar-actions {
   display: flex;
   gap: 0.6rem;
-  align-items: center;
+  align-items: stretch;
+}
+.topbar-actions > .button,
+.topbar-actions > .icon-button {
+  min-height: 56px;
+}
+.topbar-actions > .icon-button {
+  width: 56px;
+  flex: 0 0 56px;
 }
 .ui-icon {
   width: 20px;

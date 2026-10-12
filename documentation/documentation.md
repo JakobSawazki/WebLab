@@ -103,7 +103,7 @@ WebLab/
     tools/                   Bundler, Build und lokaler Browserprüfserver
     tests/                   21 Node-Tests und Browserprüfseite
   documentation/documentation.md
-  documentation/WebLab-1.9.0.png
+  documentation/WebLab-1.9.1.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
   README.md                  kurze Startanleitung
   CLAUDE.md                  Wegweiser auf diese Dokumentation
@@ -166,7 +166,7 @@ Geprüft durch Codex am 12.10.2026:
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
-- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.9.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
+- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.9.1.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
 - Responsive Prüfung: Startseite, Einheiten 1 und 12 sowie Glossar bei tatsächlich 360 Pixel breiten eingebetteten Browserfenstern ohne horizontalen Überlauf. Der direkte Viewport-Schalter des Browserwerkzeugs änderte die native Ansicht nicht; deshalb wurde die Breite unabhängig in der lokalen Browser-Testseite geprüft. Physische Mobilgeräte und Bildschirmleser bleiben noch ungetestet.
 
 Offene Erweiterungen, nach Priorität:
@@ -178,6 +178,34 @@ Offene Erweiterungen, nach Priorität:
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser, optionale Offline-Kopie und Browserprüfungen in CI.
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
+
+### Anforderungsabgleich am 12.10.2026
+
+Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend konkret gewünschten Änderungen. Die obigen Erweiterungsideen sind keine neu vereinbarten Pflichtanforderungen. Eine Unterrichtserprobung kann Codex nicht als bereits erfolgt bestätigen.
+
+| Anforderung | Aktuelle Nachweise | Ergebnis |
+| --- | --- | --- |
+| Aufbau und Gestaltung wie WorkbenchLab | WorkbenchLab/index.html und state.js erneut mit WebLab verglichen: statische Anwendung, dunkle/helle Gestaltung, Profil mit Kürzel/Klasse, Lernpfad und lokaler Lernstand | Umgesetzt; fachliche Inhalte für HTML/CSS eigenständig |
+| Verständlicher roter Faden durch BPE2 | 16 Einheiten in content.js, Vorwissen/Arbeitsschritte/Beobachtung in journey.js; Kette und Entwurfübernahme in journey.test.mjs und Browserprüfung | Umgesetzt; praktische Unterrichtserprobung empfohlen |
+| Bildungsplan BPE2 als Grundlage | PDF-Seite 11 erneut vollständig als Text gelesen; 2.1 HTML/Dateinamen/Pfade/Medien/Listen/Links/Tabellen, 2.2 CSS-Ebenen/Selektoren/Box-Modell/Typografie, 2.3 Recht und geschützter Upload den Einheiten zugeordnet | Themen abgedeckt; echter Upload bleibt ausdrücklich Unterrichtsaufgabe |
+| Schülerprofil, Punkte und NAGOLD | Lokales Profil wie WorkbenchLab, state.js; state.test.mjs und Browserablauf Profil/Abschluss/Sicherung | Umgesetzt; keine Serveranmeldung beauftragt oder behauptet |
+| Anfangs nur Einheit 01, danach 02, 03 usw. | progression.test.mjs prüft sämtliche 16 Freischaltstufen, einmalige XP und Lücken; Browserprüfung prüft Direktlinks und Erhalt nach Neuladen | Umgesetzt |
+| HTML direkt programmieren und echte Darstellung sehen | HTML/CSS-Reiter, sandbox-Vorschau, Handyansicht, große Browseransicht; Browserprüfung kontrolliert Eingabe, Darstellung, manuelle Aktualisierung und Entwurftrennung | Umgesetzt |
+| Vorbereitung auf Notepad++ 7.5.1 vom Informatik-Stick | Import, HTML/CSS/ZIP-Export, Transferaufträge mit Strg+S/F5; ZIP-Struktur und Import geprüft | Umgesetzt; Schuleinsatz auf echtem Stick nicht vorgetäuscht |
+| Eigene statische Webseite entwickeln | Abschlussprojekt in Einheit 16, Projektentwurf wächst fortlaufend; Export echter index.html und style.css | Umgesetzt; zusätzliche Unterseite wird aktuell in Notepad++ erstellt |
+| Start durch index.html ohne start.cmd | Klassisches defer-Skript weblab.js, lokale CSS-/Bilddateien, keine Modulimporte oder Netzabrufe im Laufzeitpaket gefunden; start.cmd fehlt | Technisch vorbereitet; Doppelklick und Live-Vorschau im normalen Benutzerbrowser noch praktisch zu bestätigen |
+| Unnötige Dateien entfernen, Tests/tools aufräumen | Frameworkreste und Startskript archiviert; notwendige Entwicklungsdateien unter development/; Prettier legte einen leeren Cache mit Windows-Metadaten an, am 12.10. wieder extern archiviert | Aktiver Stammordner aufgeräumt; keine Laufzeitinstallation nötig |
+| Einheitliche documentation/documentation.md für Jakob/Codex/Claude | Diese Datei; README und CLAUDE.md verweisen hierher | Umgesetzt |
+| GitHub-Repository und Veröffentlichung | Repository JakobSawazki/WebLab; Release v1.9.1; Pages-Workflow 38293274258 für finalen Dokumentationscommit 80345ce erfolgreich; Runtime-Bundle bereits live per SHA-256 identisch bestätigt | Umgesetzt |
+| Edle Buttons, gebürstetes Metall, passende Schrift und Icons | styles.css, icons.js; visuell geprüft, Kontrast und 360-Pixel-Layout in Browserprüfungen | Umgesetzt |
+| Neues fotorealistisches Logo auch als Tab-Icon | assets/weblab-logo.png und favicon.png; beide in index.html referenziert und veröffentlicht | Umgesetzt |
+| Versions-/Gerätehinweis unten links entfernen | sidebar-bottom enthält nur noch Motto; Version steht im allgemeinen Seitenfuß | Umgesetzt |
+| Menü ein- und ausklappen | menuButton mit aria-expanded, desktop Iconleiste und mobilem Einblenden; acht Browserprüfungen für Zustand/Neuladen/Layout | Umgesetzt |
+| Elemente oben rechts gleich hoch | topbar-actions mit gemeinsamer Streckung; zuletzt im echten Online-Tab alle drei Elemente mit 56 px und gleicher Oberkante gemessen | Umgesetzt |
+| OneNote-Materialien lokal sichern | Sechs Seitenauszüge, Bildungsplan und Inventar von 81 Anhangverweisen lokal vorhanden; Originaldownload liefert weiterhin keine Datei | Teilweise; Dateiinhalte der Anhänge noch nicht geprüft |
+| ThommyWeb mit der Zeit ergänzen | Link vorhanden; erneuter Direktabruf weiterhin nicht erreichbar; keine Fremdinhalte ungeprüft übernommen | Spätere Ergänzung, kein behaupteter Inhaltsimport |
+
+Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
 

@@ -12,6 +12,8 @@ Seit Version 1.1.0: Editor mit Dateireitern, Zeilennummern, Live-/Handyvorschau,
 
 Seit Version 1.2.0: durchgehender Lernpfad mit nächstem Lernschritt, Vorwissen, drei Arbeitsschritten und Beobachtungsauftrag je Einheit. Neue Einheiten übernehmen eine Kopie des vorherigen Entwurfs; die eigene Webseite wächst weiter. Die Vorschau kann als große Browseransicht geöffnet werden.
 
+Seit Version 1.3.0: kompakte Startseite mit vier Etappen, Fortschrittsanzeigen und hervorgehobenem nächsten Schritt. Jede Lerneinheit erhält die Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern nach dem Vorbild WorkbenchLab.
+
 ```text
 npm test
 npm run build

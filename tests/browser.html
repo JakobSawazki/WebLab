@@ -312,6 +312,22 @@
       item("htmlEditor").value.includes("waechst"),
       "Erneutes Oeffnen ueberschreibt vorhandenen Entwurf nicht",
     );
+    for (const anchor of threadDoc.querySelectorAll("[data-lesson-anchor]")) {
+      anchor.click();
+      assert(
+        threadWin.location.hash === "#lesson/l2" &&
+          threadDoc.activeElement.id === anchor.dataset.lessonAnchor,
+        "Ablaufnavigation fokussiert " +
+          anchor.dataset.lessonAnchor +
+          " ohne Routenwechsel",
+      );
+    }
+    await navigateThread("#home");
+    assert(
+      threadDoc.querySelectorAll(".phase-card").length === 4 &&
+        threadDoc.querySelectorAll(".learning-thread").length === 1,
+      "Startseite zeigt vier Etappen und genau eine Empfehlung zum Weiterlernen",
+    );
     threadFrame.remove();
     if (savedState === null) localStorage.removeItem(STORAGE_KEY);
     else localStorage.setItem(STORAGE_KEY, savedState);

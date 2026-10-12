@@ -89,15 +89,41 @@ function backup() {
   );
 }
 function card(l) {
-  const done = state.completed.includes(l.id);
-  return `<article class="card"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${done ? "Abgeschlossen" : "Frei zugänglich"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 NAGOLD</small><a class="button secondary" href="#lesson/${l.id}">${done ? "Wiederholen" : "Einheit öffnen"} <span aria-hidden="true">↗</span></a></article>`;
+  const done = state.completed.includes(l.id),
+    recommended =
+      lessons.find((item) => !state.completed.includes(item.id))?.id === l.id;
+  return `<article class="card ${recommended ? "is-next" : ""}"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${done ? "✓ Abgeschlossen" : recommended ? "Dein nächster Schritt" : "Zum Nachschlagen"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 NAGOLD</small><a class="button secondary" href="#lesson/${l.id}">${done ? "Wiederholen" : "Einheit öffnen"} <span aria-hidden="true">↗</span></a></article>`;
 }
 function overview() {
   const next =
     lessons.find((l) => !state.completed.includes(l.id)) || lessons[0];
   return `<section class="hero"><div class="hero-copy"><p class="eyebrow">BPE2 · Deine eigene Webseite beginnt hier</p><h2>Aus deinen Ideen<br>wird eine Webseite.</h2><p>Lerne HTML und CSS Schritt für Schritt. Probiere deinen Code direkt aus und entwickle am Ende eine eigene statische Webseite.</p><div class="actions"><a class="button" href="#lesson/${next.id}">${state.completed.length ? "Weiterlernen" : "Jetzt starten"} <span aria-hidden="true">↗</span></a><a class="button secondary" href="#lab">Freies Labor</a></div></div><div class="hero-art"><span>&lt;idee&gt; → &lt;webseite&gt;</span></div></section>
  <div class="stats"><div class="stat"><strong>${state.completed.length} / ${lessons.length}</strong><small>Lerneinheiten abgeschlossen</small></div><div class="stat"><strong>${xp(state)}</strong><small>XP gesammelt</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD lokal erfasst</small></div><div class="stat"><strong>Dein Projekt</strong><small>Eine eigene statische Webseite</small></div></div>
- <section class="panel"><p class="eyebrow">Dein nächster Schritt</p><h3>${esc(next.title)}</h3><p>${esc(next.goal)}</p><div class="progress" role="progressbar" aria-label="Lernfortschritt" aria-valuenow="${state.completed.length}" aria-valuemin="0" aria-valuemax="16"><span style="width:${(state.completed.length / 16) * 100}%"></span></div><small>Arbeite nach Empfehlung in Reihenfolge. Alle Einheiten bleiben zum Nachschlagen erreichbar.</small></section>${path()}`;
+ ${resumePanel()}${phaseOverview()}`;
+}
+function phaseOverview() {
+  const descriptions = [
+    "Deine ersten Texte und ein vollständiges HTML-Grundgerüst.",
+    "Listen, Links, Bilder, Tabellen und Medien ergänzen dein Thema.",
+    "Du gestaltest die Inhalte mit einer eigenen CSS-Datei.",
+    "Du ordnest, prüfst und präsentierst deine eigene Webseite.",
+  ];
+  return `<section aria-labelledby="phasesTitle"><div class="section-heading"><div><p class="eyebrow">Vier Etappen zu deiner Webseite</p><h2 id="phasesTitle">Dein Weg im WebLab</h2></div><a href="#path">Alle 16 Einheiten ansehen →</a></div><div class="phase-grid">${groups
+    .map((group, index) => {
+      const items = lessons.filter((l) => l.group === index),
+        done = items.filter((l) => state.completed.includes(l.id)).length;
+      return `<article class="panel phase-card"><span class="module-number">${index + 1}</span><h3>${esc(group)}</h3><p>${descriptions[index]}</p><progress max="${items.length}" value="${done}" aria-label="${esc(group)}: ${done} von ${items.length} abgeschlossen"></progress><small>${done} / ${items.length} abgeschlossen</small><a class="button secondary" href="#lesson/${(items.find((l) => !state.completed.includes(l.id)) || items[0]).id}">${done === items.length ? "Etappe wiederholen" : "Etappe öffnen"}</a></article>`;
+    })
+    .join("")}</div></section>`;
+}
+function lessonWorkflow() {
+  const steps = [
+    ["understand", "Verstehen", "Erklärung und Beispiel"],
+    ["practice", "Anwenden", "Code und Live-Vorschau"],
+    ["review", "Prüfen", "Rückmeldung und Selbstkontrolle"],
+    ["secure", "Sichern", "Notizen und Lernstand"],
+  ];
+  return `<nav class="lesson-workflow" aria-label="Ablauf dieser Lerneinheit">${steps.map(([id, title, detail], index) => `<a href="#${id}" data-lesson-anchor="${id}"><span>${index + 1}</span><div><strong>${title}</strong><small>${detail}</small></div></a>`).join("")}</nav>`;
 }
 function resumePanel() {
   const next = lessons.find((l) => !state.completed.includes(l.id));
@@ -141,11 +167,11 @@ function lessonJourney(l) {
 }
 function lessonPractice(l) {
   const step = journey[l.id];
-  return `<section class="panel practice-steps"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3><ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor">Jetzt direkt im Code ausprobieren</a></section>`;
+  return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3><ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor">Jetzt direkt im Code ausprobieren</a></section>`;
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonJourney(l)}<div class="lesson-layout"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre></section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${studio(l.id)}<section class="panel"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel"><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `<a class="button" href="#lesson/l${lessons.indexOf(l) + 2}">Nächste Einheit</a>` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre></section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `<a class="button" href="#lesson/l${lessons.indexOf(l) + 2}">Nächste Einheit</a>` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -206,7 +232,11 @@ function bindStudio(l) {
   $("#closeLargePreview").onclick = () => $("#largePreviewDialog").close();
   $("#jumpEditor")?.addEventListener("click", (e) => {
     e.preventDefault();
-    $("#studioTitle").scrollIntoView({ behavior: "smooth" });
+    $("#studioTitle").scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
     $("#htmlEditor").focus({ preventScroll: true });
   });
   $("#takePrevious")?.addEventListener("click", () => {
@@ -491,7 +521,7 @@ function render() {
       )
       .join("");
   } else {
-    html = resumePanel() + overview();
+    html = overview();
     if (route !== "home")
       html =
         '<p role="status">Diese Seite gibt es nicht. Hier findest du den Lernpfad.</p>' +
@@ -511,6 +541,20 @@ function render() {
   });
   if ($("#htmlEditor")) bindStudio(l || byId("l1"));
   if (l) {
+    document.querySelectorAll("[data-lesson-anchor]").forEach(
+      (link) =>
+        (link.onclick = (e) => {
+          e.preventDefault();
+          const target = document.getElementById(link.dataset.lessonAnchor);
+          target.tabIndex = -1;
+          target.focus({ preventScroll: true });
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }),
+    );
+    $("#lessonBackup").onclick = () => {
+      capture();
+      backup();
+    };
     document.querySelectorAll("[data-answer]").forEach(
       (b) =>
         (b.onclick = () => {

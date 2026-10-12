@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.9.0** · Status: **veröffentlicht und online geprüft**.
+Version: **1.9.1** · Status: **lokal geprüft; Veröffentlichung in Vorbereitung**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.9.0 |
+| Bereich | Version 1.9.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -72,6 +72,8 @@ OneNote: Notizbuch **Lernfelder**, Abschnitt **2. Internetseiten**. Alle sechs S
 - `04-Projekt-EC-Webshop.txt`: gesonderte EC-Projektarbeit. Kann Schülernamen enthalten und bleibt ausschließlich lokal.
 - `05-Replit.txt` und `06-ThommyWeb.txt`: sichtbare Referenzen/Vorlagenhinweise.
 - `Bildungsplan-Informatik.pdf`: lokale Kopie des Bildungsplans aus WorkbenchLab.
+
+Das lokale Anhang-Inventar `ressources/BPE2/Anhang-Inventar.json` erfasst 81 sichtbare Dateiverweise: 49 in Teil 1 und 32 in Teil 2. Gleiche Dateinamen in Informations-, Aufgaben- und Lösungsspalten sind unterschiedliche Anhänge. Erfasst wurden nur sichtbare Metadaten, keine Dateiinhalte. Der erneute Downloadversuch für den Informationsanhang 1.docx zum HTML-Grundgerüst lieferte auch nach Bestätigung keine Datei; im normalen Downloads-Ordner lag keine entsprechende Datei. Ein erneuter Login ist derzeit nicht nötig.
 
 **Noch offen: Originalanhänge als DOCX/ZIP herunterladen.** Ein Anhang wurde über „Speichern unter“ und die normale OneNote-Downloadwarnung angefordert. Der Browser lieferte jedoch kein abrufbares Downloadartefakt. Die gesicherten Textdateien sind Auszüge der sichtbaren Seiten, kein Ersatz für die eingebetteten Informations-, Aufgaben- und Lösungsdateien. Diese Anhänge wurden nicht als gelesen oder inhaltlich ausgewertet verbucht. Lösungen sollen auch künftig lokal bleiben.
 
@@ -172,12 +174,18 @@ Offene Erweiterungen, nach Priorität:
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
 2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
-4. **Didaktische Vertiefung:** Zwölf optionale Fehlersuchaufträge sind seit 1.8.0 vorhanden; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Noch offen sind vertiefende Korrekturaufgaben, visuelle Selektorhilfen, gestufte HTML-Aufgaben, Tabellenformatierung und weitere Medienaufgaben.
+4. **Didaktische Vertiefung:** Zwölf optionale Fehlersuchaufträge sind seit 1.8.0 vorhanden; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Noch offen sind vertiefende Korrekturaufgaben, visuelle Selektorhilfen, gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser, optionale Offline-Kopie und Browserprüfungen in CI.
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.9.1
+
+Die sichtbare OneNote-Übersicht nennt Tabellenformatierung ausdrücklich. Im bisherigen Lernpfad fehlte die Rückkehr zur Datentabelle nach Einführung von CSS. Einheit 12 erhält deshalb einen aufklappbaren Transferauftrag zur eigenen Tabelle aus Einheit 07: Zellrahmen, padding, gemeinsame Rahmen mit border-collapse, Kopfzeile, schmale Vorschau und Bearbeitung der exportierten Dateien mit Notepad++/Strg+S/F5. Eigenständig formulierter Inhalt; die nicht heruntergeladenen Originalaufgaben wurden nicht als gelesen ausgegeben. Die Vertiefung verändert weder Pflichtkriterien noch bestehende Abschlüsse oder Punkte.
+
+Fachliche Referenz: [MDN border-collapse](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/border-collapse), am 12.10.2026 geprüft. Lokales Anhang-Inventar mit 81 Dateiverweisen ergänzt; Originaldateien bleiben offen. 21 Node-Tests und 140 Browserprüfungen bestanden. Der aufgeklappte Transferauftrag bleibt bei 360 Pixeln in beiden Farbschemata ohne horizontalen Überlauf. Build erfolgreich. Screenshot documentation/WebLab-1.9.1.png zeigt die lokale Prüfansicht mit freigeschalteter Einheit 12. Veröffentlichung und Live-Abgleich folgen.
 
 ### 12.10.2026 – Codex – Version 1.9.0
 

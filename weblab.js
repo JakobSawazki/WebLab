@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.9.0";
+const VERSION = "1.9.1";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -543,6 +543,21 @@ const lessons = [
   ),
 ];
 const byId = (id) => lessons.find((l) => l.id === id);
+
+byId("l12").extension = {
+  title: "Transfer: Deine Tabelle aus Einheit 07 gestalten",
+  explanation:
+    "Greife deine Datentabelle wieder auf. Ihre HTML-Struktur mit caption, tr, th und td bleibt erhalten. Die Gestaltung kommt in style.css. padding schafft Platz zwischen Zellinhalt und Rahmen. border-collapse: collapse lässt benachbarte Zellen gemeinsame Rahmen verwenden. Die durch Komma getrennten Selektoren th, td wählen beide Zelltypen aus.",
+  code: "table {\n  border-collapse: collapse;\n}\nth, td {\n  border: 1px solid #345;\n  padding: 0.5rem;\n  text-align: left;\n}\nth {\n  color: #fff;\n  background-color: #234;\n}",
+  steps: [
+    "Suche deine Tabelle aus Einheit 07 im HTML-Reiter. Falls sie fehlt, ergänze eine passende Datentabelle mit Beschreibung, zwei Spaltenüberschriften und zwei Datenzeilen.",
+    "Ergänze die CSS-Regeln im CSS-Reiter. Verändere padding von 0.5rem auf 1rem und beobachte den Platz innerhalb der Zellen.",
+    "Vergleiche border-collapse: collapse mit separate. Wähle danach eine gut lesbare Gestaltung für deine eigene Tabelle. Prüfe auch die schmale Vorschau.",
+    "Exportiere HTML und CSS. Öffne beide Dateien in Notepad++ vom Informatik-Stick, ändere eine Rahmenfarbe, speichere mit Strg+S und lade die Seite im Browser mit F5 neu.",
+  ],
+  observe:
+    "Kannst du an deiner Tabelle erklären, welche Regel die Rahmen, welche die Innenabstände und welche die Kopfzeile gestaltet? Die Tabelle dient weiterhin zur Darstellung von Daten; für das Seitenlayout verwendest du keine Tabelle. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
 
 return {VERSION,groups,lessons,byId};
 },
@@ -2517,6 +2532,11 @@ function lessonPractice(l) {
   const step = journey[l.id];
   return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3><ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor">Jetzt direkt im Code ausprobieren</a></section>`;
 }
+function lessonExtension(l) {
+  const extra = l.extension;
+  if (!extra) return "";
+  return `<details class="panel debug-challenge lesson-extension"><summary>${esc(extra.title)}</summary><p>${esc(extra.explanation)}</p><pre><code>${esc(extra.code)}</code></pre><ol>${extra.steps.map((step) => `<li>${esc(step)}</li>`).join("")}</ol><p><strong>Deine Selbstkontrolle:</strong> ${esc(extra.observe)}</p><a class="button secondary" href="#studioTitle">Im eigenen Code ausprobieren</a></details>`;
+}
 function debugChallenge(l) {
   const exercise = debugging[l.id];
   if (!exercise) return "";
@@ -2524,7 +2544,7 @@ function debugChallenge(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (

@@ -1,5 +1,5 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-export const VERSION = "1.9.0";
+export const VERSION = "1.9.1";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -538,3 +538,18 @@ export const lessons = [
   ),
 ];
 export const byId = (id) => lessons.find((l) => l.id === id);
+
+byId("l12").extension = {
+  title: "Transfer: Deine Tabelle aus Einheit 07 gestalten",
+  explanation:
+    "Greife deine Datentabelle wieder auf. Ihre HTML-Struktur mit caption, tr, th und td bleibt erhalten. Die Gestaltung kommt in style.css. padding schafft Platz zwischen Zellinhalt und Rahmen. border-collapse: collapse lässt benachbarte Zellen gemeinsame Rahmen verwenden. Die durch Komma getrennten Selektoren th, td wählen beide Zelltypen aus.",
+  code: "table {\n  border-collapse: collapse;\n}\nth, td {\n  border: 1px solid #345;\n  padding: 0.5rem;\n  text-align: left;\n}\nth {\n  color: #fff;\n  background-color: #234;\n}",
+  steps: [
+    "Suche deine Tabelle aus Einheit 07 im HTML-Reiter. Falls sie fehlt, ergänze eine passende Datentabelle mit Beschreibung, zwei Spaltenüberschriften und zwei Datenzeilen.",
+    "Ergänze die CSS-Regeln im CSS-Reiter. Verändere padding von 0.5rem auf 1rem und beobachte den Platz innerhalb der Zellen.",
+    "Vergleiche border-collapse: collapse mit separate. Wähle danach eine gut lesbare Gestaltung für deine eigene Tabelle. Prüfe auch die schmale Vorschau.",
+    "Exportiere HTML und CSS. Öffne beide Dateien in Notepad++ vom Informatik-Stick, ändere eine Rahmenfarbe, speichere mit Strg+S und lade die Seite im Browser mit F5 neu.",
+  ],
+  observe:
+    "Kannst du an deiner Tabelle erklären, welche Regel die Rahmen, welche die Innenabstände und welche die Kopfzeile gestaltet? Die Tabelle dient weiterhin zur Darstellung von Daten; für das Seitenlayout verwendest du keine Tabelle. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};

@@ -282,7 +282,78 @@
     input("cssEditor", previousCSS);
     editorFrame.remove();
     const savedState = localStorage.getItem(STORAGE_KEY);
+    const gateState = blank();
+    gateState.profile = { name: "MUS.MAX", className: "TEST" };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(gateState));
+    const gateFrame = document.createElement("iframe");
+    gateFrame.style.cssText = "width:360px;height:800px;border:0";
+    const gateLoaded = new Promise((resolve) => (gateFrame.onload = resolve));
+    gateFrame.src = "/#path";
+    document.body.append(gateFrame);
+    await gateLoaded;
+    const gateDoc = gateFrame.contentDocument,
+      gateWin = gateFrame.contentWindow;
+    const gateGo = async (hash) => {
+      gateWin.location.hash = hash;
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    };
+    assert(
+      gateDoc.querySelectorAll('.card a[href^="#lesson/"]').length === 1 &&
+        gateDoc.querySelectorAll(".card .locked-control:disabled").length ===
+          15,
+      "Neues Profil: nur Einheit 01 offen, 15 Karten gesperrt",
+    );
+    await gateGo("#lesson/l3");
+    assert(
+      gateDoc.querySelector("#lockedTitle") &&
+        !gateDoc.querySelector("#htmlEditor"),
+      "Direktlink auf gesperrte Einheit zeigt keine Aufgabe und keinen Editor",
+    );
+    assert(
+      gateDoc.documentElement.scrollWidth <= 360,
+      "Sperrseite passt in 360 Pixel",
+    );
+    await gateGo("#lesson/l1");
+    assert(
+      gateDoc.querySelectorAll(".journey-steps a").length === 1 &&
+        gateDoc.querySelectorAll(".locked-step").length === 15,
+      "Roter Faden erlaubt anfangs nur Schritt 01",
+    );
+    gateDoc.querySelector("#htmlEditor").value = samples[0];
+    gateDoc
+      .querySelector("#htmlEditor")
+      .dispatchEvent(new gateWin.Event("input", { bubbles: true }));
+    gateDoc.querySelector('[data-answer="' + lessons[0].answer + '"]').click();
+    gateDoc.querySelectorAll("[data-check]").forEach((box) => box.click());
+    gateDoc.querySelector("#completeButton").click();
+    const earnedState = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    assert(
+      earnedState.completed.includes("l1") &&
+        earnedState.completed.length === 1,
+      "Erfolgreicher Abschluss vergibt genau einmal 100 XP",
+    );
+    assert(
+      gateDoc.querySelectorAll(".journey-steps a").length === 2 &&
+        gateDoc.querySelector('a[href="#lesson/l2"].button'),
+      "Abschluss schaltet Schritt 02 sofort ohne Neuladen frei",
+    );
+    const reloaded = new Promise((resolve) => (gateFrame.onload = resolve));
+    gateFrame.src = "/?gate-reload=1#lesson/l2";
+    await reloaded;
+    assert(
+      gateDoc !== gateFrame.contentDocument &&
+        gateFrame.contentDocument.querySelector("#htmlEditor"),
+      "Freischaltung bleibt nach Neuladen erhalten",
+    );
+    await gateGo("#lesson/l3");
+    assert(
+      gateFrame.contentDocument.querySelector("#lockedTitle") &&
+        !gateFrame.contentDocument.querySelector("#htmlEditor"),
+      "Einheit 03 bleibt nach nur einem Abschluss gesperrt",
+    );
+    gateFrame.remove();
     const practiceState = blank();
+    practiceState.completed = ["l1", "l2"];
     practiceState.drafts.l1 = {
       html: "<h1>Mein Garten</h1><p>Unser eigenes Projekt.</p>",
       css: "h1 {color:green;}",
@@ -305,7 +376,7 @@
       "Neue Einheit uebernimmt HTML und CSS des vorherigen Projekts",
     );
     assert(
-      threadDoc.querySelectorAll(".journey-steps a").length === 16 &&
+      threadDoc.querySelectorAll(".journey-steps li").length === 16 &&
         threadDoc.querySelector('.journey-steps [aria-current="step"]')
           .textContent === "2",
       "Roter Faden zeigt alle Schritte und die aktuelle Einheit",

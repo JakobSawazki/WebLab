@@ -20,6 +20,8 @@ Seit Version 1.5.0: einheitliche SVG-Icons, edlere Buttons, ruhigere Flächen un
 
 Seit Version 1.6.0: gebürstete Stahl- und Aluminiumflächen mit feiner Körnung, metallischen Buttons und Lichtkanten. Die Gestaltung entsteht vollständig lokal in CSS.
 
+Seit Version 1.7.0: verbindlicher Lernpfad. Einheit 01 ist frei; jeder Abschluss bringt 100 XP und schaltet die nächste Einheit frei. Punkte bleiben erhalten. Spätere Einheiten sind auch über Direktlinks gesperrt.
+
 Entwicklung und Browserprüfungen:
 
 ```text

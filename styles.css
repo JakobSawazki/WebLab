@@ -731,6 +731,57 @@ textarea#cssEditor {
 .journey-steps a.done {
   border-color: var(--green);
 }
+.locked-step {
+  display: grid;
+  place-items: center;
+  position: relative;
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 1px dashed var(--line);
+  border-radius: 50%;
+  color: var(--muted);
+}
+.locked-step .ui-icon {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 12px;
+  height: 12px;
+  background: var(--panel);
+}
+.button.locked-control {
+  opacity: 1;
+  color: var(--muted);
+  background: var(--quiet-metal);
+  border-color: var(--line);
+  flex-wrap: wrap;
+  max-width: 100%;
+  box-shadow: none;
+}
+.locked-control small {
+  font-size: 0.75rem;
+}
+.badge .ui-icon {
+  width: 14px;
+  height: 14px;
+}
+.is-locked {
+  border-style: dashed;
+}
+.lock-mark {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--metal-rim);
+  border-radius: 14px;
+  background: var(--metal-surface);
+}
+.lock-mark .ui-icon {
+  width: 26px;
+  height: 26px;
+}
 .journey-steps a[aria-current="step"] {
   background: var(--brand);
   color: var(--bg);

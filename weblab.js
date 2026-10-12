@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.6.0";
+const VERSION = "1.7.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -675,10 +675,25 @@ const xp = (s) =>
   );
 const nagold = (s) =>
   s.completed.length * 5 + s.nagoldEntries.reduce((n, e) => n + e.points, 0);
+// Only the uninterrupted learning chain earns unlock XP. Legacy/bonus points
+// and previously completed lessons after a gap must never skip that gap.
+function lessonAccess(s, id) {
+  const index = lessons.findIndex((lesson) => lesson.id === id);
+  let prefix = 0;
+  while (prefix < lessons.length && s.completed.includes(lessons[prefix].id))
+    prefix++;
+  return {
+    unlocked: index >= 0 && index <= prefix,
+    requiredXP: index >= 0 ? index * 100 : null,
+    earnedXP: prefix * 100,
+    nextId: lessons[prefix]?.id || null,
+  };
+}
 function complete(s, id) {
   const l = byId(id);
   if (
     !l ||
+    !lessonAccess(s, id).unlocked ||
     !validProfile(s.profile.name) ||
     !s.profile.className.trim() ||
     s.completed.includes(id) ||
@@ -698,7 +713,7 @@ function load(storage) {
   return old ? migrateOld(JSON.parse(old)) : blank();
 }
 
-return {STORAGE_KEY,blank,validProfile,normalize,migrateOld,importBackup,exportBackup,xp,nagold,complete,load};
+return {STORAGE_KEY,blank,validProfile,normalize,migrateOld,importBackup,exportBackup,xp,nagold,lessonAccess,complete,load};
 },
 "checks.js": function(require) {
 function checkLesson(lesson, html, css, parse) {
@@ -2036,7 +2051,7 @@ function startingDraft(drafts, id) {
 return {journey,startingDraft};
 },
 "app.js": function(require) {
-const { decorateIcons } = require("icons.js");
+const { decorateIcons, icon } = require("icons.js");
 const { VERSION, groups, lessons, byId } = require("content.js");
 const { glossary } = require("glossary.js");
 const {
@@ -2049,6 +2064,7 @@ const {
   xp,
   nagold,
   complete,
+  lessonAccess,
 } = require("state.js");
 const { checkLesson, preview } = require("checks.js");
 const { zipFiles } = require("export.js");
@@ -2127,11 +2143,22 @@ function backup() {
     "application/json",
   );
 }
+function lessonLink(l, label, classes = "button secondary") {
+  const access = lessonAccess(state, l.id);
+  return access.unlocked
+    ? `<a class="${classes}" href="#lesson/${l.id}">${esc(label)}</a>`
+    : `<button type="button" class="${classes} locked-control" disabled aria-label="Einheit ${l.id.slice(1).padStart(2, "0")} gesperrt: ab ${access.requiredXP} Lernpfad-XP">${icon("lock")}<span>${esc(label)}</span><small>ab ${access.requiredXP} XP</small></button>`;
+}
+function lockedLesson(l) {
+  const access = lessonAccess(state, l.id),
+    next = byId(access.nextId);
+  return `<section class="panel locked-lesson" aria-labelledby="lockedTitle"><div class="lock-mark">${icon("lock")}</div><p class="eyebrow">Einheit ${l.id.slice(1).padStart(2, "0")} · noch gesperrt</p><h2 id="lockedTitle">${esc(l.title)}</h2><p>Diese Einheit wird mit ${access.requiredXP} Lernpfad-XP freigeschaltet. Du hast bisher ${access.earnedXP} Lernpfad-XP verdient.</p><p>Schließe die Einheiten der Reihe nach ab. Jeder Abschluss bringt 100 XP und 5 NAGOLD. Deine Punkte bleiben erhalten und werden nicht ausgegeben.</p><div class="actions">${next ? lessonLink(next, "Weiter mit Einheit " + next.id.slice(1).padStart(2, "0"), "button") : ""}<a class="button secondary" href="#path">Zum Lernpfad</a></div></section>`;
+}
 function card(l) {
   const done = state.completed.includes(l.id),
-    recommended =
-      lessons.find((item) => !state.completed.includes(item.id))?.id === l.id;
-  return `<article class="card ${recommended ? "is-next" : ""}"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${done ? "✓ Abgeschlossen" : recommended ? "Dein nächster Schritt" : "Zum Nachschlagen"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 NAGOLD</small><a class="button secondary" href="#lesson/${l.id}">${done ? "Wiederholen" : "Einheit öffnen"} </a></article>`;
+    access = lessonAccess(state, l.id),
+    recommended = access.nextId === l.id;
+  return `<article class="card ${recommended ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${!access.unlocked ? icon("lock") + " Gesperrt" : done ? "Abgeschlossen" : "Dein nächster Schritt"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 NAGOLD</small>${lessonLink(l, access.unlocked ? (done ? "Wiederholen" : "Einheit öffnen") : "Noch gesperrt")}</article>`;
 }
 function overview() {
   const next =
@@ -2151,7 +2178,7 @@ function phaseOverview() {
     .map((group, index) => {
       const items = lessons.filter((l) => l.group === index),
         done = items.filter((l) => state.completed.includes(l.id)).length;
-      return `<article class="panel phase-card"><span class="module-number">${index + 1}</span><h3>${esc(group)}</h3><p>${descriptions[index]}</p><progress max="${items.length}" value="${done}" aria-label="${esc(group)}: ${done} von ${items.length} abgeschlossen"></progress><small>${done} / ${items.length} abgeschlossen</small><a class="button secondary" href="#lesson/${(items.find((l) => !state.completed.includes(l.id)) || items[0]).id}">${done === items.length ? "Etappe wiederholen" : "Etappe öffnen"}</a></article>`;
+      return `<article class="panel phase-card"><span class="module-number">${index + 1}</span><h3>${esc(group)}</h3><p>${descriptions[index]}</p><progress max="${items.length}" value="${done}" aria-label="${esc(group)}: ${done} von ${items.length} abgeschlossen"></progress><small>${done} / ${items.length} abgeschlossen</small>${lessonLink(items.find((l) => !state.completed.includes(l.id)) || items[0], done === items.length ? "Etappe wiederholen" : "Etappe öffnen")}</article>`;
     })
     .join("")}</div></section>`;
 }
@@ -2166,7 +2193,7 @@ function lessonWorkflow() {
 }
 function resumePanel() {
   const next = lessons.find((l) => !state.completed.includes(l.id));
-  return `<section class="panel learning-thread"><p class="eyebrow">Dein roter Faden · ${state.completed.length} / ${lessons.length} abgeschlossen</p><h2>${next ? `Weiter mit Einheit ${lessons.indexOf(next) + 1}: ${esc(next.title)}` : "Deine eigene Webseite ist gewachsen"}</h2><p>Ein Thema, eine Webseite: Du beginnst mit Text, ergänzt Inhalte und gestaltest sie mit CSS. Am Ende testest und präsentierst du dein eigenes Projekt. Arbeite die Einheiten der Reihe nach durch.</p><a class="button" href="#lesson/${next?.id || "l1"}">${next ? "Nächsten Lernschritt öffnen" : "Grundlagen wiederholen"}</a></section>`;
+  return `<section class="panel learning-thread"><p class="eyebrow">Dein roter Faden · ${state.completed.length} / ${lessons.length} abgeschlossen</p><h2>${next ? `Weiter mit Einheit ${lessons.indexOf(next) + 1}: ${esc(next.title)}` : "Deine eigene Webseite ist gewachsen"}</h2><p>Ein Thema, eine Webseite: Du beginnst mit Text, ergänzt Inhalte und gestaltest sie mit CSS. Am Ende testest und präsentierst du dein eigenes Projekt. Arbeite die Einheiten der Reihe nach durch.</p><p class="unlock-rule"><strong>${lessonAccess(state, "l1").earnedXP} Lernpfad-XP verdient.</strong> Einheit 01 ist frei. Jeder erfolgreiche Abschluss bringt 100 XP und schaltet die nächste Einheit frei. Die Punkte werden nicht ausgegeben.</p><a class="button" href="#lesson/${next?.id || "l1"}">${next ? "Nächsten Lernschritt öffnen" : "Grundlagen wiederholen"}</a></section>`;
 }
 function path() {
   return (
@@ -2202,7 +2229,7 @@ function lessonJourney(l) {
   const step = journey[l.id],
     index = lessons.indexOf(l),
     next = lessons.find((item) => !state.completed.includes(item.id));
-  return `<section class="panel learning-thread" aria-label="Dein roter Faden"><p class="eyebrow">Deine eigene Webseite wächst weiter</p><h3>Schritt ${index + 1} von ${lessons.length}: ${esc(step.addition)}</h3><ol class="journey-steps" aria-label="Reihenfolge der Lerneinheiten">${lessons.map((item, i) => `<li><a href="#lesson/${item.id}" ${item.id === l.id ? 'aria-current="step"' : ""} class="${state.completed.includes(item.id) ? "done" : ""}" aria-label="Einheit ${i + 1}: ${esc(item.title)}${state.completed.includes(item.id) ? ", abgeschlossen" : ""}">${i + 1}</a></li>`).join("")}</ol><p><strong>Daran knüpfst du an:</strong> ${esc(step.recall)}</p>${step.previous && !state.completed.includes(step.previous) ? `<p class="teacher-note">Bearbeite zuerst <a href="#lesson/${step.previous}">Einheit ${index}: ${esc(byId(step.previous).title)}</a>. Du kannst diese Einheit bereits ansehen.</p>` : ""}<p>Behalte dein Thema bei und erweitere deine eigene Webseite. Beim ersten Öffnen beginnt diese Einheit mit einer Kopie deines vorherigen Entwurfs, sofern einer vorhanden ist. Bereits bearbeitete Einheiten behalten ihren eigenen Stand.</p>${step.previous && state.drafts[step.previous] ? `<div class="actions"><button class="button secondary" id="takePrevious">Entwurf aus Einheit ${index} übernehmen</button></div>` : ""}${next && next.id !== l.id ? `<a href="#lesson/${next.id}">Zu meinem nächsten offenen Schritt: ${esc(next.title)}</a>` : ""}</section>`;
+  return `<section class="panel learning-thread" aria-label="Dein roter Faden"><p class="eyebrow">Deine eigene Webseite wächst weiter</p><h3>Schritt ${index + 1} von ${lessons.length}: ${esc(step.addition)}</h3><ol class="journey-steps" aria-label="Reihenfolge der Lerneinheiten">${lessons.map((item, i) => `<li>${lessonAccess(state, item.id).unlocked ? `<a href="#lesson/${item.id}" ${item.id === l.id ? 'aria-current="step"' : ""} class="${state.completed.includes(item.id) ? "done" : ""}" aria-label="Einheit ${i + 1}: ${esc(item.title)}${state.completed.includes(item.id) ? ", abgeschlossen" : ""}">${i + 1}</a>` : `<span class="locked-step" role="img" aria-label="Einheit ${i + 1} gesperrt: ab ${i * 100} Lernpfad-XP"><span>${i + 1}</span>${icon("lock")}</span>`}</li>`).join("")}</ol><p><strong>Daran knüpfst du an:</strong> ${esc(step.recall)}</p>${step.previous && !state.completed.includes(step.previous) ? `<p class="teacher-note">Bearbeite zuerst <a href="#lesson/${step.previous}">Einheit ${index}: ${esc(byId(step.previous).title)}</a>. Schließe zuerst diese Einheit ab, um den nächsten Schritt freizuschalten.</p>` : ""}<p>Behalte dein Thema bei und erweitere deine eigene Webseite. Beim ersten Öffnen beginnt diese Einheit mit einer Kopie deines vorherigen Entwurfs, sofern einer vorhanden ist. Bereits bearbeitete Einheiten behalten ihren eigenen Stand.</p>${step.previous && state.drafts[step.previous] ? `<div class="actions"><button class="button secondary" id="takePrevious">Entwurf aus Einheit ${index} übernehmen</button></div>` : ""}${next && next.id !== l.id ? `<a href="#lesson/${next.id}">Zu meinem nächsten offenen Schritt: ${esc(next.title)}</a>` : ""}</section>`;
 }
 function lessonPractice(l) {
   const step = journey[l.id];
@@ -2210,7 +2237,7 @@ function lessonPractice(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre></section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `<a class="button" href="#lesson/l${lessons.indexOf(l) + 2}">Nächste Einheit</a>` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre></section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -2529,10 +2556,19 @@ function search() {
 function render() {
   clearTimeout(timer);
   const route = location.hash.slice(1) || "home",
-    l = route.startsWith("lesson/") ? byId(route.split("/")[1]) : null;
+    requestedLesson = route.startsWith("lesson/")
+      ? byId(route.split("/")[1])
+      : null,
+    l =
+      requestedLesson && lessonAccess(state, requestedLesson.id).unlocked
+        ? requestedLesson
+        : null;
   let title = "Übersicht",
     html = "";
-  if (l) {
+  if (requestedLesson && !l) {
+    title = "Einheit noch gesperrt";
+    html = lockedLesson(requestedLesson);
+  } else if (l) {
     activeId = l.id;
     if (!state.drafts[l.id])
       state.drafts[l.id] = startingDraft(state.drafts, l.id);
@@ -2574,7 +2610,7 @@ function render() {
   document.querySelectorAll(".nav-item").forEach((a) => {
     const current =
       a.hash === location.hash ||
-      (l && a.hash === "#path") ||
+      (requestedLesson && a.hash === "#path") ||
       (!location.hash && a.hash === "#home");
     if (current) a.setAttribute("aria-current", "page");
     else a.removeAttribute("aria-current");
@@ -2632,11 +2668,10 @@ function render() {
       }
       if (complete(state, l.id)) {
         save();
-        stats();
-        $("#completeButton").disabled = true;
-        $("#completeButton").textContent = "✓ Abgeschlossen";
-        $("#completionResult").textContent =
-          "100 XP und 5 NAGOLD einmalig erfasst. Sichere deinen Lernstand.";
+        render();
+        $("#completionResult").textContent = journey[l.id].next
+          ? "100 XP und 5 NAGOLD einmalig erfasst. Die nächste Einheit ist freigeschaltet. Sichere deinen Lernstand."
+          : "100 XP und 5 NAGOLD einmalig erfasst. Du hast alle 16 Einheiten abgeschlossen. Sichere deinen Lernstand.";
         const next = journey[l.id].next;
         if (next) {
           const link = document.createElement("a");
@@ -2644,7 +2679,10 @@ function render() {
           link.href = `#lesson/${next}`;
           link.textContent = `Weiter: ${byId(next).title}`;
           $("#completionResult").append(document.createElement("br"), link);
+          decorateIcons();
         }
+        $("#completionResult").tabIndex = -1;
+        $("#completionResult").focus({ preventScroll: true });
       } else
         $("#completionResult").textContent =
           "Beantworte den Verständnischeck und bestätige die Selbstkontrolle.";
@@ -2766,6 +2804,7 @@ return {};
 "icons.js": function(require) {
 // Shared inline SVGs also work offline and with a direct file:// start.
 const paths = {
+  lock: '<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/>',
   home: '<path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/>',
   path: '<circle cx="5" cy="5" r="2"/><circle cx="19" cy="19" r="2"/><path d="M7 5h8a4 4 0 0 1 0 8H9a4 4 0 0 0 0 8h8"/>',
   code: '<path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/>',

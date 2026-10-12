@@ -126,10 +126,25 @@ export const xp = (s) =>
   );
 export const nagold = (s) =>
   s.completed.length * 5 + s.nagoldEntries.reduce((n, e) => n + e.points, 0);
+// Only the uninterrupted learning chain earns unlock XP. Legacy/bonus points
+// and previously completed lessons after a gap must never skip that gap.
+export function lessonAccess(s, id) {
+  const index = lessons.findIndex((lesson) => lesson.id === id);
+  let prefix = 0;
+  while (prefix < lessons.length && s.completed.includes(lessons[prefix].id))
+    prefix++;
+  return {
+    unlocked: index >= 0 && index <= prefix,
+    requiredXP: index >= 0 ? index * 100 : null,
+    earnedXP: prefix * 100,
+    nextId: lessons[prefix]?.id || null,
+  };
+}
 export function complete(s, id) {
   const l = byId(id);
   if (
     !l ||
+    !lessonAccess(s, id).unlocked ||
     !validProfile(s.profile.name) ||
     !s.profile.className.trim() ||
     s.completed.includes(id) ||

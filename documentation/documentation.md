@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.6.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
+Version: **1.7.0** · Status: **lokal geprüft, Veröffentlichung vorbereitet**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,9 +16,9 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.6.0 |
+| Bereich | Version 1.7.0 |
 | --- | --- |
-| Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Lernfortschritten; alle frei erreichbar |
+| Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
 | Roter Faden | Nächster offener Lernschritt, 16 Schritte mit aktueller Position, Vorwissen, drei konkrete Arbeitsschritte und Beobachtungsauftrag; eigene Webseite wächst durch Kopien des vorherigen Entwurfs |
 | Orientierung | Vier Etappen mit Fortschritt auf der Startseite; direkte Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern in den Einheiten |
@@ -99,9 +99,9 @@ WebLab/
   development/
     src/                     gepflegte Quellmodule, Inhalte und SVG-Icons
     tools/                   Bundler, Build und lokaler Browserprüfserver
-    tests/                   15 Node-Tests und Browserprüfseite
+    tests/                   18 Node-Tests und Browserprüfseite
   documentation/documentation.md
-  documentation/WebLab-1.6.0.png
+  documentation/WebLab-1.7.0.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
   README.md                  kurze Startanleitung
   CLAUDE.md                  Wegweiser auf diese Dokumentation
@@ -122,6 +122,11 @@ Vorschau: `http://127.0.0.1:4188/`. Browserprüfungen: `http://127.0.0.1:4188/__
 Der Build schreibt ausschließlich sieben erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket und veröffentlicht ausschließlich dist. Die Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
 
 ## 5. Lernstand, Migration und Sicherheit
+
+**Freischaltung seit 1.7.0:** Einheit 01 kostet 0 Lernpfad-XP, Einheit 02 braucht 100, Einheit 03 braucht 200, bis Einheit 16 mit 1.500. Ein erfolgreicher Abschluss vergibt weiterhin einmalig 100 XP und 5 NAGOLD. Punkte werden nicht verbraucht. Für Freischaltungen zählt ausschließlich die lückenlos abgeschlossene Folge ab Einheit 01; alte K1-XP und manuelle NAGOLD-Einträge erlauben kein Überspringen. Die Summe aller XP im Profil kann deshalb höher als die angezeigten Lernpfad-XP sein.
+
+Eine zentrale Funktion `lessonAccess()` in `development/src/state.js` steuert Karten, Etappen, Schrittfolge, Weiter-Buttons, Direktlinks und den Abschluss. Gesperrte Direktlinks zeigen eine Sperrseite statt Aufgabe oder Editor und legen keinen Entwurf an. Nach Abschluss werden alle Verknüpfungen sofort aktualisiert. Vorhandene Abschlüsse und Entwürfe bleiben unverändert gespeichert; bei Lücken sind spätere Einheiten bis zum Schließen der Lücke gesperrt. Nach Neuladen und JSON-Import werden Freischaltungen aus dem gespeicherten Stand neu abgeleitet. Kein neues Sicherungsformat. Freies Labor und Nachschlagewerk bleiben nutzbar. Die lokale Sperre ist Lernführung, keine manipulationssichere Zugangskontrolle.
+
 
 - Neuer Speicher: `weblab-state-v3`; separate Entwürfe pro Einheit und freiem Labor, Notizen, Quiz/Selbstkontrolle, Abschlussdatum und NAGOLD-Einträge.
 - Export: `{ app: "WebLab", formatVersion: 3, exportedAt, state }`. Importformate 1 und 2 werden als alter K1-Stand migriert. Alter Code und die ursprünglichen Missionswerte 60/80/80/100 XP bleiben erhalten. Es entstehen daraus keine erfundenen neuen Einheitenabschlüsse oder NAGOLD-Punkte.
@@ -154,7 +159,7 @@ Google Drive erzeugt gelegentlich `desktop.ini` innerhalb `.git/refs`. Git deute
 
 Geprüft durch Codex am 12.10.2026:
 
-- 15 Node-Tests bestanden (zusätzlich Modulisolation und Ablehnung nicht unterstützter Modulsyntax): Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur, Einrückung, Code-Dateiimport sowie vollständige Lernkette und Erhalt vorhandener Entwürfe.
+- 18 Node-Tests bestanden (zusätzlich drei Freischaltungsprüfungen): Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur, Einrückung, Code-Dateiimport sowie vollständige Lernkette und Erhalt vorhandener Entwürfe.
 - Browserprüfungen: die bisherigen 86 Funktions- und Layoutprüfungen sowie zusätzliche Kontrollen für beide Farbschemata, SVG-Navigation, Buttonhöhen und Textkontrast. Ergebnis siehe neuestes Arbeitsprotokoll.
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
@@ -173,6 +178,13 @@ Offene Erweiterungen, nach Priorität:
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.7.0
+
+Auf Jakobs Auftrag verbindliche Reihenfolge 01 → 02 → 03 usw. umgesetzt. Einheiten werden mit 100 zusätzlichen Abschluss-XP je Schritt freigeschaltet. Gesperrte Karten und Etappen zeigen Schloss und erforderliche Punkte. Die nummerierte Schrittfolge und Weiter-Buttons erlauben kein Überspringen; Direktlinks zeigen einen Sperrhinweis mit Link auf die nächste offene Einheit. Erfolgreicher Abschluss aktualisiert die Freischaltung sofort und setzt den Tastaturfokus auf die Rückmeldung. Bestehende Daten bleiben erhalten, alte Bonuspunkte umgehen die Reihenfolge nicht.
+
+Prüfungen: 18 Node-Tests bestanden, einschließlich aller 16 Freischaltstufen, einmaliger Vergabe, Lücken, Alt-XP, Bonus-NAGOLD und Sicherungs-Roundtrip. 118 Browserprüfungen bestanden: frisches Profil mit 15 Sperren, Direktlink-Sperre ohne Editor, 360-Pixel-Sperrseite, echter Abschluss 01 mit sofortiger Freischaltung 02, Erhalt nach Neuladen und weiterhin gesperrte Einheit 03 sowie alle bisherigen Lernfunktionen. Lernpfad visuell geprüft. Veröffentlichung folgt.
+
 
 ### 12.10.2026 – Codex – Version 1.6.0
 

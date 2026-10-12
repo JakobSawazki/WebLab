@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.7.0** · Status: **lokal geprüft, Veröffentlichung vorbereitet**.
+Version: **1.7.0** · Status: **veröffentlicht und online geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -183,7 +183,7 @@ Offene Erweiterungen, nach Priorität:
 
 Auf Jakobs Auftrag verbindliche Reihenfolge 01 → 02 → 03 usw. umgesetzt. Einheiten werden mit 100 zusätzlichen Abschluss-XP je Schritt freigeschaltet. Gesperrte Karten und Etappen zeigen Schloss und erforderliche Punkte. Die nummerierte Schrittfolge und Weiter-Buttons erlauben kein Überspringen; Direktlinks zeigen einen Sperrhinweis mit Link auf die nächste offene Einheit. Erfolgreicher Abschluss aktualisiert die Freischaltung sofort und setzt den Tastaturfokus auf die Rückmeldung. Bestehende Daten bleiben erhalten, alte Bonuspunkte umgehen die Reihenfolge nicht.
 
-Prüfungen: 18 Node-Tests bestanden, einschließlich aller 16 Freischaltstufen, einmaliger Vergabe, Lücken, Alt-XP, Bonus-NAGOLD und Sicherungs-Roundtrip. 118 Browserprüfungen bestanden: frisches Profil mit 15 Sperren, Direktlink-Sperre ohne Editor, 360-Pixel-Sperrseite, echter Abschluss 01 mit sofortiger Freischaltung 02, Erhalt nach Neuladen und weiterhin gesperrte Einheit 03 sowie alle bisherigen Lernfunktionen. Lernpfad visuell geprüft. Veröffentlichung folgt.
+Prüfungen: 18 Node-Tests bestanden, einschließlich aller 16 Freischaltstufen, einmaliger Vergabe, Lücken, Alt-XP, Bonus-NAGOLD und Sicherungs-Roundtrip. 118 Browserprüfungen bestanden: frisches Profil mit 15 Sperren, Direktlink-Sperre ohne Editor, 360-Pixel-Sperrseite, echter Abschluss 01 mit sofortiger Freischaltung 02, Erhalt nach Neuladen und weiterhin gesperrte Einheit 03 sowie alle bisherigen Lernfunktionen. Lernpfad visuell geprüft. Veröffentlicht mit Implementierungscommit `d9dfca0`; Pages-Workflow [38288204622](https://github.com/JakobSawazki/WebLab/actions/runs/38288204622) erfolgreich. Online mit Gastprofil geprüft: genau eine offene und 15 gesperrte Einheiten, Direktlink zu 03 zeigt die Sperrseite. Aktueller Screenshot: `documentation/WebLab-1.7.0.png`. Build-Ausgabe und vorheriger Screenshot liegen außerhalb des Projekts unter `C:\Users\PC\WebLab-Sicherungen\Lernpfad-1.7.0`; der Projektordner enthält keinen erzeugten dist-Ordner.
 
 
 ### 12.10.2026 – Codex – Version 1.6.0

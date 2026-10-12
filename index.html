@@ -9,14 +9,19 @@
     />
     <meta name="theme-color" content="#0b1424" />
     <title>WebLab · BPE2 Internetseiten</title>
-    <link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png?v=1.7.1" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="64x64"
+      href="assets/favicon.png?v=1.7.1"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#mainContent">Zum Inhalt springen</a>
     <div class="app-shell">
       <aside class="sidebar" id="sidebar">
-        <a class="brand" href="#home"
+        <a class="brand" href="#home" aria-label="WebLab Startseite"
           ><img
             src="assets/weblab-logo.png?v=1.7.1"
             width="48"
@@ -27,25 +32,57 @@
           ></a
         >
         <nav class="main-nav" aria-label="Hauptnavigation">
-          <a class="nav-item" href="#home"
-            ><span data-icon="home" aria-hidden="true"></span> Übersicht</a
+          <a
+            class="nav-item"
+            href="#home"
+            title="Übersicht"
+            aria-label="Übersicht"
+            ><span data-icon="home" aria-hidden="true"></span
+            ><span class="nav-label">Übersicht</span></a
           >
-          <a class="nav-item" href="#path"
-            ><span data-icon="path" aria-hidden="true"></span> Lernpfad</a
+          <a
+            class="nav-item"
+            href="#path"
+            title="Lernpfad"
+            aria-label="Lernpfad"
+            ><span data-icon="path" aria-hidden="true"></span
+            ><span class="nav-label">Lernpfad</span></a
           >
-          <a class="nav-item" href="#lab"
-            ><span data-icon="code" aria-hidden="true"></span> HTML- &
-            CSS-Labor</a
+          <a
+            class="nav-item"
+            href="#lab"
+            title="HTML- &
+            CSS-Labor"
+            aria-label="HTML- &
+            CSS-Labor"
+            ><span data-icon="code" aria-hidden="true"></span
+            ><span class="nav-label">HTML- & CSS-Labor</span></a
           >
-          <a class="nav-item" href="#reference"
-            ><span data-icon="book" aria-hidden="true"></span> Nachschlagen</a
+          <a
+            class="nav-item"
+            href="#reference"
+            title="Nachschlagen"
+            aria-label="Nachschlagen"
+            ><span data-icon="book" aria-hidden="true"></span
+            ><span class="nav-label">Nachschlagen</span></a
           >
-          <a class="nav-item" href="#achievements"
-            ><span data-icon="award" aria-hidden="true"></span> Erfolge &
-            NAGOLD</a
+          <a
+            class="nav-item"
+            href="#achievements"
+            title="Erfolge &
+            NAGOLD"
+            aria-label="Erfolge &
+            NAGOLD"
+            ><span data-icon="award" aria-hidden="true"></span
+            ><span class="nav-label">Erfolge & NAGOLD</span></a
           >
-          <a class="nav-item" href="#notes"
-            ><span data-icon="note" aria-hidden="true"></span> Meine Notizen</a
+          <a
+            class="nav-item"
+            href="#notes"
+            title="Meine Notizen"
+            aria-label="Meine Notizen"
+            ><span data-icon="note" aria-hidden="true"></span
+            ><span class="nav-label">Meine Notizen</span></a
           >
         </nav>
         <div class="sidebar-bottom">
@@ -55,9 +92,21 @@
       </aside>
       <div class="page-column">
         <header class="topbar">
-          <div>
-            <p class="eyebrow">Deine Webwerkstatt</p>
-            <h1 id="viewTitle">Übersicht</h1>
+          <div class="topbar-heading">
+            <button
+              id="menuButton"
+              class="icon-button"
+              aria-controls="sidebar"
+              aria-expanded="true"
+              aria-label="Menü einklappen"
+              title="Menü einklappen"
+            >
+              <span data-icon="menu" aria-hidden="true"></span>
+            </button>
+            <div>
+              <p class="eyebrow">Deine Webwerkstatt</p>
+              <h1 id="viewTitle">Übersicht</h1>
+            </div>
           </div>
           <div class="topbar-actions">
             <button

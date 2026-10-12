@@ -1288,3 +1288,47 @@ dialog::backdrop {
     transform: none;
   }
 }
+
+/* Collapsible navigation retains accessible names for the compact icon rail. */
+.topbar-heading {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 0;
+}
+#menuButton {
+  flex: 0 0 44px;
+}
+.sidebar {
+  overflow-y: auto;
+}
+@media (min-width: 761px) {
+  :root[data-menu="collapsed"] .app-shell {
+    grid-template-columns: 88px minmax(0, 1fr);
+  }
+  :root[data-menu="collapsed"] .sidebar {
+    padding: 1.05rem 0.6rem;
+  }
+  :root[data-menu="collapsed"] .brand {
+    display: flex;
+    justify-content: center;
+  }
+  :root[data-menu="collapsed"] .brand > span,
+  :root[data-menu="collapsed"] .nav-label,
+  :root[data-menu="collapsed"] .sidebar-bottom {
+    display: none;
+  }
+  :root[data-menu="collapsed"] .nav-item {
+    justify-content: center;
+    padding: 0.65rem 0;
+    gap: 0;
+  }
+}
+@media (max-width: 760px) {
+  :root[data-menu="collapsed"] .sidebar {
+    display: none;
+  }
+  .topbar-heading {
+    gap: 0.65rem;
+  }
+}

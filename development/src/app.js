@@ -48,6 +48,31 @@ try {
   document.documentElement.dataset.theme =
     localStorage.getItem("weblab-theme-v1") === "light" ? "light" : "dark";
 } catch {}
+let menuCollapsed = false;
+try {
+  menuCollapsed = localStorage.getItem("weblab-menu-v1") === "collapsed";
+} catch {}
+function updateMenu() {
+  document.documentElement.dataset.menu = menuCollapsed
+    ? "collapsed"
+    : "expanded";
+  const button = $("#menuButton");
+  const label = menuCollapsed ? "Menü ausklappen" : "Menü einklappen";
+  button.setAttribute("aria-expanded", String(!menuCollapsed));
+  button.setAttribute("aria-label", label);
+  button.title = label;
+}
+updateMenu();
+$("#menuButton").onclick = () => {
+  menuCollapsed = !menuCollapsed;
+  updateMenu();
+  try {
+    localStorage.setItem(
+      "weblab-menu-v1",
+      menuCollapsed ? "collapsed" : "expanded",
+    );
+  } catch {}
+};
 function toast(message) {
   $("#toast").textContent = message;
   clearTimeout(toastTimer);

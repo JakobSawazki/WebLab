@@ -94,6 +94,56 @@
       "Leere Bildbeschreibung reicht nicht",
     );
     const savedTheme = localStorage.getItem("weblab-theme-v1");
+    const savedMenu = localStorage.getItem("weblab-menu-v1");
+    for (const width of [1200, 360]) {
+      localStorage.setItem("weblab-menu-v1", "expanded");
+      const menuFrame = document.createElement("iframe");
+      menuFrame.style.cssText =
+        "width:" + width + "px;height:800px;border:0;display:block";
+      menuFrame.title = "Menuepruefung " + width;
+      let menuLoaded = new Promise((resolve) => (menuFrame.onload = resolve));
+      menuFrame.src = "/?menu-check=" + width + "#home";
+      document.body.append(menuFrame);
+      await menuLoaded;
+      let menuDoc = menuFrame.contentDocument;
+      menuDoc.querySelector("#menuButton").click();
+      const side = menuDoc.querySelector("#sidebar");
+      assert(
+        menuDoc.querySelector("#menuButton").getAttribute("aria-expanded") ===
+          "false" &&
+          (width === 360
+            ? side.getClientRects().length === 0
+            : side.getBoundingClientRect().width === 88),
+        width + ": Menue klappt zur Iconleiste oder blendet mobil aus",
+      );
+      assert(
+        menuDoc.documentElement.scrollWidth <= width,
+        width + ": eingeklappt ohne horizontalen Ueberlauf",
+      );
+      menuLoaded = new Promise((resolve) => (menuFrame.onload = resolve));
+      menuFrame.src = "/?menu-reload=" + width + "#home";
+      await menuLoaded;
+      menuDoc = menuFrame.contentDocument;
+      assert(
+        menuDoc.querySelector("#menuButton").getAttribute("aria-expanded") ===
+          "false",
+        width + ": Menueeinstellung bleibt nach Neuladen erhalten",
+      );
+      menuDoc.querySelector("#menuButton").click();
+      assert(
+        menuDoc.querySelector("#menuButton").getAttribute("aria-expanded") ===
+          "true" &&
+          menuDoc.querySelector("#sidebar").getClientRects().length > 0 &&
+          [...menuDoc.querySelectorAll(".main-nav a")].every(
+            (a) =>
+              a.getAttribute("aria-label") && a.getClientRects().length > 0,
+          ),
+        width + ": Ausklappen stellt alle benannten Menuepunkte wieder her",
+      );
+      menuFrame.remove();
+    }
+    if (savedMenu === null) localStorage.removeItem("weblab-menu-v1");
+    else localStorage.setItem("weblab-menu-v1", savedMenu);
     const luminance = (hex) => {
       const values = hex.trim().replace("#", "");
       const full =

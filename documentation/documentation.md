@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.0.0** · Status: implementiert und lokal geprüft; Veröffentlichung wird im Arbeitsprotokoll unten bestätigt.
+Version: **1.0.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -12,7 +12,7 @@ Schülerinnen und Schüler verstehen HTML und CSS und entwickeln selbständig ei
 
 Repository: https://github.com/JakobSawazki/WebLab
 
-Zieladresse für die aktuelle Version: https://jakobsawazki.github.io/WebLab/
+Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
@@ -101,7 +101,7 @@ WebLab/
   tools/build-site.mjs        explizite Veröffentlichungsliste
   tools/serve.mjs             lokaler Vorschau- und Prüfserver
   tests/state.test.mjs        acht Node-Tests
-  tests/browser.html         51 Browserprüfungen, nur lokal
+  tests/browser.html         59 Browserprüfungen, nur lokal
   documentation/documentation.md
   ressources/BPE2/           lokale, nicht versionierte Quellen
   .github/workflows/pages.yml
@@ -118,7 +118,7 @@ npm run serve
 
 Vorschau: `http://127.0.0.1:4188/`. Browserprüfungen: `http://127.0.0.1:4188/__qa`. Nach Quelländerungen neu bauen und im Browser neu laden. `start.cmd` baut und öffnet die Vorschau per Doppelklick. Ein direktes Doppelklicken auf index.html ist wegen ES-Modulen kein unterstützter Startweg.
 
-Der Build schreibt ausschließlich zwölf erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions testet den Lernstand, baut das Paket und veröffentlicht ausschließlich dist. Die 51 Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
+Der Build schreibt ausschließlich zwölf erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions testet den Lernstand, baut das Paket und veröffentlicht ausschließlich dist. Die 59 Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
 
 ## 5. Lernstand, Migration und Sicherheit
 
@@ -142,9 +142,10 @@ C:\Users\PC\WebLab-Sicherungen\vor-umbau-2026-10-12\
 C:\Users\PC\WebLab-Sicherungen\vor-umbau-2026-10-12.bundle
 C:\Users\PC\WebLab-Sicherungen\aus-projekt-entfernt-2026-10-12\
 C:\Users\PC\WebLab-Sicherungen\dist-vor-statischem-build-2026-10-12\
+G:\Meine Ablage\Codex\.archive\WebLab-dependencies-2026-10-12\
 ```
 
-Das Git-Bundle enthält den bisherigen main-Verlauf. Die Arbeitskopie enthält zusätzlich die zuvor uncommitteten Dateien. Entfernte Quelldateien liegen im externen Archiv; damit bleibt der aktive Ordner übersichtlich und alte Arbeit wiederherstellbar. Die bisherigen Dokumente TASKS.md und UEBERGABE.md wurden dort archiviert und durch diese Dokumentation ersetzt. CLAUDE.md bleibt als kurzer Wegweiser erhalten.
+Das Git-Bundle enthält den bisherigen main-Verlauf. Die Arbeitskopie enthält zusätzlich die zuvor uncommitteten Dateien. Entfernte Quelldateien liegen im externen Archiv. Alte node_modules wurden teilweise dorthin verschoben; der verbleibende Teil liegt im genannten Archiv auf G:, um eine langsame dateiweise Übertragung zu vermeiden. Im aktiven Projekt liegt kein node_modules mehr; damit bleibt der aktive Ordner übersichtlich und alte Arbeit wiederherstellbar. Die bisherigen Dokumente TASKS.md und UEBERGABE.md wurden dort archiviert und durch diese Dokumentation ersetzt. CLAUDE.md bleibt als kurzer Wegweiser erhalten.
 
 Google Drive erzeugt gelegentlich `desktop.ini` innerhalb `.git/refs`. Git deutet diese als ungültige Referenzen. Solche Dateien werden bei Bedarf ausschließlich aus dem geprüften refs-Unterbaum ins externe Archiv verschoben; fachliche Git-Referenzen bleiben erhalten.
 
@@ -153,9 +154,12 @@ Google Drive erzeugt gelegentlich `desktop.ini` innerhalb `.git/refs`. Git deute
 Geprüft durch Codex am 12.10.2026:
 
 - Acht Node-Tests bestanden: Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur.
-- 51 Browserprüfungen bestanden: je Einheit Startcode/positiver Auftrag/Kommentarattrappe; zusätzlich ungültige CSS-Werte, falsches Sprungziel und leere Bildbeschreibung.
+- 59 Browserprüfungen bestanden: je Einheit Startcode/positiver Auftrag/Kommentarattrappe; zusätzlich ungültige CSS-Werte, falsches Sprungziel, leere Bildbeschreibung und acht Prüfungen in tatsächlichen eingebetteten 360-Pixel-Viewports.
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
-- Weiterer Browser- und Veröffentlichungsstand folgt im Protokoll unten.
+- Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
+- ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
+- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Screenshot: `WebLab-1.0.0.png` in diesem Dokumentationsordner.
+- Responsive Prüfung: Startseite, Einheiten 1 und 12 sowie Glossar bei tatsächlich 360 Pixel breiten eingebetteten Browserfenstern ohne horizontalen Überlauf. Der direkte Viewport-Schalter des Browserwerkzeugs änderte die native Ansicht nicht; deshalb wurde die Breite unabhängig in der lokalen Browser-Testseite geprüft. Physische Mobilgeräte und Bildschirmleser bleiben noch ungetestet.
 
 Offene Erweiterungen, nach Priorität:
 
@@ -175,8 +179,8 @@ Auftrag: WebLab nach dem Vorbild WorkbenchLab/Excel-Lab aufräumen, BPE2-Lernpfa
 
 Ergebnis: statische Anwendung, 16 Einheiten, freies Labor, Glossar, Sicherungen und Projektexporte. Alte Änderungen vorab gesichert, ungenutzte Framework-/Serverdateien außerhalb des Projekts archiviert. Sechs OneNote-Seitentexte und der Bildungsplan lokal gesichert. Die eingebetteten Originalanhänge sind noch offen.
 
-Prüfungen: acht Node-Tests und 51 Browserprüfungen bestanden. Abschließende Layout-, Export- und Deploymentprüfung wird hier ergänzt.
+Prüfungen: acht Node-Tests und 59 Browserprüfungen bestanden; ZIP unabhängig geprüft, Glossar/Profile/Entwurftrennung/NAGOLD/Farbschemata über die Oberfläche geprüft. Responsive 360-Pixel-Prüfungen bestanden; physische Geräte und Bildschirmleser bleiben offen (siehe Abschnitt 7). Code vor Abschluss einheitlich formatiert; Prettier 3.6.2 wurde nur als temporäres Entwicklungswerkzeug aus dem offiziellen npm-Register verwendet, nicht als Projektabhängigkeit installiert.
 
-Veröffentlichung: vorgesehen als **1.0.0 auf main** im bestehenden Repository; Live-Bestätigung folgt nach erfolgreichem Pages-Workflow. Kein Force-Push.
+Veröffentlichung: **1.0.0 auf main** im bestehenden Repository. Erster Release-Commit `a6bf6b26fe7097e903ad3c9ac596a1d5e490d1f8`; [Pages-Workflow 38249482092](https://github.com/JakobSawazki/WebLab/actions/runs/38249482092) erfolgreich. Live-Seite am 12.10.2026 geöffnet und geprüft. Der abschließende Dokumentations-/Formatierungsstand wird auf demselben Branch und unter dem Release-Tag `v1.0.0` geführt. Kein Force-Push.
 
 Nächster sinnvoller Schritt: Jakob erprobt den Lernablauf mit Schülern; parallel werden die Originalanhänge nachgesichert und die fachlichen Erläuterungen anhand realer Rückfragen vertieft.

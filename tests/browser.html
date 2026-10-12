@@ -1,36 +1,124 @@
-<!doctype html><html lang="de"><meta charset="utf-8"><title>WebLab Browserprüfungen</title><h1>WebLab Browserprüfungen</h1><pre id="results">Prüfungen laufen …</pre><script type="module">
-import {lessons} from '/content.js';
-import {checkLesson} from '/checks.js';
-const samples=[
- '<h1>Robotik AG</h1><p>Wir bauen <strong>gemeinsam</strong> Roboter für unsere Schule.</p>',
- '<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Robotik AG</title></head><body><h1>Robotik AG</h1></body></html>',
- '<h1>Robotik AG</h1><h2>Unsere Ideen</h2><p>Wir entwickeln neue Maschinen.</p><h2>Mitmachen</h2><p>Alle sind <em>herzlich</em> willkommen.</p>',
- '<ul><li>Motor</li><li>Kabel</li><li>Akku</li></ul><ol><li>Planen</li><li>Bauen</li><li>Testen</li></ol>',
- '<a href="kontakt.html">Kontakt</a><a href="https://example.org">Weitere Informationen</a><a href="#ideen">Unsere Ideen</a><h2 id="ideen">Ideen</h2>',
- '<img src="data:image/png;base64,AA==" alt="Roboter mit zwei Rädern" width="640" height="360">',
- '<table><caption>Unsere Projekte</caption><tr><th scope="col">Name</th><th scope="col">Jahr</th></tr><tr><td>Rover</td><td>2025</td></tr><tr><td>Arm</td><td>2026</td></tr></table>',
- '<video controls><source src="medien/robotik.mp4" type="video/mp4"></video><p>Textfassung: Der Roboter fährt einen Parcours entlang.</p>',
- '<html><head><link rel="stylesheet" href="style.css"></head><body><h1>Robotik</h1></body></html>',
- '<h1 id="start">Robotik</h1><p class="hinweis">Bitte Akku laden.</p><p class="hinweis">Schutzbrille tragen.</p>',
- '<h1>Robotik</h1>',
- '<section class="karte"><h2>Robotik AG</h2><p>Wir bauen Roboter.</p></section>',
- '<header><h1>Robotik</h1></header><nav><a href="kontakt.html">Kontakt</a></nav><main><p>Unsere Seite richtet sich an neue Mitglieder der Robotik AG und stellt unsere Projekte vor.</p></main><footer>Schulprojekt</footer>',
- '<footer><h2>Quellen und Rechte</h2><p>Die verwendeten Fotos sind eigene Aufnahmen unserer Roboter ohne abgebildete Personen.</p></footer>',
- '<ol><li>Alle Links geprüft: beide Unterseiten erreichbar.</li><li>Schmale Ansicht geprüft: kein horizontaler Überlauf.</li><li>Bilder geprüft: alle eigenen Dateien werden angezeigt.</li></ol>',
- '<html><head><link rel="stylesheet" href="style.css"></head><body><header><h1>Robotik AG</h1></header><nav><a href="kontakt.html">Kontakt</a></nav><main><p>Wir stellen die Robotik AG vor und laden alle Schülerinnen und Schüler zum Mitmachen ein.</p><img src="data:image/png;base64,AA==" alt="Roboter mit zwei Rädern"><ul><li>Motor</li><li>Kabel</li><li>Akku</li></ul><table><tr><th>Name</th><th>Jahr</th></tr><tr><td>Rover</td><td>2025</td></tr><tr><td>Arm</td><td>2026</td></tr></table></main><footer><p>Alle Texte und Fotos wurden von uns selbst für dieses Schulprojekt angefertigt.</p></footer></body></html>'
-];
-const css={l9:'body{font-family:Arial,sans-serif} h1{color:navy}',l10:'.hinweis{color:green} #start{text-align:center}',l11:'body{color:navy;background-color:white;font-family:Arial;font-size:1rem;line-height:1.6} h1{text-align:center}',l12:'.karte{padding:1rem;border:1px solid navy;margin:1rem;max-width:40rem;box-sizing:border-box}',l16:'body{font-family:Arial,sans-serif}'};
-const parse=s=>new DOMParser().parseFromString(s,'text/html'),out=[];let count=0,failed=0;
-function assert(ok,label){count++;if(!ok)failed++;out.push(`${ok?'PASS':'FAIL'} ${label}`);}
-lessons.forEach((l,i)=>{
- assert(!checkLesson(l,l.starter,'',parse).every(c=>c.passed),l.id+' Startcode ist keine fertige Lösung');
- const positive=checkLesson(l,samples[i],css[l.id]||'',parse);
- assert(positive.every(c=>c.passed),l.id+' vollständiger Auftrag: '+positive.filter(c=>!c.passed).map(c=>c.label).join(', '));
- assert(!checkLesson(l,'<!-- '+samples[i]+' -->','/* '+(css[l.id]||'')+' */',parse).every(c=>c.passed),l.id+' Kommentare zählen nicht als Lösung');
-});
-assert(!checkLesson(lessons[8],samples[8],'body { font-family: ; } h1{ color: definitely-not-a-color; }',parse).every(c=>c.passed),'Ungültige CSS-Werte bestehen nicht');
-assert(!checkLesson(lessons[4],samples[4].replace('id="ideen"','id="anders"'),'',parse).every(c=>c.passed),'Falsches Sprungziel wird erkannt');
-assert(!checkLesson(lessons[5],samples[5].replace('Roboter mit zwei Rädern',''),'',parse).every(c=>c.passed),'Leere Bildbeschreibung reicht nicht');
-document.querySelector('#results').textContent=`${count-failed}/${count} Prüfungen bestanden, ${failed} fehlgeschlagen.\n\n`+out.join('\n');
-document.documentElement.dataset.testStatus=failed?'failed':'passed';
-</script></html>
+<!doctype html>
+<html lang="de">
+  <meta charset="utf-8" /><title>WebLab Browserprüfungen</title>
+  <h1>WebLab Browserprüfungen</h1>
+  <pre id="results">Prüfungen laufen …</pre>
+  <script type="module">
+    import { lessons } from "/content.js";
+    import { checkLesson } from "/checks.js";
+    const samples = [
+      "<h1>Robotik AG</h1><p>Wir bauen <strong>gemeinsam</strong> Roboter für unsere Schule.</p>",
+      '<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Robotik AG</title></head><body><h1>Robotik AG</h1></body></html>',
+      "<h1>Robotik AG</h1><h2>Unsere Ideen</h2><p>Wir entwickeln neue Maschinen.</p><h2>Mitmachen</h2><p>Alle sind <em>herzlich</em> willkommen.</p>",
+      "<ul><li>Motor</li><li>Kabel</li><li>Akku</li></ul><ol><li>Planen</li><li>Bauen</li><li>Testen</li></ol>",
+      '<a href="kontakt.html">Kontakt</a><a href="https://example.org">Weitere Informationen</a><a href="#ideen">Unsere Ideen</a><h2 id="ideen">Ideen</h2>',
+      '<img src="data:image/png;base64,AA==" alt="Roboter mit zwei Rädern" width="640" height="360">',
+      '<table><caption>Unsere Projekte</caption><tr><th scope="col">Name</th><th scope="col">Jahr</th></tr><tr><td>Rover</td><td>2025</td></tr><tr><td>Arm</td><td>2026</td></tr></table>',
+      '<video controls><source src="medien/robotik.mp4" type="video/mp4"></video><p>Textfassung: Der Roboter fährt einen Parcours entlang.</p>',
+      '<html><head><link rel="stylesheet" href="style.css"></head><body><h1>Robotik</h1></body></html>',
+      '<h1 id="start">Robotik</h1><p class="hinweis">Bitte Akku laden.</p><p class="hinweis">Schutzbrille tragen.</p>',
+      "<h1>Robotik</h1>",
+      '<section class="karte"><h2>Robotik AG</h2><p>Wir bauen Roboter.</p></section>',
+      '<header><h1>Robotik</h1></header><nav><a href="kontakt.html">Kontakt</a></nav><main><p>Unsere Seite richtet sich an neue Mitglieder der Robotik AG und stellt unsere Projekte vor.</p></main><footer>Schulprojekt</footer>',
+      "<footer><h2>Quellen und Rechte</h2><p>Die verwendeten Fotos sind eigene Aufnahmen unserer Roboter ohne abgebildete Personen.</p></footer>",
+      "<ol><li>Alle Links geprüft: beide Unterseiten erreichbar.</li><li>Schmale Ansicht geprüft: kein horizontaler Überlauf.</li><li>Bilder geprüft: alle eigenen Dateien werden angezeigt.</li></ol>",
+      '<html><head><link rel="stylesheet" href="style.css"></head><body><header><h1>Robotik AG</h1></header><nav><a href="kontakt.html">Kontakt</a></nav><main><p>Wir stellen die Robotik AG vor und laden alle Schülerinnen und Schüler zum Mitmachen ein.</p><img src="data:image/png;base64,AA==" alt="Roboter mit zwei Rädern"><ul><li>Motor</li><li>Kabel</li><li>Akku</li></ul><table><tr><th>Name</th><th>Jahr</th></tr><tr><td>Rover</td><td>2025</td></tr><tr><td>Arm</td><td>2026</td></tr></table></main><footer><p>Alle Texte und Fotos wurden von uns selbst für dieses Schulprojekt angefertigt.</p></footer></body></html>',
+    ];
+    const css = {
+      l9: "body{font-family:Arial,sans-serif} h1{color:navy}",
+      l10: ".hinweis{color:green} #start{text-align:center}",
+      l11: "body{color:navy;background-color:white;font-family:Arial;font-size:1rem;line-height:1.6} h1{text-align:center}",
+      l12: ".karte{padding:1rem;border:1px solid navy;margin:1rem;max-width:40rem;box-sizing:border-box}",
+      l16: "body{font-family:Arial,sans-serif}",
+    };
+    const parse = (s) => new DOMParser().parseFromString(s, "text/html"),
+      out = [];
+    let count = 0,
+      failed = 0;
+    function assert(ok, label) {
+      count++;
+      if (!ok) failed++;
+      out.push(`${ok ? "PASS" : "FAIL"} ${label}`);
+    }
+    lessons.forEach((l, i) => {
+      assert(
+        !checkLesson(l, l.starter, "", parse).every((c) => c.passed),
+        l.id + " Startcode ist keine fertige Lösung",
+      );
+      const positive = checkLesson(l, samples[i], css[l.id] || "", parse);
+      assert(
+        positive.every((c) => c.passed),
+        l.id +
+          " vollständiger Auftrag: " +
+          positive
+            .filter((c) => !c.passed)
+            .map((c) => c.label)
+            .join(", "),
+      );
+      assert(
+        !checkLesson(
+          l,
+          "<!-- " + samples[i] + " -->",
+          "/* " + (css[l.id] || "") + " */",
+          parse,
+        ).every((c) => c.passed),
+        l.id + " Kommentare zählen nicht als Lösung",
+      );
+    });
+    assert(
+      !checkLesson(
+        lessons[8],
+        samples[8],
+        "body { font-family: ; } h1{ color: definitely-not-a-color; }",
+        parse,
+      ).every((c) => c.passed),
+      "Ungültige CSS-Werte bestehen nicht",
+    );
+    assert(
+      !checkLesson(
+        lessons[4],
+        samples[4].replace('id="ideen"', 'id="anders"'),
+        "",
+        parse,
+      ).every((c) => c.passed),
+      "Falsches Sprungziel wird erkannt",
+    );
+    assert(
+      !checkLesson(
+        lessons[5],
+        samples[5].replace("Roboter mit zwei Rädern", ""),
+        "",
+        parse,
+      ).every((c) => c.passed),
+      "Leere Bildbeschreibung reicht nicht",
+    );
+    // Echte CSS-Viewports innerhalb der lokalen Prüfseite, unabhängig vom
+    // Browserwerkzeug. Kein Ersatz für einen Test auf einem physischen Gerät.
+    for (const route of ["#home", "#lesson/l1", "#lesson/l12", "#reference"]) {
+      const frame = document.createElement("iframe");
+      frame.style.cssText = "width:360px;height:800px;border:0;display:block";
+      frame.title = "Mobile Layoutprüfung " + route;
+      const loaded = new Promise((resolve, reject) => {
+        frame.onload = resolve;
+        frame.onerror = reject;
+      });
+      frame.src = "/" + route;
+      document.body.append(frame);
+      await loaded;
+      const root = frame.contentDocument.documentElement;
+      assert(
+        frame.contentWindow.innerWidth === 360,
+        route + " hat echten 360-Pixel-Viewport",
+      );
+      assert(
+        root.scrollWidth <= root.clientWidth + 1,
+        route + " ohne horizontalen Überlauf",
+      );
+      frame.remove();
+    }
+    document.querySelector("#results").textContent =
+      `${count - failed}/${count} Prüfungen bestanden, ${failed} fehlgeschlagen.\n\n` +
+      out.join("\n");
+    document.documentElement.dataset.testStatus = failed ? "failed" : "passed";
+  </script>
+</html>

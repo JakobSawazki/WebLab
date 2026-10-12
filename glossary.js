@@ -1,1023 +1,915 @@
 export const glossary = [
   {
-    "term": "HTML",
-    "kind": "begriff",
-    "category": "Grundlagen",
-    "short": "Die Auszeichnungssprache, mit der du Inhalte beschreibst.",
-    "syntax": "<h1>Überschrift</h1>",
-    "description": "HTML steht für HyperText Markup Language. Du programmierst damit nicht, du zeichnest Text aus: Du sagst dem Browser, welcher Teil eine Überschrift, ein Absatz oder ein Bild ist. Wie das Ergebnis aussieht, bestimmt später CSS.",
-    "chapter": "K1",
-    "related": [
-      "Element",
-      "CSS"
-    ]
-  },
-  {
-    "term": "CSS",
-    "kind": "begriff",
-    "category": "Grundlagen",
-    "short": "Die Sprache für das Aussehen einer Webseite.",
-    "syntax": "h1 { color: navy; }",
-    "description": "CSS steht für Cascading Style Sheets. Während HTML die Bedeutung festlegt, bestimmt CSS Farbe, Schrift, Größe und Anordnung. Beides getrennt zu halten macht Seiten leichter änderbar.",
-    "chapter": "K5",
-    "related": [
-      "Selektor",
-      "Regel",
-      "HTML"
-    ]
-  },
-  {
-    "term": "Element",
-    "kind": "begriff",
-    "category": "Grundlagen",
-    "short": "Start-Tag, Inhalt und End-Tag zusammen.",
-    "syntax": "<p>Ein Satz.</p>",
-    "description": "Ein Element besteht aus dem Start-Tag, dem Inhalt dazwischen und dem End-Tag. Der Elementname sagt, was der Inhalt bedeutet. Manche Elemente sind leer und haben deshalb kein End-Tag.",
-    "chapter": "K1",
-    "related": [
-      "Tag",
-      "Leeres Element",
-      "Verschachtelung"
-    ]
-  },
-  {
-    "term": "Tag",
-    "kind": "begriff",
-    "category": "Grundlagen",
-    "short": "Die Markierung in spitzen Klammern.",
-    "syntax": "<p> … </p>",
-    "description": "Ein Tag steht immer in spitzen Klammern. Das Start-Tag öffnet ein Element, das End-Tag schließt es und hat zusätzlich einen Schrägstrich. Zwischen der Klammer und dem Namen darf kein Leerzeichen stehen.",
-    "chapter": "K1",
-    "related": [
-      "Element"
-    ]
-  },
-  {
-    "term": "Leeres Element",
-    "kind": "begriff",
-    "category": "Grundlagen",
-    "short": "Ein Element ohne Inhalt und ohne End-Tag.",
-    "syntax": "<br>   <img src=\"foto.jpg\" alt=\"…\">",
-    "description": "Manche Elemente umschließen keinen Inhalt. Weil es nichts zu schließen gibt, haben sie kein End-Tag. Typische Beispiele sind der Zeilenumbruch, das Bild und die Trennlinie.",
-    "chapter": "K1",
-    "related": [
-      "br",
-      "img",
-      "hr"
-    ]
-  },
-  {
-    "term": "Verschachtelung",
-    "kind": "begriff",
-    "category": "Grundlagen",
-    "short": "Elemente sauber ineinander setzen.",
-    "syntax": "<p><strong>Wichtig</strong></p>",
-    "description": "Elemente dürfen ineinander stehen, sich aber nicht überkreuzen. Merksatz: Was zuletzt geöffnet wurde, wird zuerst geschlossen. Sonst rät der Browser – und rät oft falsch.",
-    "chapter": "K1",
-    "related": [
-      "Element"
-    ]
-  },
-  {
-    "term": "Attribut",
-    "kind": "begriff",
-    "category": "Grundlagen",
-    "short": "Eine Zusatzangabe im Start-Tag.",
-    "syntax": "<a href=\"https://…\">Link</a>",
-    "description": "Ein Attribut steht im Start-Tag und folgt dem Muster name=\"wert\". Es liefert eine zusätzliche Information, zum Beispiel wohin ein Link führt oder welches Bild geladen wird. Der Wert steht in Anführungszeichen.",
-    "chapter": "K2",
-    "related": [
-      "href",
-      "src",
-      "alt"
-    ]
-  },
-  {
-    "term": "Semantik",
-    "kind": "begriff",
-    "category": "Grundlagen",
-    "short": "Die Bedeutung eines Elements, nicht sein Aussehen.",
-    "syntax": "<h1>Titel</h1> statt <strong>Titel</strong>",
-    "description": "Semantisch auszeichnen heißt: das Element wählen, das die Bedeutung trifft. Eine Überschrift ist ein h1, auch wenn strong ebenfalls fett aussieht. Suchmaschinen und Screenreader verlassen sich darauf.",
-    "chapter": "K4",
-    "related": [
-      "h1",
-      "strong"
-    ]
-  },
-  {
-    "term": "Selektor",
-    "kind": "begriff",
-    "category": "CSS-Aufbau",
-    "short": "Bestimmt, für welche Elemente eine Regel gilt.",
-    "syntax": "p { … }   .karte { … }   #kopf { … }",
-    "description": "Der Selektor steht vor der geschweiften Klammer. Ein Elementname trifft alle Elemente dieser Art, ein Punkt eine Klasse und eine Raute eine ID.",
-    "chapter": "K5",
-    "related": [
-      "Regel",
-      "class",
-      "id"
-    ]
-  },
-  {
-    "term": "Regel",
-    "kind": "begriff",
-    "category": "CSS-Aufbau",
-    "short": "Selektor plus Deklarationen in geschweiften Klammern.",
-    "syntax": "h1 {\n  color: navy;\n  font-size: 32px;\n}",
-    "description": "Eine CSS-Regel besteht aus dem Selektor und einem Block in geschweiften Klammern. Darin steht je Zeile eine Deklaration aus Eigenschaft, Doppelpunkt, Wert und Semikolon.",
-    "chapter": "K5",
-    "related": [
-      "Selektor",
-      "Deklaration"
-    ]
-  },
-  {
-    "term": "Deklaration",
-    "kind": "begriff",
-    "category": "CSS-Aufbau",
-    "short": "Ein Paar aus Eigenschaft und Wert.",
-    "syntax": "color: navy;",
-    "description": "Eine Deklaration sagt, welche Eigenschaft welchen Wert bekommt. Zwischen beiden steht ein Doppelpunkt, am Ende ein Semikolon. Das Semikolon nach der letzten Deklaration zu vergessen ist ein häufiger Fehler.",
-    "chapter": "K5",
-    "related": [
-      "Regel"
-    ]
-  },
-  {
-    "term": "Entität",
-    "kind": "begriff",
-    "category": "Sonderzeichen",
-    "short": "Schreibweise für Zeichen mit Sonderbedeutung.",
-    "syntax": "&lt;  &gt;  &amp;  &nbsp;  &copy;",
-    "description": "Zeichen wie die spitze Klammer haben in HTML eine eigene Bedeutung. Um sie als Text zu zeigen, schreibst du eine Entität: kaufmännisches Und, Name, Semikolon. So erscheint das Zeichen, ohne den Code zu stören.",
-    "chapter": "K8"
-  },
-  {
-    "term": "Kommentar",
-    "kind": "html",
-    "category": "Sonstiges",
-    "short": "Notiz im Code, die der Browser ignoriert.",
-    "syntax": "<!-- Das erscheint nicht auf der Seite -->",
-    "description": "Kommentare helfen dir, deinen eigenen Code später wiederzuerkennen. Sie werden nicht angezeigt, sind im Quelltext aber für alle sichtbar. Deshalb gehören dort keine Passwörter oder privaten Notizen hinein.",
-    "chapter": "K3"
-  },
-  {
-    "term": "<!DOCTYPE html>",
-    "kind": "html",
-    "category": "Grundgerüst",
-    "short": "Sagt dem Browser: Das ist modernes HTML.",
-    "syntax": "<!DOCTYPE html>",
-    "description": "Steht als allererste Zeile jeder HTML-Datei. Ohne diese Angabe schaltet der Browser in einen alten Anzeigemodus, in dem Gestaltung anders wirkt als erwartet.",
-    "chapter": "K3",
-    "related": [
-      "html"
-    ]
-  },
-  {
-    "term": "html",
-    "kind": "html",
-    "category": "Grundgerüst",
-    "short": "Umschließt das gesamte Dokument.",
-    "syntax": "<html lang=\"de\"> … </html>",
-    "description": "Das äußerste Element der Seite. Mit dem Attribut lang gibst du die Sprache an – wichtig für Vorlesesoftware und automatische Übersetzung.",
-    "chapter": "K3",
-    "related": [
-      "head",
-      "body"
-    ]
-  },
-  {
-    "term": "head",
-    "kind": "html",
-    "category": "Grundgerüst",
-    "short": "Angaben über die Seite, nicht sichtbarer Inhalt.",
-    "syntax": "<head>\n  <title>Meine Seite</title>\n</head>",
-    "description": "Im Kopfbereich stehen Titel, Zeichensatz, Beschreibung und Verweise auf CSS-Dateien. Nichts davon erscheint direkt im Seitenfenster.",
-    "chapter": "K3",
-    "related": [
-      "title",
-      "meta",
-      "link"
-    ]
-  },
-  {
-    "term": "body",
-    "kind": "html",
-    "category": "Grundgerüst",
-    "short": "Der sichtbare Inhalt der Seite.",
-    "syntax": "<body> … </body>",
-    "description": "Alles, was Besucher sehen sollen, steht im body: Überschriften, Absätze, Bilder, Tabellen und Listen.",
-    "chapter": "K3",
-    "related": [
-      "head"
-    ]
-  },
-  {
-    "term": "title",
-    "kind": "html",
-    "category": "Grundgerüst",
-    "short": "Der Text im Browser-Tab.",
-    "syntax": "<title>Schulplaner</title>",
-    "description": "Erscheint im Reiter des Browsers, im Lesezeichen und in Suchergebnissen. Ein guter Titel ist kurz und sagt, worum es auf genau dieser Seite geht.",
-    "chapter": "K3",
-    "related": [
-      "head"
-    ]
-  },
-  {
-    "term": "meta",
-    "kind": "html",
-    "category": "Grundgerüst",
-    "short": "Zusatzangaben wie Zeichensatz oder Beschreibung.",
-    "syntax": "<meta charset=\"utf-8\">",
-    "description": "Leeres Element im head. Der Zeichensatz utf-8 sorgt dafür, dass Umlaute und Sonderzeichen richtig dargestellt werden. Fehlt er, werden aus ä und ü oft seltsame Zeichen.",
-    "chapter": "K3"
-  },
-  {
-    "term": "link",
-    "kind": "html",
-    "category": "Grundgerüst",
-    "short": "Bindet eine externe Datei ein, meist CSS.",
-    "syntax": "<link rel=\"stylesheet\" href=\"style.css\">",
-    "description": "Leeres Element im head. Damit verbindest du deine HTML-Seite mit einer CSS-Datei. Das ist der sauberste der drei Einbindungswege.",
-    "chapter": "K6",
-    "related": [
-      "style",
-      "href"
-    ]
-  },
-  {
-    "term": "style",
-    "kind": "html",
-    "category": "Grundgerüst",
-    "short": "CSS-Regeln direkt in der HTML-Datei.",
-    "syntax": "<style>\n  h1 { color: navy; }\n</style>",
-    "description": "Steht im head und enthält CSS für genau diese eine Seite. Praktisch zum Ausprobieren, für mehrere Seiten ist eine externe Datei besser.",
-    "chapter": "K6",
-    "related": [
-      "link",
-      "CSS"
-    ]
-  },
-  {
-    "term": "h1",
-    "kind": "html",
-    "category": "Text",
-    "short": "Die Hauptüberschrift der Seite.",
-    "syntax": "<h1>Meine erste Webseite</h1>",
-    "description": "Die wichtigste Überschrift, üblicherweise einmal pro Seite. h steht für heading, die Ziffer für die Ebene. Sie zeigt sofort, worum es geht.",
-    "chapter": "K1",
-    "related": [
-      "h2",
-      "Semantik"
-    ]
-  },
-  {
-    "term": "h2",
-    "kind": "html",
-    "category": "Text",
-    "short": "Überschrift der zweiten Ebene.",
-    "syntax": "<h2>Unsere Schule</h2>",
-    "description": "Gliedert die Seite unter der Hauptüberschrift in Abschnitte. Es gibt h1 bis h6. Überspringe keine Ebene, sonst wird die Gliederung unlogisch.",
-    "chapter": "K4",
-    "related": [
-      "h1"
-    ]
-  },
-  {
-    "term": "p",
-    "kind": "html",
-    "category": "Text",
-    "short": "Ein Absatz.",
-    "syntax": "<p>Hier steht ein Satz.</p>",
-    "description": "Fasst zusammengehörende Sätze zu einem Textblock zusammen. Der Browser setzt automatisch Abstand darüber und darunter.",
-    "chapter": "K1",
-    "related": [
-      "br"
-    ]
-  },
-  {
-    "term": "br",
-    "kind": "html",
-    "category": "Text",
-    "short": "Erzwingt einen Zeilenumbruch.",
-    "syntax": "Stuttgart<br>Klasse 11",
-    "description": "Leeres Element ohne End-Tag. Nötig, weil der Browser die Zeilenumbrüche in deinem Code ignoriert. Für neue Absätze nimmst du besser p statt mehrerer br.",
-    "chapter": "K1",
-    "related": [
-      "p",
-      "Leeres Element"
-    ]
-  },
-  {
-    "term": "strong",
-    "kind": "html",
-    "category": "Text",
-    "short": "Markiert etwas als besonders wichtig.",
-    "syntax": "Das ist <strong>wichtig</strong>.",
-    "description": "Der Browser stellt den Inhalt fett dar. Entscheidend ist aber die Bedeutung: strong sagt, dass dieser Teil wirklich wichtig ist – nicht nur, dass er fett aussehen soll.",
-    "chapter": "K1",
-    "related": [
-      "em",
-      "Semantik"
-    ]
-  },
-  {
-    "term": "em",
-    "kind": "html",
-    "category": "Text",
-    "short": "Betont einen Textteil.",
-    "syntax": "Das war <em>wirklich</em> knapp.",
-    "description": "Steht für emphasis, also Betonung. Wird meist kursiv dargestellt. Vorlesesoftware verändert dafür die Sprechweise.",
-    "chapter": "K4",
-    "related": [
-      "strong"
-    ]
-  },
-  {
-    "term": "small",
-    "kind": "html",
-    "category": "Text",
-    "short": "Nebenbemerkung oder Kleingedrucktes.",
-    "syntax": "<small>Stand: August 2026</small>",
-    "description": "Für Zusatzangaben, die weniger wichtig sind, etwa Quellen oder Hinweise. Die kleinere Darstellung ergibt sich aus der Bedeutung.",
-    "chapter": "K4"
-  },
-  {
-    "term": "mark",
-    "kind": "html",
-    "category": "Text",
-    "short": "Hebt Text farbig hervor.",
-    "syntax": "<mark>Prüfungstermin</mark>",
-    "description": "Wirkt wie ein Textmarker. Gedacht für Stellen, die im aktuellen Zusammenhang besonders interessant sind, etwa Suchtreffer.",
-    "chapter": "K4"
-  },
-  {
-    "term": "hr",
-    "kind": "html",
-    "category": "Text",
-    "short": "Trennlinie zwischen Abschnitten.",
-    "syntax": "<hr>",
-    "description": "Leeres Element ohne End-Tag. Markiert einen thematischen Wechsel und wird meist als waagerechte Linie dargestellt.",
-    "chapter": "K4",
-    "related": [
-      "Leeres Element"
-    ]
-  },
-  {
-    "term": "span",
-    "kind": "html",
-    "category": "Text",
-    "short": "Neutraler Behälter für einen Textteil.",
-    "syntax": "Preis: <span class=\"betrag\">12 €</span>",
-    "description": "Hat selbst keine Bedeutung. Du nutzt ihn, wenn du einen kleinen Teil innerhalb einer Zeile gestalten willst und kein passendes semantisches Element existiert.",
-    "chapter": "K5",
-    "related": [
-      "div",
-      "class"
-    ]
-  },
-  {
-    "term": "div",
-    "kind": "html",
-    "category": "Struktur",
-    "short": "Neutraler Behälter für einen ganzen Bereich.",
-    "syntax": "<div class=\"karte\"> … </div>",
-    "description": "Fasst mehrere Elemente zu einem Block zusammen, ohne eine Bedeutung zu geben. Nützlich fürs Layout, sollte aber nicht semantische Elemente ersetzen.",
-    "chapter": "K5",
-    "related": [
-      "span",
-      "class"
-    ]
-  },
-  {
-    "term": "a",
-    "kind": "html",
-    "category": "Links & Medien",
-    "short": "Ein Verweis auf eine andere Seite oder Stelle.",
-    "syntax": "<a href=\"schule.html\">Unsere Schule</a>",
-    "description": "Das a steht für anchor, also Anker. Der Text zwischen den Tags ist das, was angeklickt wird. Er sollte sagen, wohin es geht – „hier klicken“ hilft niemandem.",
-    "chapter": "K7",
-    "related": [
-      "href",
-      "target"
-    ]
-  },
-  {
-    "term": "img",
-    "kind": "html",
-    "category": "Links & Medien",
-    "short": "Bindet ein Bild ein.",
-    "syntax": "<img src=\"schule.jpg\" alt=\"Schulgebäude von vorn\">",
-    "description": "Leeres Element ohne End-Tag. Es braucht immer src für die Bilddatei und alt für die Beschreibung.",
-    "chapter": "K8",
-    "related": [
-      "src",
-      "alt",
-      "Leeres Element"
-    ]
-  },
-  {
-    "term": "iframe",
-    "kind": "html",
-    "category": "Links & Medien",
-    "short": "Bettet eine fremde Seite ein, etwa eine Karte.",
-    "syntax": "<iframe src=\"…\" title=\"Karte\"></iframe>",
-    "description": "Zeigt eine andere Webseite in einem Rahmen innerhalb deiner Seite. Häufig für Karten oder Videos. Beachte, dass dabei Daten an den fremden Anbieter gehen.",
-    "chapter": "K10"
-  },
-  {
-    "term": "audio",
-    "kind": "html",
-    "category": "Links & Medien",
-    "short": "Spielt eine Tondatei ab.",
-    "syntax": "<audio src=\"ton.mp3\" controls></audio>",
-    "description": "Mit dem Attribut controls bekommen Besucher Abspielknöpfe. Ohne controls ist der Player unsichtbar und lässt sich nicht bedienen.",
-    "chapter": "K13",
-    "related": [
-      "video",
-      "controls"
-    ]
-  },
-  {
-    "term": "video",
-    "kind": "html",
-    "category": "Links & Medien",
-    "short": "Spielt ein Video ab.",
-    "syntax": "<video src=\"film.mp4\" controls width=\"480\"></video>",
-    "description": "Funktioniert wie audio, zeigt zusätzlich ein Bild. Mit poster legst du ein Vorschaubild fest. Autoplay ohne Ton-Aus gilt als unhöflich.",
-    "chapter": "K13",
-    "related": [
-      "audio",
-      "controls"
-    ]
-  },
-  {
-    "term": "href",
-    "kind": "html",
-    "category": "Attribut",
-    "short": "Das Ziel eines Links.",
-    "syntax": "<a href=\"https://example.org\">Beispiel</a>",
-    "description": "Steht für hypertext reference. Enthält entweder eine vollständige Adresse, einen Dateinamen im selben Ordner oder eine Sprungmarke mit Raute.",
-    "chapter": "K7",
-    "related": [
-      "a",
-      "Attribut"
-    ]
-  },
-  {
-    "term": "src",
-    "kind": "html",
-    "category": "Attribut",
-    "short": "Die Quelldatei eines Bildes oder Mediums.",
-    "syntax": "<img src=\"bilder/schule.jpg\" alt=\"…\">",
-    "description": "Steht für source. Der Pfad wird vom Ort der HTML-Datei aus gelesen. Groß- und Kleinschreibung im Dateinamen ist auf Servern wichtig.",
-    "chapter": "K2",
-    "related": [
-      "img",
-      "alt"
-    ]
-  },
-  {
-    "term": "alt",
-    "kind": "html",
-    "category": "Attribut",
-    "short": "Textbeschreibung eines Bildes.",
-    "syntax": "<img src=\"schule.jpg\" alt=\"Schulgebäude von vorn\">",
-    "description": "Wird vorgelesen, wenn jemand nicht sehen kann, und angezeigt, wenn das Bild fehlt. Beschreibe, was zu sehen ist – nicht „Bild“ oder den Dateinamen. Reine Dekoration bekommt alt=\"\".",
-    "chapter": "K2",
-    "related": [
-      "img",
-      "src"
-    ]
-  },
-  {
-    "term": "target",
-    "kind": "html",
-    "category": "Attribut",
-    "short": "Legt fest, wo ein Link geöffnet wird.",
-    "syntax": "<a href=\"…\" target=\"_blank\" rel=\"noreferrer\">…</a>",
-    "description": "Mit _blank öffnet der Link einen neuen Tab. Sparsam einsetzen: Es nimmt Besuchern die Kontrolle über den Zurück-Knopf.",
-    "chapter": "K7",
-    "related": [
-      "a",
-      "href"
-    ]
-  },
-  {
-    "term": "class",
-    "kind": "html",
-    "category": "Attribut",
-    "short": "Vergibt einen Namen für die Gestaltung.",
-    "syntax": "<p class=\"hinweis\">Achtung</p>",
-    "description": "Mehrere Elemente dürfen dieselbe Klasse haben. Im CSS sprichst du sie mit einem Punkt vor dem Namen an.",
-    "chapter": "K5",
-    "related": [
-      "id",
-      "Selektor"
-    ]
-  },
-  {
-    "term": "id",
-    "kind": "html",
-    "category": "Attribut",
-    "short": "Eindeutiger Name für genau ein Element.",
-    "syntax": "<h2 id=\"termine\">Termine</h2>",
-    "description": "Eine ID darf pro Seite nur einmal vorkommen. Im CSS sprichst du sie mit einer Raute an, in Links als Sprungmarke.",
-    "chapter": "K7",
-    "related": [
-      "class",
-      "href"
-    ]
-  },
-  {
-    "term": "controls",
-    "kind": "html",
-    "category": "Attribut",
-    "short": "Zeigt Abspielknöpfe bei Medien.",
-    "syntax": "<video src=\"film.mp4\" controls></video>",
-    "description": "Ein Attribut ohne Wert. Es ist entweder vorhanden oder nicht. Ohne controls können Besucher das Medium nicht starten.",
-    "chapter": "K13",
-    "related": [
-      "audio",
-      "video"
-    ]
-  },
-  {
-    "term": "colspan",
-    "kind": "html",
-    "category": "Attribut",
-    "short": "Verbindet Tabellenzellen waagerecht.",
-    "syntax": "<td colspan=\"2\">Doppelstunde</td>",
-    "description": "Die Zelle erstreckt sich über mehrere Spalten. Achte darauf, dass jede Zeile am Ende gleich viele Spalten ergibt.",
-    "chapter": "K11",
-    "related": [
-      "td",
-      "rowspan"
-    ]
-  },
-  {
-    "term": "rowspan",
-    "kind": "html",
-    "category": "Attribut",
-    "short": "Verbindet Tabellenzellen senkrecht.",
-    "syntax": "<td rowspan=\"2\">Sport</td>",
-    "description": "Die Zelle erstreckt sich über mehrere Zeilen. In den übersprungenen Zeilen entfällt die entsprechende Zelle.",
-    "chapter": "K11",
-    "related": [
-      "td",
-      "colspan"
-    ]
-  },
-  {
-    "term": "ul",
-    "kind": "html",
-    "category": "Listen",
-    "short": "Unnummerierte Liste mit Punkten.",
-    "syntax": "<ul>\n  <li>Deutsch</li>\n  <li>Mathe</li>\n</ul>",
-    "description": "Für Aufzählungen, bei denen die Reihenfolge egal ist. Direkt darin dürfen nur li-Elemente stehen.",
-    "chapter": "K12",
-    "related": [
-      "ol",
-      "li"
-    ]
-  },
-  {
-    "term": "ol",
-    "kind": "html",
-    "category": "Listen",
-    "short": "Nummerierte Liste.",
-    "syntax": "<ol>\n  <li>Anmelden</li>\n  <li>Termin wählen</li>\n</ol>",
-    "description": "Für Schritte und Ranglisten, bei denen die Reihenfolge zählt. Die Nummern setzt der Browser automatisch.",
-    "chapter": "K12",
-    "related": [
-      "ul",
-      "li"
-    ]
-  },
-  {
-    "term": "li",
-    "kind": "html",
-    "category": "Listen",
-    "short": "Ein Eintrag in einer Liste.",
-    "syntax": "<li>Erster Punkt</li>",
-    "description": "Steht immer innerhalb von ul oder ol. Ein li darf selbst wieder eine ganze Liste enthalten – so entstehen Unterpunkte.",
-    "chapter": "K12",
-    "related": [
-      "ul",
-      "ol"
-    ]
-  },
-  {
-    "term": "table",
-    "kind": "html",
-    "category": "Tabellen",
-    "short": "Umschließt eine ganze Tabelle.",
-    "syntax": "<table>\n  <tr><td>Mo</td></tr>\n</table>",
-    "description": "Tabellen sind für echte Daten gedacht, etwa einen Stundenplan – nicht als Layout-Werkzeug. Dafür gibt es CSS.",
-    "chapter": "K11",
-    "related": [
-      "tr",
-      "td",
-      "th"
-    ]
-  },
-  {
-    "term": "tr",
-    "kind": "html",
-    "category": "Tabellen",
-    "short": "Eine Tabellenzeile.",
-    "syntax": "<tr> <td>8:00</td> <td>Mathe</td> </tr>",
-    "description": "Steht für table row. Enthält die Zellen einer Zeile, entweder td oder th.",
-    "chapter": "K11",
-    "related": [
-      "table",
-      "td"
-    ]
-  },
-  {
-    "term": "td",
-    "kind": "html",
-    "category": "Tabellen",
-    "short": "Eine normale Datenzelle.",
-    "syntax": "<td>Mathe</td>",
-    "description": "Steht für table data. Jede Zelle einer Zeile ist ein td, sofern es keine Kopfzelle ist.",
-    "chapter": "K11",
-    "related": [
-      "th",
-      "tr"
-    ]
-  },
-  {
-    "term": "th",
-    "kind": "html",
-    "category": "Tabellen",
-    "short": "Eine Kopfzelle mit Beschriftung.",
-    "syntax": "<th>Montag</th>",
-    "description": "Steht für table header. Wird fett und zentriert dargestellt und sagt Vorlesesoftware, wozu eine Spalte oder Zeile gehört.",
-    "chapter": "K11",
-    "related": [
-      "td",
-      "table"
-    ]
-  },
-  {
-    "term": "caption",
-    "kind": "html",
-    "category": "Tabellen",
-    "short": "Die Überschrift einer Tabelle.",
-    "syntax": "<table>\n  <caption>Stundenplan 11a</caption>\n</table>",
-    "description": "Steht als erstes Element in der Tabelle und beschreibt, was sie zeigt. Hilft besonders beim Vorlesen.",
-    "chapter": "K11",
-    "related": [
-      "table"
-    ]
-  },
-  {
-    "term": "color",
-    "kind": "css",
-    "category": "Farbe",
-    "short": "Die Textfarbe.",
-    "syntax": "p { color: #1a3d5c; }",
-    "description": "Farben schreibst du als Name, als Hexadezimalwert mit Raute oder als rgb-Angabe. Achte auf genug Kontrast zum Hintergrund, sonst wird der Text schwer lesbar.",
-    "chapter": "K5",
-    "related": [
-      "background-color"
-    ]
-  },
-  {
-    "term": "background-color",
-    "kind": "css",
-    "category": "Farbe",
-    "short": "Die Hintergrundfarbe eines Elements.",
-    "syntax": "body { background-color: #f4f8fb; }",
-    "description": "Färbt die gesamte Fläche des Elements, einschließlich Innenabstand. Zusammen mit color bestimmt sie die Lesbarkeit.",
-    "chapter": "K5",
-    "related": [
-      "color",
-      "background-image"
-    ]
-  },
-  {
-    "term": "background-image",
-    "kind": "css",
-    "category": "Farbe",
-    "short": "Ein Bild als Hintergrund.",
-    "syntax": "body {\n  background-image: url(\"hintergrund.jpg\");\n  background-size: cover;\n}",
-    "description": "Der Pfad steht in url(). Mit background-size: cover füllt das Bild die Fläche. Lege zusätzlich eine Hintergrundfarbe fest, falls das Bild nicht lädt.",
-    "chapter": "K8",
-    "related": [
-      "background-color"
-    ]
-  },
-  {
-    "term": "opacity",
-    "kind": "css",
-    "category": "Farbe",
-    "short": "Wie durchsichtig ein Element ist.",
-    "syntax": ".hinweis { opacity: 0.7; }",
-    "description": "Der Wert liegt zwischen 0 für unsichtbar und 1 für vollständig sichtbar. Er wirkt auf das gesamte Element samt Inhalt.",
-    "chapter": "K5"
-  },
-  {
-    "term": "font-family",
-    "kind": "css",
-    "category": "Schrift",
-    "short": "Die Schriftart.",
-    "syntax": "body { font-family: Verdana, Arial, sans-serif; }",
-    "description": "Gib mehrere Schriften an. Der Browser nimmt die erste, die vorhanden ist. Die letzte Angabe ist eine allgemeine Gattung als Rückfallebene.",
-    "chapter": "K5",
-    "related": [
-      "font-size"
-    ]
-  },
-  {
-    "term": "font-size",
-    "kind": "css",
-    "category": "Schrift",
-    "short": "Die Schriftgröße.",
-    "syntax": "h1 { font-size: 32px; }",
-    "description": "Üblich sind px für feste Größen und rem für Größen, die sich an der Grundschrift orientieren. rem ist barrierefreundlicher, weil es die Einstellungen der Besucher berücksichtigt.",
-    "chapter": "K5",
-    "related": [
-      "font-family"
-    ]
-  },
-  {
-    "term": "font-weight",
-    "kind": "css",
-    "category": "Schrift",
-    "short": "Die Strichstärke der Schrift.",
-    "syntax": ".titel { font-weight: bold; }",
-    "description": "Möglich sind Wörter wie normal und bold oder Zahlen von 100 bis 900. Nicht jede Schriftart bietet alle Stufen an.",
-    "chapter": "K5"
-  },
-  {
-    "term": "font-style",
-    "kind": "css",
-    "category": "Schrift",
-    "short": "Aufrecht oder kursiv.",
-    "syntax": ".zitat { font-style: italic; }",
-    "description": "Meist genutzt für kursiven Text. Für betonten Inhalt ist em die bessere Wahl, weil es die Bedeutung mitliefert.",
-    "chapter": "K5",
-    "related": [
-      "em"
-    ]
-  },
-  {
-    "term": "line-height",
-    "kind": "css",
-    "category": "Schrift",
-    "short": "Der Zeilenabstand.",
-    "syntax": "p { line-height: 1.6; }",
-    "description": "Eine Zahl ohne Einheit ist ein Vielfaches der Schriftgröße. Werte um 1.5 bis 1.7 machen längere Texte deutlich leichter lesbar.",
-    "chapter": "K5"
-  },
-  {
-    "term": "text-align",
-    "kind": "css",
-    "category": "Schrift",
-    "short": "Die Ausrichtung des Textes.",
-    "syntax": "h1 { text-align: center; }",
-    "description": "Mögliche Werte sind left, right, center und justify. Blocksatz erzeugt in schmalen Spalten oft hässliche Lücken.",
-    "chapter": "K5"
-  },
-  {
-    "term": "text-decoration",
-    "kind": "css",
-    "category": "Schrift",
-    "short": "Unterstreichung und Durchstreichung.",
-    "syntax": "a { text-decoration: none; }",
-    "description": "Häufig genutzt, um die Unterstreichung von Links zu entfernen. Sorge dann für ein anderes deutliches Merkmal, sonst erkennt niemand den Link.",
-    "chapter": "K7",
-    "related": [
-      "a"
-    ]
-  },
-  {
-    "term": "letter-spacing",
-    "kind": "css",
-    "category": "Schrift",
-    "short": "Der Abstand zwischen Buchstaben.",
-    "syntax": ".label { letter-spacing: 0.08em; }",
-    "description": "Kleine positive Werte wirken bei Großbuchstaben edler. Zu große Werte machen Fließtext unlesbar.",
-    "chapter": "K5"
-  },
-  {
-    "term": "margin",
-    "kind": "css",
-    "category": "Box",
-    "short": "Außenabstand zu anderen Elementen.",
-    "syntax": ".karte { margin: 16px; }",
-    "description": "Schiebt Nachbarelemente weg. Mit margin: 0 auto zentrierst du einen Block, dessen Breite festgelegt ist.",
-    "chapter": "K7",
-    "related": [
-      "padding"
-    ]
-  },
-  {
-    "term": "padding",
-    "kind": "css",
-    "category": "Box",
-    "short": "Innenabstand zwischen Rahmen und Inhalt.",
-    "syntax": ".karte { padding: 20px; }",
-    "description": "Gibt dem Inhalt Luft innerhalb des Elements. Die Hintergrundfarbe reicht bis zum Rahmen, füllt den Innenabstand also mit.",
-    "chapter": "K7",
-    "related": [
-      "margin",
-      "border"
-    ]
-  },
-  {
-    "term": "border",
-    "kind": "css",
-    "category": "Box",
-    "short": "Der Rahmen um ein Element.",
-    "syntax": ".karte { border: 1px solid #cbd8e6; }",
-    "description": "Kurzschreibweise für Breite, Linienart und Farbe. Ohne Linienart wird kein Rahmen gezeichnet.",
-    "chapter": "K7",
-    "related": [
-      "border-radius"
-    ]
-  },
-  {
-    "term": "border-radius",
-    "kind": "css",
-    "category": "Box",
-    "short": "Rundet die Ecken ab.",
-    "syntax": ".karte { border-radius: 14px; }",
-    "description": "Je größer der Wert, desto runder die Ecke. Mit 50% wird aus einem Quadrat ein Kreis.",
-    "chapter": "K7",
-    "related": [
-      "border"
-    ]
-  },
-  {
-    "term": "width",
-    "kind": "css",
-    "category": "Box",
-    "short": "Die Breite eines Elements.",
-    "syntax": ".spalte { width: 320px; }",
-    "description": "Angaben in Prozent beziehen sich auf das Elternelement. Mit max-width verhinderst du, dass ein Bereich auf großen Bildschirmen zu breit wird.",
-    "chapter": "K7",
-    "related": [
-      "height",
-      "box-sizing"
-    ]
-  },
-  {
-    "term": "height",
-    "kind": "css",
-    "category": "Box",
-    "short": "Die Höhe eines Elements.",
-    "syntax": ".banner { height: 220px; }",
-    "description": "Feste Höhen führen leicht zu überlaufendem Text. Meist ist es besser, die Höhe vom Inhalt bestimmen zu lassen.",
-    "chapter": "K7",
-    "related": [
-      "width"
-    ]
-  },
-  {
-    "term": "box-sizing",
-    "kind": "css",
-    "category": "Box",
-    "short": "Legt fest, was zur Breite zählt.",
-    "syntax": "* { box-sizing: border-box; }",
-    "description": "Mit border-box zählen Innenabstand und Rahmen zur angegebenen Breite. Das macht Layouts viel leichter berechenbar und wird fast immer so gesetzt.",
-    "chapter": "K7",
-    "related": [
-      "width",
-      "padding"
-    ]
-  },
-  {
-    "term": "box-shadow",
-    "kind": "css",
-    "category": "Box",
-    "short": "Ein Schatten hinter dem Element.",
-    "syntax": ".karte { box-shadow: 0 8px 24px rgba(0,0,0,.15); }",
-    "description": "Die Werte sind waagerechter Versatz, senkrechter Versatz, Weichzeichnung und Farbe. Dezente Schatten wirken hochwertiger als harte.",
-    "chapter": "K7"
-  },
-  {
-    "term": "display",
-    "kind": "css",
-    "category": "Layout",
-    "short": "Bestimmt das Grundverhalten eines Elements.",
-    "syntax": ".menue { display: flex; }",
-    "description": "block nimmt die volle Breite, inline fließt im Text mit, none blendet aus. flex und grid schalten moderne Layoutmodelle ein.",
-    "chapter": "K8",
-    "related": [
-      "flex-direction",
-      "grid-template-columns"
-    ]
-  },
-  {
-    "term": "flex-direction",
-    "kind": "css",
-    "category": "Layout",
-    "short": "Richtung in einem Flex-Layout.",
-    "syntax": ".menue {\n  display: flex;\n  flex-direction: row;\n}",
-    "description": "row ordnet nebeneinander an, column untereinander. Der Wechsel auf column ist der einfachste Weg zu einem mobilfreundlichen Layout.",
-    "chapter": "K8",
-    "related": [
-      "display",
-      "gap"
-    ]
-  },
-  {
-    "term": "gap",
-    "kind": "css",
-    "category": "Layout",
-    "short": "Abstand zwischen den Elementen eines Layouts.",
-    "syntax": ".liste { display: flex; gap: 12px; }",
-    "description": "Wirkt nur in flex und grid und ersetzt dort umständliche margin-Angaben an jedem einzelnen Element.",
-    "chapter": "K8",
-    "related": [
-      "display"
-    ]
-  },
-  {
-    "term": "justify-content",
-    "kind": "css",
-    "category": "Layout",
-    "short": "Verteilung entlang der Hauptrichtung.",
-    "syntax": ".kopf { justify-content: space-between; }",
-    "description": "Verteilt die Elemente, zum Beispiel mit center mittig oder mit space-between an die Ränder. Gilt für flex und grid.",
-    "chapter": "K8",
-    "related": [
-      "align-items"
-    ]
-  },
-  {
-    "term": "align-items",
-    "kind": "css",
-    "category": "Layout",
-    "short": "Ausrichtung quer zur Hauptrichtung.",
-    "syntax": ".kopf { align-items: center; }",
-    "description": "Mit center liegen Elemente unterschiedlicher Höhe auf einer gemeinsamen Mittellinie – der schnellste Weg zu einer sauberen Kopfzeile.",
-    "chapter": "K8",
-    "related": [
-      "justify-content"
-    ]
-  },
-  {
-    "term": "grid-template-columns",
-    "kind": "css",
-    "category": "Layout",
-    "short": "Legt die Spalten eines Rasters fest.",
-    "syntax": ".raster {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n}",
-    "description": "Die Einheit fr verteilt den freien Platz. repeat(3, 1fr) ergibt drei gleich breite Spalten. Für Karten-Übersichten ideal.",
-    "chapter": "K8",
-    "related": [
-      "display",
-      "gap"
-    ]
-  },
-  {
-    "term": "position",
-    "kind": "css",
-    "category": "Layout",
-    "short": "Wie ein Element platziert wird.",
-    "syntax": ".hinweis { position: sticky; top: 0; }",
-    "description": "static ist der Normalfall, relative verschiebt leicht, absolute löst aus dem Fluss, fixed bleibt am Fenster und sticky klebt beim Scrollen.",
-    "chapter": "K8"
-  },
-  {
-    "term": "list-style",
-    "kind": "css",
-    "category": "Layout",
-    "short": "Aussehen der Listenpunkte.",
-    "syntax": "ul { list-style: none; }",
-    "description": "Mit none verschwinden die Punkte – üblich bei Navigationen, die aus einer Liste gebaut sind.",
-    "chapter": "K12",
-    "related": [
-      "ul"
-    ]
-  },
-  {
-    "term": ":hover",
-    "kind": "css",
-    "category": "Zustände",
-    "short": "Gilt, während die Maus darüber liegt.",
-    "syntax": "a:hover { color: #0f6ea6; }",
-    "description": "Eine Pseudoklasse für den Mauszeiger. Auf Touchgeräten gibt es kein Hover – wichtige Funktionen dürfen nie nur darüber erreichbar sein.",
-    "chapter": "K7",
-    "related": [
-      ":focus"
-    ]
-  },
-  {
-    "term": ":focus",
-    "kind": "css",
-    "category": "Zustände",
-    "short": "Gilt, wenn ein Element per Tastatur angesteuert ist.",
-    "syntax": "a:focus-visible { outline: 3px solid #0d5d8d; }",
-    "description": "Der Fokusrahmen zeigt, wo man sich beim Tabben befindet. Entferne ihn nie ersatzlos – sonst wird die Seite mit der Tastatur unbedienbar.",
-    "chapter": "K7",
-    "related": [
-      ":hover"
-    ]
-  }
+    term: "HTML",
+    kind: "begriff",
+    category: "Grundlagen",
+    short: "Die Auszeichnungssprache, mit der du Inhalte beschreibst.",
+    syntax: "<h1>Überschrift</h1>",
+    description:
+      "HTML steht für HyperText Markup Language. Du programmierst damit nicht, du zeichnest Text aus: Du sagst dem Browser, welcher Teil eine Überschrift, ein Absatz oder ein Bild ist. Wie das Ergebnis aussieht, bestimmt später CSS.",
+    chapter: "K1",
+    related: ["Element", "CSS"],
+  },
+  {
+    term: "CSS",
+    kind: "begriff",
+    category: "Grundlagen",
+    short: "Die Sprache für das Aussehen einer Webseite.",
+    syntax: "h1 { color: navy; }",
+    description:
+      "CSS steht für Cascading Style Sheets. Während HTML die Bedeutung festlegt, bestimmt CSS Farbe, Schrift, Größe und Anordnung. Beides getrennt zu halten macht Seiten leichter änderbar.",
+    chapter: "K5",
+    related: ["Selektor", "Regel", "HTML"],
+  },
+  {
+    term: "Element",
+    kind: "begriff",
+    category: "Grundlagen",
+    short: "Start-Tag, Inhalt und End-Tag zusammen.",
+    syntax: "<p>Ein Satz.</p>",
+    description:
+      "Ein Element besteht aus dem Start-Tag, dem Inhalt dazwischen und dem End-Tag. Der Elementname sagt, was der Inhalt bedeutet. Manche Elemente sind leer und haben deshalb kein End-Tag.",
+    chapter: "K1",
+    related: ["Tag", "Leeres Element", "Verschachtelung"],
+  },
+  {
+    term: "Tag",
+    kind: "begriff",
+    category: "Grundlagen",
+    short: "Die Markierung in spitzen Klammern.",
+    syntax: "<p> … </p>",
+    description:
+      "Ein Tag steht immer in spitzen Klammern. Das Start-Tag öffnet ein Element, das End-Tag schließt es und hat zusätzlich einen Schrägstrich. Zwischen der Klammer und dem Namen darf kein Leerzeichen stehen.",
+    chapter: "K1",
+    related: ["Element"],
+  },
+  {
+    term: "Leeres Element",
+    kind: "begriff",
+    category: "Grundlagen",
+    short: "Ein Element ohne Inhalt und ohne End-Tag.",
+    syntax: '<br>   <img src="foto.jpg" alt="…">',
+    description:
+      "Manche Elemente umschließen keinen Inhalt. Weil es nichts zu schließen gibt, haben sie kein End-Tag. Typische Beispiele sind der Zeilenumbruch, das Bild und die Trennlinie.",
+    chapter: "K1",
+    related: ["br", "img", "hr"],
+  },
+  {
+    term: "Verschachtelung",
+    kind: "begriff",
+    category: "Grundlagen",
+    short: "Elemente sauber ineinander setzen.",
+    syntax: "<p><strong>Wichtig</strong></p>",
+    description:
+      "Elemente dürfen ineinander stehen, sich aber nicht überkreuzen. Merksatz: Was zuletzt geöffnet wurde, wird zuerst geschlossen. Sonst rät der Browser – und rät oft falsch.",
+    chapter: "K1",
+    related: ["Element"],
+  },
+  {
+    term: "Attribut",
+    kind: "begriff",
+    category: "Grundlagen",
+    short: "Eine Zusatzangabe im Start-Tag.",
+    syntax: '<a href="https://…">Link</a>',
+    description:
+      'Ein Attribut steht im Start-Tag und folgt dem Muster name="wert". Es liefert eine zusätzliche Information, zum Beispiel wohin ein Link führt oder welches Bild geladen wird. Der Wert steht in Anführungszeichen.',
+    chapter: "K2",
+    related: ["href", "src", "alt"],
+  },
+  {
+    term: "Semantik",
+    kind: "begriff",
+    category: "Grundlagen",
+    short: "Die Bedeutung eines Elements, nicht sein Aussehen.",
+    syntax: "<h1>Titel</h1> statt <strong>Titel</strong>",
+    description:
+      "Semantisch auszeichnen heißt: das Element wählen, das die Bedeutung trifft. Eine Überschrift ist ein h1, auch wenn strong ebenfalls fett aussieht. Suchmaschinen und Screenreader verlassen sich darauf.",
+    chapter: "K4",
+    related: ["h1", "strong"],
+  },
+  {
+    term: "Selektor",
+    kind: "begriff",
+    category: "CSS-Aufbau",
+    short: "Bestimmt, für welche Elemente eine Regel gilt.",
+    syntax: "p { … }   .karte { … }   #kopf { … }",
+    description:
+      "Der Selektor steht vor der geschweiften Klammer. Ein Elementname trifft alle Elemente dieser Art, ein Punkt eine Klasse und eine Raute eine ID.",
+    chapter: "K5",
+    related: ["Regel", "class", "id"],
+  },
+  {
+    term: "Regel",
+    kind: "begriff",
+    category: "CSS-Aufbau",
+    short: "Selektor plus Deklarationen in geschweiften Klammern.",
+    syntax: "h1 {\n  color: navy;\n  font-size: 32px;\n}",
+    description:
+      "Eine CSS-Regel besteht aus dem Selektor und einem Block in geschweiften Klammern. Darin steht je Zeile eine Deklaration aus Eigenschaft, Doppelpunkt, Wert und Semikolon.",
+    chapter: "K5",
+    related: ["Selektor", "Deklaration"],
+  },
+  {
+    term: "Deklaration",
+    kind: "begriff",
+    category: "CSS-Aufbau",
+    short: "Ein Paar aus Eigenschaft und Wert.",
+    syntax: "color: navy;",
+    description:
+      "Eine Deklaration sagt, welche Eigenschaft welchen Wert bekommt. Zwischen beiden steht ein Doppelpunkt, am Ende ein Semikolon. Das Semikolon nach der letzten Deklaration zu vergessen ist ein häufiger Fehler.",
+    chapter: "K5",
+    related: ["Regel"],
+  },
+  {
+    term: "Entität",
+    kind: "begriff",
+    category: "Sonderzeichen",
+    short: "Schreibweise für Zeichen mit Sonderbedeutung.",
+    syntax: "&lt;  &gt;  &amp;  &nbsp;  &copy;",
+    description:
+      "Zeichen wie die spitze Klammer haben in HTML eine eigene Bedeutung. Um sie als Text zu zeigen, schreibst du eine Entität: kaufmännisches Und, Name, Semikolon. So erscheint das Zeichen, ohne den Code zu stören.",
+    chapter: "K8",
+  },
+  {
+    term: "Kommentar",
+    kind: "html",
+    category: "Sonstiges",
+    short: "Notiz im Code, die der Browser ignoriert.",
+    syntax: "<!-- Das erscheint nicht auf der Seite -->",
+    description:
+      "Kommentare helfen dir, deinen eigenen Code später wiederzuerkennen. Sie werden nicht angezeigt, sind im Quelltext aber für alle sichtbar. Deshalb gehören dort keine Passwörter oder privaten Notizen hinein.",
+    chapter: "K3",
+  },
+  {
+    term: "<!DOCTYPE html>",
+    kind: "html",
+    category: "Grundgerüst",
+    short: "Sagt dem Browser: Das ist modernes HTML.",
+    syntax: "<!DOCTYPE html>",
+    description:
+      "Steht als allererste Zeile jeder HTML-Datei. Ohne diese Angabe schaltet der Browser in einen alten Anzeigemodus, in dem Gestaltung anders wirkt als erwartet.",
+    chapter: "K3",
+    related: ["html"],
+  },
+  {
+    term: "html",
+    kind: "html",
+    category: "Grundgerüst",
+    short: "Umschließt das gesamte Dokument.",
+    syntax: '<html lang="de"> … </html>',
+    description:
+      "Das äußerste Element der Seite. Mit dem Attribut lang gibst du die Sprache an – wichtig für Vorlesesoftware und automatische Übersetzung.",
+    chapter: "K3",
+    related: ["head", "body"],
+  },
+  {
+    term: "head",
+    kind: "html",
+    category: "Grundgerüst",
+    short: "Angaben über die Seite, nicht sichtbarer Inhalt.",
+    syntax: "<head>\n  <title>Meine Seite</title>\n</head>",
+    description:
+      "Im Kopfbereich stehen Titel, Zeichensatz, Beschreibung und Verweise auf CSS-Dateien. Nichts davon erscheint direkt im Seitenfenster.",
+    chapter: "K3",
+    related: ["title", "meta", "link"],
+  },
+  {
+    term: "body",
+    kind: "html",
+    category: "Grundgerüst",
+    short: "Der sichtbare Inhalt der Seite.",
+    syntax: "<body> … </body>",
+    description:
+      "Alles, was Besucher sehen sollen, steht im body: Überschriften, Absätze, Bilder, Tabellen und Listen.",
+    chapter: "K3",
+    related: ["head"],
+  },
+  {
+    term: "title",
+    kind: "html",
+    category: "Grundgerüst",
+    short: "Der Text im Browser-Tab.",
+    syntax: "<title>Schulplaner</title>",
+    description:
+      "Erscheint im Reiter des Browsers, im Lesezeichen und in Suchergebnissen. Ein guter Titel ist kurz und sagt, worum es auf genau dieser Seite geht.",
+    chapter: "K3",
+    related: ["head"],
+  },
+  {
+    term: "meta",
+    kind: "html",
+    category: "Grundgerüst",
+    short: "Zusatzangaben wie Zeichensatz oder Beschreibung.",
+    syntax: '<meta charset="utf-8">',
+    description:
+      "Leeres Element im head. Der Zeichensatz utf-8 sorgt dafür, dass Umlaute und Sonderzeichen richtig dargestellt werden. Fehlt er, werden aus ä und ü oft seltsame Zeichen.",
+    chapter: "K3",
+  },
+  {
+    term: "link",
+    kind: "html",
+    category: "Grundgerüst",
+    short: "Bindet eine externe Datei ein, meist CSS.",
+    syntax: '<link rel="stylesheet" href="style.css">',
+    description:
+      "Leeres Element im head. Damit verbindest du deine HTML-Seite mit einer CSS-Datei. Das ist der sauberste der drei Einbindungswege.",
+    chapter: "K6",
+    related: ["style", "href"],
+  },
+  {
+    term: "style",
+    kind: "html",
+    category: "Grundgerüst",
+    short: "CSS-Regeln direkt in der HTML-Datei.",
+    syntax: "<style>\n  h1 { color: navy; }\n</style>",
+    description:
+      "Steht im head und enthält CSS für genau diese eine Seite. Praktisch zum Ausprobieren, für mehrere Seiten ist eine externe Datei besser.",
+    chapter: "K6",
+    related: ["link", "CSS"],
+  },
+  {
+    term: "h1",
+    kind: "html",
+    category: "Text",
+    short: "Die Hauptüberschrift der Seite.",
+    syntax: "<h1>Meine erste Webseite</h1>",
+    description:
+      "Die wichtigste Überschrift, üblicherweise einmal pro Seite. h steht für heading, die Ziffer für die Ebene. Sie zeigt sofort, worum es geht.",
+    chapter: "K1",
+    related: ["h2", "Semantik"],
+  },
+  {
+    term: "h2",
+    kind: "html",
+    category: "Text",
+    short: "Überschrift der zweiten Ebene.",
+    syntax: "<h2>Unsere Schule</h2>",
+    description:
+      "Gliedert die Seite unter der Hauptüberschrift in Abschnitte. Es gibt h1 bis h6. Überspringe keine Ebene, sonst wird die Gliederung unlogisch.",
+    chapter: "K4",
+    related: ["h1"],
+  },
+  {
+    term: "p",
+    kind: "html",
+    category: "Text",
+    short: "Ein Absatz.",
+    syntax: "<p>Hier steht ein Satz.</p>",
+    description:
+      "Fasst zusammengehörende Sätze zu einem Textblock zusammen. Der Browser setzt automatisch Abstand darüber und darunter.",
+    chapter: "K1",
+    related: ["br"],
+  },
+  {
+    term: "br",
+    kind: "html",
+    category: "Text",
+    short: "Erzwingt einen Zeilenumbruch.",
+    syntax: "Stuttgart<br>Klasse 11",
+    description:
+      "Leeres Element ohne End-Tag. Nötig, weil der Browser die Zeilenumbrüche in deinem Code ignoriert. Für neue Absätze nimmst du besser p statt mehrerer br.",
+    chapter: "K1",
+    related: ["p", "Leeres Element"],
+  },
+  {
+    term: "strong",
+    kind: "html",
+    category: "Text",
+    short: "Markiert etwas als besonders wichtig.",
+    syntax: "Das ist <strong>wichtig</strong>.",
+    description:
+      "Der Browser stellt den Inhalt fett dar. Entscheidend ist aber die Bedeutung: strong sagt, dass dieser Teil wirklich wichtig ist – nicht nur, dass er fett aussehen soll.",
+    chapter: "K1",
+    related: ["em", "Semantik"],
+  },
+  {
+    term: "em",
+    kind: "html",
+    category: "Text",
+    short: "Betont einen Textteil.",
+    syntax: "Das war <em>wirklich</em> knapp.",
+    description:
+      "Steht für emphasis, also Betonung. Wird meist kursiv dargestellt. Vorlesesoftware verändert dafür die Sprechweise.",
+    chapter: "K4",
+    related: ["strong"],
+  },
+  {
+    term: "small",
+    kind: "html",
+    category: "Text",
+    short: "Nebenbemerkung oder Kleingedrucktes.",
+    syntax: "<small>Stand: August 2026</small>",
+    description:
+      "Für Zusatzangaben, die weniger wichtig sind, etwa Quellen oder Hinweise. Die kleinere Darstellung ergibt sich aus der Bedeutung.",
+    chapter: "K4",
+  },
+  {
+    term: "mark",
+    kind: "html",
+    category: "Text",
+    short: "Hebt Text farbig hervor.",
+    syntax: "<mark>Prüfungstermin</mark>",
+    description:
+      "Wirkt wie ein Textmarker. Gedacht für Stellen, die im aktuellen Zusammenhang besonders interessant sind, etwa Suchtreffer.",
+    chapter: "K4",
+  },
+  {
+    term: "hr",
+    kind: "html",
+    category: "Text",
+    short: "Trennlinie zwischen Abschnitten.",
+    syntax: "<hr>",
+    description:
+      "Leeres Element ohne End-Tag. Markiert einen thematischen Wechsel und wird meist als waagerechte Linie dargestellt.",
+    chapter: "K4",
+    related: ["Leeres Element"],
+  },
+  {
+    term: "span",
+    kind: "html",
+    category: "Text",
+    short: "Neutraler Behälter für einen Textteil.",
+    syntax: 'Preis: <span class="betrag">12 €</span>',
+    description:
+      "Hat selbst keine Bedeutung. Du nutzt ihn, wenn du einen kleinen Teil innerhalb einer Zeile gestalten willst und kein passendes semantisches Element existiert.",
+    chapter: "K5",
+    related: ["div", "class"],
+  },
+  {
+    term: "div",
+    kind: "html",
+    category: "Struktur",
+    short: "Neutraler Behälter für einen ganzen Bereich.",
+    syntax: '<div class="karte"> … </div>',
+    description:
+      "Fasst mehrere Elemente zu einem Block zusammen, ohne eine Bedeutung zu geben. Nützlich fürs Layout, sollte aber nicht semantische Elemente ersetzen.",
+    chapter: "K5",
+    related: ["span", "class"],
+  },
+  {
+    term: "a",
+    kind: "html",
+    category: "Links & Medien",
+    short: "Ein Verweis auf eine andere Seite oder Stelle.",
+    syntax: '<a href="schule.html">Unsere Schule</a>',
+    description:
+      "Das a steht für anchor, also Anker. Der Text zwischen den Tags ist das, was angeklickt wird. Er sollte sagen, wohin es geht – „hier klicken“ hilft niemandem.",
+    chapter: "K7",
+    related: ["href", "target"],
+  },
+  {
+    term: "img",
+    kind: "html",
+    category: "Links & Medien",
+    short: "Bindet ein Bild ein.",
+    syntax: '<img src="schule.jpg" alt="Schulgebäude von vorn">',
+    description:
+      "Leeres Element ohne End-Tag. Es braucht immer src für die Bilddatei und alt für die Beschreibung.",
+    chapter: "K8",
+    related: ["src", "alt", "Leeres Element"],
+  },
+  {
+    term: "iframe",
+    kind: "html",
+    category: "Links & Medien",
+    short: "Bettet eine fremde Seite ein, etwa eine Karte.",
+    syntax: '<iframe src="…" title="Karte"></iframe>',
+    description:
+      "Zeigt eine andere Webseite in einem Rahmen innerhalb deiner Seite. Häufig für Karten oder Videos. Beachte, dass dabei Daten an den fremden Anbieter gehen.",
+    chapter: "K10",
+  },
+  {
+    term: "audio",
+    kind: "html",
+    category: "Links & Medien",
+    short: "Spielt eine Tondatei ab.",
+    syntax: '<audio src="ton.mp3" controls></audio>',
+    description:
+      "Mit dem Attribut controls bekommen Besucher Abspielknöpfe. Ohne controls ist der Player unsichtbar und lässt sich nicht bedienen.",
+    chapter: "K13",
+    related: ["video", "controls"],
+  },
+  {
+    term: "video",
+    kind: "html",
+    category: "Links & Medien",
+    short: "Spielt ein Video ab.",
+    syntax: '<video src="film.mp4" controls width="480"></video>',
+    description:
+      "Funktioniert wie audio, zeigt zusätzlich ein Bild. Mit poster legst du ein Vorschaubild fest. Autoplay ohne Ton-Aus gilt als unhöflich.",
+    chapter: "K13",
+    related: ["audio", "controls"],
+  },
+  {
+    term: "href",
+    kind: "html",
+    category: "Attribut",
+    short: "Das Ziel eines Links.",
+    syntax: '<a href="https://example.org">Beispiel</a>',
+    description:
+      "Steht für hypertext reference. Enthält entweder eine vollständige Adresse, einen Dateinamen im selben Ordner oder eine Sprungmarke mit Raute.",
+    chapter: "K7",
+    related: ["a", "Attribut"],
+  },
+  {
+    term: "src",
+    kind: "html",
+    category: "Attribut",
+    short: "Die Quelldatei eines Bildes oder Mediums.",
+    syntax: '<img src="bilder/schule.jpg" alt="…">',
+    description:
+      "Steht für source. Der Pfad wird vom Ort der HTML-Datei aus gelesen. Groß- und Kleinschreibung im Dateinamen ist auf Servern wichtig.",
+    chapter: "K2",
+    related: ["img", "alt"],
+  },
+  {
+    term: "alt",
+    kind: "html",
+    category: "Attribut",
+    short: "Textbeschreibung eines Bildes.",
+    syntax: '<img src="schule.jpg" alt="Schulgebäude von vorn">',
+    description:
+      'Wird vorgelesen, wenn jemand nicht sehen kann, und angezeigt, wenn das Bild fehlt. Beschreibe, was zu sehen ist – nicht „Bild“ oder den Dateinamen. Reine Dekoration bekommt alt="".',
+    chapter: "K2",
+    related: ["img", "src"],
+  },
+  {
+    term: "target",
+    kind: "html",
+    category: "Attribut",
+    short: "Legt fest, wo ein Link geöffnet wird.",
+    syntax: '<a href="…" target="_blank" rel="noreferrer">…</a>',
+    description:
+      "Mit _blank öffnet der Link einen neuen Tab. Sparsam einsetzen: Es nimmt Besuchern die Kontrolle über den Zurück-Knopf.",
+    chapter: "K7",
+    related: ["a", "href"],
+  },
+  {
+    term: "class",
+    kind: "html",
+    category: "Attribut",
+    short: "Vergibt einen Namen für die Gestaltung.",
+    syntax: '<p class="hinweis">Achtung</p>',
+    description:
+      "Mehrere Elemente dürfen dieselbe Klasse haben. Im CSS sprichst du sie mit einem Punkt vor dem Namen an.",
+    chapter: "K5",
+    related: ["id", "Selektor"],
+  },
+  {
+    term: "id",
+    kind: "html",
+    category: "Attribut",
+    short: "Eindeutiger Name für genau ein Element.",
+    syntax: '<h2 id="termine">Termine</h2>',
+    description:
+      "Eine ID darf pro Seite nur einmal vorkommen. Im CSS sprichst du sie mit einer Raute an, in Links als Sprungmarke.",
+    chapter: "K7",
+    related: ["class", "href"],
+  },
+  {
+    term: "controls",
+    kind: "html",
+    category: "Attribut",
+    short: "Zeigt Abspielknöpfe bei Medien.",
+    syntax: '<video src="film.mp4" controls></video>',
+    description:
+      "Ein Attribut ohne Wert. Es ist entweder vorhanden oder nicht. Ohne controls können Besucher das Medium nicht starten.",
+    chapter: "K13",
+    related: ["audio", "video"],
+  },
+  {
+    term: "colspan",
+    kind: "html",
+    category: "Attribut",
+    short: "Verbindet Tabellenzellen waagerecht.",
+    syntax: '<td colspan="2">Doppelstunde</td>',
+    description:
+      "Die Zelle erstreckt sich über mehrere Spalten. Achte darauf, dass jede Zeile am Ende gleich viele Spalten ergibt.",
+    chapter: "K11",
+    related: ["td", "rowspan"],
+  },
+  {
+    term: "rowspan",
+    kind: "html",
+    category: "Attribut",
+    short: "Verbindet Tabellenzellen senkrecht.",
+    syntax: '<td rowspan="2">Sport</td>',
+    description:
+      "Die Zelle erstreckt sich über mehrere Zeilen. In den übersprungenen Zeilen entfällt die entsprechende Zelle.",
+    chapter: "K11",
+    related: ["td", "colspan"],
+  },
+  {
+    term: "ul",
+    kind: "html",
+    category: "Listen",
+    short: "Unnummerierte Liste mit Punkten.",
+    syntax: "<ul>\n  <li>Deutsch</li>\n  <li>Mathe</li>\n</ul>",
+    description:
+      "Für Aufzählungen, bei denen die Reihenfolge egal ist. Direkt darin dürfen nur li-Elemente stehen.",
+    chapter: "K12",
+    related: ["ol", "li"],
+  },
+  {
+    term: "ol",
+    kind: "html",
+    category: "Listen",
+    short: "Nummerierte Liste.",
+    syntax: "<ol>\n  <li>Anmelden</li>\n  <li>Termin wählen</li>\n</ol>",
+    description:
+      "Für Schritte und Ranglisten, bei denen die Reihenfolge zählt. Die Nummern setzt der Browser automatisch.",
+    chapter: "K12",
+    related: ["ul", "li"],
+  },
+  {
+    term: "li",
+    kind: "html",
+    category: "Listen",
+    short: "Ein Eintrag in einer Liste.",
+    syntax: "<li>Erster Punkt</li>",
+    description:
+      "Steht immer innerhalb von ul oder ol. Ein li darf selbst wieder eine ganze Liste enthalten – so entstehen Unterpunkte.",
+    chapter: "K12",
+    related: ["ul", "ol"],
+  },
+  {
+    term: "table",
+    kind: "html",
+    category: "Tabellen",
+    short: "Umschließt eine ganze Tabelle.",
+    syntax: "<table>\n  <tr><td>Mo</td></tr>\n</table>",
+    description:
+      "Tabellen sind für echte Daten gedacht, etwa einen Stundenplan – nicht als Layout-Werkzeug. Dafür gibt es CSS.",
+    chapter: "K11",
+    related: ["tr", "td", "th"],
+  },
+  {
+    term: "tr",
+    kind: "html",
+    category: "Tabellen",
+    short: "Eine Tabellenzeile.",
+    syntax: "<tr> <td>8:00</td> <td>Mathe</td> </tr>",
+    description:
+      "Steht für table row. Enthält die Zellen einer Zeile, entweder td oder th.",
+    chapter: "K11",
+    related: ["table", "td"],
+  },
+  {
+    term: "td",
+    kind: "html",
+    category: "Tabellen",
+    short: "Eine normale Datenzelle.",
+    syntax: "<td>Mathe</td>",
+    description:
+      "Steht für table data. Jede Zelle einer Zeile ist ein td, sofern es keine Kopfzelle ist.",
+    chapter: "K11",
+    related: ["th", "tr"],
+  },
+  {
+    term: "th",
+    kind: "html",
+    category: "Tabellen",
+    short: "Eine Kopfzelle mit Beschriftung.",
+    syntax: "<th>Montag</th>",
+    description:
+      "Steht für table header. Wird fett und zentriert dargestellt und sagt Vorlesesoftware, wozu eine Spalte oder Zeile gehört.",
+    chapter: "K11",
+    related: ["td", "table"],
+  },
+  {
+    term: "caption",
+    kind: "html",
+    category: "Tabellen",
+    short: "Die Überschrift einer Tabelle.",
+    syntax: "<table>\n  <caption>Stundenplan 11a</caption>\n</table>",
+    description:
+      "Steht als erstes Element in der Tabelle und beschreibt, was sie zeigt. Hilft besonders beim Vorlesen.",
+    chapter: "K11",
+    related: ["table"],
+  },
+  {
+    term: "color",
+    kind: "css",
+    category: "Farbe",
+    short: "Die Textfarbe.",
+    syntax: "p { color: #1a3d5c; }",
+    description:
+      "Farben schreibst du als Name, als Hexadezimalwert mit Raute oder als rgb-Angabe. Achte auf genug Kontrast zum Hintergrund, sonst wird der Text schwer lesbar.",
+    chapter: "K5",
+    related: ["background-color"],
+  },
+  {
+    term: "background-color",
+    kind: "css",
+    category: "Farbe",
+    short: "Die Hintergrundfarbe eines Elements.",
+    syntax: "body { background-color: #f4f8fb; }",
+    description:
+      "Färbt die gesamte Fläche des Elements, einschließlich Innenabstand. Zusammen mit color bestimmt sie die Lesbarkeit.",
+    chapter: "K5",
+    related: ["color", "background-image"],
+  },
+  {
+    term: "background-image",
+    kind: "css",
+    category: "Farbe",
+    short: "Ein Bild als Hintergrund.",
+    syntax:
+      'body {\n  background-image: url("hintergrund.jpg");\n  background-size: cover;\n}',
+    description:
+      "Der Pfad steht in url(). Mit background-size: cover füllt das Bild die Fläche. Lege zusätzlich eine Hintergrundfarbe fest, falls das Bild nicht lädt.",
+    chapter: "K8",
+    related: ["background-color"],
+  },
+  {
+    term: "opacity",
+    kind: "css",
+    category: "Farbe",
+    short: "Wie durchsichtig ein Element ist.",
+    syntax: ".hinweis { opacity: 0.7; }",
+    description:
+      "Der Wert liegt zwischen 0 für unsichtbar und 1 für vollständig sichtbar. Er wirkt auf das gesamte Element samt Inhalt.",
+    chapter: "K5",
+  },
+  {
+    term: "font-family",
+    kind: "css",
+    category: "Schrift",
+    short: "Die Schriftart.",
+    syntax: "body { font-family: Verdana, Arial, sans-serif; }",
+    description:
+      "Gib mehrere Schriften an. Der Browser nimmt die erste, die vorhanden ist. Die letzte Angabe ist eine allgemeine Gattung als Rückfallebene.",
+    chapter: "K5",
+    related: ["font-size"],
+  },
+  {
+    term: "font-size",
+    kind: "css",
+    category: "Schrift",
+    short: "Die Schriftgröße.",
+    syntax: "h1 { font-size: 32px; }",
+    description:
+      "Üblich sind px für feste Größen und rem für Größen, die sich an der Grundschrift orientieren. rem ist barrierefreundlicher, weil es die Einstellungen der Besucher berücksichtigt.",
+    chapter: "K5",
+    related: ["font-family"],
+  },
+  {
+    term: "font-weight",
+    kind: "css",
+    category: "Schrift",
+    short: "Die Strichstärke der Schrift.",
+    syntax: ".titel { font-weight: bold; }",
+    description:
+      "Möglich sind Wörter wie normal und bold oder Zahlen von 100 bis 900. Nicht jede Schriftart bietet alle Stufen an.",
+    chapter: "K5",
+  },
+  {
+    term: "font-style",
+    kind: "css",
+    category: "Schrift",
+    short: "Aufrecht oder kursiv.",
+    syntax: ".zitat { font-style: italic; }",
+    description:
+      "Meist genutzt für kursiven Text. Für betonten Inhalt ist em die bessere Wahl, weil es die Bedeutung mitliefert.",
+    chapter: "K5",
+    related: ["em"],
+  },
+  {
+    term: "line-height",
+    kind: "css",
+    category: "Schrift",
+    short: "Der Zeilenabstand.",
+    syntax: "p { line-height: 1.6; }",
+    description:
+      "Eine Zahl ohne Einheit ist ein Vielfaches der Schriftgröße. Werte um 1.5 bis 1.7 machen längere Texte deutlich leichter lesbar.",
+    chapter: "K5",
+  },
+  {
+    term: "text-align",
+    kind: "css",
+    category: "Schrift",
+    short: "Die Ausrichtung des Textes.",
+    syntax: "h1 { text-align: center; }",
+    description:
+      "Mögliche Werte sind left, right, center und justify. Blocksatz erzeugt in schmalen Spalten oft hässliche Lücken.",
+    chapter: "K5",
+  },
+  {
+    term: "text-decoration",
+    kind: "css",
+    category: "Schrift",
+    short: "Unterstreichung und Durchstreichung.",
+    syntax: "a { text-decoration: none; }",
+    description:
+      "Häufig genutzt, um die Unterstreichung von Links zu entfernen. Sorge dann für ein anderes deutliches Merkmal, sonst erkennt niemand den Link.",
+    chapter: "K7",
+    related: ["a"],
+  },
+  {
+    term: "letter-spacing",
+    kind: "css",
+    category: "Schrift",
+    short: "Der Abstand zwischen Buchstaben.",
+    syntax: ".label { letter-spacing: 0.08em; }",
+    description:
+      "Kleine positive Werte wirken bei Großbuchstaben edler. Zu große Werte machen Fließtext unlesbar.",
+    chapter: "K5",
+  },
+  {
+    term: "margin",
+    kind: "css",
+    category: "Box",
+    short: "Außenabstand zu anderen Elementen.",
+    syntax: ".karte { margin: 16px; }",
+    description:
+      "Schiebt Nachbarelemente weg. Mit margin: 0 auto zentrierst du einen Block, dessen Breite festgelegt ist.",
+    chapter: "K7",
+    related: ["padding"],
+  },
+  {
+    term: "padding",
+    kind: "css",
+    category: "Box",
+    short: "Innenabstand zwischen Rahmen und Inhalt.",
+    syntax: ".karte { padding: 20px; }",
+    description:
+      "Gibt dem Inhalt Luft innerhalb des Elements. Die Hintergrundfarbe reicht bis zum Rahmen, füllt den Innenabstand also mit.",
+    chapter: "K7",
+    related: ["margin", "border"],
+  },
+  {
+    term: "border",
+    kind: "css",
+    category: "Box",
+    short: "Der Rahmen um ein Element.",
+    syntax: ".karte { border: 1px solid #cbd8e6; }",
+    description:
+      "Kurzschreibweise für Breite, Linienart und Farbe. Ohne Linienart wird kein Rahmen gezeichnet.",
+    chapter: "K7",
+    related: ["border-radius"],
+  },
+  {
+    term: "border-radius",
+    kind: "css",
+    category: "Box",
+    short: "Rundet die Ecken ab.",
+    syntax: ".karte { border-radius: 14px; }",
+    description:
+      "Je größer der Wert, desto runder die Ecke. Mit 50% wird aus einem Quadrat ein Kreis.",
+    chapter: "K7",
+    related: ["border"],
+  },
+  {
+    term: "width",
+    kind: "css",
+    category: "Box",
+    short: "Die Breite eines Elements.",
+    syntax: ".spalte { width: 320px; }",
+    description:
+      "Angaben in Prozent beziehen sich auf das Elternelement. Mit max-width verhinderst du, dass ein Bereich auf großen Bildschirmen zu breit wird.",
+    chapter: "K7",
+    related: ["height", "box-sizing"],
+  },
+  {
+    term: "height",
+    kind: "css",
+    category: "Box",
+    short: "Die Höhe eines Elements.",
+    syntax: ".banner { height: 220px; }",
+    description:
+      "Feste Höhen führen leicht zu überlaufendem Text. Meist ist es besser, die Höhe vom Inhalt bestimmen zu lassen.",
+    chapter: "K7",
+    related: ["width"],
+  },
+  {
+    term: "box-sizing",
+    kind: "css",
+    category: "Box",
+    short: "Legt fest, was zur Breite zählt.",
+    syntax: "* { box-sizing: border-box; }",
+    description:
+      "Mit border-box zählen Innenabstand und Rahmen zur angegebenen Breite. Das macht Layouts viel leichter berechenbar und wird fast immer so gesetzt.",
+    chapter: "K7",
+    related: ["width", "padding"],
+  },
+  {
+    term: "box-shadow",
+    kind: "css",
+    category: "Box",
+    short: "Ein Schatten hinter dem Element.",
+    syntax: ".karte { box-shadow: 0 8px 24px rgba(0,0,0,.15); }",
+    description:
+      "Die Werte sind waagerechter Versatz, senkrechter Versatz, Weichzeichnung und Farbe. Dezente Schatten wirken hochwertiger als harte.",
+    chapter: "K7",
+  },
+  {
+    term: "display",
+    kind: "css",
+    category: "Layout",
+    short: "Bestimmt das Grundverhalten eines Elements.",
+    syntax: ".menue { display: flex; }",
+    description:
+      "block nimmt die volle Breite, inline fließt im Text mit, none blendet aus. flex und grid schalten moderne Layoutmodelle ein.",
+    chapter: "K8",
+    related: ["flex-direction", "grid-template-columns"],
+  },
+  {
+    term: "flex-direction",
+    kind: "css",
+    category: "Layout",
+    short: "Richtung in einem Flex-Layout.",
+    syntax: ".menue {\n  display: flex;\n  flex-direction: row;\n}",
+    description:
+      "row ordnet nebeneinander an, column untereinander. Der Wechsel auf column ist der einfachste Weg zu einem mobilfreundlichen Layout.",
+    chapter: "K8",
+    related: ["display", "gap"],
+  },
+  {
+    term: "gap",
+    kind: "css",
+    category: "Layout",
+    short: "Abstand zwischen den Elementen eines Layouts.",
+    syntax: ".liste { display: flex; gap: 12px; }",
+    description:
+      "Wirkt nur in flex und grid und ersetzt dort umständliche margin-Angaben an jedem einzelnen Element.",
+    chapter: "K8",
+    related: ["display"],
+  },
+  {
+    term: "justify-content",
+    kind: "css",
+    category: "Layout",
+    short: "Verteilung entlang der Hauptrichtung.",
+    syntax: ".kopf { justify-content: space-between; }",
+    description:
+      "Verteilt die Elemente, zum Beispiel mit center mittig oder mit space-between an die Ränder. Gilt für flex und grid.",
+    chapter: "K8",
+    related: ["align-items"],
+  },
+  {
+    term: "align-items",
+    kind: "css",
+    category: "Layout",
+    short: "Ausrichtung quer zur Hauptrichtung.",
+    syntax: ".kopf { align-items: center; }",
+    description:
+      "Mit center liegen Elemente unterschiedlicher Höhe auf einer gemeinsamen Mittellinie – der schnellste Weg zu einer sauberen Kopfzeile.",
+    chapter: "K8",
+    related: ["justify-content"],
+  },
+  {
+    term: "grid-template-columns",
+    kind: "css",
+    category: "Layout",
+    short: "Legt die Spalten eines Rasters fest.",
+    syntax:
+      ".raster {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n}",
+    description:
+      "Die Einheit fr verteilt den freien Platz. repeat(3, 1fr) ergibt drei gleich breite Spalten. Für Karten-Übersichten ideal.",
+    chapter: "K8",
+    related: ["display", "gap"],
+  },
+  {
+    term: "position",
+    kind: "css",
+    category: "Layout",
+    short: "Wie ein Element platziert wird.",
+    syntax: ".hinweis { position: sticky; top: 0; }",
+    description:
+      "static ist der Normalfall, relative verschiebt leicht, absolute löst aus dem Fluss, fixed bleibt am Fenster und sticky klebt beim Scrollen.",
+    chapter: "K8",
+  },
+  {
+    term: "list-style",
+    kind: "css",
+    category: "Layout",
+    short: "Aussehen der Listenpunkte.",
+    syntax: "ul { list-style: none; }",
+    description:
+      "Mit none verschwinden die Punkte – üblich bei Navigationen, die aus einer Liste gebaut sind.",
+    chapter: "K12",
+    related: ["ul"],
+  },
+  {
+    term: ":hover",
+    kind: "css",
+    category: "Zustände",
+    short: "Gilt, während die Maus darüber liegt.",
+    syntax: "a:hover { color: #0f6ea6; }",
+    description:
+      "Eine Pseudoklasse für den Mauszeiger. Auf Touchgeräten gibt es kein Hover – wichtige Funktionen dürfen nie nur darüber erreichbar sein.",
+    chapter: "K7",
+    related: [":focus"],
+  },
+  {
+    term: ":focus",
+    kind: "css",
+    category: "Zustände",
+    short: "Gilt, wenn ein Element per Tastatur angesteuert ist.",
+    syntax: "a:focus-visible { outline: 3px solid #0d5d8d; }",
+    description:
+      "Der Fokusrahmen zeigt, wo man sich beim Tabben befindet. Entferne ihn nie ersatzlos – sonst wird die Seite mit der Tastatur unbedienbar.",
+    chapter: "K7",
+    related: [":hover"],
+  },
 ];

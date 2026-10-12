@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.9.2** · Status: **lokal geprüft; Veröffentlichung in Vorbereitung**.
+Version: **1.10.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.9.2 |
+| Bereich | Version 1.10.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -114,7 +114,7 @@ WebLab/
     tools/                   Bundler, Build und lokaler Browserprüfserver
     tests/                   21 Node-Tests und Browserprüfseite
   documentation/documentation.md
-  documentation/WebLab-1.9.2.png
+  documentation/WebLab-1.10.0.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
   README.md                  kurze Startanleitung
   CLAUDE.md                  Wegweiser auf diese Dokumentation
@@ -190,7 +190,7 @@ Geprüft durch Codex am 12.10.2026:
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
-- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.9.2.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
+- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.10.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
 - Responsive Prüfung: Startseite, Einheiten 1 und 12 sowie Glossar bei tatsächlich 360 Pixel breiten eingebetteten Browserfenstern ohne horizontalen Überlauf. Der direkte Viewport-Schalter des Browserwerkzeugs änderte die native Ansicht nicht; deshalb wurde die Breite unabhängig in der lokalen Browser-Testseite geprüft. Physische Mobilgeräte und Bildschirmleser bleiben noch ungetestet.
 
 Offene Erweiterungen, nach Priorität:
@@ -233,6 +233,19 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 12.10.2026 – Claude – Version 1.10.0
+
+Gestaltung nach Jakobs Rückmeldungen aus Edge (Dateistart über `index.html`). Geändert wurde ausschließlich `styles.css`; Inhalte, Lernstand, Kriterien und Markup bleiben unverändert.
+
+- **Gebürstetes dunkelblaues Metall für Hintergrund und Fenster:** dunkles Farbschema von Graublau auf Marineblau umgestellt (`--bg`, `--panel`, `--panel-strong`, `--line`, `--metal-*`). `--brushed` besteht jetzt aus drei überlagerten Linienrhythmen (3, 5 und 23 Pixel), damit die Bürstung nicht als gleichmäßiges Streifenmuster wirkt. Neu: `--sheen-bands` (breite diagonale Lichtbänder), `--plate-shadow` (helle Oberkante, dunkle Unterkante, Schlagschatten) sowie die Tokens `--sheen`, `--bevel-dark`, `--panel-shadow` für beide Farbschemata. Karten, Kennzahlen, Panels, Hero, Kopfzeile und Seitenleiste nutzen diese Flächen. Weiterhin reines CSS ohne Bilddateien, also offlinefähig.
+- **Menü-Icons:** statt silberner Plaketten blau eloxierte Stahlkacheln mit polierter Fase, Glanzkante und hell leuchtendem Symbol; aktiver Eintrag mit blauem Lichtsaum und Markierungsleiste links. Die SVG-Symbole selbst sind unverändert.
+- **Buttons:** Primärbutton als gebürstetes Akzentmetall mit heller Oberkante, dunklerem Fuß und farbigem Schimmer beim Überfahren; gedrückter Zustand sichtbar eingelassen. Sekundär-, Icon- und Profilbutton als blaue Stahlflächen mit Fase und blauem Lichtsaum beim Überfahren. Mindesthöhen und die Tokens `--accent`, `--accent-end`, `--accent-text` sind unverändert, die Kontrastprüfung bleibt gültig.
+- **Titelbild:** Die Bildspalte ist breiter (0,85 : 1,25) und übernimmt das Seitenverhältnis der Grafik (1672 : 941). Der frühere Verlauf, der die linke Bildhälfte überdeckte, ist entfernt; die Grafik ist vollständig sichtbar. Bis 1150 Pixel Breite steht das Bild in voller Breite über dem Text.
+
+Prüfung: 21 Node-Tests und Build bestanden; 140/140 Browserprüfungen unter `/__qa`, darunter 360-Pixel-Layout, Buttonhöhen und Kontrast in beiden Farbschemata. Startseite im dunklen Schema bei 1600 x 1000 (Edge headless) und im hellen Schema bei 573 Pixeln Breite visuell geprüft. Screenshot: `documentation/WebLab-1.10.0.png`; der Screenshot zu 1.9.2 bleibt über den Tag v1.9.2 abrufbar. Offen: Jakobs Rückmeldung zum neuen Aussehen; die übrigen Ansichten (Einheit, Labor, Glossar) nutzen dieselben Flächen und wurden nur über die automatischen Prüfungen abgedeckt, nicht einzeln begutachtet.
+
+Hinweis für die Arbeit unter Windows: Quelldateien nicht mit `Get-Content`/`Set-Content` aus Windows PowerShell 5.1 umschreiben. Die Dateien sind UTF-8 ohne BOM; PowerShell 5.1 liest sie als ANSI und zerstört Umlaute. Ein solcher Versuch wurde sofort mit `git checkout` zurückgenommen.
+
 ### 12.10.2026 – Codex – Version 1.9.2
 
 Einheit 09 erhält einen eigenständig formulierten Vergleich von Inline-CSS, style im head und externer style.css. Lernende greifen die beiden h2-Überschriften aus Einheit 03 auf, gestalten erst eine Überschrift inline und anschließend beide über dieselbe Regel im head bzw. in der CSS-Datei. Der letzte Schritt führt zu Notepad++, Strg+S und F5 mit den exportierten Dateien. Der Unterschied zwischen der Laborvorschau und einer echten externen CSS-Verknüpfung wird ausdrücklich erklärt. Bestehende Kriterien, Lernstände, Freischaltungen und Punkte bleiben unverändert.
@@ -241,7 +254,7 @@ Der Abgleich mit ThommyWeb K6 war Anlass für die Vertiefung. Texte und Beispiel
 
 **12.10.2026 – Claude – Prüfung von 1.9.2 auf Jakobs Gaming-Laptop.** Derselbe Google-Drive-Ordner liegt hier unter `D:\Google Drive\Codex\WebLab` (auf dem Lenovo `G:\Meine Ablage\Codex\WebLab`); die Sicherungen unter `C:\Users\PC\...` liegen nur lokal auf dem Lenovo. Lokaler main stimmt mit origin/main (d0cfedd) überein; die vier uncommitteten 1.9.2-Dateien von Codex sind unverändert angekommen. Mit Node v24.18.0: 21 Node-Tests bestanden, Build erfolgreich und byteidentisches weblab.js, 140/140 Browserprüfungen unter `/__qa` bestanden. Die neue Vertiefung in Einheit 09 wurde mit einem Testprofil (Einheiten 01–08 abgeschlossen) geöffnet: Text, Codebeispiel und vier Schritte werden vollständig dargestellt, kein horizontaler Überlauf bei 1024 und 375 Pixeln, keine Konsolenfehler; der vorherige Browserspeicher wurde danach wiederhergestellt. Keine Änderung an Quellcode oder Inhalten.
 
-Aufräumen und Build (Claude, auf Jakobs Auftrag): Google Drive hatte `desktop.ini` in `.git/refs` und im mitsynchronisierten `dist/` angelegt; `git fetch` und `npm run build` scheiterten deshalb auf diesem Gerät. Die Dateien wurden entfernt. `development/tools/build-site.mjs` löscht `desktop.ini` in `dist/` jetzt vor der Allowlist-Prüfung selbst. Geprüft: Build mit zwei eingeschleusten `desktop.ini` erfolgreich und danach ohne diese Dateien; Build mit einer anderen fremden Datei scheitert weiterhin mit Exitcode 1. Der in Abschnitt 4 und 7 genannte Screenshot `documentation/WebLab-1.9.2.png` fehlte und wurde mit Edge (headless, 1440 x 900) direkt aus der lokalen `index.html` per Dateiadresse erzeugt; damit ist zugleich belegt, dass die Startseite beim Dateistart in Edge ohne Server lädt. `WebLab-1.9.1.png` wurde entfernt und bleibt über den Tag v1.9.1 abrufbar. Neu versioniert: `.claude/launch.json` (startet `npm run serve` auf Port 4188 für Claudes Browser-Vorschau; für Codex ohne Bedeutung). Der erzeugte `dist/`-Ordner wurde nach der Prüfung wieder gelöscht. Abschnitt 6 beschreibt jetzt die beiden Laptops und die Arbeitsabsprache.
+Aufräumen und Build (Claude, auf Jakobs Auftrag): Google Drive hatte `desktop.ini` in `.git/refs` und im mitsynchronisierten `dist/` angelegt; `git fetch` und `npm run build` scheiterten deshalb auf diesem Gerät. Die Dateien wurden entfernt. `development/tools/build-site.mjs` löscht `desktop.ini` in `dist/` jetzt vor der Allowlist-Prüfung selbst. Geprüft: Build mit zwei eingeschleusten `desktop.ini` erfolgreich und danach ohne diese Dateien; Build mit einer anderen fremden Datei scheitert weiterhin mit Exitcode 1. Der in Abschnitt 4 und 7 genannte Screenshot `documentation/WebLab-1.9.2.png` fehlte und wurde mit Edge (headless, 1440 x 900) direkt aus der lokalen `index.html` per Dateiadresse erzeugt; damit ist zugleich belegt, dass die Startseite beim Dateistart in Edge ohne Server lädt. `WebLab-1.9.1.png` wurde entfernt und bleibt über den Tag v1.9.1 abrufbar. Neu versioniert: `.claude/launch.json` (startet `npm run serve` auf Port 4188 für Claudes Browser-Vorschau; für Codex ohne Bedeutung). Der erzeugte `dist/`-Ordner wurde nach der Prüfung wieder gelöscht. Veröffentlicht mit Commit cc04a07; [Pages-Workflow 38301559343](https://github.com/JakobSawazki/WebLab/actions/runs/38301559343) erfolgreich, Online-Version 1.9.2 bestätigt, Release v1.9.2 angelegt. Abschnitt 6 beschreibt jetzt die beiden Laptops und die Arbeitsabsprache.
 
 ### 12.10.2026 – Codex – Version 1.9.1
 

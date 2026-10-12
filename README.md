@@ -8,6 +8,8 @@ Statische Lernumgebung zu **BPE2: Entwicklung von Internetseiten**, im Aufbau un
 
 16 Lerneinheiten, lokales Schülerprofil, HTML-/CSS-Labor, 84 Glossareinträge, XP, NAGOLD, JSON-Lernstandsicherung und Projektexport.
 
+Seit Version 1.1.0: Editor mit Dateireitern, Zeilennummern, Live-/Handyvorschau, lokalem HTML-/CSS-Import und Übungsablauf für Notepad++ 7.5.1 auf dem Informatik-Stick.
+
 ```text
 npm test
 npm run build

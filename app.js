@@ -13,6 +13,7 @@ import {
 } from "./state.js";
 import { checkLesson, preview } from "./checks.js";
 import { zipFiles } from "./export.js";
+import { bindCodeEditor, readCodeFiles } from "./editor.js";
 const $ = (s) => document.querySelector(s),
   esc = (s) =>
     String(s ?? "").replace(
@@ -114,7 +115,18 @@ function path() {
 function studio(id, free = false) {
   const l = byId(id),
     d = state.drafts[free ? "lab" : id] || { html: l.starter, css: "" };
-  return `<section class="studio" aria-labelledby="studioTitle"><div class="studio-header"><h3 id="studioTitle">${free ? "Freies HTML- & CSS-Labor" : "Deine Werkstatt"}</h3><div class="actions"><button class="button secondary" id="runButton">Vorschau aktualisieren</button>${free ? "" : '<button class="button" id="checkButton">Auftrag prüfen</button>'}</div></div><div class="studio-grid"><div class="editors"><label for="htmlEditor">HTML</label><textarea class="code" id="htmlEditor" spellcheck="false" maxlength="1500000">${esc(d.html)}</textarea><label for="cssEditor">CSS · Gestaltung</label><textarea class="code" id="cssEditor" spellcheck="false" maxlength="40000">${esc(d.css)}</textarea><div class="actions"><button id="imageButton" class="button secondary">Bild einfügen</button><input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button id="resetButton" class="button secondary">Startcode laden</button></div><p class="muted">Dein Code wird auf diesem Gerät gespeichert. Externe Medien und Skripte werden in der Vorschau blockiert. Relative Links und Medien testest du nach dem Export im Projektordner.</p></div><div class="preview-area"><label for="previewFrame">Browser-Vorschau</label><iframe id="previewFrame" title="Isolierte Vorschau deiner Webseite" sandbox=""></iframe><p>HTML beschreibt die Inhalte. CSS gestaltet sie. Die Vorschau ist vom Lernprofil isoliert.</p></div></div><div class="panel"><h3>Dein Code als echte Dateien</h3><p>Das Projekt-ZIP enthält index.html und style.css. Entpacke es in einen gemeinsamen Ordner und öffne index.html. Eigene Unterseiten und Mediendateien ergänzt du dort.</p><div class="actions"><button class="button secondary" id="htmlExport">index.html</button><button class="button secondary" id="cssExport">style.css</button><button class="button" id="zipExport">Projekt-ZIP herunterladen</button></div></div></section>`;
+  return `<section class="studio" aria-labelledby="studioTitle">
+    <div class="studio-header"><h3 id="studioTitle">${free ? "Freies HTML- & CSS-Labor" : "Deine Werkstatt"}</h3><div class="actions"><button class="button secondary" id="runButton">Vorschau aktualisieren</button>${free ? "" : '<button class="button" id="checkButton">Auftrag prüfen</button>'}</div></div>
+    <div class="studio-grid"><div class="editors">
+      <div class="file-tabs" role="tablist" aria-label="Projektdatei auswählen"><button id="htmlTab" role="tab" aria-selected="true" aria-controls="htmlPane">index.html</button><button id="cssTab" role="tab" aria-selected="false" aria-controls="cssPane" tabindex="-1">style.css</button></div>
+      ${["html", "css"].map((kind) => `<div id="${kind}Pane" role="tabpanel" aria-labelledby="${kind}Tab" ${kind === "css" ? "hidden" : ""}><label class="editor-label" for="${kind}Editor">${kind === "html" ? "HTML · Inhalt und Struktur" : "CSS · Gestaltung"}</label><div class="code-surface"><pre class="line-numbers" id="${kind}Lines" aria-hidden="true"></pre><textarea class="code" id="${kind}Editor" aria-describedby="editorHelp ${kind}Position" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" maxlength="${kind === "html" ? 1500000 : 40000}">${esc(d[kind])}</textarea></div><p class="editor-position" id="${kind}Position"></p></div>`).join("")}
+      <p class="muted" id="editorHelp">Tab: zwei Leerzeichen einrücken · Umschalt+Tab: ausrücken · Escape, dann Tab: Editor verlassen. Schreibe den Code selbst – wie später in Notepad++.</p>
+      <div class="actions"><button id="imageButton" class="button secondary">Bild einfügen</button><input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button id="resetButton" class="button secondary">Startcode laden</button></div>
+      <p class="muted">Entwürfe werden auf diesem Gerät gespeichert. Sichere deinen Lernstand regelmäßig im Profil. HTML und CSS bleiben beim Reiterwechsel erhalten.</p>
+    </div><div class="preview-area"><div class="preview-tools"><label class="check-row"><input id="livePreview" type="checkbox" checked> Live-Vorschau</label><label for="previewWidth">Ansicht <select id="previewWidth"><option value="full">Verfügbare Breite</option><option value="360">Handy · 360 px</option></select></label></div><div class="preview-viewport"><iframe id="previewFrame" title="Isolierte Vorschau deiner Webseite" sandbox=""></iframe></div><p id="previewStatus" role="status"></p><p class="muted">HTML beschreibt Inhalte, CSS gestaltet sie. Externe Medien und Skripte sind hier blockiert. Relative Links, Unterseiten und Medien prüfst du nach dem Export im Browser.</p></div></div>
+    <div class="panel"><h3>Vom WebLab zum Informatik-Stick</h3><p>Hier übst du mit direkter Vorschau. Für die Klassenarbeit trainierst du auch mit <strong>Notepad++ 7.5.1 auf dem Informatik-Stick</strong>. Dort ist der Informatik-Stick das erlaubte Werkzeug; WebLab gehört nicht dazu.</p><div class="actions"><button class="button secondary" id="htmlExport">index.html</button><button class="button secondary" id="cssExport">style.css</button><button class="button" id="zipExport">Projekt-ZIP herunterladen</button><button class="button secondary" id="codeImportButton">HTML / CSS vom Stick laden</button><input id="codeImportFile" type="file" accept=".html,.htm,.css" multiple hidden></div><p class="muted">Geladene Dateien ersetzen nach Bestätigung nur die ausgewählten Dateitypen im aktuellen Entwurf. Sie werden lokal verarbeitet. Exportnamen: index.html und style.css.</p>
+    <details><summary>Notepad++ üben: speichern → Browser → prüfen</summary><ol><li>Lade das Projekt-ZIP herunter und entpacke es in einen eigenen Projektordner auf deinem Stick. index.html und style.css liegen im selben Ordner.</li><li>Starte Notepad++ vom Informatik-Stick. Öffne beide Dateien in Notepad++ und index.html zusätzlich im Browser.</li><li>Ändere deinen Code in Notepad++. Speichere die bearbeitete Datei mit <kbd>Strg</kbd> + <kbd>S</kbd>. Wechsle zum Browser und aktualisiere mit <kbd>F5</kbd>.</li><li>Prüfe Dateinamen und Endungen: index.html, nicht index.html.txt. Verwende UTF-8. Der HTML-Kopf verknüpft die Gestaltung mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li><li>Teste auch Links und Bilder im Projektordner. Über „HTML / CSS vom Stick laden“ kannst du deinen Code später wieder in dieser Einheit weiterbearbeiten.</li></ol><p><strong>Transfer-Auftrag:</strong> Ändere eine Überschrift und eine CSS-Farbe ausschließlich in Notepad++. Speichere beide Dateien, aktualisiere den Browser und erkläre, welche Datei welche Änderung bewirkt hat.</p></details>
+    </div></section>`;
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
@@ -140,6 +152,9 @@ function run() {
   capture();
   const d = draft();
   $("#previewFrame").srcdoc = preview(d.html, d.css);
+  $("#previewStatus").textContent = $("#livePreview").checked
+    ? "Vorschau aktuell · aktualisiert nach einer kurzen Schreibpause."
+    : "Vorschau manuell aktualisiert · Live-Vorschau ist aus.";
 }
 function check(l) {
   capture();
@@ -168,12 +183,99 @@ function files() {
 }
 function bindStudio(l) {
   $("#runButton").onclick = run;
-  for (const id of ["htmlEditor", "cssEditor"])
-    $("#" + id).addEventListener("input", () => {
+  const updates = {};
+  const selectFile = (kind, focus = false) => {
+    for (const type of ["html", "css"]) {
+      $("#" + type + "Pane").hidden = type !== kind;
+      $("#" + type + "Tab").setAttribute(
+        "aria-selected",
+        String(type === kind),
+      );
+      $("#" + type + "Tab").tabIndex = type === kind ? 0 : -1;
+    }
+    updates[kind]();
+    if (focus) $("#" + kind + "Tab").focus();
+  };
+  for (const kind of ["html", "css"]) {
+    updates[kind] = bindCodeEditor(
+      $("#" + kind + "Editor"),
+      $("#" + kind + "Lines"),
+      $("#" + kind + "Position"),
+    );
+    $("#" + kind + "Tab").onclick = () => selectFile(kind);
+    $("#" + kind + "Tab").onkeydown = (e) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+      e.preventDefault();
+      selectFile(
+        e.key === "Home"
+          ? "html"
+          : e.key === "End"
+            ? "css"
+            : kind === "html"
+              ? "css"
+              : "html",
+        true,
+      );
+    };
+    $("#" + kind + "Editor").addEventListener("input", () => {
       clearTimeout(timer);
       capture();
-      timer = setTimeout(run, 500);
+      $("#previewStatus").textContent = $("#livePreview").checked
+        ? "Vorschau wird aktualisiert …"
+        : "Code geändert · Vorschau aktualisieren oder Live-Vorschau einschalten.";
+      if ($("#livePreview").checked) timer = setTimeout(run, 500);
     });
+  }
+  $("#livePreview").onchange = () => {
+    clearTimeout(timer);
+    if ($("#livePreview").checked) run();
+    else
+      $("#previewStatus").textContent =
+        "Live-Vorschau aus · Änderungen mit „Vorschau aktualisieren“ anzeigen.";
+  };
+  $("#previewWidth").onchange = () => {
+    const width = $("#previewWidth").value;
+    $("#previewFrame").style.width = width === "360" ? "360px" : "100%";
+  };
+  $("#codeImportButton").onclick = () => $("#codeImportFile").click();
+  $("#codeImportFile").onchange = async (e) => {
+    const input = e.target,
+      routeId = activeId;
+    const selected = Array.from(input.files);
+    input.value = "";
+    if (!selected.length) return;
+    try {
+      const incoming = await readCodeFiles(selected);
+      if (routeId !== activeId || !$("#htmlEditor")) return;
+      if (
+        !confirm(
+          `${Object.keys(incoming)
+            .map((k) => (k === "html" ? "index.html" : "style.css"))
+            .join(
+              " und ",
+            )} im aktuellen Entwurf ersetzen? Dein bisheriger Lernstand wird zuerst als Sicherung heruntergeladen.`,
+        )
+      )
+        return;
+      capture();
+      backup();
+      for (const [kind, text] of Object.entries(incoming)) {
+        $("#" + kind + "Editor").value = text;
+        updates[kind]();
+      }
+      selectFile("html" in incoming ? "html" : "css");
+      capture();
+      if ($("#livePreview").checked) run();
+      else
+        $("#previewStatus").textContent =
+          "Dateien geladen · Vorschau aktualisieren, um den neuen Code zu sehen.";
+      toast(
+        "Dateien lokal geladen. Prüfe die Vorschau und deine CSS-Verknüpfung.",
+      );
+    } catch (error) {
+      toast(error.message);
+    }
+  };
   $("#checkButton")?.addEventListener("click", () => check(l));
   $("#resetButton").onclick = () => {
     if (
@@ -209,7 +311,9 @@ function bindStudio(l) {
       $("#htmlEditor").value = html.includes("</body>")
         ? html.replace("</body>", addition + "</body>")
         : html + addition;
-      run();
+      updates.html();
+      selectFile("html");
+      $("#htmlEditor").dispatchEvent(new Event("input", { bubbles: true }));
       toast("Bild lokal eingefügt. Passe Alternativtext und Größe an.");
     };
     reader.readAsDataURL(f);

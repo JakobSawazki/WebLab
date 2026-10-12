@@ -116,6 +116,127 @@
       );
       frame.remove();
     }
+    // Exercise the actual editor, including async input, with disposable QA code.
+    const editorFrame = document.createElement("iframe");
+    editorFrame.style.cssText = "width:1100px;height:900px;border:0";
+    const editorLoaded = new Promise(
+      (resolve) => (editorFrame.onload = resolve),
+    );
+    editorFrame.src = "/#lab";
+    document.body.append(editorFrame);
+    await editorLoaded;
+    const doc = editorFrame.contentDocument,
+      win = editorFrame.contentWindow;
+    const el = (id) => doc.getElementById(id);
+    const previousHTML = el("htmlEditor").value,
+      previousCSS = el("cssEditor").value;
+    const input = (id, value) => {
+      el(id).value = value;
+      el(id).dispatchEvent(new win.Event("input", { bubbles: true }));
+    };
+    input("htmlEditor", "<h1>Live-Test</h1>\n<p>Selbst geschrieben.</p>");
+    await new Promise((resolve) => setTimeout(resolve, 650));
+    assert(
+      el("previewFrame").srcdoc.includes("<h1>Live-Test</h1>"),
+      "HTML-Eingabe aktualisiert Live-Vorschau",
+    );
+    assert(
+      el("htmlLines").textContent === "1\n2",
+      "Zeilennummern folgen dem Code",
+    );
+    el("cssTab").click();
+    assert(
+      el("htmlPane").hidden && !el("cssPane").hidden,
+      "Dateireiter wechseln das sichtbare Dokument",
+    );
+    input("cssEditor", "h1 { color: teal; }");
+    await new Promise((resolve) => setTimeout(resolve, 650));
+    assert(
+      el("previewFrame").srcdoc.includes("h1 { color: teal; }"),
+      "CSS wirkt gemeinsam mit HTML in der Vorschau",
+    );
+    el("livePreview").click();
+    const before = el("previewFrame").srcdoc;
+    input("cssEditor", "h1 { color: navy; }");
+    await new Promise((resolve) => setTimeout(resolve, 650));
+    assert(
+      el("previewFrame").srcdoc === before,
+      "Ausgeschaltete Live-Vorschau bleibt unverändert",
+    );
+    el("runButton").click();
+    assert(
+      el("previewFrame").srcdoc.includes("color: navy"),
+      "Manuelle Aktualisierung zeigt neuen Code",
+    );
+    el("htmlTab").click();
+    assert(
+      el("htmlEditor").value.includes("Live-Test"),
+      "Reiterwechsel erhält den HTML-Entwurf",
+    );
+    el("htmlEditor").setSelectionRange(0, 0);
+    const tab = new win.KeyboardEvent("keydown", {
+      key: "Tab",
+      bubbles: true,
+      cancelable: true,
+    });
+    el("htmlEditor").dispatchEvent(tab);
+    assert(
+      tab.defaultPrevented && el("htmlEditor").value.startsWith("  <h1>"),
+      "Tab rückt Code ein",
+    );
+    el("htmlEditor").dispatchEvent(
+      new win.KeyboardEvent("keydown", { key: "Escape", bubbles: true }),
+    );
+    const leave = new win.KeyboardEvent("keydown", {
+      key: "Tab",
+      bubbles: true,
+      cancelable: true,
+    });
+    el("htmlEditor").dispatchEvent(leave);
+    assert(!leave.defaultPrevented, "Escape und Tab geben Tastaturfokus frei");
+    el("previewWidth").value = "360";
+    el("previewWidth").dispatchEvent(new win.Event("change"));
+    assert(
+      Math.round(el("previewFrame").getBoundingClientRect().width) === 360,
+      "Handyvorschau hat tatsächlich 360 Pixel Breite",
+    );
+    assert(
+      el("previewFrame").getAttribute("sandbox") === "",
+      "Vorschau bleibt ohne Skript- oder Herkunftsfreigaben isoliert",
+    );
+    // Confirm cancellation and replacement via real file-input change events.
+    const transfer = new win.DataTransfer();
+    transfer.items.add(
+      new win.File(["h1 {color: purple;}"], "style.css", { type: "text/css" }),
+    );
+    win.confirm = () => false;
+    el("codeImportFile").files = transfer.files;
+    el("codeImportFile").dispatchEvent(new win.Event("change"));
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    assert(
+      el("cssEditor").value.includes("navy"),
+      "Abgebrochener Dateiimport verändert keinen Entwurf",
+    );
+    win.confirm = () => true;
+    doc.addEventListener("click", (event) => {
+      if (event.target.closest("a[download]")) event.preventDefault();
+    });
+    const secondTransfer = new win.DataTransfer();
+    secondTransfer.items.add(
+      new win.File(["h1 {color: purple;}"], "style.css", { type: "text/css" }),
+    );
+    el("codeImportFile").files = secondTransfer.files;
+    el("codeImportFile").dispatchEvent(new win.Event("change"));
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    assert(
+      el("cssEditor").value.includes("purple") &&
+        el("htmlEditor").value.includes("Live-Test"),
+      "CSS-Import ersetzt nur CSS und erhält HTML",
+    );
+    // Restore the original lab draft rather than retaining QA examples.
+    input("htmlEditor", previousHTML);
+    input("cssEditor", previousCSS);
+    editorFrame.remove();
     document.querySelector("#results").textContent =
       `${count - failed}/${count} Prüfungen bestanden, ${failed} fehlgeschlagen.\n\n` +
       out.join("\n");

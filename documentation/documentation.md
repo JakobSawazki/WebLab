@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.0.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
+Version: **1.1.0** · Status: **lokal geprüft, Veröffentlichung in Vorbereitung** auf GitHub Pages.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -153,8 +153,8 @@ Google Drive erzeugt gelegentlich `desktop.ini` innerhalb `.git/refs`. Git deute
 
 Geprüft durch Codex am 12.10.2026:
 
-- Acht Node-Tests bestanden: Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur.
-- 59 Browserprüfungen bestanden: je Einheit Startcode/positiver Auftrag/Kommentarattrappe; zusätzlich ungültige CSS-Werte, falsches Sprungziel, leere Bildbeschreibung und acht Prüfungen in tatsächlichen eingebetteten 360-Pixel-Viewports.
+- Elf Node-Tests bestanden: Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur sowie Einrückung und Import von Code-Dateien.
+- 72 Browserprüfungen bestanden: bisherige 59 Prüfungen plus Live-Vorschau, CSS-Wirkung, manuelle Aktualisierung, Dateireiter und Entwurfserhalt, Zeilennummern, Tab-Einrückung, Escape/Tab-Ausgang, echte 360-Pixel-Vorschau, Isolation sowie Abbruch und dateitypspezifische Übernahme beim Import.
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
@@ -167,11 +167,27 @@ Offene Erweiterungen, nach Priorität:
 2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
 4. **Didaktische Vertiefung:** mehr Fehlersuchaufträge, visuelle Box-Modell-/Selektorhilfen, gestufte HTML-Aufgaben, Tabellenformatierung und weitere Medienaufgaben.
-5. **Projektwerkstatt:** mehrere Dateien direkt im Browser bearbeiten, statt die Unterseite außerhalb anzulegen; geschützte Übertragung weiterhin mit schulischem Betriebskonzept.
+5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser, optionale Offline-Kopie und Browserprüfungen in CI.
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.1.0
+
+Auftrag: direkter HTML-Editor mit Live-Vorschau und Vorbereitung auf Notepad++ 7.5.1 vom Informatik-Stick. Die Version und die Klassenarbeitsregel stammen von Jakob.
+
+Ergebnis: index.html und style.css als zugängliche Dateireiter; Klartext-Editor mit Zeilennummern, Cursorposition und Tab-/Umschalt-Tab-Einrückung. Escape, dann Tab verlässt den Editor. HTML und CSS werden weiterhin getrennt pro Einheit bzw. im freien Labor gespeichert. Keine externen Editorbibliotheken, kein CDN und keine automatische Codevervollständigung. Die Vorschau aktualisiert sich nach 500 ms Schreibpause, kann ausgeschaltet und manuell aktualisiert werden; optional echte 360-Pixel-Handybreite. Sandbox und Vorschau-CSP bleiben erhalten.
+
+Transfer: Projekt-ZIP entpacken, beide Dateien in Notepad++ öffnen, index.html im Browser öffnen, Code mit Strg+S speichern und Browser mit F5 aktualisieren. Dateiendungen, UTF-8 und CSS-Verknüpfung sind erklärt. Ein konkreter Überschrift-/Farbauftrag verlangt Arbeit in Notepad++. WebLab ist die Trainingsumgebung; für die Klassenarbeit gilt laut Jakob der Informatik-Stick. Die alte Notepad++-Installation selbst wurde nicht geändert und noch nicht auf einem Schul-PC erprobt.
+
+Dateiimport: eine HTML-/HTM-Datei und/oder eine CSS-Datei, lokal über File API, keine Übertragung. UTF-8, Größenlimits (HTML 1.500 KB, CSS 40 KB), Ablehnung von Binärdateien/ungültigem UTF-8 und doppelten Dateitypen. Vor Ersetzen Bestätigung und Lernstand-Download; nur ausgewählte Typen werden im aktuellen Entwurf ersetzt. Exportnamen bleiben index.html und style.css, importierte Unterseiten/relative Medien werden nicht automatisch mitgeladen. Der Editor unterstützt Klartext, Zeilennummern und Einrückung; Syntaxfärbung und ein vollständiges Notepad++-Abbild sind nicht implementiert.
+
+Geänderte Dateien: app.js, styles.css, editor.js, content.js (Version), package.json, Build-Allowlist, tests/editor.test.mjs, tests/browser.html, README und diese Dokumentation. editor.js wird ausdrücklich in das Veröffentlichungspaket kopiert. Keine neue Abhängigkeit, kein neues Lernstandformat. Vorhandene Profile und Lernfortschritte bleiben kompatibel.
+
+Prüfungen: 11 Node-Tests und 72 Browserprüfungen bestanden. Der erste Import-Test verwendete dieselbe DataTransfer-Dateiliste nach dem Leeren des Inputs erneut; ein frischer Dateiauswahlvorgang behebt den Test. Visuelle Kontrolle des Editors im hellen Farbschema. Schul-PC/Notepad++ 7.5.1 und physische Mobilgeräte bleiben offen.
+
+Veröffentlichung: in Vorbereitung, main und v1.1.0 nach bestandenem Build. Screenshot wird unter WebLab-1.1.0.png ergänzt.
 
 ### 12.10.2026 – Codex – Version 1.0.0
 

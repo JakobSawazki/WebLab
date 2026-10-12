@@ -33,3 +33,5 @@ npm run serve
 Keine Installation von Bibliotheken notwendig. Node.js ab Version 22 wird nur für Entwicklung, Tests und Neubau benötigt. `npm run build` erzeugt die mitgelieferte klassische Skriptdatei `weblab.js` und das Veröffentlichungspaket. Der Einstieg erfolgt ausschließlich über `index.html`; die bisherige `start.cmd` wurde entfernt. `dist/` wird bei Bedarf für Entwicklung und Veröffentlichung neu erzeugt.
 
 Originalmaterialien unter `ressources/BPE2/` bleiben lokal und werden nicht veröffentlicht. Profile sind lokale Lernstände, keine Serverkonten oder manipulationssicheren Leistungsnachweise.
+
+Seit Version 1.7.1: neues fotorealistisches Metalllogo; dasselbe Motiv dient als PNG-Tab-Icon.

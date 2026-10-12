@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.7.0** · Status: **veröffentlicht und online geprüft**.
+Version: **1.7.1** · Status: **lokal geprüft, Veröffentlichung vorbereitet**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.7.0 |
+| Bereich | Version 1.7.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -101,7 +101,7 @@ WebLab/
     tools/                   Bundler, Build und lokaler Browserprüfserver
     tests/                   18 Node-Tests und Browserprüfseite
   documentation/documentation.md
-  documentation/WebLab-1.7.0.png
+  documentation/WebLab-1.7.1.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
   README.md                  kurze Startanleitung
   CLAUDE.md                  Wegweiser auf diese Dokumentation
@@ -178,6 +178,16 @@ Offene Erweiterungen, nach Priorität:
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.7.1
+
+Neues fotorealistisches Logo auf Jakobs Wunsch: breites W aus gebürstetem Silber/Titan mit HTML-Winkelklammern und dezenten blauen Reflexen. Mit dem integrierten image_gen-Werkzeug erstellt; transparenter Hintergrund. Das generierte Original liegt unter C:/Users/PC/.codex/generated_images/01a12ffc-8dc4-7670-b306-fdd3448d7504/exec-66014b85-b5f0-475b-ad7e-02dd5aa08243.png. Die Projektdateien sind assets/weblab-logo.png (512 x 512) und assets/favicon.png (64 x 64), beide mit Alpha; das Tab-Icon zeigt dasselbe Motiv. Technischer Export mit Sharp: transparente Ränder gekürzt, proportional skaliert und quadratisch mit Transparenz aufgefüllt. Keine Bildgenerierungs-API oder neue Laufzeitabhängigkeit.
+
+Logo und Icon haben versionsgebundene URLs gegen alte Browser-Caches. Das alte SVG-Icon ist entfernt und die Build-Allowlist entsprechend auf PNG umgestellt, weiterhin sieben veröffentlichte Dateien. Alte Assets gesichert unter C:/Users/PC/WebLab-Sicherungen/Logo-1.7.1. 18 Node-Tests bestanden; Build erfolgreich; Logo und Icon-Verweis im lokalen Browser geprüft. Veröffentlichung folgt.
+
+Finaler Bildprompt (integriertes image_gen, kein CLI-Fallback):
+
+> Use case: logo-brand. Create one entirely new premium photorealistic logo emblem for WebLab, a school web development learning app with a brushed metal interface. A bold compact capital W monogram sculpted from thick precision-machined brushed titanium and polished silver, integrated subtly with two small HTML angle-bracket shapes framing its outer silhouette. Front-facing, nearly orthographic, substantial broad strokes, beautifully balanced simple silhouette, shallow realistic bevels, fine physical brushed grain and soft studio highlights. A restrained cool blue reflection on the lower metal edges ties it to a dark steel UI; bright silver face must also read on light backgrounds through a charcoal edge. One standalone emblem, centered and filling roughly 85% of a square canvas. Truly transparent background with clean alpha, no ground plane or cast shadow outside the emblem. This same image must remain immediately recognizable at favicon size 32x32; prioritize large continuous forms and open negative spaces. Photorealistic product photography of a real premium metal badge, not a line drawing. No words, no tiny inscriptions, no globes, no laptop, no laboratory flask, no intricate circuitry, no decorative frame, no mockup, no watermark. Only the W and the integrated bracket silhouette.
 
 ### 12.10.2026 – Codex – Version 1.7.0
 

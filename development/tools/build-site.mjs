@@ -35,7 +35,7 @@ for (const f of ["index.html", "styles.css"]) {
   fs.writeFileSync(path.join(out, f), source);
 }
 fs.mkdirSync(path.join(out, "assets"), { recursive: true });
-for (const f of ["favicon.svg", "weblab-logo.png", "weblab-hero.png"])
+for (const f of ["favicon.png", "weblab-logo.png", "weblab-hero.png"])
   fs.copyFileSync(path.join(root, "assets", f), path.join(out, "assets", f));
 fs.writeFileSync(path.join(out, ".nojekyll"), "");
 const allowed = new Set([
@@ -43,7 +43,7 @@ const allowed = new Set([
   "index.html",
   "styles.css",
   ".nojekyll",
-  "assets/favicon.svg",
+  "assets/favicon.png",
   "assets/weblab-logo.png",
   "assets/weblab-hero.png",
 ]);

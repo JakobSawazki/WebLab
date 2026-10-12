@@ -115,7 +115,6 @@ WebLab/
   documentation/documentation.md
   ressources/BPE2/           lokale, nicht versionierte Quellen
   .github/workflows/pages.yml
-  start.cmd
 ```
 
 Voraussetzung für Entwicklung: **Node.js ab 22**. In PowerShell im Projektordner:
@@ -126,7 +125,7 @@ npm run build
 npm run serve
 ```
 
-Vorschau: `http://127.0.0.1:4188/`. Browserprüfungen: `http://127.0.0.1:4188/__qa`. Nach Quelländerungen neu bauen und im Browser neu laden. Zum Lernen reicht seit 1.4.0 ein Doppelklick auf `index.html` im Projektordner. Der ganze Ordner mit `weblab.js`, `styles.css` und `assets/` muss zusammenbleiben. Node.js und Server sind dafür nicht erforderlich. `start.cmd` öffnet optional dieselbe Datei. Der Build fasst die weiterhin modular gepflegten Quellen in ein klassisches Skript zusammen; nach Quelländerungen immer neu bauen und `weblab.js` mit committen. Lokaler Dateistart, localhost und Online-Seite haben getrennte Lernstände; bei einem Wechsel JSON-Sicherung verwenden.
+Vorschau: `http://127.0.0.1:4188/`. Browserprüfungen: `http://127.0.0.1:4188/__qa`. Nach Quelländerungen neu bauen und im Browser neu laden. Zum Lernen reicht seit 1.4.0 ein Doppelklick auf `index.html` im Projektordner. Der ganze Ordner mit `weblab.js`, `styles.css` und `assets/` muss zusammenbleiben. Node.js und Server sind dafür nicht erforderlich. `start.cmd` wurde beim anschließenden Aufräumen entfernt; der einzige Einstieg für Lernende ist `index.html`. Der Build fasst die weiterhin modular gepflegten Quellen in ein klassisches Skript zusammen; nach Quelländerungen immer neu bauen und `weblab.js` mit committen. Lokaler Dateistart, localhost und Online-Seite haben getrennte Lernstände; bei einem Wechsel JSON-Sicherung verwenden.
 
 Der Build schreibt ausschließlich 15 erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket und veröffentlicht ausschließlich dist. Die 86 Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
 
@@ -168,7 +167,7 @@ Geprüft durch Codex am 12.10.2026:
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
-- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Screenshot: `WebLab-1.0.0.png` in diesem Dokumentationsordner.
+- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.4.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
 - Responsive Prüfung: Startseite, Einheiten 1 und 12 sowie Glossar bei tatsächlich 360 Pixel breiten eingebetteten Browserfenstern ohne horizontalen Überlauf. Der direkte Viewport-Schalter des Browserwerkzeugs änderte die native Ansicht nicht; deshalb wurde die Breite unabhängig in der lokalen Browser-Testseite geprüft. Physische Mobilgeräte und Bildschirmleser bleiben noch ungetestet.
 
 Offene Erweiterungen, nach Priorität:
@@ -182,6 +181,12 @@ Offene Erweiterungen, nach Priorität:
 7. **ThommyWeb:** gezielt fachliche Ergänzungen prüfen und eigenständig ausarbeiten, keine pauschale Inhaltsübernahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Aufräumen nach Umstellung auf index.html
+
+Auf Jakobs Auftrag entfernt: `start.cmd`, `.tmp/` mit alten Test-/Release-Dateien, sechs Screenshots der Versionen 1.0 bis 1.3, der erzeugte `dist/`-Ordner sowie die vorhandene Windows-Metadatendatei `desktop.ini` im Hauptordner. Sicherung außerhalb des Projekts unter `C:\Users\PC\WebLab-Sicherungen\Aufraeumen-2026-10-12-index-html`. Historische Screenshotnamen in den folgenden Versionsprotokollen beziehen sich auf dieses Archiv oder die alten Git-Tags. Im Dokumentationsordner bleiben diese zentrale Dokumentation und der aktuelle Screenshot 1.4.0.
+
+Erhalten: Startdatei, Skriptbündel, CSS und Assets; Quellmodule, Tests und Entwicklungswerkzeuge; GitHub-Veröffentlichung, README/Claude-Wegweiser und lokale Unterrichtsquellen. Diese Dateien werden weiterhin benötigt. `dist/` ist nur ein jederzeit durch `npm run build` erzeugbarer Ausgabeordner und liegt nach dem Aufräumen nicht mehr dauerhaft als zweite Seitenkopie im Projekt. Keine Änderung an Lernfunktionen oder Lernständen. Prüfung: 15 Node-Tests bestanden; Veröffentlichungspaket neu erzeugt; alle lokalen Start-Assets und der klassische Skripteinstieg vorhanden. Die zuvor bestandenen 86 Browserprüfungen gelten unverändert, da kein Laufzeitcode geändert wurde. Der zur Prüfung erzeugte Ausgabeordner wurde anschließend ebenfalls aus dem Projekt verschoben.
 
 ### 12.10.2026 – Codex – Version 1.4.0
 

@@ -2,7 +2,7 @@
 
 Stand: **12. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.2.0** · Status: **lokal geprüft, Veröffentlichung in Vorbereitung** auf GitHub Pages.
+Version: **1.2.0** · Status: **veröffentlicht und live geprüft** auf GitHub Pages.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -197,7 +197,7 @@ Veröffentlichungs-Cache: Der Build versieht App-Einstieg, CSS und alle lokalen 
 
 Prüfungen: 13 Node-Tests und 81 Browserprüfungen bestanden, darunter der Übergang l1 → l2 → l3 und zurück mit HTML/CSS-Erhalt. Große Vorschau und Rückkehr zum Code visuell geprüft; 360-Pixel-Layoutprüfung bestanden. Unterrichtserprobung und Bildschirmlesertest bleiben offen.
 
-Veröffentlichung: in Vorbereitung für main und v1.2.0 nach bestandenem Build und anschließender Live-Kontrolle.
+Veröffentlichung: **1.2.0 auf main**, Implementierungscommit `8711cf3748da1a165e728090fc9eaf84e53f8ce5`, Cache-Korrektur `111072d678df4b08ac0ed5fa8783f85506202d68`; [Pages-Workflow 38252679822](https://github.com/JakobSawazki/WebLab/actions/runs/38252679822) erfolgreich. Live mit Versionskennung unter `/WebLab/?v=1.2.0#lesson/l1` geprüft: Version, Lernkette, Fokus auf Editor, große Browseransicht und Rückkehr. Abschließender Dokumentationsstand unter `v1.2.0`. Screenshots: `WebLab-1.2.0.png` und `WebLab-1.2.0-Editor.png`. Das Veröffentlichungspaket wurde nach Ergänzung der Versionskennungen erneut mit allen 81 Browserprüfungen geprüft.
 
 ### 12.10.2026 – Codex – Version 1.1.0
 

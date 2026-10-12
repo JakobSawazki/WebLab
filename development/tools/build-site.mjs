@@ -55,6 +55,8 @@ function verify(dir) {
     if (entry.isSymbolicLink())
       throw new Error("Keine symbolischen Links im Veröffentlichungspaket.");
     if (entry.isDirectory()) verify(file);
+    // Google Drive legt desktop.ini in jedem synchronisierten Ordner an.
+    else if (entry.name === "desktop.ini") fs.rmSync(file, { force: true });
     else if (!allowed.has(path.relative(out, file).replaceAll("\\", "/")))
       throw new Error(
         "Unerwartete Datei im dist-Ordner. Vor Veröffentlichung prüfen: " +

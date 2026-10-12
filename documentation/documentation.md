@@ -1,8 +1,8 @@
 # WebLab – gemeinsame Projektdokumentation
 
-Stand: **12. Oktober 2026, Europe/Berlin · Codex**
+Stand: **12. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.9.1** · Status: **veröffentlicht und online geprüft**.
+Version: **1.9.2** · Status: **lokal geprüft; Veröffentlichung in Vorbereitung**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.9.1 |
+| Bereich | Version 1.9.2 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -85,7 +85,7 @@ Der direkte Abruf über das Webwerkzeug scheitert weiterhin. Am 12.10.2026 war d
 | --- | --- |
 | HTML-Grundlagen, Grundgerüst, Textstruktur | Einheiten 01–03 |
 | Attribute | Einheiten 05–06 und Glossar; Syntax in eigenen Beispielen vertiefen |
-| CSS-Regeln und Einbindung | Einheiten 09–10; drei Einbindungsarten mit eigenen Vergleichsbeispielen ausbauen |
+| CSS-Regeln und Einbindung | Einheiten 09–10; eigener Vergleich der drei Einbindungsarten seit 1.9.2 in Einheit 09 |
 | Links, Bilder, Tabellen, Listen, Medien | Einheiten 04–08; Tabellenformatierung in Einheit 12 |
 | Externe Fonts und Karten | Freiwillige spätere Themen; keine externe Ressource in das offlinefähige Laufzeitpaket aufgenommen |
 | Schulplaner-Projektabschnitte | Mögliche Themenalternative für Einheiten 13–16; keine unveränderte Projektübernahme |
@@ -114,7 +114,7 @@ WebLab/
     tools/                   Bundler, Build und lokaler Browserprüfserver
     tests/                   21 Node-Tests und Browserprüfseite
   documentation/documentation.md
-  documentation/WebLab-1.9.1.png
+  documentation/WebLab-1.9.2.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
   README.md                  kurze Startanleitung
   CLAUDE.md                  Wegweiser auf diese Dokumentation
@@ -166,7 +166,20 @@ G:\Meine Ablage\Codex\.archive\WebLab-dependencies-2026-10-12\
 
 Das Git-Bundle enthält den bisherigen main-Verlauf. Die Arbeitskopie enthält zusätzlich die zuvor uncommitteten Dateien. Entfernte Quelldateien liegen im externen Archiv. Alte node_modules wurden teilweise dorthin verschoben; der verbleibende Teil liegt im genannten Archiv auf G:, um eine langsame dateiweise Übertragung zu vermeiden. Im aktiven Projekt liegt kein node_modules mehr; damit bleibt der aktive Ordner übersichtlich und alte Arbeit wiederherstellbar. Die bisherigen Dokumente TASKS.md und UEBERGABE.md wurden dort archiviert und durch diese Dokumentation ersetzt. CLAUDE.md bleibt als kurzer Wegweiser erhalten.
 
-Google Drive erzeugt gelegentlich `desktop.ini` innerhalb `.git/refs`. Git deutet diese als ungültige Referenzen. Solche Dateien werden bei Bedarf ausschließlich aus dem geprüften refs-Unterbaum ins externe Archiv verschoben; fachliche Git-Referenzen bleiben erhalten.
+Google Drive erzeugt `desktop.ini` in jedem synchronisierten Ordner, auch innerhalb `.git/refs`. Git deutet diese als ungültige Referenzen; `git fetch` scheitert dann mit „bad object refs/desktop.ini“. Abhilfe: ausschließlich die `desktop.ini` im refs-Unterbaum von `.git` entfernen; fachliche Git-Referenzen bleiben erhalten. Die Dateien sind von Drive erzeugte 106-Byte-Platzhalter und müssen nicht archiviert werden. Im `dist/`-Ordner entfernt der Build sie seit dem 12.10.2026 selbst; alle anderen unerwarteten Dateien lassen den Build weiterhin scheitern.
+
+### Zwei Laptops, ein Drive-Ordner
+
+Jakob arbeitet an zwei Geräten mit demselben Google-Drive-Ordner. Pfade in dieser Dokumentation sind entsprechend zu übersetzen:
+
+| Gerät | Projektpfad | Benutzerordner |
+| --- | --- | --- |
+| Lenovo-Laptop (bisherige Codex-Arbeit) | `G:\Meine Ablage\Codex\WebLab` | `C:\Users\PC` |
+| Gaming-Laptop (seit 12.10.2026) | `D:\Google Drive\Codex\WebLab` | `C:\Users\Jakob` |
+
+Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Sicherungen unter `C:\Users\PC\WebLab-Sicherungen\` liegen dagegen nur auf der lokalen SSD des Lenovo. Das ist nach Jakobs Entscheidung in Ordnung: Gearbeitet wird im Drive-Ordner, der verbindliche Verlauf liegt auf GitHub. Vor Arbeitsbeginn auf dem jeweils anderen Gerät abwarten, bis Drive fertig synchronisiert hat, und `git status` sowie `git fetch` prüfen. Nicht auf beiden Geräten gleichzeitig am Projekt arbeiten.
+
+**Arbeitsabsprache seit 12.10.2026:** Jakob öffnet `index.html` aus dem Projektordner in Edge und gibt Rückmeldungen. Claude und Codex arbeiten dazwischen selbständig weiter, committen sinnvolle Stände und veröffentlichen bei geeigneten Versionsständen. Nicht benötigte Dateien werden entfernt; der erzeugte `dist/`-Ordner bleibt nach der Arbeit nicht im Projektordner liegen.
 
 ## 7. Prüfstand und verbleibende Arbeit
 
@@ -177,7 +190,7 @@ Geprüft durch Codex am 12.10.2026:
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
-- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.9.1.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
+- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.9.2.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
 - Responsive Prüfung: Startseite, Einheiten 1 und 12 sowie Glossar bei tatsächlich 360 Pixel breiten eingebetteten Browserfenstern ohne horizontalen Überlauf. Der direkte Viewport-Schalter des Browserwerkzeugs änderte die native Ansicht nicht; deshalb wurde die Breite unabhängig in der lokalen Browser-Testseite geprüft. Physische Mobilgeräte und Bildschirmleser bleiben noch ungetestet.
 
 Offene Erweiterungen, nach Priorität:
@@ -219,6 +232,16 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 12.10.2026 – Codex – Version 1.9.2
+
+Einheit 09 erhält einen eigenständig formulierten Vergleich von Inline-CSS, style im head und externer style.css. Lernende greifen die beiden h2-Überschriften aus Einheit 03 auf, gestalten erst eine Überschrift inline und anschließend beide über dieselbe Regel im head bzw. in der CSS-Datei. Der letzte Schritt führt zu Notepad++, Strg+S und F5 mit den exportierten Dateien. Der Unterschied zwischen der Laborvorschau und einer echten externen CSS-Verknüpfung wird ausdrücklich erklärt. Bestehende Kriterien, Lernstände, Freischaltungen und Punkte bleiben unverändert.
+
+Der Abgleich mit ThommyWeb K6 war Anlass für die Vertiefung. Texte und Beispiele sind selbst formuliert. Eine pauschale Rangfolge intern vor extern wird nicht vermittelt; fachliche Grundlage ist [W3C CSS Cascade, Abschnitt 6.1](https://www.w3.org/TR/css-cascade-5/#cascade-sort). 21 Node-Tests und Build bestanden. Browserprüfung und Veröffentlichung folgen.
+
+**12.10.2026 – Claude – Prüfung von 1.9.2 auf Jakobs Gaming-Laptop.** Derselbe Google-Drive-Ordner liegt hier unter `D:\Google Drive\Codex\WebLab` (auf dem Lenovo `G:\Meine Ablage\Codex\WebLab`); die Sicherungen unter `C:\Users\PC\...` liegen nur lokal auf dem Lenovo. Lokaler main stimmt mit origin/main (d0cfedd) überein; die vier uncommitteten 1.9.2-Dateien von Codex sind unverändert angekommen. Mit Node v24.18.0: 21 Node-Tests bestanden, Build erfolgreich und byteidentisches weblab.js, 140/140 Browserprüfungen unter `/__qa` bestanden. Die neue Vertiefung in Einheit 09 wurde mit einem Testprofil (Einheiten 01–08 abgeschlossen) geöffnet: Text, Codebeispiel und vier Schritte werden vollständig dargestellt, kein horizontaler Überlauf bei 1024 und 375 Pixeln, keine Konsolenfehler; der vorherige Browserspeicher wurde danach wiederhergestellt. Keine Änderung an Quellcode oder Inhalten.
+
+Aufräumen und Build (Claude, auf Jakobs Auftrag): Google Drive hatte `desktop.ini` in `.git/refs` und im mitsynchronisierten `dist/` angelegt; `git fetch` und `npm run build` scheiterten deshalb auf diesem Gerät. Die Dateien wurden entfernt. `development/tools/build-site.mjs` löscht `desktop.ini` in `dist/` jetzt vor der Allowlist-Prüfung selbst. Geprüft: Build mit zwei eingeschleusten `desktop.ini` erfolgreich und danach ohne diese Dateien; Build mit einer anderen fremden Datei scheitert weiterhin mit Exitcode 1. Der in Abschnitt 4 und 7 genannte Screenshot `documentation/WebLab-1.9.2.png` fehlte und wurde mit Edge (headless, 1440 x 900) direkt aus der lokalen `index.html` per Dateiadresse erzeugt; damit ist zugleich belegt, dass die Startseite beim Dateistart in Edge ohne Server lädt. `WebLab-1.9.1.png` wurde entfernt und bleibt über den Tag v1.9.1 abrufbar. Neu versioniert: `.claude/launch.json` (startet `npm run serve` auf Port 4188 für Claudes Browser-Vorschau; für Codex ohne Bedeutung). Der erzeugte `dist/`-Ordner wurde nach der Prüfung wieder gelöscht. Abschnitt 6 beschreibt jetzt die beiden Laptops und die Arbeitsabsprache.
 
 ### 12.10.2026 – Codex – Version 1.9.1
 

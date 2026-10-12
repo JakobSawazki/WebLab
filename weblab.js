@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.9.1";
+const VERSION = "1.9.2";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -543,6 +543,21 @@ const lessons = [
   ),
 ];
 const byId = (id) => lessons.find((l) => l.id === id);
+
+byId("l9").extension = {
+  title: "Ausprobieren: Drei Wege zu derselben Gestaltung",
+  explanation:
+    "Nutze deine beiden h2-Überschriften aus Einheit 03. Ein style-Attribut gestaltet nur das jeweilige Element. Eine Regel im style-Element des head kann mehrere passende Elemente dieser Seite gestalten. Dieselbe Regel in style.css kann von mehreren HTML-Seiten verwendet werden. Teste die drei Varianten nacheinander. Ob eine Regel im head oder in einer externen Datei steht, gibt ihr allein keinen Vorrang; konkurrierende Regeln untersuchst du in Einheit 10.",
+  code: '<!-- 1. Inline: im body am einzelnen Element -->\n<h2 style="color: navy;">Aktuelles</h2>\n\n<!-- 2. Intern: im head deiner HTML-Datei -->\n<style>\n  h2 { color: navy; }\n</style>\n\n<!-- 3. Extern: im head mit style.css verbinden -->\n<link rel="stylesheet" href="style.css">\n\n/* Die folgende Regel steht in style.css: */\nh2 { color: navy; }',
+  steps: [
+    'Lasse das CSS-Feld für h2 zunächst ohne Farbregel. Ergänze bei genau einer deiner beiden h2-Überschriften style="color: navy;". Beobachte, welche Überschrift ihre Farbe ändert.',
+    "Entferne dieses style-Attribut wieder. Ergänze im head ein style-Element mit der gezeigten h2-Regel. Prüfe in der Vorschau, dass nun beide h2-Überschriften gestaltet werden.",
+    "Verschiebe die h2-Regel aus dem style-Element in den CSS-Reiter und entferne das nun leere style-Element. Behalte die Verknüpfung zu style.css im head. Die Vorschau sollte gleich aussehen.",
+    "Exportiere das Projekt-ZIP und entpacke es auf dem Informatik-Stick. Öffne index.html und style.css in Notepad++. Ändere die h2-Farbe nur in style.css, speichere mit Strg+S und lade index.html im Browser mit F5 neu. Prüfe, dass beide Überschriften reagieren.",
+  ],
+  observe:
+    "Zeige im Code, wo die Gestaltung bei jeder Variante steht. Erkläre, warum eine gemeinsame CSS-Datei für mehrere Seiten praktisch ist. Im Labor wird das CSS-Feld direkt in die Vorschau eingesetzt; erst der Test der exportierten Dateien zeigt, ob dein link zur externen Datei richtig gesetzt ist. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
 
 byId("l12").extension = {
   title: "Transfer: Deine Tabelle aus Einheit 07 gestalten",

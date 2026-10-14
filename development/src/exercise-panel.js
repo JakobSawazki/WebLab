@@ -101,9 +101,13 @@ export function bindExercises(l) {
       const hintButton = box.querySelector("[data-exercise-hint]");
       if (hintButton)
         hintButton.onclick = () => {
-          box.querySelector(".exercise-hint").hidden = false;
+          const hint = box.querySelector(".exercise-hint");
+          hint.hidden = false;
           hintButton.setAttribute("aria-expanded", "true");
           hintButton.hidden = true;
+          // The button disappears; keep keyboard focus on the revealed hint.
+          hint.tabIndex = -1;
+          hint.focus();
         };
       if (!ok) return;
       box.querySelector(".exercise-solved").hidden = false;

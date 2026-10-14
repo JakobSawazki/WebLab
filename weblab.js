@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.35.0";
+const VERSION = "1.36.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -4210,9 +4210,13 @@ function bindExercises(l) {
       const hintButton = box.querySelector("[data-exercise-hint]");
       if (hintButton)
         hintButton.onclick = () => {
-          box.querySelector(".exercise-hint").hidden = false;
+          const hint = box.querySelector(".exercise-hint");
+          hint.hidden = false;
           hintButton.setAttribute("aria-expanded", "true");
           hintButton.hidden = true;
+          // The button disappears; keep keyboard focus on the revealed hint.
+          hint.tabIndex = -1;
+          hint.focus();
         };
       if (!ok) return;
       box.querySelector(".exercise-solved").hidden = false;
@@ -4234,12 +4238,67 @@ function bindExercises(l) {
 
 return {EXERCISE_KEY,solvedExercises,storeSolvedExercises,exerciseProgress,practiceSuggestion,rememberedRules,exercisePanel,bindExercises};
 },
+"review.js": function(require) {
+// Revision round on the notes page: five random comprehension questions from
+// completed lessons, with the explanation for every answer. It never changes
+// the learning state, quiz results or points.
+const { lessons } = require("content.js");
+const { guidance } = require("guidance.js");
+const { esc } = require("html.js");
+function reviewQuestions(completed, count = 5, random = Math.random) {
+  const pool = lessons.filter((l) => completed.includes(l.id));
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, count);
+}
+
+function reviewPanel(state) {
+  const questions = reviewQuestions(state.completed);
+  if (!questions.length)
+    return '<section class="panel review-round" aria-labelledby="reviewTitle"><h2 class="panel-title" id="reviewTitle">Wiederholungsrunde</h2><p class="muted">Sobald du eine Einheit abgeschlossen hast, kannst du hier ihre Verständnisfrage wiederholen.</p></section>';
+  return `<section class="panel review-round" aria-labelledby="reviewTitle"><h2 class="panel-title" id="reviewTitle">Wiederholungsrunde</h2><p class="muted">${questions.length} ${questions.length === 1 ? "Frage" : "Fragen"} aus abgeschlossenen Einheiten. Die Runde zählt nicht für Punkte; neu laden mischt neue Fragen.</p><ol class="review-list">${questions
+    .map(
+      (l, q) =>
+        `<li data-review="${l.id}"><p id="reviewQ${q}"><span class="muted">Einheit ${l.id.slice(1).padStart(2, "0")}:</span> ${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="reviewQ${q}">${l.options
+          .map((o, i) => `<button type="button" class="button secondary quiz-option" data-review-answer="${i}" aria-pressed="false">${esc(o)}</button>`)
+          .join("")}</div><p class="review-result" role="status" aria-atomic="true"></p></li>`,
+    )
+    .join("")}</ol><p id="reviewScore" class="review-score" role="status"></p></section>`;
+}
+
+function bindReview(root = document) {
+  const items = [...root.querySelectorAll("[data-review]")];
+  if (!items.length) return;
+  const firstTry = new Map();
+  items.forEach((item) => {
+    const lesson = lessons.find((l) => l.id === item.dataset.review);
+    item.querySelectorAll("[data-review-answer]").forEach((button) => {
+      button.onclick = () => {
+        const answer = Number(button.dataset.reviewAnswer),
+          ok = answer === lesson.answer;
+        if (!firstTry.has(lesson.id)) firstTry.set(lesson.id, ok);
+        item.querySelectorAll("[data-review-answer]").forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+        const result = item.querySelector(".review-result");
+        result.className = `review-result ${ok ? "pass" : "fail"}`;
+        result.textContent = `${ok ? "✓ " : "Noch nicht. "}${guidance[lesson.id].quiz[answer]}`;
+        if (firstTry.size === items.length)
+          root.querySelector("#reviewScore").textContent = `Beim ersten Versuch richtig: ${[...firstTry.values()].filter(Boolean).length} von ${items.length}.`;
+      };
+    });
+  });
+}
+
+return {reviewQuestions,reviewPanel,bindReview};
+},
 "app.js": function(require) {
 const { boxModelView, bindBoxModel } = require("box-model.js");
 const { selectorView, bindSelectorHelper } = require("selector-helper.js");
 const { exercises, normalizeSolved } = require("exercises.js");
 const { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises, solvedExercises, storeSolvedExercises } = require("exercise-panel.js");
 const { esc } = require("html.js");
+const { reviewPanel, bindReview } = require("review.js");
 const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
 const { VERSION, groups, lessons, byId } = require("content.js");
@@ -4980,7 +5039,7 @@ function render() {
         (l) => lessonAccess(state, l.id).unlocked || state.notes[l.id],
       ),
       hidden = lessons.length - notable.length;
-    html = rememberedRules() + notable
+    html = rememberedRules() + reviewPanel(state) + notable
       .map(
         (l) =>
           `<section class="panel"><h2 class="panel-title"><a href="#lesson/${l.id}">Einheit ${l.id.slice(1).padStart(2, "0")}: ${esc(l.title)}</a></h2><label for="notes-${l.id}">Deine Notizen</label><textarea class="notes" id="notes-${l.id}" data-note="${l.id}" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>`,
@@ -5119,6 +5178,7 @@ function render() {
     };
   }
   if (route === "achievements") bindAchievements();
+  if (route === "notes") bindReview();
   if (route === "reference") {
     $("#glossarySearch").oninput = search;
     $("#glossaryKind").onchange = search;

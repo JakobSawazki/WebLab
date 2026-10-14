@@ -23,6 +23,7 @@ const modules = [
   "html.js",
   "exercises.js",
   "exercise-panel.js",
+  "review.js",
   "app.js",
   "icons.js",
 ];

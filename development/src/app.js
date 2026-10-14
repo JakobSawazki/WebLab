@@ -3,6 +3,7 @@ import { selectorView, bindSelectorHelper } from "./selector-helper.js";
 import { exercises, normalizeSolved } from "./exercises.js";
 import { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises, solvedExercises, storeSolvedExercises } from "./exercise-panel.js";
 import { esc } from "./html.js";
+import { reviewPanel, bindReview } from "./review.js";
 import { debugging } from "./debugging.js";
 import { decorateIcons, icon } from "./icons.js";
 import { VERSION, groups, lessons, byId } from "./content.js";
@@ -743,7 +744,7 @@ function render() {
         (l) => lessonAccess(state, l.id).unlocked || state.notes[l.id],
       ),
       hidden = lessons.length - notable.length;
-    html = rememberedRules() + notable
+    html = rememberedRules() + reviewPanel(state) + notable
       .map(
         (l) =>
           `<section class="panel"><h2 class="panel-title"><a href="#lesson/${l.id}">Einheit ${l.id.slice(1).padStart(2, "0")}: ${esc(l.title)}</a></h2><label for="notes-${l.id}">Deine Notizen</label><textarea class="notes" id="notes-${l.id}" data-note="${l.id}" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>`,
@@ -882,6 +883,7 @@ function render() {
     };
   }
   if (route === "achievements") bindAchievements();
+  if (route === "notes") bindReview();
   if (route === "reference") {
     $("#glossarySearch").oninput = search;
     $("#glossaryKind").onchange = search;

@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.29.0";
+const VERSION = "1.30.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -4060,7 +4060,7 @@ function updateLessonMenu() {
           const number = l.id.slice(1).padStart(2, "0"),
             access = lessonAccess(state, l.id),
             done = state.completed.includes(l.id),
-            current = location.hash === "#lesson/" + l.id,
+            current = location.hash.split("/")[1] === l.id && location.hash.startsWith("#lesson/"),
             status = !access.unlocked
               ? "is-locked"
               : done
@@ -4214,7 +4214,7 @@ function overview() {
     lessons.find((l) => !state.completed.includes(l.id)) || lessons[0];
   return `<section class="hero"><div class="hero-copy"><p class="eyebrow">BPE2 · Deine eigene Webseite beginnt hier</p><h2>Aus deinen Ideen<br>wird eine Webseite.</h2><p>Lerne HTML und CSS Schritt für Schritt. Probiere deinen Code direkt aus und entwickle am Ende eine eigene statische Webseite.</p><div class="actions"><a class="button" href="#lesson/${next.id}">${state.completed.length ? "Weiterlernen" : "Jetzt starten"} </a><a class="button secondary" href="#lab">Freies Labor</a></div></div><div class="hero-art"><span>&lt;idee&gt; → &lt;webseite&gt;</span></div></section>
  <div class="stats"><div class="stat"><strong>${state.completed.length} / ${lessons.length}</strong><small>Lerneinheiten abgeschlossen</small></div><div class="stat"><strong>${xp(state)}</strong><small>XP gesammelt</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD lokal erfasst</small></div><div class="stat"><strong>Dein Projekt</strong><small>Eine eigene statische Webseite</small></div></div>
- ${resumePanel()}${phaseOverview()}`;
+ ${resumePanel()}${practiceSuggestion()}${phaseOverview()}`;
 }
 function phaseOverview() {
   const descriptions = [
@@ -4309,6 +4309,17 @@ function solvedExercises() {
 function exerciseProgress(lessonId) {
   const solved = solvedExercises();
   return exercises[lessonId].filter((_, i) => solved.has(exerciseId(lessonId, i))).length;
+}
+// Home card: the next unsolved exercise of an unlocked lesson, otherwise a
+// random solved one to repeat. Links to #lesson/<id>/<number>.
+function practiceSuggestion() {
+  const solved = solvedExercises(),
+    open = lessons.filter((l) => lessonAccess(state, l.id).unlocked && exercises[l.id]),
+    all = open.flatMap((l) => exercises[l.id].map((e, i) => ({ l, e, i, done: solved.has(exerciseId(l.id, i)) })));
+  if (!all.length) return "";
+  const next = all.find((x) => !x.done),
+    pick = next || all[Math.floor(Math.random() * all.length)];
+  return `<section class="panel practice-suggestion"><p class="eyebrow">Kurz üben · ${next ? "nächste offene Übung" : "zur Wiederholung"}</p><h2>${esc(pick.e.title)}</h2><p>Einheit ${pick.l.id.slice(1).padStart(2, "0")} · ${exerciseTypes[pick.e.type]} · ${esc(pick.e.task)}</p><a class="button secondary" href="#lesson/${pick.l.id}/${pick.i + 1}">Übung öffnen</a></section>`;
 }
 // The rules of all solved exercises, as a short list to revise from.
 function rememberedRules() {
@@ -4746,6 +4757,7 @@ function search() {
       .join("") || "<p>Kein passender Eintrag gefunden.</p>";
 }
 function render() {
+  let focusedTarget = false;
   clearTimeout(timer);
   const route = location.hash.slice(1) || "home",
     requestedLesson = route.startsWith("lesson/")
@@ -4821,6 +4833,14 @@ function render() {
     bindBoxModel();
     bindSelectorHelper();
     bindExercises(l);
+    // #lesson/<id>/<n> opens exercise n directly (from the home suggestion).
+    const target = document.querySelector(`.exercise[data-exercise="${Number(route.split("/")[2]) - 1}"]`);
+    if (target) {
+      target.open = true;
+      target.scrollIntoView({ block: "start" });
+      target.querySelector("textarea").focus({ preventScroll: true });
+      focusedTarget = true;
+    }
     document.querySelectorAll("[data-lesson-anchor]").forEach(
       (link) =>
         (link.onclick = (e) => {
@@ -4938,6 +4958,7 @@ function render() {
         save();
       }),
   );
+  return focusedTarget;
 }
 const profilePanel = bindProfilePanel({
   getState: () => state,
@@ -5055,7 +5076,8 @@ $("#confirmImport").onclick = () => {
   if (stored) toast("Lernstand übernommen.");
 };
 window.addEventListener("hashchange", () => {
-  render();
+  // render() returns true when it already placed focus on a target.
+  if (render()) return;
   $("#mainContent").focus();
   window.scrollTo(0, 0);
 });

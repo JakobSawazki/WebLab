@@ -1935,3 +1935,9 @@ dialog::backdrop {
 .remembered-rules li + li {
   margin-top: 0.4rem;
 }
+.practice-suggestion h2 {
+  margin-bottom: 0.4rem;
+}
+.practice-suggestion p:not(.eyebrow) {
+  color: var(--muted);
+}

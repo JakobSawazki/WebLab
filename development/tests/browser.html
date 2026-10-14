@@ -742,6 +742,17 @@
         localStorage.getItem(STORAGE_KEY) === selectorSaved,
       "Selektorhilfe: ungueltiger Selektor wird erklaert, Lernstand bleibt unveraendert",
     );
+    // Direct link from the home suggestion: #lesson/<id>/<exercise number>.
+    boxWin.location.hash = "#lesson/l3/2";
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    const linked = boxDoc.querySelector('.exercise[data-exercise="1"]');
+    assert(
+      linked?.open &&
+        boxDoc.activeElement === linked.querySelector("textarea") &&
+        boxDoc.querySelector("#completeButton") &&
+        boxDoc.querySelector("#lessonMenuButton"),
+      "Uebungslink oeffnet die Uebung mit Fokus im Editor und laesst die Einheit bedienbar",
+    );
     // Keep only the teaching model visible on explicit local visual-review runs.
     if (location.hash === "#box-preview") {
       boxFrame.style.width = "1200px";

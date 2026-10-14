@@ -19,6 +19,7 @@ const modules = [
   "journey.js",
   "debugging.js",
   "box-model.js",
+  "selector-helper.js",
   "app.js",
   "icons.js",
 ];

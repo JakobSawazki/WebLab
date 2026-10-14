@@ -1804,3 +1804,55 @@ dialog::backdrop {
   min-height: 24px;
   font: inherit;
 }
+/* Selector helper in lesson 10, same frame as the box-model helper. */
+.selector-helper {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.selector-helper summary {
+  color: var(--brand);
+  font-weight: 650;
+  cursor: pointer;
+}
+.selector-helper input {
+  width: 100%;
+  font-family: var(--mono);
+}
+.selector-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.75rem 0;
+}
+.selector-presets .button {
+  font-family: var(--mono);
+  font-weight: 500;
+}
+.selector-sample {
+  margin: 0;
+  padding: 0.6rem 0 0.6rem 2.6rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  font-size: 0.85rem;
+}
+.selector-sample li {
+  padding: 0.1rem 0.5rem;
+  border-left: 3px solid transparent;
+  color: var(--muted);
+}
+.selector-sample li code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.selector-sample li.is-match {
+  color: var(--text);
+  border-left-color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 16%, transparent);
+}
+.selector-sample li.is-match::after {
+  content: "  ← getroffen";
+  color: var(--brand);
+  font-size: 0.75rem;
+}

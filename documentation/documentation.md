@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.22.1** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.23.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.22.1 |
+| Bereich | Version 1.23.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -186,7 +186,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.22.1):** 31 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.23.0):** 32 Node-Tests in zwölf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Selektorhilfe, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -203,7 +203,7 @@ Offene Erweiterungen, nach Priorität:
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
 2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
-4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Noch offen sind vertiefende Korrekturaufgaben, eine interaktive Selektorhilfe, gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
+4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10. Noch offen sind vertiefende Korrekturaufgaben, gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser und optionale Offline-Kopie. Browserprüfungen laufen seit 1.22.1 in CI.
 7. **ThommyWeb:** Browserzugriff ist möglich, K2/K6 geprüft. Übrige Kapitel gezielt prüfen und geeignete Ergänzungen eigenständig ausarbeiten; keine pauschale Inhaltsübernahme.
@@ -238,6 +238,16 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.23.0 (Paket 15: Interaktive Selektorhilfe)
+
+Umsetzung des offenen Punkts „interaktive Selektorhilfe“ aus Abschnitt 7, nach dem Muster der Box-Modell-Hilfe aus 1.9.0:
+
+- **Einheit 10, aufklappbar „Selektoren ausprobieren: Was trifft mein Selektor?“** (Abschnitt Verstehen): Eingabefeld und acht Beispielselektoren (`p`, `.hinweis`, `#start`, `p.hinweis`, `li.hinweis`, `ul li`, `.hinweis.wichtig`, `h1, li`). Ein fester achtzeiliger Beispielcode markiert alle getroffenen Zeilen („← getroffen“); eine vorlesbare Statuszeile nennt Anzahl, Zeilennummern und die Spezifität je Selektor als (IDs, Klassen, Elementnamen). Ungültige Selektoren wie „. hinweis“ werden mit `aria-invalid` und konkretem Hinweis abgefangen. Auftrag: `.hinweis` und `p.hinweis` vergleichen.
+- **Sicherheit und Lernstand:** Die Auswertung läuft in einem unsichtbaren, inerten Dokument (`document.implementation.createHTMLDocument`); nichts davon wird dargestellt oder ausgeführt. Kein Zugriff auf Entwürfe, Punkte oder Freischaltungen, nichts wird gespeichert.
+- **Neues Modul `development/src/selector-helper.js`** mit `specificity()` für die in Einheit 10 gelehrten einfachen Selektoren; funktionale Pseudoklassen wie `:not()` werden bewusst nicht berechnet und als „nicht berechnet“ angezeigt. Neuer Node-Test `selector-helper.test.mjs` mit elf Fällen.
+
+Prüfung: 32 Node-Tests und Build bestanden; `npm run qa` 165/165. Treffer, Zeilen, Spezifität und ungültige Eingabe im Browser geprüft; Darstellung bei 1300 Pixeln (Dark) und 390 Pixeln (Light) per Edge-Screenshot geprüft, kein Überlauf. Die Prüfseite selbst prüft die Hilfe noch nicht.
+
 ### 14.10.2026 – Claude – Version 1.22.1 (Paket 14: Wartbarkeit und automatische Browserprüfungen)
 
 - **Vertiefungen ausgelagert:** Die 16 Vertiefungen stehen jetzt in `development/src/extensions.js` statt angehängt am Ende von `content.js` (552 statt 793 Zeilen). `content.js` ordnet sie per `extensions[l.id]` zu. Vorher/nachher per JSON-Vergleich aller Einheiten bytegleich bestätigt. Build-Reihenfolge und die Positivliste des lokalen Prüfservers (`serve.mjs`) um das neue Modul ergänzt.
@@ -245,7 +255,7 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 - **CI:** Der Pages-Workflow führt nach Tests und Build jetzt `npm run qa` mit dem vorinstallierten Chrome des Runners aus. Schlägt eine Browserprüfung fehl, wird nicht veröffentlicht. Damit ist der offene Punkt „Browserprüfungen in CI“ aus Abschnitt 7 umgesetzt.
 - **Prüfung robuster:** Die Mobilprüfung der Rückmeldung (seit 1.18.1) setzte voraus, dass Einheit 01 im Browserspeicher noch offen ist; ein abgebrochener Prüflauf hatte das widerlegt. Sie prüft jetzt unabhängig vom Lernstand: ein Tipp je offenem Kriterium, Checkliste nur bei nicht abgeschlossener Einheit.
 
-Prüfung: 31 Node-Tests und Build bestanden; `npm run qa` 165/165, Temp-Profil anschließend entfernt.
+Prüfung: 31 Node-Tests und Build bestanden; `npm run qa` 165/165, Temp-Profil anschließend entfernt. Veröffentlicht mit Commit `f1e3c4e`; [Pages-Lauf 38626310596](https://github.com/JakobSawazki/WebLab/actions/runs/38626310596) erfolgreich, dort erstmals mit Browserprüfungen in Chrome unter Linux (165/165); Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.22.0 (Paket 13: Vertiefungen in allen Einheiten)
 

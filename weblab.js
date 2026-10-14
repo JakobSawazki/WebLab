@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.22.1";
+const VERSION = "1.23.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -3368,8 +3368,110 @@ function bindBoxModel(root = document) {
 
 return {boxDimensions,boxModelView,bindBoxModel};
 },
+"selector-helper.js": function(require) {
+// Interactive selector helper for lesson 10. It works on its own sample
+// document and never reads or writes student drafts.
+const sample = [
+  '<h1 id="start">Schulgarten</h1>',
+  "<p>Wir pflanzen gemeinsam.</p>",
+  '<p class="hinweis">Bitte Handschuhe mitbringen.</p>',
+  "<ul>",
+  "  <li>Erde</li>",
+  '  <li class="hinweis">Gießkanne nicht vergessen</li>',
+  "</ul>",
+  '<p class="hinweis wichtig">Treffen am Mittwoch.</p>',
+];
+const presets = ["p", ".hinweis", "#start", "p.hinweis", "li.hinweis", "ul li", ".hinweis.wichtig", "h1, li"];
+
+// Specificity as (IDs, classes/attributes/pseudo-classes, types) for the
+// simple selectors taught in lesson 10. Functional pseudo-classes such as
+// :not() or :is() are deliberately not modelled and return null.
+function specificity(selector) {
+  const text = selector.trim();
+  if (!text || /:(not|is|where|has)\(|::?[\w-]+\(/i.test(text)) return null;
+  const strip = text.replace(/\[[^\]]*\]/g, "[]");
+  const ids = (strip.match(/#[\w-]+/g) || []).length;
+  const classes =
+    (strip.match(/\.[\w-]+/g) || []).length +
+    (strip.match(/\[\]/g) || []).length +
+    (strip.match(/(^|[^:]):(?!:)[\w-]+/g) || []).length;
+  const types =
+    (strip.match(/(^|[\s>+~])[a-z][\w-]*/gi) || []).length +
+    (strip.match(/::[\w-]+/g) || []).length;
+  return [ids, classes, types];
+}
+
+function selectorView() {
+  return `<details class="selector-helper"><summary>Selektoren ausprobieren: Was trifft mein Selektor?</summary>
+    <p>Gib einen CSS-Selektor ein oder wähle ein Beispiel. Getroffene Elemente im Beispielcode werden markiert. Die Spezifität zeigt, wie stark der Selektor bei konkurrierenden Regeln wiegt: IDs, dann Klassen, dann Elementnamen.</p>
+    <label for="selectorInput">Dein Selektor</label>
+    <input id="selectorInput" value=".hinweis" autocomplete="off" spellcheck="false" autocapitalize="off">
+    <div class="selector-presets" role="group" aria-label="Beispielselektoren">${presets.map((p) => `<button type="button" class="button secondary" data-selector="${p}">${p}</button>`).join("")}</div>
+    <ol class="selector-sample" aria-label="Beispielcode">${sample.map((line, i) => `<li data-line="${i}"><code></code></li>`).join("")}</ol>
+    <p id="selectorResult" role="status" aria-atomic="true"></p>
+    <p><strong>Dein Versuch:</strong> Vergleiche <code>.hinweis</code> mit <code>p.hinweis</code>. Welche Zeile fällt weg und warum? Welcher Selektor gewinnt, wenn beide eine Farbe setzen?</p>
+  </details>`;
+}
+
+function bindSelectorHelper(root = document) {
+  const input = root.querySelector("#selectorInput");
+  if (!input) return;
+  // An inert document: parsed markup is never rendered or executed.
+  const doc = document.implementation.createHTMLDocument("");
+  doc.body.innerHTML = sample.join("\n");
+  const elements = [...doc.body.querySelectorAll("*")];
+  const lineOf = (el) => {
+    const index = elements.indexOf(el);
+    return [0, 1, 2, 3, 4, 5, 7][index];
+  };
+  root.querySelectorAll(".selector-sample li").forEach((li) => {
+    li.querySelector("code").textContent = sample[Number(li.dataset.line)];
+  });
+  const update = () => {
+    const selector = input.value.trim();
+    const lines = root.querySelectorAll(".selector-sample li");
+    lines.forEach((li) => li.classList.remove("is-match"));
+    const result = root.querySelector("#selectorResult");
+    if (!selector) {
+      result.textContent = "Gib einen Selektor ein, zum Beispiel p oder .hinweis.";
+      return;
+    }
+    let matches;
+    try {
+      matches = [...doc.body.querySelectorAll(selector)];
+      input.removeAttribute("aria-invalid");
+    } catch {
+      input.setAttribute("aria-invalid", "true");
+      result.textContent =
+        "Dieser Selektor ist ungültig. Prüfe Punkt, Raute und Leerzeichen, zum Beispiel .hinweis statt . hinweis.";
+      return;
+    }
+    const matched = new Set(matches.map(lineOf));
+    lines.forEach((li) => li.classList.toggle("is-match", matched.has(Number(li.dataset.line))));
+    const parts = selector.split(",").map((s) => s.trim()).filter(Boolean);
+    const weights = parts
+      .map((part) => {
+        const s = specificity(part);
+        return s ? `${part} → (${s.join(", ")})` : `${part} → nicht berechnet`;
+      })
+      .join(" · ");
+    result.textContent = `${matches.length} ${matches.length === 1 ? "Element" : "Elemente"} getroffen${matched.size ? ` (Zeile ${[...matched].sort((a, b) => a - b).map((n) => n + 1).join(", ")})` : ""}. Spezifität: ${weights}.`;
+  };
+  input.addEventListener("input", update);
+  root.querySelectorAll("[data-selector]").forEach((button) =>
+    button.addEventListener("click", () => {
+      input.value = button.dataset.selector;
+      update();
+    }),
+  );
+  update();
+}
+
+return {specificity,selectorView,bindSelectorHelper};
+},
 "app.js": function(require) {
 const { boxModelView, bindBoxModel } = require("box-model.js");
+const { selectorView, bindSelectorHelper } = require("selector-helper.js");
 const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
 const { VERSION, groups, lessons, byId } = require("content.js");
@@ -3719,7 +3821,7 @@ function debugChallenge(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -4152,6 +4254,7 @@ function render() {
   if ($("#htmlEditor")) bindStudio(l || byId("l1"));
   if (l) {
     bindBoxModel();
+    bindSelectorHelper();
     document.querySelectorAll("[data-lesson-anchor]").forEach(
       (link) =>
         (link.onclick = (e) => {

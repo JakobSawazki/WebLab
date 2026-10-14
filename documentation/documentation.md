@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.12.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.13.0** · Status: **Profil und NAGOLD-Tabelle lokal geprüft; Veröffentlichung folgt**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,15 +16,15 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.11.0 |
+| Bereich | Version 1.13.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
 | Roter Faden | Nächster offener Lernschritt, 16 Schritte mit aktueller Position, Vorwissen, drei konkrete Arbeitsschritte und Beobachtungsauftrag; eigene Webseite wächst durch Kopien des vorherigen Entwurfs |
 | Orientierung | Vier Etappen mit Fortschritt auf der Startseite; direkte Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern in den Einheiten |
-| Schülerprofil | Lokales Kürzel `MUS.MAX` und Klasse; kein Passwort und kein Serverkonto |
+| Schülerprofil | Kürzel/Klasse, XP-Level und Fortschrittsbalken, direkte NAGOLD-Tabelle; kein Serverkonto |
 | XP | 100 je abgeschlossenem Auftrag, einmalig; frühere K1-Missions-XP bleiben zusätzlich erhalten |
-| NAGOLD | 5 je abgeschlossener Einheit; datierte automatische Einträge und manuelle Einträge von −10 bis +5 ohne 0 |
+| NAGOLD | Zunächst 5 je Abschluss; bearbeitbare Tabelle mit Datum/Uhrzeit, Anlass, −10 bis +5 ohne 0, Ergänzen und Löschen |
 | Abschluss | Technische Kriterien erfüllt, Quiz richtig, alle Selbstkontrollen bestätigt, Profil vollständig |
 | Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich |
 | Labor | HTML-/CSS-Dateireiter, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
@@ -112,7 +112,7 @@ WebLab/
   development/
     src/                     gepflegte Quellmodule, Inhalte und SVG-Icons
     tools/                   Bundler, Build und lokaler Browserprüfserver
-    tests/                   21 Node-Tests und Browserprüfseite
+    tests/                   25 Node-Tests und Browserprüfseite
   documentation/documentation.md
   documentation/WebLab-1.11.0.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
@@ -232,6 +232,16 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 14.10.2026 – Codex – Version 1.13.0
+
+Auf Jakobs Wunsch den Profilablauf von `D:\Google Drive\Codex\WorkbenchLab` übernommen und auf WebLab angepasst: Kürzel/Klasse nebeneinander, Infofenster zur bestehenden WebLab-Kürzelkonvention, Level/XP-Anzeige mit Fortschrittsbalken und nächstem Level, abgeschlossene Einheiten und NAGOLD-Schaltfläche. Die sechs rein motivierenden WebLab-Level starten bei 0/100/300/600/1000/1600 XP; weder Punkte noch Freischaltungen werden dadurch verändert.
+
+NAGOLD öffnet eine separate Tabelle mit Datum, Uhrzeit, Wofür, Punkten, Bearbeiten-/Löschen-Schaltern, Plus-Schalter und Gesamtsumme. Anlass als freier Text mit nativen Auswahlvorschlägen, doppelklickbare Bearbeitung wie im Vorbild. Ganze Punkte von −10 bis +5 ohne 0. Alle Änderungen zunächst nur als Entwurf; erst „NAGOLD speichern“ schreibt den Lernstand, Schließen/Escape verwirft den Entwurf. Automatische Abschlusszeilen lassen sich wie im Vorbild bearbeiten oder entfernen, ohne den Abschluss oder seine XP rückgängig zu machen. Neue Einheiten bringen weiterhin einmalig 5 NAGOLD. Keine Serverkonten oder Lehrkraftauthentifizierung hinzugefügt. Keine Änderungen an WorkbenchLab.
+
+Datenkompatibilität: Speicher/JSON-Format bleiben bei Version 3. Bestehende `nagoldEntries`, Profile, Entwürfe und Notizen bleiben erhalten. Optionale `nagoldOverrides` speichern nur Änderungen/Löschungen der automatisch abgeleiteten Abschlusszeilen; `null` bedeutet entfernt. Import normalisiert diese Zuordnungen ausschließlich für bekannte abgeschlossene Einheiten, begrenzt Punkte und Anlass und ignoriert ungültige Überschreibungen. Unbekannte historische Abschlussdaten werden als „Nicht erfasst“ angezeigt, keine Zeitstempel erfunden. Unveränderte Zeitstempel bleiben einschließlich Sekunden/Millisekunden erhalten. Ein erneuter Import in ältere WebLab-Versionen kennt die Überschreibungen nicht; Bearbeitungen daher nur mit 1.13.0 oder neuer weiterführen. NAGOLD-Übersicht, CSV und Profil verwenden denselben Stand. Quellmodule `nagold.js` und `profile.js`, weiterhin klassischer Offline-Build ohne neue Abhängigkeit.
+
+Prüfung: 25 Node-Tests und Build erfolgreich, inklusive vier neuer Tests für Altbestand, Zeitstempelerhalt, Bearbeiten/Löschen ohne XP-/Freischaltänderung, Sicherungs-Roundtrip und ungültige Eingaben. 161/161 Browserprüfungen bestanden, einschließlich neun neuer Prüfungen für Profil-/Tabellenablauf. Zusätzlicher echter Edge-Ablauf mit alten Einträgen, neuer Zeile, Bearbeiten/Löschen, Fehler bei 0, Abbrechen, erneutes Öffnen/Neuladen und Erhalt von Code/Notizen erfolgreich. Profil und Tabelle bei 1440/390 Pixeln in Dark/Light visuell geprüft; keine horizontalen Überläufe. Veröffentlichungsnachweis folgt.
 
 ### 14.10.2026 – Codex – Version 1.12.0
 

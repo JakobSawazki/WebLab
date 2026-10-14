@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.12.0";
+const VERSION = "1.13.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -578,6 +578,7 @@ return {VERSION,groups,lessons,byId};
 },
 "state.js": function(require) {
 const { lessons, byId } = require("content.js");
+const { nagoldRows } = require("nagold.js");
 const STORAGE_KEY = "weblab-state-v3";
 const blank = () => ({
   profile: { name: "", className: "" },
@@ -588,6 +589,7 @@ const blank = () => ({
   quiz: {},
   notes: {},
   nagoldEntries: [],
+  nagoldOverrides: {},
   legacy: null,
 });
 const record = (x) => x && typeof x === "object" && !Array.isArray(x);
@@ -650,6 +652,17 @@ function normalize(raw) {
         },
       ];
     });
+  if (record(raw.nagoldOverrides)) {
+    for (const id of s.completed) {
+      const entry = raw.nagoldOverrides[id];
+      if (entry === null) s.nagoldOverrides[id] = null;
+      else if (record(entry) && Number.isInteger(entry.points) && entry.points !== 0 && entry.points >= -10 && entry.points <= 5 &&
+        typeof entry.purpose === "string" && entry.purpose.trim() &&
+        (entry.at === "" || (typeof entry.at === "string" && Number.isFinite(Date.parse(entry.at))))) {
+        s.nagoldOverrides[id] = { purpose: clip(entry.purpose.trim(), 160), points: entry.points, at: entry.at ? new Date(entry.at).toISOString() : "" };
+      }
+    }
+  }
   if (record(raw.legacy))
     s.legacy = {
       profile: clip(raw.legacy.profile, 7),
@@ -704,7 +717,7 @@ const xp = (s) =>
     0,
   );
 const nagold = (s) =>
-  s.completed.length * 5 + s.nagoldEntries.reduce((n, e) => n + e.points, 0);
+  nagoldRows(s).reduce((n, e) => n + e.points, 0);
 // Only the uninterrupted learning chain earns unlock XP. Legacy/bonus points
 // and previously completed lessons after a gap must never skip that gap.
 function lessonAccess(s, id) {
@@ -744,6 +757,169 @@ function load(storage) {
 }
 
 return {STORAGE_KEY,blank,validProfile,normalize,migrateOld,importBackup,exportBackup,xp,nagold,lessonAccess,complete,load};
+},
+"nagold.js": function(require) {
+const { byId } = require("content.js");
+// Completion XP and access stay independent of this editable points ledger.
+function nagoldRows(state) {
+  const automatic = state.completed.flatMap((id) => {
+    const override = state.nagoldOverrides?.[id];
+    if (override === null) return [];
+    return [{
+      ...(override || { purpose: byId(id).title, points: 5, at: state.completedAt[id] || "" }),
+      lessonId: id,
+    }];
+  });
+  return [...automatic, ...state.nagoldEntries.map((row) => ({ ...row }))];
+}
+
+function localStamp(at) {
+  if (!at) return { date: "", time: "" };
+  const d = new Date(at), pad = (n) => String(n).padStart(2, "0");
+  return { date: `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`, time: `${pad(d.getHours())}:${pad(d.getMinutes())}` };
+}
+
+function ledgerDraft(state) {
+  return nagoldRows(state).map((row) => ({ ...row, ...localStamp(row.at), originalAt: row.at }));
+}
+
+function ledgerChanges(state, draft) {
+  if (!Array.isArray(draft) || draft.length > 1016)
+    throw new Error("Maximal 1000 eigene Einträge und 16 Einheiten.");
+  const nagoldEntries = [], nagoldOverrides = Object.fromEntries(state.completed.map((id) => [id, null]));
+  const seen = new Set();
+  for (const [index, row] of draft.entries()) {
+    const error = (message) => { throw new Error(`Zeile ${index + 1}: ${message}`); };
+    if (typeof row.purpose !== "string" || !row.purpose.trim() || row.purpose.trim().length > 160)
+      error("Bitte einen Anlass mit höchstens 160 Zeichen angeben.");
+    if (!Number.isInteger(row.points) || row.points === 0 || row.points < -10 || row.points > 5)
+      error("Bitte ganze NAGOLD von −10 bis +5 eintragen; 0 ist kein Eintrag.");
+    if (row.lessonId && (!state.completed.includes(row.lessonId) || seen.has(row.lessonId)))
+      error("Die Zuordnung zur abgeschlossenen Einheit ist ungültig.");
+    let at;
+    const unchanged = row.originalAt && Number.isFinite(Date.parse(row.originalAt)) &&
+      row.date === localStamp(row.originalAt).date && row.time === localStamp(row.originalAt).time;
+    if (unchanged) at = new Date(row.originalAt).toISOString();
+    else if (row.lessonId && !state.completedAt[row.lessonId] && row.originalAt === "" && row.date === "" && row.time === "") at = "";
+    else {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(row.date) || !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(row.time))
+        error("Bitte ein gültiges Datum und eine Uhrzeit angeben.");
+      const parsed = new Date(`${row.date}T${row.time}:00`);
+      if (!Number.isFinite(parsed.getTime()) || localStamp(parsed.toISOString()).date !== row.date || localStamp(parsed.toISOString()).time !== row.time)
+        error("Datum oder Uhrzeit ist ungültig.");
+      at = parsed.toISOString();
+    }
+    const entry = { purpose: row.purpose.trim(), points: row.points, at };
+    if (row.lessonId) { seen.add(row.lessonId); nagoldOverrides[row.lessonId] = entry; }
+    else nagoldEntries.push(entry);
+  }
+  if (nagoldEntries.length > 1000) throw new Error("Maximal 1000 eigene Einträge.");
+  return { nagoldEntries, nagoldOverrides };
+}
+
+return {nagoldRows,localStamp,ledgerDraft,ledgerChanges};
+},
+"profile.js": function(require) {
+const { lessons } = require("content.js");
+const { xp, nagold } = require("state.js");
+const { ledgerDraft, ledgerChanges, localStamp } = require("nagold.js");
+const { icon } = require("icons.js");
+const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const levels = [
+  { min: 0, title: "Webstarter" }, { min: 100, title: "Tag-Entdecker" },
+  { min: 300, title: "Seitenbauer" }, { min: 600, title: "HTML-Gestalter" },
+  { min: 1000, title: "CSS-Gestalter" }, { min: 1600, title: "Web-Architekt" },
+];
+
+function bindProfilePanel({ getState, persistLedger, notify }) {
+  const $ = (s) => document.querySelector(s), dialog = $("#nagoldDialog");
+  let draft = [], editing = new Set();
+  const refresh = () => {
+    const state = getState(), total = xp(state), index = levels.findLastIndex((level) => total >= level.min), level = levels[index], next = levels[index + 1];
+    $("#profileLevel").textContent = `Level ${index + 1} · ${level.title}`;
+    $("#profileXP").textContent = `${total} XP`;
+    $("#profileProgressLabel").textContent = next ? `${total} / ${next.min} XP` : "Höchstes Level erreicht";
+    $("#profileProgress").max = next ? next.min - level.min : 1;
+    $("#profileProgress").value = next ? total - level.min : 1;
+    $("#profileNextLevel").textContent = next ? `Noch ${next.min - total} XP bis Level ${index + 2} · ${next.title}` : "Stark! Du hast alle Level erreicht.";
+    $("#profileCompleted").textContent = `${state.completed.length} von ${lessons.length} Lerneinheiten abgeschlossen`;
+    $("#profileNagold").innerHTML = `<strong>${nagold(state)} NAGOLD</strong><span>${icon("note")}</span>`;
+    $("#profileNagold").setAttribute("aria-label", `${nagold(state)} NAGOLD: Tabelle öffnen`);
+  };
+  const sum = () => {
+    const total = draft.reduce((n, row) => n + (Number.isInteger(row.points) ? row.points : 0), 0);
+    $("#nagoldSum").textContent = `${total} NAGOLD gesamt`;
+  };
+  const renderRows = () => {
+    $("#nagoldRows").innerHTML = draft.map((row, index) => {
+      const edit = editing.has(index), label = `Zeile ${index + 1}`;
+      const date = row.date ? row.date.split("-").reverse().join(".") : "Nicht erfasst";
+      return `<tr data-ledger-row="${index}">
+        <td data-label="Datum">${edit ? `<input type="date" data-field="date" value="${esc(row.date)}" aria-label="Datum, ${label}">` : esc(date)}</td>
+        <td data-label="Uhrzeit">${edit ? `<input type="time" step="60" data-field="time" value="${esc(row.time)}" aria-label="Uhrzeit, ${label}">` : esc(row.time || "Nicht erfasst")}</td>
+        <td data-label="Wofür">${edit ? `<input data-field="purpose" list="nagoldPresets" value="${esc(row.purpose)}" maxlength="160" placeholder="Auswählen oder eintippen" aria-label="Wofür, ${label}">` : esc(row.purpose)}${row.lessonId ? '<small class="muted nagold-origin">Lerneinheit</small>' : ""}</td>
+        <td data-label="NAGOLD">${edit ? `<input type="number" data-field="points" min="-10" max="5" step="1" value="${Number.isFinite(row.points) ? row.points : ""}" aria-label="NAGOLD, ${label}">` : row.points}</td>
+        <td data-label="Aktionen" class="nagold-row-actions"><button type="button" class="icon-button" data-edit="${index}" aria-label="${label} bearbeiten" title="Eintrag bearbeiten" ${edit ? "disabled" : ""}>${icon("edit")}</button><button type="button" class="icon-button" data-remove="${index}" aria-label="${label} löschen" title="Eintrag löschen">${icon("minus")}</button></td>
+      </tr>`;
+    }).join("");
+    $("#nagoldAdd").disabled = draft.filter((row) => !row.lessonId).length >= 1000;
+    sum();
+  };
+  const add = () => {
+    if (draft.filter((row) => !row.lessonId).length >= 1000) return;
+    const at = new Date().toISOString();
+    draft.push({ ...localStamp(at), purpose: "", points: 0, originalAt: at });
+    editing.add(draft.length - 1); renderRows();
+    $("#nagoldRows tr:last-child [data-field=purpose]").focus();
+  };
+  const open = () => {
+    draft = ledgerDraft(getState()); editing = new Set();
+    $("#nagoldError").textContent = ""; renderRows(); dialog.showModal();
+    if (!draft.length) add();
+  };
+  $("#profileNagold").onclick = open;
+  $("#nagoldAdd").onclick = add;
+  $("#nagoldPresets").innerHTML = ["Mitarbeit", "Zusatzaufgabe", "Präsentation", "Projektarbeit", "Lernprodukt", ...lessons.map((lesson) => lesson.title)].map((value) => `<option value="${esc(value)}"></option>`).join("");
+  $("#nagoldRows").addEventListener("input", (event) => {
+    const field = event.target.closest("[data-field]"); if (!field) return;
+    const row = draft[Number(field.closest("[data-ledger-row]").dataset.ledgerRow)];
+    row[field.dataset.field] = field.dataset.field === "points" ? field.valueAsNumber : field.value;
+    $("#nagoldError").textContent = ""; sum();
+  });
+  const editRow = (index) => { editing.add(index); renderRows(); $(`#nagoldRows [data-ledger-row="${index}"] [data-field=purpose]`).focus(); };
+  $("#nagoldRows").addEventListener("dblclick", (event) => {
+    if (!event.target.closest("button,input")) {
+      const row = event.target.closest("[data-ledger-row]"); if (row) editRow(Number(row.dataset.ledgerRow));
+    }
+  });
+  $("#nagoldRows").addEventListener("click", (event) => {
+    const edit = event.target.closest("[data-edit]"), remove = event.target.closest("[data-remove]");
+    if (edit) editRow(Number(edit.dataset.edit));
+    if (remove) {
+      const index = Number(remove.dataset.remove); draft.splice(index, 1);
+      editing = new Set([...editing].filter((i) => i !== index).map((i) => i > index ? i - 1 : i));
+      renderRows(); $("#nagoldAdd").focus();
+    }
+  });
+  $("#nagoldLedgerForm").onsubmit = (event) => {
+    event.preventDefault();
+    try {
+      const state = getState();
+      if (!state.profile.name || !state.profile.className.trim()) throw new Error("Bitte zuerst dein Schülerkürzel und deine Klasse im Profil speichern.");
+      const changes = ledgerChanges(state, draft);
+      if (!persistLedger(changes)) throw new Error("Speichern nicht möglich. Sichere deinen Lernstand und prüfe die Speichermeldung.");
+      refresh(); dialog.close(); notify("NAGOLD-Tabelle gespeichert.");
+    } catch (error) { $("#nagoldError").textContent = error.message; }
+  };
+  dialog.addEventListener("close", () => {
+    draft = []; editing.clear(); $("#nagoldRows").replaceChildren();
+    if ($("#profileDialog").open) $("#profileNagold").focus();
+  });
+  $("#profileInfoButton").onclick = () => $("#profileHelpDialog").showModal();
+  return { refresh, open };
+}
+
+return {bindProfilePanel};
 },
 "checks.js": function(require) {
 function checkLesson(lesson, html, css, parse) {
@@ -2357,6 +2533,8 @@ const { checkLesson, preview } = require("checks.js");
 const { zipFiles } = require("export.js");
 const { bindCodeEditor, readCodeFiles } = require("editor.js");
 const { journey, startingDraft } = require("journey.js");
+const { nagoldRows } = require("nagold.js");
+const { bindProfilePanel } = require("profile.js");
 const $ = (s) => document.querySelector(s),
   esc = (s) =>
     String(s ?? "").replace(
@@ -2889,9 +3067,11 @@ function bindStudio(l) {
   run();
 }
 function achievements() {
-  return `<p class="lead">Dein Fortschritt auf diesem Gerät. XP motivieren; NAGOLD wird mit der Lehrkraft abgeglichen. Ein abgeschlossener Auftrag zählt einmal: 100 XP und 5 NAGOLD.</p><div class="stats"><div class="stat"><strong>${xp(state)}</strong><small>XP einschließlich Altbestand</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD</small></div><div class="stat"><strong>${state.completed.length}</strong><small>Abgeschlossene Einheiten</small></div><div class="stat"><strong>${state.completed.includes("l16") ? "★" : "◇"}</strong><small>Eigenes Webprojekt</small></div></div><section class="panel"><h3>Meine NAGOLD-Tabelle</h3><div class="table-wrap"><table><thead><tr><th>Datum</th><th>Anlass</th><th>Punkte</th></tr></thead><tbody>${state.completed.map((id) => `<tr><td>${state.completedAt[id] ? esc(new Date(state.completedAt[id]).toLocaleString("de-DE")) : "Altbestand ohne Zeitangabe"}</td><td>${esc(byId(id).title)}</td><td>5</td></tr>`).join("")}${state.nagoldEntries.map((e) => `<tr><td>${esc(new Date(e.at).toLocaleString("de-DE"))}</td><td>${esc(e.purpose)}</td><td>${e.points}</td></tr>`).join("") || (!state.completed.length ? '<tr><td colspan="3">Noch keine Einträge.</td></tr>' : "")}</tbody></table></div><div class="actions"><button class="button secondary" id="csvExport">Übersicht als CSV</button></div></section><section class="panel"><h3>Eintrag nach Absprache mit der Lehrkraft</h3><p class="muted">Manuelle Einträge sind selbst erfasst. Sie ersetzen keine bestätigte Leistungsbewertung.</p><form id="nagoldForm"><label for="nagoldPurpose">Anlass</label><input id="nagoldPurpose" maxlength="160" required><label for="nagoldPoints">NAGOLD-Punkte (−10 bis +5, ohne 0)</label><input id="nagoldPoints" type="number" min="-10" max="5" step="1" value="1" required><div class="actions"><button class="button" type="submit">Eintrag dokumentieren</button></div></form></section>${state.legacy ? '<section class="panel"><h3>Übernommener Altbestand</h3><p>Deine alten K1-Missionen und ihr XP-Stand bleiben erhalten. Die neue BPE2-Einheit wird separat bearbeitet.</p></section>' : ""}`;
+  const rows = nagoldRows(state);
+  return `<p class="lead">Dein Fortschritt auf diesem Gerät. XP motivieren; NAGOLD wird mit der Lehrkraft abgeglichen. Ein abgeschlossener Auftrag zählt einmal: 100 XP und zunächst 5 NAGOLD.</p><div class="stats"><div class="stat"><strong>${xp(state)}</strong><small>XP einschließlich Altbestand</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD</small></div><div class="stat"><strong>${state.completed.length}</strong><small>Abgeschlossene Einheiten</small></div><div class="stat"><strong>${state.completed.includes("l16") ? "★" : "◇"}</strong><small>Eigenes Webprojekt</small></div></div><section class="panel"><h3>Meine NAGOLD-Tabelle</h3><div class="table-wrap"><table><thead><tr><th>Datum</th><th>Anlass</th><th>Punkte</th></tr></thead><tbody>${rows.map((e) => `<tr><td>${e.at ? esc(new Date(e.at).toLocaleString("de-DE")) : "Altbestand ohne Zeitangabe"}</td><td>${esc(e.purpose)}</td><td>${e.points}</td></tr>`).join("") || '<tr><td colspan="3">Noch keine Einträge.</td></tr>'}</tbody></table></div><div class="actions"><button class="button secondary" id="editNagoldTable">Tabelle bearbeiten</button><button class="button secondary" id="csvExport">Übersicht als CSV</button></div></section><section class="panel"><h3>Eintrag nach Absprache mit der Lehrkraft</h3><p class="muted">Manuelle Einträge sind selbst erfasst. Sie ersetzen keine bestätigte Leistungsbewertung.</p><form id="nagoldForm"><label for="nagoldPurpose">Anlass</label><input id="nagoldPurpose" maxlength="160" required><label for="nagoldPoints">NAGOLD-Punkte (−10 bis +5, ohne 0)</label><input id="nagoldPoints" type="number" min="-10" max="5" step="1" value="1" required><div class="actions"><button class="button" type="submit">Eintrag dokumentieren</button></div></form></section>${state.legacy ? '<section class="panel"><h3>Übernommener Altbestand</h3><p>Deine alten K1-Missionen und ihr XP-Stand bleiben erhalten. Die neue BPE2-Einheit wird separat bearbeitet.</p></section>' : ""}`;
 }
 function bindAchievements() {
+  $("#editNagoldTable").onclick = () => profilePanel.open();
   $("#nagoldForm").onsubmit = (e) => {
     e.preventDefault();
     const points = Number($("#nagoldPoints").value),
@@ -2921,6 +3101,7 @@ function bindAchievements() {
     render();
   };
   $("#csvExport").onclick = () => {
+    const ledger = new Map(nagoldRows(state).filter((row) => row.lessonId).map((row) => [row.lessonId, row]));
     const cell = (x) =>
       '"' +
       String(x)
@@ -2935,7 +3116,7 @@ function bindAchievements() {
         l.title,
         state.completed.includes(l.id) ? "selbst abgeschlossen" : "offen",
         state.completed.includes(l.id) ? 100 : 0,
-        state.completed.includes(l.id) ? 5 : 0,
+        ledger.get(l.id)?.points || 0,
       ]),
       ...state.nagoldEntries.map((e) => [
         state.profile.name,
@@ -3139,10 +3320,23 @@ function render() {
       }),
   );
 }
+const profilePanel = bindProfilePanel({
+  getState: () => state,
+  persistLedger: (changes) => {
+    if (preventSave) { toast(storageError); return false; }
+    const previous = { nagoldEntries: state.nagoldEntries, nagoldOverrides: state.nagoldOverrides };
+    Object.assign(state, changes);
+    if (!save()) { Object.assign(state, previous); return false; }
+    render();
+    return true;
+  },
+  notify: toast,
+});
 function openProfile() {
   $("#studentName").value = state.profile.name;
   $("#studentClass").value = state.profile.className;
   $("#profileError").textContent = "";
+  profilePanel.refresh();
   $("#profileDialog").showModal();
 }
 $("#profileButton").onclick = openProfile;
@@ -3173,6 +3367,7 @@ $("#profileForm").onsubmit = (e) => {
   state.profile = { name, className };
   save();
   stats();
+  profilePanel.refresh();
   $("#profileDialog").close();
   toast("Profil auf diesem Gerät gespeichert.");
 };
@@ -3261,6 +3456,9 @@ const paths = {
     '<rect x="2" y="3" width="20" height="18" rx="3"/><path d="M2 8h20M6 5.5h.01m3 0h.01"/>',
   arrow: '<path d="M4 12h16m-6-6 6 6-6 6"/>',
   close: '<path d="m6 6 12 12M6 18 18 6"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  minus: '<path d="M5 12h14"/>',
+  edit: '<path d="m15 4 5 5M4 20l5-1L21 7a2 2 0 0 0-5-5L4 14Z"/>',
 };
 function icon(name) {
   if (!paths[name]) throw new Error(`Unknown icon: ${name}`);

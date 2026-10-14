@@ -646,6 +646,52 @@
       boxFrame.style.height = "900px";
     } else boxFrame.remove();
 
+    const profileState = blank();
+    profileState.profile = { name: "MUS.MAX", className: "TEST" };
+    profileState.completed = ["l1"];
+    profileState.completedAt.l1 = "2026-10-14T08:10:32.456Z";
+    profileState.notes.l1 = "Bleibt erhalten";
+    profileState.nagoldEntries = [{ purpose: "Mitarbeit", points: 3, at: "2026-10-13T10:35:21.123Z" }];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(profileState));
+    localStorage.setItem("weblab-menu-v1", "expanded");
+    const profileFrame = document.createElement("iframe");
+    profileFrame.style.cssText = "width:1200px;height:900px;border:0;display:block";
+    profileFrame.title = "Profil und NAGOLD";
+    const profileLoaded = new Promise(resolve => profileFrame.onload = resolve);
+    profileFrame.src = "/?profile-check"; document.body.append(profileFrame); await profileLoaded;
+    const pd = profileFrame.contentDocument, pw = profileFrame.contentWindow,
+      pe = id => pd.getElementById(id),
+      field = (name, value) => {
+        const input = pd.querySelector(`[data-ledger-row="0"] [data-field="${name}"]`);
+        input.value = value; input.dispatchEvent(new pw.Event("input", { bubbles: true }));
+      };
+    pe("profileButton").click();
+    assert(pe("profileDialog").open && pe("profileXP").textContent === "100 XP" && pe("profileNagold").textContent.includes("8 NAGOLD"), "Profil zeigt vorhandene XP und NAGOLD");
+    pe("profileNagold").click();
+    assert(pe("nagoldDialog").open && pe("nagoldRows").children.length === 2, "NAGOLD-Tabelle uebernimmt Abschluss und eigenen Eintrag");
+    pd.querySelector('[data-edit="0"]').click(); field("points", "-2");
+    assert(JSON.parse(localStorage.getItem(STORAGE_KEY)).nagoldOverrides.l1 === undefined, "NAGOLD-Aenderung bleibt bis Speichern ein Entwurf");
+    pe("nagoldLedgerForm").requestSubmit();
+    assert(!pe("nagoldDialog").open && pe("profileNagold").textContent.includes("1 NAGOLD"), "Speichern aktualisiert Profil und schliesst Tabelle");
+    const profileSaved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    assert(profileSaved.completed.length === 1 && profileSaved.notes.l1 === "Bleibt erhalten" && profileSaved.nagoldEntries[0].at === profileState.nagoldEntries[0].at, "Punktebearbeitung erhaelt Abschluesse, Notizen und Zeitstempel");
+    await new Promise(resolve => pw.requestAnimationFrame(resolve));
+    pe("profileNagold").click(); pd.querySelector('[data-edit="0"]').click(); field("points", "0");
+    pe("nagoldLedgerForm").requestSubmit();
+    assert(pe("nagoldDialog").open && Boolean(pe("nagoldError").textContent), "0 NAGOLD wird mit sichtbarer Fehlermeldung abgelehnt");
+    pe("nagoldDialog").close(); await new Promise(resolve => pw.requestAnimationFrame(resolve));
+    assert(JSON.parse(localStorage.getItem(STORAGE_KEY)).nagoldOverrides.l1.points === -2, "Abbrechen verwirft ungespeicherte Tabellenwerte");
+    for (const theme of ["dark", "light"]) {
+      pd.documentElement.dataset.theme = theme;
+      pe("profileNagold").click(); pd.querySelector('[data-edit="0"]').click();
+      profileFrame.style.width = "360px";
+      await new Promise(resolve => pw.requestAnimationFrame(resolve));
+      assert(pe("nagoldDialog").scrollWidth <= pe("nagoldDialog").clientWidth + 1 && pd.documentElement.scrollWidth <= 360, "NAGOLD-Tabelle passt bei 360 Pixeln in " + theme);
+      pe("nagoldDialog").close(); await new Promise(resolve => pw.requestAnimationFrame(resolve));
+    }
+    profileFrame.remove();
+    if (savedMenu === null) localStorage.removeItem("weblab-menu-v1");
+    else localStorage.setItem("weblab-menu-v1", savedMenu);
     if (savedState === null) localStorage.removeItem(STORAGE_KEY);
     else localStorage.setItem(STORAGE_KEY, savedState);
     if (savedTheme === null) localStorage.removeItem("weblab-theme-v1");

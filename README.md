@@ -39,3 +39,5 @@ Seit Version 1.7.1: neues fotorealistisches Metalllogo; dasselbe Motiv dient als
 Seit Version 1.8.0: kurze freiwillige Fehlersuchübungen mit erklärenden Rückmeldungen in den Einheiten 01–12.
 
 Seit Version 1.9.0: interaktive Box-Modell-Hilfe in Einheit 12 mit Innen-/Außenabstand, Rahmen und Vergleich von content-box und border-box.
+
+Seit Version 1.13.0: Profil mit XP-Level, Fortschrittsbalken und direktem Zugang zur bearbeitbaren NAGOLD-Tabelle nach dem Vorbild WorkbenchLab. Einträge ergänzen, bearbeiten und löschen; Änderungen werden erst mit Speichern übernommen.

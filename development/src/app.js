@@ -19,6 +19,8 @@ import { checkLesson, preview } from "./checks.js";
 import { zipFiles } from "./export.js";
 import { bindCodeEditor, readCodeFiles } from "./editor.js";
 import { journey, startingDraft } from "./journey.js";
+import { nagoldRows } from "./nagold.js";
+import { bindProfilePanel } from "./profile.js";
 const $ = (s) => document.querySelector(s),
   esc = (s) =>
     String(s ?? "").replace(
@@ -551,9 +553,11 @@ function bindStudio(l) {
   run();
 }
 function achievements() {
-  return `<p class="lead">Dein Fortschritt auf diesem Gerät. XP motivieren; NAGOLD wird mit der Lehrkraft abgeglichen. Ein abgeschlossener Auftrag zählt einmal: 100 XP und 5 NAGOLD.</p><div class="stats"><div class="stat"><strong>${xp(state)}</strong><small>XP einschließlich Altbestand</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD</small></div><div class="stat"><strong>${state.completed.length}</strong><small>Abgeschlossene Einheiten</small></div><div class="stat"><strong>${state.completed.includes("l16") ? "★" : "◇"}</strong><small>Eigenes Webprojekt</small></div></div><section class="panel"><h3>Meine NAGOLD-Tabelle</h3><div class="table-wrap"><table><thead><tr><th>Datum</th><th>Anlass</th><th>Punkte</th></tr></thead><tbody>${state.completed.map((id) => `<tr><td>${state.completedAt[id] ? esc(new Date(state.completedAt[id]).toLocaleString("de-DE")) : "Altbestand ohne Zeitangabe"}</td><td>${esc(byId(id).title)}</td><td>5</td></tr>`).join("")}${state.nagoldEntries.map((e) => `<tr><td>${esc(new Date(e.at).toLocaleString("de-DE"))}</td><td>${esc(e.purpose)}</td><td>${e.points}</td></tr>`).join("") || (!state.completed.length ? '<tr><td colspan="3">Noch keine Einträge.</td></tr>' : "")}</tbody></table></div><div class="actions"><button class="button secondary" id="csvExport">Übersicht als CSV</button></div></section><section class="panel"><h3>Eintrag nach Absprache mit der Lehrkraft</h3><p class="muted">Manuelle Einträge sind selbst erfasst. Sie ersetzen keine bestätigte Leistungsbewertung.</p><form id="nagoldForm"><label for="nagoldPurpose">Anlass</label><input id="nagoldPurpose" maxlength="160" required><label for="nagoldPoints">NAGOLD-Punkte (−10 bis +5, ohne 0)</label><input id="nagoldPoints" type="number" min="-10" max="5" step="1" value="1" required><div class="actions"><button class="button" type="submit">Eintrag dokumentieren</button></div></form></section>${state.legacy ? '<section class="panel"><h3>Übernommener Altbestand</h3><p>Deine alten K1-Missionen und ihr XP-Stand bleiben erhalten. Die neue BPE2-Einheit wird separat bearbeitet.</p></section>' : ""}`;
+  const rows = nagoldRows(state);
+  return `<p class="lead">Dein Fortschritt auf diesem Gerät. XP motivieren; NAGOLD wird mit der Lehrkraft abgeglichen. Ein abgeschlossener Auftrag zählt einmal: 100 XP und zunächst 5 NAGOLD.</p><div class="stats"><div class="stat"><strong>${xp(state)}</strong><small>XP einschließlich Altbestand</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD</small></div><div class="stat"><strong>${state.completed.length}</strong><small>Abgeschlossene Einheiten</small></div><div class="stat"><strong>${state.completed.includes("l16") ? "★" : "◇"}</strong><small>Eigenes Webprojekt</small></div></div><section class="panel"><h3>Meine NAGOLD-Tabelle</h3><div class="table-wrap"><table><thead><tr><th>Datum</th><th>Anlass</th><th>Punkte</th></tr></thead><tbody>${rows.map((e) => `<tr><td>${e.at ? esc(new Date(e.at).toLocaleString("de-DE")) : "Altbestand ohne Zeitangabe"}</td><td>${esc(e.purpose)}</td><td>${e.points}</td></tr>`).join("") || '<tr><td colspan="3">Noch keine Einträge.</td></tr>'}</tbody></table></div><div class="actions"><button class="button secondary" id="editNagoldTable">Tabelle bearbeiten</button><button class="button secondary" id="csvExport">Übersicht als CSV</button></div></section><section class="panel"><h3>Eintrag nach Absprache mit der Lehrkraft</h3><p class="muted">Manuelle Einträge sind selbst erfasst. Sie ersetzen keine bestätigte Leistungsbewertung.</p><form id="nagoldForm"><label for="nagoldPurpose">Anlass</label><input id="nagoldPurpose" maxlength="160" required><label for="nagoldPoints">NAGOLD-Punkte (−10 bis +5, ohne 0)</label><input id="nagoldPoints" type="number" min="-10" max="5" step="1" value="1" required><div class="actions"><button class="button" type="submit">Eintrag dokumentieren</button></div></form></section>${state.legacy ? '<section class="panel"><h3>Übernommener Altbestand</h3><p>Deine alten K1-Missionen und ihr XP-Stand bleiben erhalten. Die neue BPE2-Einheit wird separat bearbeitet.</p></section>' : ""}`;
 }
 function bindAchievements() {
+  $("#editNagoldTable").onclick = () => profilePanel.open();
   $("#nagoldForm").onsubmit = (e) => {
     e.preventDefault();
     const points = Number($("#nagoldPoints").value),
@@ -583,6 +587,7 @@ function bindAchievements() {
     render();
   };
   $("#csvExport").onclick = () => {
+    const ledger = new Map(nagoldRows(state).filter((row) => row.lessonId).map((row) => [row.lessonId, row]));
     const cell = (x) =>
       '"' +
       String(x)
@@ -597,7 +602,7 @@ function bindAchievements() {
         l.title,
         state.completed.includes(l.id) ? "selbst abgeschlossen" : "offen",
         state.completed.includes(l.id) ? 100 : 0,
-        state.completed.includes(l.id) ? 5 : 0,
+        ledger.get(l.id)?.points || 0,
       ]),
       ...state.nagoldEntries.map((e) => [
         state.profile.name,
@@ -801,10 +806,23 @@ function render() {
       }),
   );
 }
+const profilePanel = bindProfilePanel({
+  getState: () => state,
+  persistLedger: (changes) => {
+    if (preventSave) { toast(storageError); return false; }
+    const previous = { nagoldEntries: state.nagoldEntries, nagoldOverrides: state.nagoldOverrides };
+    Object.assign(state, changes);
+    if (!save()) { Object.assign(state, previous); return false; }
+    render();
+    return true;
+  },
+  notify: toast,
+});
 function openProfile() {
   $("#studentName").value = state.profile.name;
   $("#studentClass").value = state.profile.className;
   $("#profileError").textContent = "";
+  profilePanel.refresh();
   $("#profileDialog").showModal();
 }
 $("#profileButton").onclick = openProfile;
@@ -835,6 +853,7 @@ $("#profileForm").onsubmit = (e) => {
   state.profile = { name, className };
   save();
   stats();
+  profilePanel.refresh();
   $("#profileDialog").close();
   toast("Profil auf diesem Gerät gespeichert.");
 };

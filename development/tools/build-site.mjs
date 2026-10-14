@@ -8,6 +8,8 @@ fs.mkdirSync(out, { recursive: true });
 const modules = [
   "content.js",
   "state.js",
+  "nagold.js",
+  "profile.js",
   "checks.js",
   "glossary.js",
   "export.js",

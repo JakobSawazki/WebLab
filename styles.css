@@ -1338,6 +1338,45 @@ dialog::backdrop {
   background: #020917b3;
   backdrop-filter: blur(3px);
 }
+.profile-fields { display:grid;grid-template-columns:1fr 1fr;gap:1rem; }
+.profile-fields > div { min-width:0; }
+.profile-fields > div > label { display:flex;align-items:center;min-height:32px;margin:0; }
+.profile-label-row { display:flex;align-items:center;justify-content:space-between;min-height:32px; }
+.profile-label-row label { margin:0; }
+.profile-info { width:28px;min-height:28px;height:28px;padding:0;font-size:.9rem; }
+.profile-progress { margin:1rem 0;padding:1rem;border:1px solid var(--line);border-radius:12px;background:var(--metal-surface); }
+.profile-level-summary { display:flex;justify-content:space-between;gap:.75rem;flex-wrap:wrap; }
+.profile-progress progress { display:block;width:100%;height:12px;margin:.5rem 0;accent-color:var(--brand); }
+.profile-progress p { margin:.5rem 0;font-size:.85rem; }
+.profile-nagold { display:flex;width:100%;align-items:center;justify-content:space-between;margin-top:1rem; }
+#nagoldDialog { width:min(960px,calc(100vw - 24px));max-width:960px;max-height:calc(100dvh - 24px);overflow:auto; }
+.nagold-table { width:100%;table-layout:fixed;border-collapse:collapse; }
+.nagold-table th,.nagold-table td { padding:.6rem .35rem;vertical-align:top;border-bottom:1px solid var(--line);text-align:left;overflow-wrap:anywhere; }
+.nagold-table th:first-child { width:10rem; }
+.nagold-table th:nth-child(2) { width:7rem; }
+.nagold-table th:nth-child(4) { width:6rem; }
+.nagold-table th:last-child { width:6.5rem; }
+.nagold-table input { width:100%;min-width:0;display:block;margin:0;padding:.5rem; }
+.nagold-row-actions { white-space:nowrap; }
+.nagold-row-actions .icon-button { display:inline-grid;width:44px;min-height:44px;height:44px;padding:.4rem; }
+.nagold-row-actions .icon-button + .icon-button { margin-left:.25rem; }
+.nagold-origin { display:block;font-size:.72rem;margin-top:.2rem; }
+.nagold-table-footer { display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1rem; }
+#nagoldSum { font-weight:700;color:var(--amber); }
+#nagoldError { color:var(--text); }
+#nagoldError:empty,#profileError:empty { display:none; }
+@media(max-width:640px) {
+  .profile-fields { grid-template-columns:1fr;gap:.4rem; }
+  #nagoldDialog { padding:1rem; }
+  .nagold-table,.nagold-table tbody { display:block; }
+  .nagold-table thead { position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%); }
+  .nagold-table tr { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.6rem;padding:1rem 0;border-bottom:1px solid var(--line); }
+  .nagold-table td { display:block;min-width:0;padding:0;border:0; }
+  .nagold-table td::before { content:attr(data-label);display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:.25rem; }
+  .nagold-table td:nth-child(1),.nagold-table td:nth-child(3) { grid-column:1 / -1; }
+  .nagold-table td:nth-child(4) { grid-column:2;grid-row:2; }
+  .nagold-table td:nth-child(5) { grid-column:1 / -1; }
+}
 .dialog-heading {
   display: flex;
   justify-content: space-between;

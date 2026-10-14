@@ -157,7 +157,7 @@
     <dialog id="profileDialog" aria-labelledby="profileTitle">
       <form id="profileForm">
         <div class="dialog-heading">
-          <h2 id="profileTitle">Dein Lernprofil</h2>
+          <div><p class="eyebrow">Profil und Fortschritt</p><h2 id="profileTitle">Dein Lernprofil</h2></div>
           <button
             type="button"
             class="icon-button"
@@ -167,32 +167,52 @@
             ×
           </button>
         </div>
-        <p>
-          Wie in WorkbenchLab: ein lokales Profil mit Kürzel und Klasse. Nutze
-          drei Buchstaben deines Nachnamens, einen Punkt und drei Buchstaben
-          deines Vornamens, zum Beispiel MUS.MAX.
-        </p>
-        <label for="studentName">Schülerkürzel</label
+        <div class="profile-fields"><div>
+        <div class="profile-label-row"><label for="studentName">Schülerkürzel</label><button class="icon-button profile-info" id="profileInfoButton" type="button" aria-label="Informationen zum Schülerkürzel" aria-haspopup="dialog" aria-controls="profileHelpDialog">i</button></div
         ><input
           id="studentName"
           maxlength="7"
           placeholder="MUS.MAX"
           autocomplete="off"
           required
-        /><label for="studentClass">Klasse</label
+        /></div><div><label for="studentClass">Klasse</label
         ><input
           id="studentClass"
           maxlength="20"
           placeholder="z. B. EG-1"
           autocomplete="off"
           required
-        />
+        /></div></div>
+        <p id="profileError" role="alert"></p>
+        <section class="profile-progress" aria-label="Dein Lernfortschritt">
+          <div class="profile-level-summary"><strong id="profileLevel"></strong><span id="profileXP"></span></div>
+          <label for="profileProgress" id="profileProgressLabel"></label>
+          <progress id="profileProgress" max="100" value="0"></progress>
+          <p id="profileNextLevel"></p>
+          <p class="muted" id="profileCompleted"></p>
+          <button class="button secondary profile-nagold" id="profileNagold" type="button" aria-haspopup="dialog" aria-controls="nagoldDialog"></button>
+        </section>
         <p class="muted">
           Kein Serverkonto. Sichere deinen Lernstand vor einem Gerätewechsel. XP
           und NAGOLD sind lokal erfasst und durch die Lehrkraft zu prüfen.
         </p>
-        <p id="profileError" role="alert"></p>
         <button class="button" type="submit">Profil speichern</button>
+      </form>
+    </dialog>
+    <dialog id="profileHelpDialog" aria-labelledby="profileHelpTitle">
+      <div class="dialog-heading"><h2 id="profileHelpTitle">Schülerkürzel und Klasse</h2><button class="icon-button" data-close aria-label="Informationen schließen">×</button></div>
+      <p>Nutze drei Buchstaben deines Nachnamens, einen Punkt und drei Buchstaben deines Vornamens, zum Beispiel <strong>MUS.MAX</strong>. Trage außerdem die offizielle Kurzform deiner Klasse ein.</p>
+      <p class="muted">Dein Profil bleibt auf diesem Gerät. Sichere deinen Lernstand vor einem Gerätewechsel als JSON-Datei.</p>
+    </dialog>
+    <dialog id="nagoldDialog" aria-labelledby="nagoldTitle">
+      <form id="nagoldLedgerForm" novalidate>
+        <div class="dialog-heading"><div><p class="eyebrow">Deine gesammelten Punkte</p><h2 id="nagoldTitle">NAGOLD</h2></div><button type="button" class="icon-button" data-close aria-label="NAGOLD-Tabelle schließen">×</button></div>
+        <p class="muted">Einträge nach Absprache mit der Lehrkraft. Änderungen an NAGOLD verändern weder XP noch abgeschlossene Einheiten.</p>
+        <table class="nagold-table"><caption class="sr-only">Deine NAGOLD-Einträge</caption><thead><tr><th scope="col">Datum</th><th scope="col">Uhrzeit</th><th scope="col">Wofür</th><th scope="col">NAGOLD</th><th scope="col"><span class="sr-only">Aktionen</span></th></tr></thead><tbody id="nagoldRows"></tbody></table>
+        <datalist id="nagoldPresets"></datalist>
+        <div class="nagold-table-footer"><button type="button" class="icon-button" id="nagoldAdd" aria-label="NAGOLD-Zeile hinzufügen" title="Zeile hinzufügen"><span data-icon="plus"></span></button><output id="nagoldSum" aria-live="polite"></output></div>
+        <p id="nagoldError" role="alert"></p>
+        <div class="actions"><button type="submit" class="button">NAGOLD speichern</button></div>
       </form>
     </dialog>
     <dialog id="backupDialog" aria-labelledby="backupTitle">

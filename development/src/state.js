@@ -1,4 +1,5 @@
 import { lessons, byId } from "./content.js";
+import { nagoldRows } from "./nagold.js";
 export const STORAGE_KEY = "weblab-state-v3";
 export const blank = () => ({
   profile: { name: "", className: "" },
@@ -9,6 +10,7 @@ export const blank = () => ({
   quiz: {},
   notes: {},
   nagoldEntries: [],
+  nagoldOverrides: {},
   legacy: null,
 });
 const record = (x) => x && typeof x === "object" && !Array.isArray(x);
@@ -71,6 +73,17 @@ export function normalize(raw) {
         },
       ];
     });
+  if (record(raw.nagoldOverrides)) {
+    for (const id of s.completed) {
+      const entry = raw.nagoldOverrides[id];
+      if (entry === null) s.nagoldOverrides[id] = null;
+      else if (record(entry) && Number.isInteger(entry.points) && entry.points !== 0 && entry.points >= -10 && entry.points <= 5 &&
+        typeof entry.purpose === "string" && entry.purpose.trim() &&
+        (entry.at === "" || (typeof entry.at === "string" && Number.isFinite(Date.parse(entry.at))))) {
+        s.nagoldOverrides[id] = { purpose: clip(entry.purpose.trim(), 160), points: entry.points, at: entry.at ? new Date(entry.at).toISOString() : "" };
+      }
+    }
+  }
   if (record(raw.legacy))
     s.legacy = {
       profile: clip(raw.legacy.profile, 7),
@@ -125,7 +138,7 @@ export const xp = (s) =>
     0,
   );
 export const nagold = (s) =>
-  s.completed.length * 5 + s.nagoldEntries.reduce((n, e) => n + e.points, 0);
+  nagoldRows(s).reduce((n, e) => n + e.points, 0);
 // Only the uninterrupted learning chain earns unlock XP. Legacy/bonus points
 // and previously completed lessons after a gap must never skip that gap.
 export function lessonAccess(s, id) {

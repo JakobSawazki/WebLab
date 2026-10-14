@@ -1,6 +1,6 @@
 import { boxModelView, bindBoxModel } from "./box-model.js";
 import { selectorView, bindSelectorHelper } from "./selector-helper.js";
-import { exercises, exerciseId, checkExercise, exerciseTypes } from "./exercises.js";
+import { exercises, exerciseId, checkExercise, exerciseTypes, exerciseHints } from "./exercises.js";
 import { debugging } from "./debugging.js";
 import { decorateIcons, icon } from "./icons.js";
 import { VERSION, groups, lessons, byId } from "./content.js";
@@ -429,7 +429,14 @@ function bindExercises(l) {
     box.querySelector("[data-exercise-check]").onclick = () => {
       const results = checkExercise(e, code.value),
         ok = results.every((r) => r.passed);
-      box.querySelector(".exercise-result").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul>${ok ? `<p class="exercise-remember"><strong>Merke:</strong> ${esc(e.remember)}</p>` : "<p>Noch nicht ganz. Vergleiche die offenen Punkte mit deinem Code und der Vorschau.</p>"}`;
+      box.querySelector(".exercise-result").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul>${ok ? `<p class="exercise-remember"><strong>Merke:</strong> ${esc(e.remember)}</p>` : `<p>Noch nicht ganz. Vergleiche die offenen Punkte mit deinem Code und der Vorschau.</p><button type="button" class="text-link" data-exercise-hint aria-expanded="false" aria-controls="exHint${i}">Tipp anzeigen</button><p class="exercise-hint" id="exHint${i}" hidden><strong>Tipp:</strong> ${esc(exerciseHints[exerciseId(l.id, i)])}</p>`}`;
+      const hintButton = box.querySelector("[data-exercise-hint]");
+      if (hintButton)
+        hintButton.onclick = () => {
+          box.querySelector(".exercise-hint").hidden = false;
+          hintButton.setAttribute("aria-expanded", "true");
+          hintButton.hidden = true;
+        };
       if (!ok) return;
       box.querySelector(".exercise-solved").hidden = false;
       const solved = solvedExercises();

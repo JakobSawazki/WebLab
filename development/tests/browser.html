@@ -274,17 +274,22 @@
         exercise.querySelector("summary").click();
         exercise.querySelector("[data-exercise-check]").click();
         const brokenOpen = exercise.querySelectorAll(".exercise-result li.fail").length;
+        exercise.querySelector("[data-exercise-hint]").click();
+        const hintShown =
+          !exercise.querySelector(".exercise-hint").hidden &&
+          exercise.querySelector(".exercise-hint").textContent.includes("Schrägstrich");
         exercise.querySelector("textarea").value =
           "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>Gemüse</strong></p>";
         exercise.querySelector("[data-exercise-check]").click();
         assert(
           brokenOpen === 2 &&
+            hintShown &&
             !exercise.querySelector(".exercise-result li.fail") &&
             exercise.querySelector(".exercise-remember") &&
             !exercise.querySelector(".exercise-solved").hidden &&
             exercise.querySelector("iframe").getAttribute("sandbox") === "" &&
             localStorage.getItem(STORAGE_KEY) === draftBeforeExercise,
-          "Uebung: Fehler offen, Reparatur mit Merksatz, Vorschau isoliert, Entwurf unveraendert",
+          "Uebung: Fehler offen, Tipp abrufbar, Reparatur mit Merksatz, Vorschau isoliert, Entwurf unveraendert",
         );
         if (savedExercises === null) localStorage.removeItem("weblab-exercises-v1");
         else localStorage.setItem("weblab-exercises-v1", savedExercises);

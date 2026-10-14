@@ -64,3 +64,13 @@ test("Write exercises accept other correct answers, not only the reference", () 
 test("Every lesson offers at least one exercise", () => {
   for (const l of lessons) assert.ok(exercises[l.id]?.length >= 1, l.id);
 });
+
+test("Every exercise has exactly one hint, and hints never contain the full solution", async () => {
+  const { exerciseHints } = await import("../src/exercises.js");
+  assert.deepEqual(Object.keys(exerciseHints).sort(), all.map(([name]) => name).sort());
+  for (const [name, , e] of all) {
+    const hint = exerciseHints[name];
+    assert.ok(hint.length > 30 && hint.length < 220, name);
+    assert.notEqual(hint.trim(), e.fixed.trim(), name);
+  }
+});

@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.30.0";
+const VERSION = "1.31.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -3941,12 +3941,48 @@ const exerciseId = (lessonId, index) => `${lessonId}-${index + 1}`;
 const checkExercise = (exercise, source) =>
   exercise.checks.map(([label, test]) => ({ label, passed: test(source) }));
 
-return {exerciseTypes,exercises,exerciseId,checkExercise};
+// One hint per exercise, shown on request after a failed check. It names the
+// next step without giving away the whole solution.
+const exerciseHints = {
+  "l1-1": "Dem zweiten <h1> in Zeile 1 fehlt der Schrägstrich. In Zeile 2 tauschen </p> und </strong> die Plätze.",
+  "l1-2": "Beginne mit <h1>…</h1>. Darunter folgt <p>…</p>; setze <strong> und </strong> um ein Wort mitten im Absatz.",
+  "l2-1": "Schneide die Zeile mit <h1> aus und füge sie zwischen <body> und </body> wieder ein.",
+  "l2-2": "Ganz oben steht <!doctype html>. Aus <html> wird <html lang=\"de\">. Im head ergänzt du <meta charset=\"utf-8\">.",
+  "l3-1": "Aus <h3> und </h3> werden <h2> und </h2>. Setze jeden Satz in <p> … </p> und lösche die <br>.",
+  "l3-2": "Schreibe zwei Absätze <p>…</p>. Im ersten umschließt <em>…</em> ein Wort, im zweiten <strong>…</strong>.",
+  "l4-1": "„Erde“ braucht <li> und </li>. Hinter „Gießkanne“ fehlt das End-Tag </li>.",
+  "l4-2": "Das Gerüst ist <ol> … </ol>. Darin stehen drei Zeilen, jede als <li>…</li>.",
+  "l5-1": "id und href müssen exakt gleich geschrieben sein, auch in Kleinbuchstaben. Im zweiten Link bleibt nur kontakt.html stehen.",
+  "l5-2": "Du brauchst zwei a-Elemente: eines mit href=\"index.html\", eines mit href=\"https://…\". Dazwischen steht jeweils ein Linktext.",
+  "l6-1": "Schreibe Ordner und Datei klein: bilder/beet.jpg. Ergänze alt=\"…\" mit einer kurzen Beschreibung des Bildes.",
+  "l6-2": "Die Linie bekommt alt=\"\" ohne Text. Beim Teamfoto beschreibt alt in einem Satz, was zu sehen ist.",
+  "l7-1": "Umschließe die beiden <th> mit <tr> und </tr>. In der Salat-Zeile fehlt eine zweite <td>-Zelle, zum Beispiel ein Monat.",
+  "l7-2": "Reihenfolge: <table>, <caption>, eine <tr> mit zwei <th scope=\"col\">, eine <tr> mit zwei <td>, zum Schluss </table>.",
+  "l8-1": "Ergänze im Start-Tag von video das Wort controls und lösche autoplay.",
+  "l8-2": "<video controls> … </video> umschließt <source src=\"…\" type=\"video/mp4\">. Direkt nach </video> folgt ein Absatz <p>…</p>.",
+  "l9-1": "Der Wert von rel heißt stylesheet. Den Dateinamen schreibst du genau wie die Datei: style.css.",
+  "l9-2": "Lösche die Zeilen <style> und </style>. Hinter dimgray; fehlt die schließende Klammer }.",
+  "l10-1": "Zwischen Punkt und hinweis steht ein Leerzeichen zu viel. Die ID im HTML heißt start, kleingeschrieben.",
+  "l10-2": "Du brauchst drei Regeln, eine für p, eine für .hinweis und eine für #start. Die letzte setzt text-align: center;.",
+  "l11-1": "Hänge an 18 eine Einheit wie px an. Schreibe 1.6 mit Punkt statt Komma.",
+  "l11-2": "In body { … } stehen drei Zeilen: color, background-color und font-family mit Komma und Ersatzschrift, etwa Arial, sans-serif.",
+  "l12-1": "Setze padding auf einen Wert größer als 0, zum Beispiel 1rem. Ergänze bei border den Stil solid zwischen Breite und Farbe.",
+  "l12-2": "Du brauchst drei Eigenschaften: max-width mit einer Breite, margin mit dem Wort auto und box-sizing mit dem Wert border-box.",
+  "l13-1": "Aus der div mit h1 wird <header>, aus der Menü-div <nav>, aus der Inhalt-div <main>. Passe auch die End-Tags an.",
+  "l13-2": "Schreibe <nav> mit zwei a-Elementen für index.html und kontakt.html, darunter <footer> mit einer kurzen Zeile Text.",
+  "l14-1": "Ersetze die Adresse im src durch bilder/beet.jpg. Ergänze im footer einen Absatz mit „Foto: eigene Aufnahme“.",
+  "l14-2": "Ergänze im Absatz hinter dem Titel: von wem das Foto ist, wo du es gefunden hast und unter welcher Lizenz es steht.",
+  "l15-1": "Vergleiche Buchstabe für Buchstabe mit den Dateinamen: style.css und bilder/beet.jpg, alles kleingeschrieben.",
+  "l15-2": "Schreibe <ol> mit drei <li>. Jeder Eintrag nennt in einem kurzen Satz einen Test und sein Ergebnis.",
+  "l16-1": "Beginne mit dem Grundgerüst aus Einheit 02. Ergänze im head die link-Zeile aus Einheit 09 und im body eine nav mit Link auf index.html.",
+};
+
+return {exerciseTypes,exercises,exerciseId,checkExercise,exerciseHints};
 },
 "app.js": function(require) {
 const { boxModelView, bindBoxModel } = require("box-model.js");
 const { selectorView, bindSelectorHelper } = require("selector-helper.js");
-const { exercises, exerciseId, checkExercise, exerciseTypes } = require("exercises.js");
+const { exercises, exerciseId, checkExercise, exerciseTypes, exerciseHints } = require("exercises.js");
 const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
 const { VERSION, groups, lessons, byId } = require("content.js");
@@ -4375,7 +4411,14 @@ function bindExercises(l) {
     box.querySelector("[data-exercise-check]").onclick = () => {
       const results = checkExercise(e, code.value),
         ok = results.every((r) => r.passed);
-      box.querySelector(".exercise-result").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul>${ok ? `<p class="exercise-remember"><strong>Merke:</strong> ${esc(e.remember)}</p>` : "<p>Noch nicht ganz. Vergleiche die offenen Punkte mit deinem Code und der Vorschau.</p>"}`;
+      box.querySelector(".exercise-result").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul>${ok ? `<p class="exercise-remember"><strong>Merke:</strong> ${esc(e.remember)}</p>` : `<p>Noch nicht ganz. Vergleiche die offenen Punkte mit deinem Code und der Vorschau.</p><button type="button" class="text-link" data-exercise-hint aria-expanded="false" aria-controls="exHint${i}">Tipp anzeigen</button><p class="exercise-hint" id="exHint${i}" hidden><strong>Tipp:</strong> ${esc(exerciseHints[exerciseId(l.id, i)])}</p>`}`;
+      const hintButton = box.querySelector("[data-exercise-hint]");
+      if (hintButton)
+        hintButton.onclick = () => {
+          box.querySelector(".exercise-hint").hidden = false;
+          hintButton.setAttribute("aria-expanded", "true");
+          hintButton.hidden = true;
+        };
       if (!ok) return;
       box.querySelector(".exercise-solved").hidden = false;
       const solved = solvedExercises();

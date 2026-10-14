@@ -1941,3 +1941,13 @@ dialog::backdrop {
 .practice-suggestion p:not(.eyebrow) {
   color: var(--muted);
 }
+.exercise-hint {
+  padding: 0.6rem 0.8rem;
+  border-left: 3px solid var(--amber);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--amber) 12%, transparent);
+}
+[data-exercise-hint] {
+  min-height: 24px;
+  font: inherit;
+}

@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.11.1** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.11.2** · Status: **lokal geprüft; Veröffentlichung läuft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -232,6 +232,10 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 14.10.2026 – Codex – Version 1.11.2
+
+Auf Jakobs Wunsch der Marke oben links einen dezenten Logo-Effekt gegeben: Bild wächst bei Maus-Hover um 10 %, hebt sich 1 Pixel und erhält eine feine Lichtkante mit weichem Lichtschein in der zum Farbschema passenden Akzentfarbe. Text und Untertitel ohne Unterstreichung. Derselbe Effekt bei sichtbarem Tastaturfokus; Touchgeräte erhalten keinen bleibenden Maus-Hover. Bei reduzierter Bewegung entfallen Skalierung, Verschiebung und Übergang, die Lichtkante bleibt. Keine Änderung an Lernstand oder Lernfunktionen. Prüfung: 21 Node-Tests und Build bestanden; Edge-Hover und Tastaturfokus in Dark/Light mit berechneter Vergrößerung und Lichtschein geprüft, keine Unterstreichung. Reduzierte Bewegung ohne Transformation, Mobilansicht mit 390 Pixeln und eingeklappte Desktop-Navigation ohne Überlauf, keine Konsolenfehler. `git diff --check` bestanden. Veröffentlichungsnachweis folgt.
 
 ### 14.10.2026 – Codex – Version 1.11.1
 

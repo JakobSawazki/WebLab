@@ -231,6 +231,30 @@ small,
 .brand img {
   object-fit: cover;
   border-radius: 8px;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+.brand:hover,
+.brand:focus-visible {
+  text-decoration: none;
+}
+.brand:focus-visible img {
+  transform: translateY(-1px) scale(1.1);
+  box-shadow: 0 0 0 1px var(--brand), 0 0 18px color-mix(in srgb, var(--brand) 40%, transparent);
+}
+@media (hover: hover) and (pointer: fine) {
+  .brand:hover img {
+    transform: translateY(-1px) scale(1.1);
+    box-shadow: 0 0 0 1px var(--brand), 0 0 18px color-mix(in srgb, var(--brand) 40%, transparent);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brand img {
+    transition: none;
+  }
+  .brand:hover img,
+  .brand:focus-visible img {
+    transform: none;
+  }
 }
 .brand strong,
 .brand small {

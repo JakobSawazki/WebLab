@@ -7,6 +7,7 @@ const root = path.resolve(import.meta.dirname, "../.."),
 fs.mkdirSync(out, { recursive: true });
 const modules = [
   "content.js",
+  "guidance.js",
   "state.js",
   "nagold.js",
   "profile.js",

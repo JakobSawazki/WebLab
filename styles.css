@@ -1274,6 +1274,26 @@ iframe {
 .criteria li {
   padding: 0.4rem 0;
 }
+.criteria-summary {
+  margin-bottom: 0.25rem;
+}
+/* What is still missing, written as a concrete next step. */
+.criteria-tip {
+  display: block;
+  margin: 0.25rem 0 0 1.35rem;
+  padding-left: 0.7rem;
+  border-left: 2px solid color-mix(in srgb, var(--amber) 60%, var(--line));
+  color: var(--text);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+.pitfalls ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+}
+.pitfalls li + li {
+  margin-top: 0.35rem;
+}
 .breadcrumbs {
   font-size: 0.85rem;
   margin-bottom: 1rem;

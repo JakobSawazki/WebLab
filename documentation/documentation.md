@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.13.2** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.14.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,10 +16,10 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.13.2 |
+| Bereich | Version 1.14.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
-| Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
+| Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
 | Roter Faden | Nächster offener Lernschritt, 16 Schritte mit aktueller Position, Vorwissen, drei konkrete Arbeitsschritte und Beobachtungsauftrag; eigene Webseite wächst durch Kopien des vorherigen Entwurfs |
 | Orientierung | Vier Etappen mit Fortschritt auf der Startseite; direkte Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern in den Einheiten |
 | Schülerprofil | Kürzel/Klasse, XP-Level und Fortschrittsbalken, direkte NAGOLD-Tabelle; kein Serverkonto |
@@ -233,6 +233,20 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.14.0 (Qualitätsrunde, Paket 3: Didaktik)
+
+Alle 16 Einheiten (Erklärung, Beispiel, Auftrag, Hinweis, Quiz, Selbstkontrolle, automatische Kriterien und Vertiefungen) fachlich durchgesehen. Fachlich keine Fehler gefunden; die Inhalte sind stimmig zu BPE2 und den in Abschnitt 3 genannten Referenzen. Die Lücke lag in der Rückmeldung: Ein nicht erfülltes Kriterium zeigte nur ein Stichwort wie „○ Zwei Absätze“ oder bei Einheit 11/12 nur einen Eigenschaftsnamen wie „○ line-height“. Typische Fehler gab es bisher nur als je eine Denkaufgabe in den Einheiten 01–12.
+
+- **Neues Modul `development/src/guidance.js`:** Für jedes der 61 Kriterien ein eigenständig formulierter, konkreter nächster Schritt (z. B. „Ergänze in der body-Regel eine Schriftgröße mit Einheit, zum Beispiel font-size: 1rem;“) und je Einheit drei typische Stolpersteine. Kein Text aus fremden Quellen übernommen.
+- **Rückmeldung zum Praxisauftrag:** Zählt „x von y Kriterien erfüllt“; offene Kriterien zeigen darunter den passenden Tipp. Für Bildschirmleser sind Zustände als „erfüllt“/„noch offen“ ausgeschrieben, die Symbole ✓/○ sind ausgeblendet.
+- **Typische Stolpersteine:** Neuer aufklappbarer Abschnitt unter „Ein Hinweis hilft mir weiter“ in allen 16 Einheiten, z. B. Komma statt Punkt bei Zahlen in CSS, Raute im id-Wert, `index.html.txt`, Groß-/Kleinschreibung bei Dateinamen, fehlende Namensnennung bei CC BY.
+- **Verständlichere Kriteriennamen** in Einheit 11 („Schriftgröße für body (font-size)“) und 12 („Innenabstand der Karte (padding)“).
+- Bemerkenswert für den Unterricht: Ungültige CSS-Werte wie `font-size: 16` (ohne Einheit) verwirft der Browser; das Kriterium bleibt offen und der Tipp nennt die fehlende Einheit.
+
+Unverändert: alle Prüfregeln und Schwellenwerte, Freischaltung, Punkte, Speicherformat. Bestehende Abschlüsse bleiben gültig.
+
+Prüfung: 27 Node-Tests (neu: `guidance.test.mjs` prüft je Kriterium genau einen Tipp, Länge und Doppelungen) und Build bestanden; 164/164 Browserprüfungen. Rückmeldung in Einheit 11 mit teilweise falschem CSS im Browser bei 461 Pixeln geprüft. Offen: Formulierungen mit einer Klasse erproben.
+
 ### 14.10.2026 – Claude – Version 1.13.2 (Qualitätsrunde, Paket 2: Bedienung)
 
 - **Lernpfad-Fenster per Tastatur:** Innerhalb der Liste wandern Pfeil hoch/runter (mit Umlauf), Pos1 und Ende durch die freigeschalteten Einheiten; Pfeil links schließt und setzt den Fokus auf den Schalter. Die Liste ist als Gruppe „Lerneinheiten“ benannt. Zwei neue Browserprüfungen (1200 und 360 Pixel).
@@ -240,7 +254,7 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 - **Profil:** Beim Öffnen steht der Fokus im Feld Schülerkürzel statt auf dem Schließen-Knopf.
 - **NAGOLD-Tabelle auf dem Handy:** Bis 640 Pixel war jede Zeile eine hohe Karte mit sechs beschrifteten Feldern; bei 16 Einheiten sehr lang. Nur gelesene Zeilen sind jetzt kompakte Zweizeiler (Anlass und Punkte oben, Datum/Uhrzeit und Aktionen unten). Zeilen im Bearbeitungsmodus behalten die beschrifteten Eingabefelder. Fehlende Uhrzeiten erscheinen als „–“ statt ein zweites „Nicht erfasst“.
 
-Prüfung: 26 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Lernpfad-Tastatur, NAGOLD-Tabelle schmal (461 Pixel) in Dark sowie breit in Light visuell geprüft, Bearbeitungsmodus schmal geprüft. Keine Änderung an Lernstand, Freischaltung oder Punkten.
+Prüfung: 26 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Lernpfad-Tastatur, NAGOLD-Tabelle schmal (461 Pixel) in Dark sowie breit in Light visuell geprüft, Bearbeitungsmodus schmal geprüft. Keine Änderung an Lernstand, Freischaltung oder Punkten. Veröffentlicht mit Commit `7c11e21`; [Pages-Lauf 38620790322](https://github.com/JakobSawazki/WebLab/actions/runs/38620790322) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.13.1 (Qualitätsrunde, Paket 1: Profil, NAGOLD, Sicherung)
 

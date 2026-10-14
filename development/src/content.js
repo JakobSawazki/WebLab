@@ -1,5 +1,5 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-export const VERSION = "1.13.2";
+export const VERSION = "1.14.0";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -366,8 +366,14 @@ export const lessons = [
       "Mein Text bleibt gut lesbar.",
       "Wichtige Hinweise sind auch ohne Farberkennung verständlich.",
     ],
-    ["color", "background-color", "font-family", "font-size", "line-height"]
-      .map((property) => ({ cssSelector: "body", property, label: property }))
+    [
+      ["color", "Schriftfarbe für body (color)"],
+      ["background-color", "Hintergrundfarbe für body (background-color)"],
+      ["font-family", "Schriftfamilie für body (font-family)"],
+      ["font-size", "Schriftgröße für body (font-size)"],
+      ["line-height", "Zeilenhöhe für body (line-height)"],
+    ]
+      .map(([property, label]) => ({ cssSelector: "body", property, label }))
       .concat({
         cssSelector: "h1",
         property: "text-align",
@@ -396,9 +402,13 @@ export const lessons = [
     ],
     [
       { selector: ".karte", text: 15, label: "Karte mit Inhalt" },
-      ...["padding", "border", "margin", "max-width", "box-sizing"].map(
-        (property) => ({ cssSelector: ".karte", property, label: property }),
-      ),
+      ...[
+        ["padding", "Innenabstand der Karte (padding)"],
+        ["border", "Rahmen der Karte (border)"],
+        ["margin", "Außenabstand der Karte (margin)"],
+        ["max-width", "Höchstbreite der Karte (max-width)"],
+        ["box-sizing", "Box-Modell der Karte (box-sizing)"],
+      ].map(([property, label]) => ({ cssSelector: ".karte", property, label })),
     ],
   ),
   lesson(

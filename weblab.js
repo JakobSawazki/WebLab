@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.32.1";
+const VERSION = "1.33.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -3761,6 +3761,23 @@ const exercises = {
       ],
       remember: "Was man nur hören oder sehen kann, braucht auch eine Textfassung.",
     },
+    {
+      type: "write",
+      title: "Ein Interview zum Anhören",
+      task: "Binde die Audiodatei medien/interview.mp3 mit Bedienleiste ein. Nenne sie in einem source-Element mit type=\"audio/mpeg\" und schreibe darunter eine kurze Textfassung (mindestens 25 Zeichen).",
+      code: "<!-- audio mit source und Textfassung -->\n",
+      fixed: '<audio controls>\n  <source src="medien/interview.mp3" type="audio/mpeg">\n</audio>\n<p>Textfassung: Unsere Schulleiterin erzählt, wie der Garten entstand.</p>',
+      checks: [
+        ["audio mit controls", (s) => /<audio\b[^>]*\bcontrols\b[^>]*>[\s\S]*?<\/audio>/i.test(s)],
+        ['source mit src="medien/interview.mp3" und type="audio/mpeg" im audio-Element', (s) => {
+          const audio = (s.match(/<audio\b[\s\S]*?<\/audio>/i) || [""])[0];
+          const source = (audio.match(/<source\b[^>]*>/i) || [""])[0];
+          return source.includes('src="medien/interview.mp3"') && /type="audio\/mpeg"/i.test(source);
+        }],
+        ["Textfassung direkt nach dem audio-Element (mindestens 25 Zeichen)", (s) => /<\/audio>\s*<p>[^<]{25,}<\/p>/i.test(s)],
+      ],
+      remember: "audio funktioniert wie video: controls, source mit Typ und eine Textfassung.",
+    },
   ],
   l9: [
     {
@@ -4008,6 +4025,7 @@ const exerciseHints = {
   "l7-3": "Das Attribut heißt colspan. Sein Wert ist die Zahl der Spalten, über die die Zelle reichen soll.",
   "l8-1": "Ergänze im Start-Tag von video das Wort controls und lösche autoplay.",
   "l8-2": "<video controls> … </video> umschließt <source src=\"…\" type=\"video/mp4\">. Direkt nach </video> folgt ein Absatz <p>…</p>.",
+  "l8-3": "Das Gerüst ist <audio controls> … </audio>. Dazwischen steht ein source-Element mit src und type; nach </audio> folgt ein Absatz.",
   "l9-1": "Der Wert von rel heißt stylesheet. Den Dateinamen schreibst du genau wie die Datei: style.css.",
   "l9-2": "Lösche die Zeilen <style> und </style>. Hinter dimgray; fehlt die schließende Klammer }.",
   "l10-1": "Zwischen Punkt und hinweis steht ein Leerzeichen zu viel. Die ID im HTML heißt start, kleingeschrieben.",
@@ -4088,7 +4106,7 @@ function exercisePanel(l) {
     .map((e, i) => {
       const id = exerciseId(l.id, i),
         isSolved = solved.has(id);
-      return `<details class="exercise" data-exercise="${i}"><summary><span class="exercise-type">${exerciseTypes[e.type]}</span> Übung ${i + 1}: ${esc(e.title)}<span class="exercise-solved" ${isSolved ? "" : "hidden"}> · ✓ gelöst</span></summary><p id="exTask${i}">${esc(e.task)}</p><div class="exercise-grid"><div><label class="editor-label" for="exCode${i}">${e.kind === "css" ? "CSS" : "HTML"}</label><div class="code-surface"><pre class="line-numbers" id="exLines${i}" aria-hidden="true"></pre><textarea class="code" id="exCode${i}" aria-describedby="exTask${i} exPos${i}" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" rows="${Math.max(5, e.code.split("\n").length + 1)}">${esc(e.code)}</textarea></div><p class="editor-position" id="exPos${i}"></p><div class="actions"><button type="button" class="button" data-exercise-check="${i}">Übung prüfen</button><button type="button" class="button secondary" data-exercise-reset="${i}">Neu beginnen</button></div></div><div class="exercise-preview"><p class="muted">Vorschau</p><iframe title="Vorschau zu Übung ${i + 1}" sandbox=""></iframe></div></div><div class="exercise-result" id="exResult${i}" role="status" aria-atomic="true"></div></details>`;
+      return `<details class="exercise" data-exercise="${i}"><summary><span class="exercise-type">${exerciseTypes[e.type]}</span> Übung ${i + 1}: ${esc(e.title)}<span class="exercise-solved" ${isSolved ? "" : "hidden"}> · ✓ gelöst</span></summary><p id="exTask${i}">${esc(e.task)}</p><div class="exercise-grid"><div><label class="editor-label" for="exCode${i}">${e.kind === "css" ? "CSS" : "HTML"}</label><div class="code-surface"><pre class="line-numbers" id="exLines${i}" aria-hidden="true"></pre><textarea class="code" id="exCode${i}" aria-describedby="exTask${i} exPos${i} editorHelp" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" rows="${Math.max(5, e.code.split("\n").length + 1)}">${esc(e.code)}</textarea></div><p class="editor-position" id="exPos${i}"></p><div class="actions"><button type="button" class="button" data-exercise-check="${i}">Übung prüfen</button><button type="button" class="button secondary" data-exercise-reset="${i}">Neu beginnen</button></div></div><div class="exercise-preview"><p class="muted">Vorschau</p><iframe title="Vorschau zu Übung ${i + 1}" sandbox=""></iframe></div></div><div class="exercise-result" id="exResult${i}" role="status" aria-atomic="true"></div></details>`;
     })
     .join("")}</section>`;
 }

@@ -257,6 +257,23 @@ export const exercises = {
       ],
       remember: "Was man nur hören oder sehen kann, braucht auch eine Textfassung.",
     },
+    {
+      type: "write",
+      title: "Ein Interview zum Anhören",
+      task: "Binde die Audiodatei medien/interview.mp3 mit Bedienleiste ein. Nenne sie in einem source-Element mit type=\"audio/mpeg\" und schreibe darunter eine kurze Textfassung (mindestens 25 Zeichen).",
+      code: "<!-- audio mit source und Textfassung -->\n",
+      fixed: '<audio controls>\n  <source src="medien/interview.mp3" type="audio/mpeg">\n</audio>\n<p>Textfassung: Unsere Schulleiterin erzählt, wie der Garten entstand.</p>',
+      checks: [
+        ["audio mit controls", (s) => /<audio\b[^>]*\bcontrols\b[^>]*>[\s\S]*?<\/audio>/i.test(s)],
+        ['source mit src="medien/interview.mp3" und type="audio/mpeg" im audio-Element', (s) => {
+          const audio = (s.match(/<audio\b[\s\S]*?<\/audio>/i) || [""])[0];
+          const source = (audio.match(/<source\b[^>]*>/i) || [""])[0];
+          return source.includes('src="medien/interview.mp3"') && /type="audio\/mpeg"/i.test(source);
+        }],
+        ["Textfassung direkt nach dem audio-Element (mindestens 25 Zeichen)", (s) => /<\/audio>\s*<p>[^<]{25,}<\/p>/i.test(s)],
+      ],
+      remember: "audio funktioniert wie video: controls, source mit Typ und eine Textfassung.",
+    },
   ],
   l9: [
     {
@@ -504,6 +521,7 @@ export const exerciseHints = {
   "l7-3": "Das Attribut heißt colspan. Sein Wert ist die Zahl der Spalten, über die die Zelle reichen soll.",
   "l8-1": "Ergänze im Start-Tag von video das Wort controls und lösche autoplay.",
   "l8-2": "<video controls> … </video> umschließt <source src=\"…\" type=\"video/mp4\">. Direkt nach </video> folgt ein Absatz <p>…</p>.",
+  "l8-3": "Das Gerüst ist <audio controls> … </audio>. Dazwischen steht ein source-Element mit src und type; nach </audio> folgt ein Absatz.",
   "l9-1": "Der Wert von rel heißt stylesheet. Den Dateinamen schreibst du genau wie die Datei: style.css.",
   "l9-2": "Lösche die Zeilen <style> und </style>. Hinter dimgray; fehlt die schließende Klammer }.",
   "l10-1": "Zwischen Punkt und hinweis steht ein Leerzeichen zu viel. Die ID im HTML heißt start, kleingeschrieben.",

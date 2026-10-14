@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.13.0";
+const VERSION = "1.13.1";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -789,11 +789,12 @@ function ledgerChanges(state, draft) {
   const nagoldEntries = [], nagoldOverrides = Object.fromEntries(state.completed.map((id) => [id, null]));
   const seen = new Set();
   for (const [index, row] of draft.entries()) {
-    const error = (message) => { throw new Error(`Zeile ${index + 1}: ${message}`); };
+    // row/field let the table focus the input that needs correcting.
+    const error = (message, field) => { throw Object.assign(new Error(`Zeile ${index + 1}: ${message}`), { row: index, field }); };
     if (typeof row.purpose !== "string" || !row.purpose.trim() || row.purpose.trim().length > 160)
-      error("Bitte einen Anlass mit höchstens 160 Zeichen angeben.");
+      error("Bitte einen Anlass mit höchstens 160 Zeichen angeben.", "purpose");
     if (!Number.isInteger(row.points) || row.points === 0 || row.points < -10 || row.points > 5)
-      error("Bitte ganze NAGOLD von −10 bis +5 eintragen; 0 ist kein Eintrag.");
+      error("Bitte ganze NAGOLD von −10 bis +5 eintragen; 0 ist kein Eintrag.", "points");
     if (row.lessonId && (!state.completed.includes(row.lessonId) || seen.has(row.lessonId)))
       error("Die Zuordnung zur abgeschlossenen Einheit ist ungültig.");
     let at;
@@ -803,10 +804,10 @@ function ledgerChanges(state, draft) {
     else if (row.lessonId && !state.completedAt[row.lessonId] && row.originalAt === "" && row.date === "" && row.time === "") at = "";
     else {
       if (!/^\d{4}-\d{2}-\d{2}$/.test(row.date) || !/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(row.time))
-        error("Bitte ein gültiges Datum und eine Uhrzeit angeben.");
+        error("Bitte ein gültiges Datum und eine Uhrzeit angeben.", /^\d{4}-\d{2}-\d{2}$/.test(row.date) ? "time" : "date");
       const parsed = new Date(`${row.date}T${row.time}:00`);
       if (!Number.isFinite(parsed.getTime()) || localStamp(parsed.toISOString()).date !== row.date || localStamp(parsed.toISOString()).time !== row.time)
-        error("Datum oder Uhrzeit ist ungültig.");
+        error("Datum oder Uhrzeit ist ungültig.", "date");
       at = parsed.toISOString();
     }
     const entry = { purpose: row.purpose.trim(), points: row.points, at };
@@ -833,7 +834,7 @@ const levels = [
 
 function bindProfilePanel({ getState, persistLedger, notify }) {
   const $ = (s) => document.querySelector(s), dialog = $("#nagoldDialog");
-  let draft = [], editing = new Set();
+  let draft = [], editing = new Set(), dirty = false;
   const refresh = () => {
     const state = getState(), total = xp(state), index = levels.findLastIndex((level) => total >= level.min), level = levels[index], next = levels[index + 1];
     $("#profileLevel").textContent = `Level ${index + 1} · ${level.title}`;
@@ -869,13 +870,14 @@ function bindProfilePanel({ getState, persistLedger, notify }) {
     if (draft.filter((row) => !row.lessonId).length >= 1000) return;
     const at = new Date().toISOString();
     draft.push({ ...localStamp(at), purpose: "", points: 0, originalAt: at });
-    editing.add(draft.length - 1); renderRows();
+    dirty = true; editing.add(draft.length - 1); renderRows();
     $("#nagoldRows tr:last-child [data-field=purpose]").focus();
   };
   const open = () => {
     draft = ledgerDraft(getState()); editing = new Set();
     $("#nagoldError").textContent = ""; renderRows(); dialog.showModal();
     if (!draft.length) add();
+    dirty = false;
   };
   $("#profileNagold").onclick = open;
   $("#nagoldAdd").onclick = add;
@@ -884,6 +886,7 @@ function bindProfilePanel({ getState, persistLedger, notify }) {
     const field = event.target.closest("[data-field]"); if (!field) return;
     const row = draft[Number(field.closest("[data-ledger-row]").dataset.ledgerRow)];
     row[field.dataset.field] = field.dataset.field === "points" ? field.valueAsNumber : field.value;
+    dirty = true; field.removeAttribute("aria-invalid");
     $("#nagoldError").textContent = ""; sum();
   });
   const editRow = (index) => { editing.add(index); renderRows(); $(`#nagoldRows [data-ledger-row="${index}"] [data-field=purpose]`).focus(); };
@@ -896,7 +899,7 @@ function bindProfilePanel({ getState, persistLedger, notify }) {
     const edit = event.target.closest("[data-edit]"), remove = event.target.closest("[data-remove]");
     if (edit) editRow(Number(edit.dataset.edit));
     if (remove) {
-      const index = Number(remove.dataset.remove); draft.splice(index, 1);
+      const index = Number(remove.dataset.remove); draft.splice(index, 1); dirty = true;
       editing = new Set([...editing].filter((i) => i !== index).map((i) => i > index ? i - 1 : i));
       renderRows(); $("#nagoldAdd").focus();
     }
@@ -908,11 +911,25 @@ function bindProfilePanel({ getState, persistLedger, notify }) {
       if (!state.profile.name || !state.profile.className.trim()) throw new Error("Bitte zuerst dein Schülerkürzel und deine Klasse im Profil speichern.");
       const changes = ledgerChanges(state, draft);
       if (!persistLedger(changes)) throw new Error("Speichern nicht möglich. Sichere deinen Lernstand und prüfe die Speichermeldung.");
-      refresh(); dialog.close(); notify("NAGOLD-Tabelle gespeichert.");
-    } catch (error) { $("#nagoldError").textContent = error.message; }
+      dirty = false; refresh(); dialog.close(); notify("NAGOLD-Tabelle gespeichert.");
+    } catch (error) {
+      $("#nagoldError").textContent = error.message;
+      if (Number.isInteger(error.row)) {
+        editing.add(error.row); renderRows();
+        const field = $(`#nagoldRows [data-ledger-row="${error.row}"] [data-field="${error.field || "purpose"}"]`);
+        field?.setAttribute("aria-invalid", "true");
+        field?.setAttribute("aria-describedby", "nagoldError");
+        field?.focus();
+      }
+    }
   };
+  // Escape and the close button ask before unsaved changes are discarded.
+  dialog.addEventListener("cancel", (event) => {
+    if (dirty && !confirm("Deine Änderungen an der NAGOLD-Tabelle sind noch nicht gespeichert. Verwerfen?"))
+      event.preventDefault();
+  });
   dialog.addEventListener("close", () => {
-    draft = []; editing.clear(); $("#nagoldRows").replaceChildren();
+    draft = []; editing.clear(); dirty = false; $("#nagoldRows").replaceChildren();
     if ($("#profileDialog").open) $("#profileNagold").focus();
   });
   $("#profileInfoButton").onclick = () => $("#profileHelpDialog").showModal();
@@ -2827,12 +2844,12 @@ function lessonJourney(l) {
 }
 function lessonPractice(l) {
   const step = journey[l.id];
-  return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3><ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor">Jetzt direkt im Code ausprobieren</a></section>`;
+  return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3><ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor" data-editor-jump>Jetzt direkt im Code ausprobieren</a></section>`;
 }
 function lessonExtension(l) {
   const extra = l.extension;
   if (!extra) return "";
-  return `<details class="panel debug-challenge lesson-extension"><summary>${esc(extra.title)}</summary><p>${esc(extra.explanation)}</p><pre><code>${esc(extra.code)}</code></pre><ol>${extra.steps.map((step) => `<li>${esc(step)}</li>`).join("")}</ol><p><strong>Deine Selbstkontrolle:</strong> ${esc(extra.observe)}</p><a class="button secondary" href="#studioTitle">Im eigenen Code ausprobieren</a></details>`;
+  return `<details class="panel debug-challenge lesson-extension"><summary>${esc(extra.title)}</summary><p>${esc(extra.explanation)}</p><pre><code>${esc(extra.code)}</code></pre><ol>${extra.steps.map((step) => `<li>${esc(step)}</li>`).join("")}</ol><p><strong>Deine Selbstkontrolle:</strong> ${esc(extra.observe)}</p><a class="button secondary" href="#studioTitle" data-editor-jump>Im eigenen Code ausprobieren</a></details>`;
 }
 function debugChallenge(l) {
   const exercise = debugging[l.id];
@@ -2841,7 +2858,7 @@ function debugChallenge(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1)}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -2900,7 +2917,8 @@ function bindStudio(l) {
     $("#largePreviewDialog").showModal();
   };
   $("#closeLargePreview").onclick = () => $("#largePreviewDialog").close();
-  $("#jumpEditor")?.addEventListener("click", (e) => {
+  // In-page links must not change the hash: the hash is the app route.
+  document.querySelectorAll("[data-editor-jump]").forEach((link) => (link.onclick = (e) => {
     e.preventDefault();
     $("#studioTitle").scrollIntoView({
       behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -2908,7 +2926,7 @@ function bindStudio(l) {
         : "smooth",
     });
     $("#htmlEditor").focus({ preventScroll: true });
-  });
+  }));
   $("#takePrevious")?.addEventListener("click", () => {
     const previous = journey[l.id].previous;
     if (
@@ -3032,6 +3050,7 @@ function bindStudio(l) {
   $("#imageButton").onclick = () => $("#imageFile").click();
   $("#imageFile").onchange = async (e) => {
     const f = e.target.files[0];
+    e.target.value = "";
     if (!f) return;
     if (
       !["image/png", "image/jpeg", "image/webp"].includes(f.type) ||
@@ -3077,7 +3096,7 @@ function bindAchievements() {
     const points = Number($("#nagoldPoints").value),
       purpose = $("#nagoldPurpose").value.trim();
     if (!validProfile(state.profile.name) || !state.profile.className.trim()) {
-      openProfile();
+      openProfile("Speichere zuerst dein Schülerkürzel und deine Klasse. Danach kannst du NAGOLD eintragen.");
       return;
     }
     if (
@@ -3097,17 +3116,24 @@ function bindAchievements() {
       return;
     }
     state.nagoldEntries.push({ purpose, points, at: new Date().toISOString() });
-    save();
+    if (!save()) {
+      state.nagoldEntries.pop();
+      return;
+    }
     render();
+    toast("NAGOLD-Eintrag gespeichert.");
   };
   $("#csvExport").onclick = () => {
     const ledger = new Map(nagoldRows(state).filter((row) => row.lessonId).map((row) => [row.lessonId, row]));
+    // Text cells are guarded against spreadsheet formulas; numbers stay numbers.
     const cell = (x) =>
-      '"' +
-      String(x)
-        .replace(/^[=+@\-\t\r]/, "'$&")
-        .replaceAll('"', '""') +
-      '"';
+      typeof x === "number"
+        ? String(x)
+        : '"' +
+          String(x)
+            .replace(/^[=+@\-\t\r]/, "'$&")
+            .replaceAll('"', '""') +
+          '"';
     const rows = [
       ["Kürzel", "Klasse", "Einheit", "Status", "XP", "NAGOLD"],
       ...lessons.map((l) => [
@@ -3276,7 +3302,7 @@ function render() {
     };
     $("#completeButton").onclick = () => {
       if (!state.profile.name || !state.profile.className.trim()) {
-        openProfile();
+        openProfile("Speichere zuerst dein Schülerkürzel und deine Klasse. Danach kannst du die Einheit abschließen.");
         return;
       }
       if (!check(l)) {
@@ -3285,8 +3311,13 @@ function render() {
         return;
       }
       if (complete(state, l.id)) {
-        save();
+        const stored = save();
         render();
+        if (!stored) {
+          $("#completionResult").textContent =
+            "Der Abschluss ist nur in diesem Tab erfasst, weil der Browserspeicher nicht beschrieben werden konnte. Lade sofort deinen Lernstand herunter.";
+          return;
+        }
         $("#completionResult").textContent = journey[l.id].next
           ? "100 XP und 5 NAGOLD einmalig erfasst. Die nächste Einheit ist freigeschaltet. Sichere deinen Lernstand."
           : "100 XP und 5 NAGOLD einmalig erfasst. Du hast alle 16 Einheiten abgeschlossen. Sichere deinen Lernstand.";
@@ -3332,14 +3363,14 @@ const profilePanel = bindProfilePanel({
   },
   notify: toast,
 });
-function openProfile() {
+function openProfile(reason = "") {
   $("#studentName").value = state.profile.name;
   $("#studentClass").value = state.profile.className;
-  $("#profileError").textContent = "";
+  $("#profileError").textContent = reason;
   profilePanel.refresh();
   $("#profileDialog").showModal();
 }
-$("#profileButton").onclick = openProfile;
+$("#profileButton").onclick = () => openProfile();
 $(".skip-link").onclick = (e) => {
   e.preventDefault();
   $("#mainContent").focus();
@@ -3362,18 +3393,36 @@ $("#profileForm").onsubmit = (e) => {
     )
       return;
     backup();
-    state = blank();
   }
+  // Build the new state first, so a failed save leaves the old one untouched.
+  const before = state,
+    newStart = Boolean(state.profile.name && state.profile.name !== name);
+  state = newStart ? blank() : { ...state };
   state.profile = { name, className };
-  save();
-  stats();
-  profilePanel.refresh();
+  if (!save()) {
+    state = before;
+    $("#profileError").textContent =
+      "Das Profil konnte nicht gespeichert werden. Lade zuerst deinen Lernstand herunter und lade die Seite neu.";
+    return;
+  }
   $("#profileDialog").close();
-  toast("Profil auf diesem Gerät gespeichert.");
+  render();
+  toast(
+    newStart
+      ? "Neues Profil angelegt. Dein bisheriger Stand wurde als Datei gesichert."
+      : "Profil auf diesem Gerät gespeichert.",
+  );
 };
 document
   .querySelectorAll("[data-close]")
-  .forEach((b) => (b.onclick = () => b.closest("dialog").close()));
+  .forEach((b) => {
+    // requestClose() fires "cancel" like Escape, so dialogs can guard drafts.
+    b.onclick = () => {
+      const dialog = b.closest("dialog");
+      if (dialog.requestClose) dialog.requestClose();
+      else dialog.close();
+    };
+  });
 $("#themeButton").onclick = () => {
   const theme =
     document.documentElement.dataset.theme === "dark" ? "light" : "dark";
@@ -3382,7 +3431,13 @@ $("#themeButton").onclick = () => {
     localStorage.setItem("weblab-theme-v1", theme);
   } catch {}
 };
-$("#backupButton").onclick = () => $("#backupDialog").showModal();
+$("#backupButton").onclick = () => {
+  pendingImport = null;
+  $("#importFile").value = "";
+  $("#importSummary").textContent = "";
+  $("#confirmImport").hidden = true;
+  $("#backupDialog").showModal();
+};
 $("#exportButton").onclick = backup;
 $("#importFile").onchange = async (e) => {
   pendingImport = null;
@@ -3406,10 +3461,10 @@ $("#confirmImport").onclick = () => {
   state = pendingImport;
   pendingImport = null;
   preventSave = false;
-  save();
+  const stored = save();
   $("#backupDialog").close();
   render();
-  toast("Lernstand übernommen.");
+  if (stored) toast("Lernstand übernommen.");
 };
 window.addEventListener("hashchange", () => {
   render();

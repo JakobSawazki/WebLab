@@ -52,3 +52,18 @@ test("Malformed or unknown imported overrides cannot invent awards or erase comp
   assert.equal(nagold(next), 8);
   assert.deepEqual(next.nagoldOverrides, { l2: null });
 });
+
+test("Invalid ledger rows name the row and the field that needs correcting", () => {
+  const state = fixture(), cases = [
+    [{ purpose: " ", points: 2 }, "purpose"],
+    [{ purpose: "Mitarbeit", points: 0 }, "points"],
+    [{ purpose: "Mitarbeit", points: 2, date: "", time: "10:00" }, "date"],
+    [{ purpose: "Mitarbeit", points: 2, date: "2026-10-14", time: "" }, "time"],
+  ];
+  for (const [change, field] of cases) {
+    const draft = ledgerDraft(state);
+    draft.push({ date: "2026-10-14", time: "09:00", originalAt: "", ...change });
+    assert.throws(() => ledgerChanges(state, draft), (error) =>
+      error.row === draft.length - 1 && error.field === field && error.message.startsWith(`Zeile ${draft.length}:`));
+  }
+});

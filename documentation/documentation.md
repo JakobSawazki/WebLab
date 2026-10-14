@@ -1,8 +1,8 @@
 # WebLab – gemeinsame Projektdokumentation
 
-Stand: **14. Oktober 2026, Europe/Berlin · Codex**
+Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.13.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.13.1** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.13.0 |
+| Bereich | Version 1.13.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -232,6 +232,23 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 14.10.2026 – Claude – Version 1.13.1 (Qualitätsrunde, Paket 1: Profil, NAGOLD, Sicherung)
+
+Auftrag von Codex/Jakob: eigenständige Qualitäts- und Didaktikrunde. Claude arbeitet währenddessen allein in dieser Arbeitskopie. Paket 1 prüft Profil, NAGOLD, Sicherung und Wiederherstellung; gefundene Fehler und Schwachstellen:
+
+- **Fehler „Diese Seite gibt es nicht“:** Der Knopf „Im eigenen Code ausprobieren“ in den aufklappbaren Vertiefungen (Einheiten 09 und 12) setzte die Adresse auf `#studioTitle`. Da die Adresse die App-Route ist, landete man auf der Übersicht mit Fehlermeldung. Alle Editor-Sprünge laufen jetzt über `data-editor-jump`: Scrollen zum Editor und Fokus auf den HTML-Code, die Route bleibt erhalten. Neue Browserprüfung.
+- **CSV-Übersicht:** Der Formelschutz setzte vor negative NAGOLD-Zahlen ein Apostroph (`'-3`); Tabellenprogramme lasen sie als Text. Zahlen werden jetzt unverändert als Zahl ausgegeben, nur Textzellen erhalten den Formelschutz.
+- **Speicherfehler sichtbar:** Profil speichern, Abschluss, manueller NAGOLD-Eintrag und Laden einer Sicherung prüfen jetzt das Ergebnis von `save()`. Zuvor überschrieb z. B. „Profil gespeichert“ die Speicherwarnung. Profiländerungen werden bei Fehlschlag vollständig zurückgenommen, der Dialog bleibt mit Hinweis offen.
+- **Profilwechsel:** Der neue Stand wird erst nach erfolgreichem Speichern übernommen; danach wird die Ansicht neu aufgebaut (zuvor zeigte z. B. eine geöffnete Einheit noch den alten Abschlussstand bis zur nächsten Navigation). Eigene Meldung „Neues Profil angelegt …“.
+- **Profil fehlt:** „Einheit abschließen“ und „Eintrag dokumentieren“ öffnen das Profil jetzt mit einer Erklärung, warum es gebraucht wird (zuvor öffnete sich der Dialog kommentarlos).
+- **NAGOLD-Tabelle:** Bei einem Eingabefehler wird die betroffene Zeile geöffnet, das fehlerhafte Feld fokussiert und mit `aria-invalid` und Verweis auf die Fehlermeldung markiert (`ledgerChanges` liefert dafür `row` und `field`). Ungespeicherte Änderungen gehen bei Escape oder „×“ nicht mehr stillschweigend verloren; es erscheint eine Rückfrage. Dafür lösen alle „×“-Schalter `requestClose()` aus (Fallback `close()`), sodass Dialoge ihr `cancel`-Ereignis auswerten können.
+- **Sicherungsdialog:** Beim Öffnen werden alte Dateiauswahl, Zusammenfassung und Ladeknopf zurückgesetzt; dieselbe Datei lässt sich erneut wählen. Ebenso beim Bild-Einfügen.
+- **Kleinigkeit:** Brotkrumen zeigen „Einheit 09“ statt „Einheit 9“, passend zu den übrigen Nummern.
+
+Unverändert: Speicherformat 3, Freischaltreihenfolge, Punktevergabe, Design. Geprüft und ohne Befund: Normalisierung alter/fehlerhafter Sicherungen, Begrenzungen, Zeitstempelerhalt, Altformate 1/2.
+
+Prüfung: 26 Node-Tests (neu: Zeile/Feld bei ungültigen NAGOLD-Zeilen) und Build bestanden; 162/162 Browserprüfungen (neu: Editor-Sprung). Zusätzlich im Browser durchgespielt: Vertiefungslink, CSV mit −3 NAGOLD, NAGOLD-Fehler mit Fokus auf dem Punktefeld, Rückfrage bei „×“ (Abbrechen hält offen, Bestätigen verwirft, unveränderte Tabelle schließt ohne Rückfrage), Abschluss ohne Profil, Profilwechsel mit Sicherung, Sicherungsdialog-Reset und simulierter voller Browserspeicher beim Profil. Browserspeicher der Prüfumgebung danach wiederhergestellt.
 
 ### 14.10.2026 – Codex – Version 1.13.0
 

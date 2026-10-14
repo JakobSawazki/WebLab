@@ -640,6 +640,12 @@
           theme,
       );
     }
+    boxDoc.querySelector(".lesson-extension [data-editor-jump]").click();
+    assert(
+      boxWin.location.hash === "#lesson/l12" &&
+        boxDoc.activeElement === box("htmlEditor"),
+      "Vertiefung: Sprung in den Editor behaelt die Einheit und fokussiert den Code",
+    );
     // Keep only the teaching model visible on explicit local visual-review runs.
     if (location.hash === "#box-preview") {
       boxFrame.style.width = "1200px";

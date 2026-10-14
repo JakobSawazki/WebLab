@@ -12,7 +12,7 @@ const levels = [
 
 export function bindProfilePanel({ getState, persistLedger, notify }) {
   const $ = (s) => document.querySelector(s), dialog = $("#nagoldDialog");
-  let draft = [], editing = new Set();
+  let draft = [], editing = new Set(), dirty = false;
   const refresh = () => {
     const state = getState(), total = xp(state), index = levels.findLastIndex((level) => total >= level.min), level = levels[index], next = levels[index + 1];
     $("#profileLevel").textContent = `Level ${index + 1} · ${level.title}`;
@@ -48,13 +48,14 @@ export function bindProfilePanel({ getState, persistLedger, notify }) {
     if (draft.filter((row) => !row.lessonId).length >= 1000) return;
     const at = new Date().toISOString();
     draft.push({ ...localStamp(at), purpose: "", points: 0, originalAt: at });
-    editing.add(draft.length - 1); renderRows();
+    dirty = true; editing.add(draft.length - 1); renderRows();
     $("#nagoldRows tr:last-child [data-field=purpose]").focus();
   };
   const open = () => {
     draft = ledgerDraft(getState()); editing = new Set();
     $("#nagoldError").textContent = ""; renderRows(); dialog.showModal();
     if (!draft.length) add();
+    dirty = false;
   };
   $("#profileNagold").onclick = open;
   $("#nagoldAdd").onclick = add;
@@ -63,6 +64,7 @@ export function bindProfilePanel({ getState, persistLedger, notify }) {
     const field = event.target.closest("[data-field]"); if (!field) return;
     const row = draft[Number(field.closest("[data-ledger-row]").dataset.ledgerRow)];
     row[field.dataset.field] = field.dataset.field === "points" ? field.valueAsNumber : field.value;
+    dirty = true; field.removeAttribute("aria-invalid");
     $("#nagoldError").textContent = ""; sum();
   });
   const editRow = (index) => { editing.add(index); renderRows(); $(`#nagoldRows [data-ledger-row="${index}"] [data-field=purpose]`).focus(); };
@@ -75,7 +77,7 @@ export function bindProfilePanel({ getState, persistLedger, notify }) {
     const edit = event.target.closest("[data-edit]"), remove = event.target.closest("[data-remove]");
     if (edit) editRow(Number(edit.dataset.edit));
     if (remove) {
-      const index = Number(remove.dataset.remove); draft.splice(index, 1);
+      const index = Number(remove.dataset.remove); draft.splice(index, 1); dirty = true;
       editing = new Set([...editing].filter((i) => i !== index).map((i) => i > index ? i - 1 : i));
       renderRows(); $("#nagoldAdd").focus();
     }
@@ -87,11 +89,25 @@ export function bindProfilePanel({ getState, persistLedger, notify }) {
       if (!state.profile.name || !state.profile.className.trim()) throw new Error("Bitte zuerst dein Schülerkürzel und deine Klasse im Profil speichern.");
       const changes = ledgerChanges(state, draft);
       if (!persistLedger(changes)) throw new Error("Speichern nicht möglich. Sichere deinen Lernstand und prüfe die Speichermeldung.");
-      refresh(); dialog.close(); notify("NAGOLD-Tabelle gespeichert.");
-    } catch (error) { $("#nagoldError").textContent = error.message; }
+      dirty = false; refresh(); dialog.close(); notify("NAGOLD-Tabelle gespeichert.");
+    } catch (error) {
+      $("#nagoldError").textContent = error.message;
+      if (Number.isInteger(error.row)) {
+        editing.add(error.row); renderRows();
+        const field = $(`#nagoldRows [data-ledger-row="${error.row}"] [data-field="${error.field || "purpose"}"]`);
+        field?.setAttribute("aria-invalid", "true");
+        field?.setAttribute("aria-describedby", "nagoldError");
+        field?.focus();
+      }
+    }
   };
+  // Escape and the close button ask before unsaved changes are discarded.
+  dialog.addEventListener("cancel", (event) => {
+    if (dirty && !confirm("Deine Änderungen an der NAGOLD-Tabelle sind noch nicht gespeichert. Verwerfen?"))
+      event.preventDefault();
+  });
   dialog.addEventListener("close", () => {
-    draft = []; editing.clear(); $("#nagoldRows").replaceChildren();
+    draft = []; editing.clear(); dirty = false; $("#nagoldRows").replaceChildren();
     if ($("#profileDialog").open) $("#profileNagold").focus();
   });
   $("#profileInfoButton").onclick = () => $("#profileHelpDialog").showModal();

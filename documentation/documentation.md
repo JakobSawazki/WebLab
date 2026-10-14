@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.34.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.34.1** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.34.0 |
+| Bereich | Version 1.34.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -189,7 +189,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.34.0):** 38 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.34.1):** 38 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -241,6 +241,13 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.34.1 (Paket 31: Druckansicht)
+
+- **Druckregeln (`@media print`)** am Ende von `styles.css`: schwarzer Text auf Weiß, keine Metallflächen und Schatten, Navigation, Kopfzeilen-Schalter, Fußzeile, Knöpfe, Vorschaufenster, Ablaufnavigation und Schrittleiste ausgeblendet; Abschnitte werden nicht mitten im Panel umbrochen. Nützlich vor allem für „Meine Notizen“ mit den gesammelten Merksätzen und für ausgedruckte Einheiten. Die Bildschirmdarstellung ist unverändert.
+- Geprüft per Edge im Druckmodus (`Emulation.setEmulatedMedia: print`): Notizenseite mit Merksätzen und eigenen Notizen gut lesbar. Aufgeklappte Inhalte erscheinen im Druck nur, wenn sie vorher geöffnet wurden.
+
+Prüfung: 38 Node-Tests und Build bestanden; `npm run qa` 173/173.
+
 ### 14.10.2026 – Claude – Version 1.34.0 (Paket 30: Profi-Aufgaben als Abschluss jeder Etappe)
 
 Umsetzung des letzten offenen Didaktikpunkts „gestufte, aufeinander aufbauende Aufgaben“: Die Übungsarten bilden jetzt eine Stufung von Reparieren über Ergänzen und Selbst schreiben bis zur neuen Art **Profi-Aufgabe**, die eine ganze Etappe verbindet.
@@ -251,7 +258,7 @@ Umsetzung des letzten offenen Didaktikpunkts „gestufte, aufeinander aufbauende
 - Etappe 4 endet bereits mit dem Abschlussprojekt in Einheit 16. Jede Profi-Aufgabe hat Tipp und Merksatz; das Abzeichen „Profi-Aufgabe“ ist in Akzentfarbe hervorgehoben (Kontrast in beiden Schemata durch den Kontrasttest abgesichert).
 - Übungswerkstatt jetzt 36 Übungen. Keine Punkte, keine Änderung an Kriterien der Einheiten.
 
-Prüfung: 38 Node-Tests und Build bestanden (Ausgangscode fällt bei allen Kriterien durch, Referenzlösungen bestehen); `npm run qa` 173/173. Einheit 12 mit teilweise gelöster Profi-Aufgabe (fünf von sechs Kriterien) in Dark und Abzeichen in Light per Edge-Screenshot geprüft.
+Prüfung: 38 Node-Tests und Build bestanden (Ausgangscode fällt bei allen Kriterien durch, Referenzlösungen bestehen); `npm run qa` 173/173. Einheit 12 mit teilweise gelöster Profi-Aufgabe (fünf von sechs Kriterien) in Dark und Abzeichen in Light per Edge-Screenshot geprüft. Veröffentlicht mit Commit `ae1942e`; [Pages-Lauf 38633522848](https://github.com/JakobSawazki/WebLab/actions/runs/38633522848) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.33.0 (Paket 29: Audio-Übung und Editorhinweis)
 

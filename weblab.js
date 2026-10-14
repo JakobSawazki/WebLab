@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.34.0";
+const VERSION = "1.34.1";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",

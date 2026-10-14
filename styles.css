@@ -1961,3 +1961,62 @@ dialog::backdrop {
   border-color: color-mix(in srgb, var(--accent-end) 70%, var(--line));
   color: var(--amber);
 }
+/* Printing (e.g. "Meine Notizen" with the collected rules): plain black on
+   white, without navigation, controls and previews. */
+@media print {
+  :root,
+  :root[data-theme="light"] {
+    --text: #000;
+    --muted: #333;
+    --brand: #000;
+    --line: #999;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000;
+  }
+  .sidebar,
+  .topbar-actions,
+  #menuButton,
+  .portal-footer,
+  #toast,
+  .skip-link,
+  .actions,
+  .button,
+  .icon-button,
+  iframe,
+  .preview-area,
+  .lesson-workflow,
+  .journey-steps {
+    display: none !important;
+  }
+  .app-shell {
+    display: block;
+  }
+  .topbar,
+  .panel,
+  .card,
+  .stat,
+  .hero {
+    background: none !important;
+    box-shadow: none !important;
+    border: 1px solid #999;
+    color: #000;
+  }
+  .panel,
+  .card,
+  .exercise,
+  section {
+    break-inside: avoid;
+  }
+  textarea {
+    border: 1px solid #999;
+    background: #fff;
+    color: #000;
+  }
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+}

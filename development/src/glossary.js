@@ -1166,4 +1166,26 @@ export const glossary = [
     chapter: "Einheit 15",
     related: ["Webserver"],
   },
+  {
+    term: "b und i",
+    kind: "html",
+    category: "Text",
+    short: "Hervorhebung ohne besondere Wichtigkeit.",
+    syntax: "<p>Der Fachbegriff <i>Hypertext</i> stammt aus den 1960er-Jahren.</p>",
+    description:
+      "b und i stammen aus der Zeit, als HTML auch das Aussehen beschrieb (physische Auszeichnung). Heute zeigt strong Wichtigkeit und em eine Betonung beim Lesen. i passt für Fachbegriffe, fremdsprachige Wörter oder Gedanken, b für Stichwörter, die auffallen sollen, ohne wichtiger zu sein. Das Aussehen regelt CSS.",
+    chapter: "Einheit 03",
+    related: ["strong", "em"],
+  },
+  {
+    term: "Webfonts",
+    kind: "css",
+    category: "Schrift",
+    short: "Eigene Schriftdateien mit @font-face einbinden.",
+    syntax: "@font-face {\n  font-family: \"Lato\";\n  src: url(\"fonts/lato.woff2\") format(\"woff2\");\n}\nbody { font-family: \"Lato\", sans-serif; }",
+    description:
+      "Mit @font-face bindest du eine Schriftdatei aus deinem Projektordner ein und verwendest sie danach in font-family, immer mit Ersatzschrift. Lädt eine Seite Schriften direkt von fremden Servern, etwa von Google Fonts, wird beim Aufruf die IP-Adresse der Besucherinnen und Besucher übertragen. Eine lokal gespeicherte Schriftdatei ist datenschutzfreundlicher. Prüfe die Lizenz der Schrift.",
+    chapter: "Einheit 11",
+    related: ["font-family"],
+  },
 ];

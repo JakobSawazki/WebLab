@@ -6,7 +6,7 @@ Statische Lernumgebung zu **BPE2: Entwicklung von Internetseiten**, im Aufbau un
 - **Repository:** https://github.com/JakobSawazki/WebLab
 - **Gemeinsamer Arbeitsstand:** [documentation/documentation.md](documentation/documentation.md)
 
-16 Lerneinheiten, lokales Schülerprofil, HTML-/CSS-Labor, 107 Glossareinträge, XP, NAGOLD, JSON-Lernstandsicherung und Projektexport.
+16 Lerneinheiten, lokales Schülerprofil, HTML-/CSS-Labor, 109 Glossareinträge, XP, NAGOLD, JSON-Lernstandsicherung und Projektexport.
 
 Seit Version 1.1.0: Editor mit Dateireitern, Zeilennummern, Live-/Handyvorschau, lokalem HTML-/CSS-Import und Übungsablauf für Notepad++ 7.5.1 auf dem Informatik-Stick.
 

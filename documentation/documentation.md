@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.31.1** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.32.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.31.1 |
+| Bereich | Version 1.32.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -31,7 +31,7 @@ Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein
 | Labor | HTML-/CSS-Dateireiter, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
 | Informatik-Stick | HTML-/CSS-Import und Export, Notepad++-Transferauftrag mit Strg+S/F5 und Dateiverknüpfung |
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
-| Nachschlagen | 107 Glossareinträge (84 aus WebLab 0.5.0, 23 ergänzt), Suche mit Trefferreihenfolge, Bereichsfilter, „Siehe auch“-Verweise |
+| Nachschlagen | 109 Glossareinträge (84 aus WebLab 0.5.0, 25 ergänzt), Suche mit Trefferreihenfolge, Bereichsfilter, „Siehe auch“-Verweise |
 | Datenschutz | Lernstand auf dem Gerät; kein Tracking, keine externe KI, keine zentrale Schülerdatenbank |
 
 **Grenze:** Die Selbstkontrolle ist eine eigene Erklärung der Lernenden. Sie ist keine authentifizierte Lehrkraftfreigabe. LocalStorage, Sicherungsdateien, XP und NAGOLD sind veränderbar. Sie dürfen nicht ungeprüft als Leistungsbewertung verwendet werden. Automatische Kriterien erkennen ausgewählte Bausteine, keine vollständige HTML-Konformität, Eigenständigkeit oder gestalterische Qualität.
@@ -189,7 +189,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.31.1):** 38 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 169 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.32.0):** 38 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 169 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -209,7 +209,7 @@ Offene Erweiterungen, nach Priorität:
 4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10, seit 1.24.0/1.25.0 eine Übungswerkstatt mit Mini-Editor, Live-Vorschau und Merksätzen. Noch offen sind gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser und optionale Offline-Kopie. Browserprüfungen laufen seit 1.22.1 in CI.
-7. **ThommyWeb:** Browserzugriff ist möglich, K2/K6 geprüft. Übrige Kapitel gezielt prüfen und geeignete Ergänzungen eigenständig ausarbeiten; keine pauschale Inhaltsübernahme.
+7. **ThommyWeb:** K2/K6 im Detail, alle übrigen Kapitel seit 1.32.0 über Übersicht und Stichworte abgeglichen; Lücken (Zellen verbinden, b/i, Webfonts) eigenständig geschlossen. Detailtexte der übrigen Kapitel bei Bedarf noch prüfen.
 
 ### Anforderungsabgleich am 12.10.2026
 
@@ -241,6 +241,19 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.32.0 (Paket 27: Abgleich mit ThommyWeb)
+
+Offener Punkt 7 aus Abschnitt 7: Die Übersicht aller 13 Wissenskapitel von ThommyWeb (`grundkurs.html`) wurde mit ihren Stichworten über einen unsichtbaren Edge gelesen (das Webwerkzeug scheitert weiterhin) und mit WebLab verglichen. Keine Texte, Bilder oder Aufgaben übernommen. Ergebnis: Alle BPE2-relevanten Themen sind in WebLab vorhanden. Drei Lücken wurden eigenständig geschlossen:
+
+- **Zellen verbinden (ThommyWeb K11):** neue Übung 3 in Einheit 07 „Eine Zelle über zwei Spalten“ (Ergänzen, `colspan="2"`), mit Tipp und Merksatz „colspan verbindet Zellen nebeneinander, rowspan Zellen untereinander.“ Die zweite Prüfung stellt sicher, dass die Hinweiszeile eine einzige Zelle bleibt.
+- **Logische und physische Auszeichnung (K4):** Glossareintrag „b und i“ mit heutiger Bedeutung (Fachbegriffe, Stichwörter) gegenüber strong/em.
+- **Schriftarten einbinden (K9):** ThommyWeb nutzt Google Fonts. Glossareintrag „Webfonts“ zeigt die Einbindung einer lokalen Schriftdatei mit `@font-face` und erklärt, dass beim direkten Laden von fremden Servern die IP-Adresse der Besucher übertragen wird.
+- Bewusst nicht übernommen: externe Icon-Bibliothek (K8) und eingebettete Google-Karten (K10), weil WebLab offline und ohne Fremdabrufe arbeitet; der vorhandene Glossareintrag iframe nennt die Datenübertragung bereits.
+
+Das lokale, nicht versionierte Inventar `ressources/BPE2/ThommyWeb-Abgleich.json` enthält den Abgleich je Kapitel. Glossar jetzt 109 Einträge, Übungswerkstatt 32 Übungen.
+
+Prüfung: 38 Node-Tests und Build bestanden (die Übungs- und Glossartests decken die Ergänzungen ab); `npm run qa` 169/169.
+
 ### 14.10.2026 – Claude – Version 1.31.1 (Paket 26: Wartbarkeit der Übungswerkstatt)
 
 Reine Umstrukturierung ohne sichtbare Änderung:
@@ -249,7 +262,7 @@ Reine Umstrukturierung ohne sichtbare Änderung:
 - **`development/src/html.js`** stellt `esc()` zum Maskieren von Text in HTML-Vorlagen bereit. Die zwei bisher getrennten, gleichwertigen Fassungen in `app.js` und `profile.js` sind entfernt; beide und das neue Modul importieren jetzt dieselbe Funktion.
 - Build-Liste um beide Module ergänzt; der lokale Prüfserver braucht sie nicht, weil die Prüfseite nur Daten- und Zustandsmodule direkt lädt.
 
-Prüfung: alle Quellmodule syntaktisch geprüft; 38 Node-Tests und Build bestanden; `npm run qa` 169/169 (deckt u. a. Profil, NAGOLD-Tabelle, Übung in Einheit 01, Übungslink und Startseite ab). Zusätzlich im Browser: Startseitenvorschlag, Kennzahl „2 / 31 Übungen gelöst“, Merksatzliste und Lernpfadzähler.
+Prüfung: alle Quellmodule syntaktisch geprüft; 38 Node-Tests und Build bestanden; `npm run qa` 169/169 (deckt u. a. Profil, NAGOLD-Tabelle, Übung in Einheit 01, Übungslink und Startseite ab). Zusätzlich im Browser: Startseitenvorschlag, Kennzahl „2 / 31 Übungen gelöst“, Merksatzliste und Lernpfadzähler. Veröffentlicht mit Commit `f66eaef`; [Pages-Lauf 38631710294](https://github.com/JakobSawazki/WebLab/actions/runs/38631710294) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.31.0 (Paket 25: Tipps zu jeder Übung)
 

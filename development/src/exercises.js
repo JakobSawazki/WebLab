@@ -216,6 +216,21 @@ export const exercises = {
       ],
       remember: "caption benennt die Tabelle, th überschreibt, td enthält die Daten.",
     },
+    {
+      type: "complete",
+      title: "Eine Zelle über zwei Spalten",
+      task: "Die letzte Zeile enthält nur einen Hinweis. Ihre Zelle soll über beide Spalten reichen, damit die Tabelle nicht verrutscht. Ergänze das passende Attribut.",
+      code: '<table>\n  <caption>AG-Plan</caption>\n  <tr><th scope="col">Tag</th><th scope="col">Uhrzeit</th></tr>\n  <tr><td>Montag</td><td>14 Uhr</td></tr>\n  <tr><td>In den Ferien findet keine AG statt.</td></tr>\n</table>',
+      fixed: '<table>\n  <caption>AG-Plan</caption>\n  <tr><th scope="col">Tag</th><th scope="col">Uhrzeit</th></tr>\n  <tr><td>Montag</td><td>14 Uhr</td></tr>\n  <tr><td colspan="2">In den Ferien findet keine AG statt.</td></tr>\n</table>',
+      checks: [
+        ['Die Hinweiszelle hat colspan="2"', (s) => /<td\b[^>]*colspan="2"[^>]*>\s*In den Ferien/i.test(s)],
+        ["Die Hinweiszeile besteht weiterhin aus einer einzigen Zelle", (s) => {
+          const row = (s.match(/<tr>(?:(?!<\/tr>)[\s\S])*?In den Ferien[\s\S]*?<\/tr>/i) || [""])[0];
+          return count(row, /<td\b/gi) === 1;
+        }],
+      ],
+      remember: "colspan verbindet Zellen nebeneinander, rowspan Zellen untereinander.",
+    },
   ],
   l8: [
     {
@@ -486,6 +501,7 @@ export const exerciseHints = {
   "l6-2": "Die Linie bekommt alt=\"\" ohne Text. Beim Teamfoto beschreibt alt in einem Satz, was zu sehen ist.",
   "l7-1": "Umschließe die beiden <th> mit <tr> und </tr>. In der Salat-Zeile fehlt eine zweite <td>-Zelle, zum Beispiel ein Monat.",
   "l7-2": "Reihenfolge: <table>, <caption>, eine <tr> mit zwei <th scope=\"col\">, eine <tr> mit zwei <td>, zum Schluss </table>.",
+  "l7-3": "Das Attribut heißt colspan. Sein Wert ist die Zahl der Spalten, über die die Zelle reichen soll.",
   "l8-1": "Ergänze im Start-Tag von video das Wort controls und lösche autoplay.",
   "l8-2": "<video controls> … </video> umschließt <source src=\"…\" type=\"video/mp4\">. Direkt nach </video> folgt ein Absatz <p>…</p>.",
   "l9-1": "Der Wert von rel heißt stylesheet. Den Dateinamen schreibst du genau wie die Datei: style.css.",

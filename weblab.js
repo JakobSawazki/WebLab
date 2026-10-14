@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.31.1";
+const VERSION = "1.32.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -2673,6 +2673,28 @@ const glossary = [
     chapter: "Einheit 15",
     related: ["Webserver"],
   },
+  {
+    term: "b und i",
+    kind: "html",
+    category: "Text",
+    short: "Hervorhebung ohne besondere Wichtigkeit.",
+    syntax: "<p>Der Fachbegriff <i>Hypertext</i> stammt aus den 1960er-Jahren.</p>",
+    description:
+      "b und i stammen aus der Zeit, als HTML auch das Aussehen beschrieb (physische Auszeichnung). Heute zeigt strong Wichtigkeit und em eine Betonung beim Lesen. i passt für Fachbegriffe, fremdsprachige Wörter oder Gedanken, b für Stichwörter, die auffallen sollen, ohne wichtiger zu sein. Das Aussehen regelt CSS.",
+    chapter: "Einheit 03",
+    related: ["strong", "em"],
+  },
+  {
+    term: "Webfonts",
+    kind: "css",
+    category: "Schrift",
+    short: "Eigene Schriftdateien mit @font-face einbinden.",
+    syntax: "@font-face {\n  font-family: \"Lato\";\n  src: url(\"fonts/lato.woff2\") format(\"woff2\");\n}\nbody { font-family: \"Lato\", sans-serif; }",
+    description:
+      "Mit @font-face bindest du eine Schriftdatei aus deinem Projektordner ein und verwendest sie danach in font-family, immer mit Ersatzschrift. Lädt eine Seite Schriften direkt von fremden Servern, etwa von Google Fonts, wird beim Aufruf die IP-Adresse der Besucherinnen und Besucher übertragen. Eine lokal gespeicherte Schriftdatei ist datenschutzfreundlicher. Prüfe die Lizenz der Schrift.",
+    chapter: "Einheit 11",
+    related: ["font-family"],
+  },
 ];
 
 return {glossary};
@@ -3698,6 +3720,21 @@ const exercises = {
       ],
       remember: "caption benennt die Tabelle, th überschreibt, td enthält die Daten.",
     },
+    {
+      type: "complete",
+      title: "Eine Zelle über zwei Spalten",
+      task: "Die letzte Zeile enthält nur einen Hinweis. Ihre Zelle soll über beide Spalten reichen, damit die Tabelle nicht verrutscht. Ergänze das passende Attribut.",
+      code: '<table>\n  <caption>AG-Plan</caption>\n  <tr><th scope="col">Tag</th><th scope="col">Uhrzeit</th></tr>\n  <tr><td>Montag</td><td>14 Uhr</td></tr>\n  <tr><td>In den Ferien findet keine AG statt.</td></tr>\n</table>',
+      fixed: '<table>\n  <caption>AG-Plan</caption>\n  <tr><th scope="col">Tag</th><th scope="col">Uhrzeit</th></tr>\n  <tr><td>Montag</td><td>14 Uhr</td></tr>\n  <tr><td colspan="2">In den Ferien findet keine AG statt.</td></tr>\n</table>',
+      checks: [
+        ['Die Hinweiszelle hat colspan="2"', (s) => /<td\b[^>]*colspan="2"[^>]*>\s*In den Ferien/i.test(s)],
+        ["Die Hinweiszeile besteht weiterhin aus einer einzigen Zelle", (s) => {
+          const row = (s.match(/<tr>(?:(?!<\/tr>)[\s\S])*?In den Ferien[\s\S]*?<\/tr>/i) || [""])[0];
+          return count(row, /<td\b/gi) === 1;
+        }],
+      ],
+      remember: "colspan verbindet Zellen nebeneinander, rowspan Zellen untereinander.",
+    },
   ],
   l8: [
     {
@@ -3968,6 +4005,7 @@ const exerciseHints = {
   "l6-2": "Die Linie bekommt alt=\"\" ohne Text. Beim Teamfoto beschreibt alt in einem Satz, was zu sehen ist.",
   "l7-1": "Umschließe die beiden <th> mit <tr> und </tr>. In der Salat-Zeile fehlt eine zweite <td>-Zelle, zum Beispiel ein Monat.",
   "l7-2": "Reihenfolge: <table>, <caption>, eine <tr> mit zwei <th scope=\"col\">, eine <tr> mit zwei <td>, zum Schluss </table>.",
+  "l7-3": "Das Attribut heißt colspan. Sein Wert ist die Zahl der Spalten, über die die Zelle reichen soll.",
   "l8-1": "Ergänze im Start-Tag von video das Wort controls und lösche autoplay.",
   "l8-2": "<video controls> … </video> umschließt <source src=\"…\" type=\"video/mp4\">. Direkt nach </video> folgt ein Absatz <p>…</p>.",
   "l9-1": "Der Wert von rel heißt stylesheet. Den Dateinamen schreibst du genau wie die Datei: style.css.",

@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.33.0";
+const VERSION = "1.34.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -3527,6 +3527,7 @@ const exerciseTypes = {
   repair: "Reparieren",
   complete: "Ergänzen",
   write: "Selbst schreiben",
+  challenge: "Profi-Aufgabe",
 };
 
 const exercises = {
@@ -3607,6 +3608,22 @@ const exercises = {
         ["Ein Absatz mit strong", (s) => has(s, `<p>[^]*?<strong>${text}</strong>[^]*?</p>`)],
       ],
       remember: "em betont die Aussprache, strong die Wichtigkeit.",
+    },
+    {
+      type: "challenge",
+      title: "Etappe 1 komplett: eine kleine Seite",
+      task: "Schreibe eine vollständige Seite zu einem eigenen Thema: Grundgerüst mit Doctype, lang=\"de\" und UTF-8, ein eigener title, eine h1, zwei h2 mit je einem Absatz und mindestens eine Betonung mit strong oder em.",
+      code: "<!-- Deine vollständige Seite -->\n",
+      fixed: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Unsere Robotik-AG</title>\n</head>\n<body>\n  <h1>Unsere Robotik-AG</h1>\n  <h2>Was wir bauen</h2>\n  <p>Wir bauen <strong>eigene</strong> Roboter.</p>\n  <h2>Wann wir uns treffen</h2>\n  <p>Jeden Donnerstag im Werkraum.</p>\n</body>\n</html>',
+      checks: [
+        ["Doctype, lang=\"de\" und meta charset=\"utf-8\"", (s) => /^\s*<!doctype html>/i.test(s) && /<html lang="de">/i.test(s) && /<meta charset="utf-8">/i.test(s)],
+        ["Eigener title im head", (s) => has(s, `<head>[^]*?<title>${text}</title>[^]*?</head>`)],
+        ["Eine h1 im body", (s) => has(s, `<body>[^]*?<h1>${text}</h1>`)],
+        ["Zwei h2 mit eigenem Text", (s) => count(s, new RegExp(`<h2>${text}</h2>`, "gi")) >= 2],
+        ["Mindestens zwei Absätze", (s) => count(s, /<p>[\s\S]*?<\/p>/gi) >= 2],
+        ["Eine Betonung mit strong oder em", (s) => has(s, `<(strong|em)>${text}</(strong|em)>`)],
+      ],
+      remember: "Grundgerüst, Gliederung, Betonung: Damit steht jede neue Seite auf festem Boden.",
     },
   ],
   l4: [
@@ -3778,6 +3795,21 @@ const exercises = {
       ],
       remember: "audio funktioniert wie video: controls, source mit Typ und eine Textfassung.",
     },
+    {
+      type: "challenge",
+      title: "Etappe 2 komplett: ein Steckbrief",
+      task: "Schreibe einen Steckbrief zu deinem Thema mit einer Liste aus drei Einträgen, einem relativen Link auf kontakt.html, einem Bild mit Beschreibung (alt mindestens 8 Zeichen) und einer Tabelle mit caption und zwei Spaltenüberschriften (scope=\"col\").",
+      code: "<!-- Dein Steckbrief -->\n",
+      fixed: '<h1>Steckbrief: Robotik-AG</h1>\n<ul>\n  <li>Montag bis Donnerstag</li>\n  <li>Werkraum 2</li>\n  <li>Klassen 7 bis 10</li>\n</ul>\n<a href="kontakt.html">Kontakt</a>\n<img src="bilder/roboter.jpg" alt="Unser Roboter mit zwei Rädern" width="640" height="360">\n<table>\n  <caption>Termine</caption>\n  <tr><th scope="col">Tag</th><th scope="col">Raum</th></tr>\n  <tr><td>Montag</td><td>W2</td></tr>\n</table>',
+      checks: [
+        ["Eine Liste mit drei Einträgen", (s) => count(s, new RegExp(`<li>${text}</li>`, "gi")) >= 3 && /<(ul|ol)>/i.test(s)],
+        ["Relativer Link auf kontakt.html", (s) => has(s, `<a href="kontakt\\.html">${text}</a>`)],
+        ["Bild mit alt-Text (mindestens 8 Zeichen)", (s) => /<img\b[^>]*\balt="[^"]{8,}"/i.test(s) && /<img\b[^>]*\bsrc="[^"]+"/i.test(s)],
+        ["Tabelle mit caption", (s) => has(s, `<table>\\s*<caption>${text}</caption>`)],
+        ['Zwei Spaltenüberschriften mit scope="col"', (s) => count(s, new RegExp(`<th scope="col">${text}</th>`, "gi")) >= 2],
+      ],
+      remember: "Liste, Link, Bild und Tabelle: Jedes Element hat seine Aufgabe auf der Seite.",
+    },
   ],
   l9: [
     {
@@ -3899,6 +3931,24 @@ const exercises = {
       ],
       remember: "max-width und margin: auto zentrieren eine Box, ohne sie starr zu machen.",
     },
+    {
+      type: "challenge",
+      kind: "css",
+      context: '<h1 id="start">Schulgarten</h1>\n<p class="hinweis">Bitte Handschuhe mitbringen.</p>\n<div class="karte"><h2>Mitmachen</h2><p>Jeden Mittwoch nach der Schule im Schulgarten.</p></div>',
+      title: "Etappe 3 komplett: die ganze Seite gestalten",
+      task: "Gestalte die Beispielseite vollständig: body mit Schriftfamilie samt Ersatzschrift und Zeilenhöhe, #start mittig, .hinweis mit eigener Farbe und .karte mit Innenabstand, vollständigem Rahmen, Höchstbreite und Zentrierung über margin.",
+      code: "/* Gestalte body, #start, .hinweis und .karte */\n",
+      fixed: "body {\n  font-family: Arial, sans-serif;\n  line-height: 1.6;\n}\n#start { text-align: center; }\n.hinweis { color: darkgreen; }\n.karte {\n  padding: 1rem;\n  border: 1px solid navy;\n  max-width: 30rem;\n  margin: 1rem auto;\n}",
+      checks: [
+        ["body: font-family mit Ersatzschrift", (s) => rule(s, "body", "font-family", "[^;}]*,\\s*(sans-serif|serif|monospace)")],
+        ["body: line-height", (s) => rule(s, "body", "line-height")],
+        ["#start: text-align: center", (s) => rule(s, "#start", "text-align", "center")],
+        [".hinweis: color", (s) => rule(s, "\\.hinweis", "color")],
+        [".karte: padding und border mit Linienstil", (s) => rule(s, "\\.karte", "padding") && rule(s, "\\.karte", "border", "[^;}]*\\b(solid|dashed|dotted|double)\\b")],
+        [".karte: max-width und margin mit auto", (s) => rule(s, "\\.karte", "max-width") && rule(s, "\\.karte", "margin", "[^;}]*\\bauto\\b")],
+      ],
+      remember: "Erst die Grundschrift für body, dann gezielt einzelne Elemente: So bleibt CSS übersichtlich.",
+    },
   ],
   l13: [
     {
@@ -4014,6 +4064,7 @@ const exerciseHints = {
   "l2-2": "Ganz oben steht <!doctype html>. Aus <html> wird <html lang=\"de\">. Im head ergänzt du <meta charset=\"utf-8\">.",
   "l3-1": "Aus <h3> und </h3> werden <h2> und </h2>. Setze jeden Satz in <p> … </p> und lösche die <br>.",
   "l3-2": "Schreibe zwei Absätze <p>…</p>. Im ersten umschließt <em>…</em> ein Wort, im zweiten <strong>…</strong>.",
+  "l3-3": "Beginne mit dem Grundgerüst aus Einheit 02. Setze im body zuerst die h1, dann zweimal eine h2 mit einem Absatz darunter.",
   "l4-1": "„Erde“ braucht <li> und </li>. Hinter „Gießkanne“ fehlt das End-Tag </li>.",
   "l4-2": "Das Gerüst ist <ol> … </ol>. Darin stehen drei Zeilen, jede als <li>…</li>.",
   "l5-1": "id und href müssen exakt gleich geschrieben sein, auch in Kleinbuchstaben. Im zweiten Link bleibt nur kontakt.html stehen.",
@@ -4026,6 +4077,7 @@ const exerciseHints = {
   "l8-1": "Ergänze im Start-Tag von video das Wort controls und lösche autoplay.",
   "l8-2": "<video controls> … </video> umschließt <source src=\"…\" type=\"video/mp4\">. Direkt nach </video> folgt ein Absatz <p>…</p>.",
   "l8-3": "Das Gerüst ist <audio controls> … </audio>. Dazwischen steht ein source-Element mit src und type; nach </audio> folgt ein Absatz.",
+  "l8-4": "Arbeite Baustein für Baustein: Liste aus Einheit 04, Link aus 05, Bild aus 06, Tabelle aus 07. Prüfe nach jedem Baustein.",
   "l9-1": "Der Wert von rel heißt stylesheet. Den Dateinamen schreibst du genau wie die Datei: style.css.",
   "l9-2": "Lösche die Zeilen <style> und </style>. Hinter dimgray; fehlt die schließende Klammer }.",
   "l10-1": "Zwischen Punkt und hinweis steht ein Leerzeichen zu viel. Die ID im HTML heißt start, kleingeschrieben.",
@@ -4034,6 +4086,7 @@ const exerciseHints = {
   "l11-2": "In body { … } stehen drei Zeilen: color, background-color und font-family mit Komma und Ersatzschrift, etwa Arial, sans-serif.",
   "l12-1": "Setze padding auf einen Wert größer als 0, zum Beispiel 1rem. Ergänze bei border den Stil solid zwischen Breite und Farbe.",
   "l12-2": "Du brauchst drei Eigenschaften: max-width mit einer Breite, margin mit dem Wort auto und box-sizing mit dem Wert border-box.",
+  "l12-3": "Schreibe vier Regeln nacheinander: body, #start, .hinweis und .karte. Die Karte braucht vier Eigenschaften.",
   "l13-1": "Aus der div mit h1 wird <header>, aus der Menü-div <nav>, aus der Inhalt-div <main>. Passe auch die End-Tags an.",
   "l13-2": "Schreibe <nav> mit zwei a-Elementen für index.html und kontakt.html, darunter <footer> mit einer kurzen Zeile Text.",
   "l14-1": "Ersetze die Adresse im src durch bilder/beet.jpg. Ergänze im footer einen Absatz mit „Foto: eigene Aufnahme“.",
@@ -4106,7 +4159,7 @@ function exercisePanel(l) {
     .map((e, i) => {
       const id = exerciseId(l.id, i),
         isSolved = solved.has(id);
-      return `<details class="exercise" data-exercise="${i}"><summary><span class="exercise-type">${exerciseTypes[e.type]}</span> Übung ${i + 1}: ${esc(e.title)}<span class="exercise-solved" ${isSolved ? "" : "hidden"}> · ✓ gelöst</span></summary><p id="exTask${i}">${esc(e.task)}</p><div class="exercise-grid"><div><label class="editor-label" for="exCode${i}">${e.kind === "css" ? "CSS" : "HTML"}</label><div class="code-surface"><pre class="line-numbers" id="exLines${i}" aria-hidden="true"></pre><textarea class="code" id="exCode${i}" aria-describedby="exTask${i} exPos${i} editorHelp" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" rows="${Math.max(5, e.code.split("\n").length + 1)}">${esc(e.code)}</textarea></div><p class="editor-position" id="exPos${i}"></p><div class="actions"><button type="button" class="button" data-exercise-check="${i}">Übung prüfen</button><button type="button" class="button secondary" data-exercise-reset="${i}">Neu beginnen</button></div></div><div class="exercise-preview"><p class="muted">Vorschau</p><iframe title="Vorschau zu Übung ${i + 1}" sandbox=""></iframe></div></div><div class="exercise-result" id="exResult${i}" role="status" aria-atomic="true"></div></details>`;
+      return `<details class="exercise" data-exercise="${i}"><summary><span class="exercise-type" data-type="${e.type}">${exerciseTypes[e.type]}</span> Übung ${i + 1}: ${esc(e.title)}<span class="exercise-solved" ${isSolved ? "" : "hidden"}> · ✓ gelöst</span></summary><p id="exTask${i}">${esc(e.task)}</p><div class="exercise-grid"><div><label class="editor-label" for="exCode${i}">${e.kind === "css" ? "CSS" : "HTML"}</label><div class="code-surface"><pre class="line-numbers" id="exLines${i}" aria-hidden="true"></pre><textarea class="code" id="exCode${i}" aria-describedby="exTask${i} exPos${i} editorHelp" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" rows="${Math.max(5, e.code.split("\n").length + 1)}">${esc(e.code)}</textarea></div><p class="editor-position" id="exPos${i}"></p><div class="actions"><button type="button" class="button" data-exercise-check="${i}">Übung prüfen</button><button type="button" class="button secondary" data-exercise-reset="${i}">Neu beginnen</button></div></div><div class="exercise-preview"><p class="muted">Vorschau</p><iframe title="Vorschau zu Übung ${i + 1}" sandbox=""></iframe></div></div><div class="exercise-result" id="exResult${i}" role="status" aria-atomic="true"></div></details>`;
     })
     .join("")}</section>`;
 }

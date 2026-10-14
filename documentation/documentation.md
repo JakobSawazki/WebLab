@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.33.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.34.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.33.0 |
+| Bereich | Version 1.34.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -27,7 +27,7 @@ Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein
 | NAGOLD | Zunächst 5 je Abschluss; bearbeitbare Tabelle mit Datum/Uhrzeit, Anlass, −10 bis +5 ohne 0, Ergänzen und Löschen |
 | Abschluss | Technische Kriterien erfüllt, Quiz richtig, alle Selbstkontrollen bestätigt, Profil vollständig |
 | Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich |
-| Übungen | Übungswerkstatt in den Einheiten: kurze Aufgaben (Reparieren, Ergänzen, Selbst schreiben) mit Mini-Editor, Live-Vorschau, Sofortprüfung, Tipp nach Fehlversuch und Merksatz; ohne Punkte; gesammelte Merksätze unter „Meine Notizen“ |
+| Übungen | Übungswerkstatt in den Einheiten: kurze Aufgaben (Reparieren, Ergänzen, Selbst schreiben, Profi-Aufgabe je Etappe) mit Mini-Editor, Live-Vorschau, Sofortprüfung, Tipp nach Fehlversuch und Merksatz; ohne Punkte; gesammelte Merksätze unter „Meine Notizen“ |
 | Labor | HTML-/CSS-Dateireiter, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
 | Informatik-Stick | HTML-/CSS-Import und Export, Notepad++-Transferauftrag mit Strg+S/F5 und Dateiverknüpfung |
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
@@ -189,7 +189,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.33.0):** 38 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.34.0):** 38 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -206,7 +206,7 @@ Offene Erweiterungen, nach Priorität:
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
 2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
-4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10, seit 1.24.0/1.25.0 eine Übungswerkstatt mit Mini-Editor, Live-Vorschau und Merksätzen. Seit 1.33.0 gibt es auch eine Audio-Übung. Noch offen sind gestufte, aufeinander aufbauende HTML-Aufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
+4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10, seit 1.24.0/1.25.0 eine Übungswerkstatt mit Mini-Editor, Live-Vorschau und Merksätzen. Seit 1.33.0 gibt es auch eine Audio-Übung, seit 1.34.0 Profi-Aufgaben am Ende der Etappen 1–3 als oberste Stufe. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser und optionale Offline-Kopie. Browserprüfungen laufen seit 1.22.1 in CI.
 7. **ThommyWeb:** K2/K6 im Detail, alle übrigen Kapitel seit 1.32.0 über Übersicht und Stichworte abgeglichen; Lücken (Zellen verbinden, b/i, Webfonts) eigenständig geschlossen. Detailtexte der übrigen Kapitel bei Bedarf noch prüfen.
@@ -241,12 +241,24 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.34.0 (Paket 30: Profi-Aufgaben als Abschluss jeder Etappe)
+
+Umsetzung des letzten offenen Didaktikpunkts „gestufte, aufeinander aufbauende Aufgaben“: Die Übungsarten bilden jetzt eine Stufung von Reparieren über Ergänzen und Selbst schreiben bis zur neuen Art **Profi-Aufgabe**, die eine ganze Etappe verbindet.
+
+- **Einheit 03 „Etappe 1 komplett: eine kleine Seite“:** Grundgerüst mit Doctype, lang und UTF-8, title, h1, zwei h2 mit Absätzen, eine Betonung (sechs Kriterien).
+- **Einheit 08 „Etappe 2 komplett: ein Steckbrief“:** Liste mit drei Einträgen, relativer Link, Bild mit alt-Text, Tabelle mit caption und zwei Spaltenüberschriften (fünf Kriterien).
+- **Einheit 12 „Etappe 3 komplett: die ganze Seite gestalten“** (CSS auf fester Beispielseite): body mit Schriftfamilie und Zeilenhöhe, #start, .hinweis und eine vollständige Karte (sechs Kriterien).
+- Etappe 4 endet bereits mit dem Abschlussprojekt in Einheit 16. Jede Profi-Aufgabe hat Tipp und Merksatz; das Abzeichen „Profi-Aufgabe“ ist in Akzentfarbe hervorgehoben (Kontrast in beiden Schemata durch den Kontrasttest abgesichert).
+- Übungswerkstatt jetzt 36 Übungen. Keine Punkte, keine Änderung an Kriterien der Einheiten.
+
+Prüfung: 38 Node-Tests und Build bestanden (Ausgangscode fällt bei allen Kriterien durch, Referenzlösungen bestehen); `npm run qa` 173/173. Einheit 12 mit teilweise gelöster Profi-Aufgabe (fünf von sechs Kriterien) in Dark und Abzeichen in Light per Edge-Screenshot geprüft.
+
 ### 14.10.2026 – Claude – Version 1.33.0 (Paket 29: Audio-Übung und Editorhinweis)
 
 - **Neue Übung 3 in Einheit 08 „Ein Interview zum Anhören“** (Selbst schreiben): audio mit controls, source mit `src="medien/interview.mp3"` und `type="audio/mpeg"` (Attributreihenfolge egal), Textfassung darunter. Tipp und Merksatz „audio funktioniert wie video: controls, source mit Typ und eine Textfassung.“ Greift den offenen Punkt „weitere Medienaufgaben“ auf; Übungswerkstatt jetzt 33 Übungen.
 - **Tastatur:** Die Mini-Editoren der Übungen verweisen per `aria-describedby` zusätzlich auf den vorhandenen Editorhinweis der Einheit („Tab: zwei Leerzeichen einrücken … Escape, dann Tab: Editor verlassen“). Bildschirmleser lesen so vor, wie man den Editor wieder verlässt.
 
-Prüfung: 38 Node-Tests und Build bestanden; `npm run qa` 173/173; Zugänglichkeitsprüfung von Einheit 08 mit geöffneten Übungen ohne Befund (alle ARIA-Verweise auflösbar).
+Prüfung: 38 Node-Tests und Build bestanden; `npm run qa` 173/173; Zugänglichkeitsprüfung von Einheit 08 mit geöffneten Übungen ohne Befund (alle ARIA-Verweise auflösbar). Veröffentlicht mit Commit `f12feab`; [Pages-Lauf 38633173902](https://github.com/JakobSawazki/WebLab/actions/runs/38633173902) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.32.1 (Paket 28: Überschriftenebenen und Feinschliff)
 

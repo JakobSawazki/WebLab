@@ -1956,3 +1956,8 @@ dialog::backdrop {
   font-size: 1.1rem;
   margin-bottom: 0.65rem;
 }
+/* Stage challenges combine a whole stage; marked with the accent metal. */
+.exercise-type[data-type="challenge"] {
+  border-color: color-mix(in srgb, var(--accent-end) 70%, var(--line));
+  color: var(--amber);
+}

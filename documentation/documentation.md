@@ -183,7 +183,9 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-Geprüft durch Codex am 12.10.2026:
+**Aktueller Stand (14.10.2026, Claude, Version 1.17.0):** 29 Node-Tests in neun Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar) und 164 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+
+Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
 - 21 Node-Tests bestanden (einschließlich Box-Modell, Freischaltung und vollständiger Fehlersuchaufgaben): Inhaltsvollständigkeit, Abschlussvoraussetzungen, einmalige Punkte, Migration, Roundtrip, ungültiger Import, Begrenzungen, ZIP-Struktur, Einrückung, Code-Dateiimport sowie vollständige Lernkette und Erhalt vorhandener Entwürfe.
 - Browserprüfungen: die bisherigen 86 Funktions- und Layoutprüfungen sowie zusätzliche Kontrollen für beide Farbschemata, SVG-Navigation, Buttonhöhen und Textkontrast. Ergebnis siehe neuestes Arbeitsprotokoll.
@@ -198,7 +200,7 @@ Offene Erweiterungen, nach Priorität:
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
 2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
-4. **Didaktische Vertiefung:** Zwölf optionale Fehlersuchaufträge sind seit 1.8.0 vorhanden; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Noch offen sind vertiefende Korrekturaufgaben, visuelle Selektorhilfen, gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
+4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Noch offen sind vertiefende Korrekturaufgaben, visuelle Selektorhilfen, gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser, optionale Offline-Kopie und Browserprüfungen in CI.
 7. **ThommyWeb:** Browserzugriff ist möglich, K2/K6 geprüft. Übrige Kapitel gezielt prüfen und geeignete Ergänzungen eigenständig ausarbeiten; keine pauschale Inhaltsübernahme.
@@ -244,7 +246,7 @@ Die optionalen Denkaufgaben „Fehler finden“ gab es nur in den Einheiten 01�
 
 Wie bisher verändern die Aufgaben weder Entwurf noch Punkte. Der Node-Test verlangt jetzt für alle 16 Einheiten eine vollständige Aufgabe.
 
-Prüfung: 29 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Alle vier neuen Aufgaben mit einer Antwort im Browser geprüft. Hinweis zur Prüfumgebung: Ist der Browserbereich des Agenten ausgeblendet, kann der Prüflauf unter `/__qa` hängen bleiben; er wurde dann im sichtbaren Bereich neu gestartet.
+Prüfung: 29 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Alle vier neuen Aufgaben mit einer Antwort im Browser geprüft. Hinweis zur Prüfumgebung: Ist der Browserbereich des Agenten ausgeblendet, kann der Prüflauf unter `/__qa` hängen bleiben; er wurde dann im sichtbaren Bereich neu gestartet. Veröffentlicht mit Commit `68196ce`; [Pages-Lauf 38622981518](https://github.com/JakobSawazki/WebLab/actions/runs/38622981518) erfolgreich, Live-Bundle per SHA-256 identisch, Release v1.17.0.
 
 ### 14.10.2026 – Claude – Version 1.16.0 (Qualitätsrunde, Paket 5: Nachschlagewerk)
 

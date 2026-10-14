@@ -3,10 +3,10 @@ import assert from "node:assert/strict";
 import { debugging } from "../src/debugging.js";
 import { lessons } from "../src/content.js";
 
-test("Every HTML/CSS foundation lesson has a complete diagnosis exercise with individual feedback", () => {
+test("Every lesson has a complete diagnosis exercise with individual feedback", () => {
   assert.deepEqual(
     Object.keys(debugging),
-    lessons.slice(0, 12).map((l) => l.id),
+    lessons.map((l) => l.id),
   );
   for (const exercise of Object.values(debugging)) {
     assert.ok(exercise.code.trim());

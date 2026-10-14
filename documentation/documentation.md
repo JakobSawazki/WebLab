@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.16.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.17.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,10 +16,10 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.16.0 |
+| Bereich | Version 1.17.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
-| Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
+| Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
 | Roter Faden | Nächster offener Lernschritt, 16 Schritte mit aktueller Position, Vorwissen, drei konkrete Arbeitsschritte und Beobachtungsauftrag; eigene Webseite wächst durch Kopien des vorherigen Entwurfs |
 | Orientierung | Vier Etappen mit Fortschritt auf der Startseite; direkte Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern in den Einheiten |
 | Schülerprofil | Kürzel/Klasse, XP-Level und Fortschrittsbalken, direkte NAGOLD-Tabelle; kein Serverkonto |
@@ -233,6 +233,19 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.17.0 (Qualitätsrunde, Paket 6: Fehlersuche in den Projekteinheiten)
+
+Die optionalen Denkaufgaben „Fehler finden“ gab es nur in den Einheiten 01–12. Die Projekteinheiten 13–16 erhalten je eine eigene, eigenständig formulierte Aufgabe mit drei Antworten und individueller Begründung:
+
+- **13 Webseite planen:** zwei main-Elemente – richtig ist ein main mit section und h2.
+- **14 Rechte und Quellen:** „Bild: Google“ – welche Angabe für ein Foto unter CC BY 4.0 ist nachvollziehbar (Titel, Urheberin, Fundort, Lizenz)?
+- **15 Lokal testen:** Bild erscheint unter Windows, auf dem Webserver nicht – Groß- und Kleinschreibung im Pfad.
+- **16 Eigene Webseite:** Unterseite ohne Gestaltung – fehlender link auf die gemeinsame style.css.
+
+Wie bisher verändern die Aufgaben weder Entwurf noch Punkte. Der Node-Test verlangt jetzt für alle 16 Einheiten eine vollständige Aufgabe.
+
+Prüfung: 29 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Alle vier neuen Aufgaben mit einer Antwort im Browser geprüft. Hinweis zur Prüfumgebung: Ist der Browserbereich des Agenten ausgeblendet, kann der Prüflauf unter `/__qa` hängen bleiben; er wurde dann im sichtbaren Bereich neu gestartet.
+
 ### 14.10.2026 – Claude – Version 1.16.0 (Qualitätsrunde, Paket 5: Nachschlagewerk)
 
 Abgleich: Welche Fachbegriffe verwenden die 16 Einheiten, fehlen aber im Glossar? Ergebnis: unter anderem die semantischen Bereiche aus Einheit 13, Pfadarten, Dateinamen, UTF-8, Längeneinheiten, Farbangaben, Kaskade/Spezifität, Creative Commons, Webserver und FTP/SFTP.
@@ -242,7 +255,7 @@ Abgleich: Welche Fachbegriffe verwenden die 16 Einheiten, fehlen aber im Glossar
 - **Suchreihenfolge:** Exakte Begriffstreffer stehen vorn, dann Begriffe, die mit der Eingabe beginnen. Zuvor fand die Suche nach „p“ zuerst Einträge, in deren Beschreibung irgendwo ein p vorkam.
 - Neuer Node-Test `glossary.test.mjs`: Pflichtfelder, eindeutige Begriffe, gültiger Bereich und alle Querverweise vorhanden.
 
-Prüfung: 29 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Suche „p“ (erster Treffer p), „kaskade“ und „Siehe auch: Spezifität“ im Browser geprüft.
+Prüfung: 29 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Suche „p“ (erster Treffer p), „kaskade“ und „Siehe auch: Spezifität“ im Browser geprüft. Veröffentlicht mit Commit `95f6d98`; [Pages-Lauf 38622525520](https://github.com/JakobSawazki/WebLab/actions/runs/38622525520) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.15.0 (Qualitätsrunde, Paket 4: Rückmeldung und Abschluss)
 

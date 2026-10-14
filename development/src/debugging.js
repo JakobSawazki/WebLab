@@ -186,4 +186,68 @@ export const debugging = {
       "font-size verändert die Schriftgröße. Sie ist kein gezielter Ersatz für den Abstand zwischen Karten.",
     ],
   },
+  l13: {
+    code: "<header><h1>Schulgarten</h1></header>\n<main><p>Unsere Idee …</p></main>\n<main><p>Mitmachen …</p></main>\n<footer><p>Schulprojekt</p></footer>",
+    question:
+      "Die Seite hat zwei Hauptbereiche. Welche Korrektur ist sinnvoll?",
+    options: [
+      "Beide Teile in ein main legen und mit section und h2 gliedern.",
+      "Das zweite main in header umbenennen.",
+      "main durch table ersetzen, damit die Teile nebeneinander stehen.",
+    ],
+    answer: 0,
+    feedback: [
+      "Richtig: Eine Seite hat einen Hauptinhalt. Unterthemen gliederst du darin mit section und einer eigenen h2-Überschrift.",
+      "header ist für einleitende Inhalte wie den Seitentitel gedacht. Ein Unterthema des Hauptinhalts gehört nicht in den Kopfbereich.",
+      "Tabellen sind für zusammengehörige Daten, nicht für das Seitenlayout. Die Anordnung regelst du mit CSS.",
+    ],
+  },
+  l14: {
+    code: "<footer>\n  <h2>Quellen</h2>\n  <p>Bild: Google</p>\n</footer>",
+    question:
+      "Welche Quellenangabe für ein Foto unter CC BY 4.0 ist nachvollziehbar?",
+    options: [
+      "Bild: Google Bildersuche",
+      "Foto „Hochbeet“ von Lena Beispiel, Fundort: commons.wikimedia.org, Lizenz: CC BY 4.0",
+      "Bild: alle Rechte beim Urheber",
+    ],
+    answer: 1,
+    feedback: [
+      "Eine Suchmaschine ist nur der Fundweg. Sie ist weder Urheberin noch Lizenzgeberin des Bildes.",
+      "Richtig: Titel, Urheberin, Fundort und Lizenz machen die Angabe überprüfbar. Bei CC BY ist die Namensnennung Pflicht.",
+      "Diese Angabe nennt weder die Urheberin noch eine Lizenz. Sie zeigt nicht, dass du das Bild verwenden darfst.",
+    ],
+  },
+  l15: {
+    code: "<!-- index.html -->\n<img src=\"Bilder/Beet.JPG\" alt=\"Hochbeet im Schulhof\">\n\nmein-projekt/\n  index.html\n  bilder/\n    beet.jpg",
+    question:
+      "Unter Windows wird das Bild angezeigt, auf dem Webserver nicht. Was ist die Ursache?",
+    options: [
+      "Der Webserver zeigt grundsätzlich keine JPG-Dateien.",
+      "Der alt-Text ist zu lang.",
+      "Groß- und Kleinschreibung: Bilder/Beet.JPG passt nicht zu bilder/beet.jpg.",
+    ],
+    answer: 2,
+    feedback: [
+      "JPG ist ein übliches Bildformat im Web. Vergleiche stattdessen den Pfad im src-Attribut genau mit Ordner und Dateiname.",
+      "Der alt-Text beschreibt das Bild. Er hat keinen Einfluss darauf, ob der Server die Datei findet.",
+      "Richtig: Windows ignoriert die Groß- und Kleinschreibung, viele Webserver nicht. Schreibe src=\"bilder/beet.jpg\" genau wie Ordner und Datei.",
+    ],
+  },
+  l16: {
+    code: "<!-- kontakt.html -->\n<head>\n  <meta charset=\"utf-8\">\n  <title>Kontakt</title>\n</head>\n<body>\n  <h1>Kontakt</h1>\n</body>",
+    question:
+      "Die Unterseite erscheint ohne die Gestaltung der Startseite. Was fehlt?",
+    options: [
+      "<link rel=\"stylesheet\" href=\"style.css\"> im head von kontakt.html.",
+      "Eine zweite Datei style2.css nur für kontakt.html.",
+      "Ein style-Element im body.",
+    ],
+    answer: 0,
+    feedback: [
+      "Richtig: Jede HTML-Seite bindet die gemeinsame CSS-Datei selbst ein. Dann gilt dieselbe Gestaltung auf allen Seiten.",
+      "Eine zweite Datei verdoppelt die Regeln und erschwert jede Änderung. Die gemeinsame style.css soll für alle Seiten gelten.",
+      "Ein style-Element gehört in den head und gilt nur für diese eine Seite. Die gemeinsame Gestaltung kommt aus style.css.",
+    ],
+  },
 };

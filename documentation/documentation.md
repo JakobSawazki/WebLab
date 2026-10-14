@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.17.1** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.18.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.17.1 |
+| Bereich | Version 1.18.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -183,7 +183,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.17.1):** 30 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 164 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.18.0):** 31 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 164 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -235,6 +235,17 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.18.0 (Paket 8: Vertiefungen zu Pfaden und Tests)
+
+Aufklappbare Vertiefungen gab es bisher in den Einheiten 09 und 12. Zwei weitere, eigenständig formulierte Vertiefungen setzen an typischen Schwachstellen an:
+
+- **Einheit 05 „Ausprobieren: Pfade in einer Ordnerstruktur“:** Beispielordner mit Unterordnern `bilder/` und `seiten/`, Pfade aus index.html und aus `seiten/team.html` (mit `../`). Die Lernenden notieren die Pfade zuerst selbst, bauen die Unterseite nach dem Export in Notepad++ und testen einen absichtlich falschen Pfad mit großem Anfangsbuchstaben.
+- **Einheit 15 „Vorlage: Testprotokoll vor der Übertragung“:** Musterprotokoll als ol mit nachvollziehbaren Tests (Was getan, was erwartet, Ergebnis) und fünf Prüfschritte vom Doppelklick bis zur Wiederholung der Linktests auf der geschützten Plattform. Passt zum Praxisauftrag der Einheit, ohne dessen Kriterien zu ändern.
+
+Wie bisher ohne Zusatzpunkte, ohne Änderung an Entwürfen oder Abschlüssen. Neuer Node-Test: Alle Vertiefungen sind vollständig und nennen ausdrücklich „keine zusätzlichen Punkte“.
+
+Prüfung: 31 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Beide Vertiefungen im Browser geöffnet (kein Überlauf bei 461 Pixeln), Editor-Sprung behält jeweils die Einheit.
+
 ### 14.10.2026 – Claude – Version 1.17.1 (Paket 7: Zugänglichkeit und Wartbarkeit)
 
 Weiterarbeit nach Jakobs Ziel (`/goal`): selbständig in kleinen Paketen.
@@ -244,7 +255,7 @@ Weiterarbeit nach Jakobs Ziel (`/goal`): selbständig in kleinen Paketen.
 - **Neuer Node-Test `contrast.test.mjs`:** liest die Farb-Tokens beider Schemata aus `styles.css` und verlangt für alle sechs Textfarben auf allen sechs Flächen mindestens 4,5:1. Künftige Farbänderungen können Kontraste so nicht mehr unbemerkt verschlechtern.
 - **README** auf den aktuellen Stand gebracht (107 Glossareinträge, Fehlersuche in allen Einheiten, Lernhilfen, Prüfablauf).
 
-Prüfung: 30 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Lernpfad-Menü mit drei abgeschlossenen und zwölf gesperrten Einheiten in Dark und Light visuell geprüft.
+Prüfung: 30 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Lernpfad-Menü mit drei abgeschlossenen und zwölf gesperrten Einheiten in Dark und Light visuell geprüft. Veröffentlicht mit Commit `64206f7`; [Pages-Lauf 38623688981](https://github.com/JakobSawazki/WebLab/actions/runs/38623688981) erfolgreich, `weblab.js` und `styles.css` live per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.17.0 (Qualitätsrunde, Paket 6: Fehlersuche in den Projekteinheiten)
 

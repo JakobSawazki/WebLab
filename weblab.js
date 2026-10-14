@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.17.1";
+const VERSION = "1.18.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -582,6 +582,37 @@ byId("l12").extension = {
   ],
   observe:
     "Kannst du an deiner Tabelle erklären, welche Regel die Rahmen, welche die Innenabstände und welche die Kopfzeile gestaltet? Die Tabelle dient weiterhin zur Darstellung von Daten; für das Seitenlayout verwendest du keine Tabelle. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l5").extension = {
+  title: "Ausprobieren: Pfade in einer Ordnerstruktur",
+  explanation:
+    "Relative Pfade gehen immer von der Datei aus, in der sie stehen. Liegt eine Seite in einem Unterordner, führt ../ einen Ordner nach oben. Ordner- und Dateinamen müssen exakt übereinstimmen, auch in Groß- und Kleinschreibung. Im Labor kannst du nur eine Seite bearbeiten; die Pfade zwischen mehreren Dateien testest du nach dem Export im Projektordner.",
+  code: 'mein-projekt/\n  index.html\n  kontakt.html\n  bilder/\n    beet.jpg\n  seiten/\n    team.html\n\n<!-- in index.html -->\n<a href="seiten/team.html">Unser Team</a>\n<img src="bilder/beet.jpg" alt="Hochbeet im Schulhof">\n\n<!-- in seiten/team.html -->\n<a href="../index.html">Zur Startseite</a>\n<img src="../bilder/beet.jpg" alt="Hochbeet im Schulhof">',
+  steps: [
+    'Ergänze in deinem Entwurf einen Link auf seiten/team.html. Er führt von index.html in den Unterordner seiten.',
+    "Überlege, welche Pfade in seiten/team.html zur Startseite und zum Bild führen. Notiere sie in deinen Notizen, bevor du weiterliest: Aus dem Unterordner geht es mit ../ zurück.",
+    "Exportiere das Projekt-ZIP und entpacke es. Lege den Ordner seiten an und darin mit Notepad++ die Datei team.html mit Rücklink und Bild. Speichere mit Strg+S und teste alle Links im Browser.",
+    "Ändere absichtlich einen Pfad in Bilder/beet.jpg mit großem B. Beobachte, was der Browser anzeigt, und stelle den richtigen Pfad wieder her.",
+  ],
+  observe:
+    "Kannst du für jede Datei erklären, von welchem Ordner ihr Pfad ausgeht? Ein Pfad, der in index.html stimmt, ist in seiten/team.html falsch, wenn ../ fehlt. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l15").extension = {
+  title: "Vorlage: Testprotokoll vor der Übertragung",
+  explanation:
+    "Ein Testprotokoll hält fest, was du geprüft hast und mit welchem Ergebnis. Teste immer die exportierten Dateien im Projektordner, nicht nur die Laborvorschau. Schreibe jeden Test so, dass eine andere Person ihn wiederholen kann: Was wird getan, was soll passieren, was ist passiert?",
+  code: "<ol>\n  <li>Startseite öffnen: index.html zeigt Titel, Text und Bild. Ergebnis: in Ordnung.</li>\n  <li>Navigation: Der Link Kontakt öffnet kontakt.html, der Rücklink führt zur Startseite. Ergebnis: in Ordnung.</li>\n  <li>Bild: bilder/beet.jpg wird angezeigt; der Pfad ist kleingeschrieben. Ergebnis: korrigiert.</li>\n  <li>Schmale Ansicht: Fenster verkleinert, kein waagerechtes Scrollen. Ergebnis: in Ordnung.</li>\n</ol>",
+  steps: [
+    "Öffne index.html per Doppelklick aus dem entpackten Projektordner. Prüfe Titel im Browser-Tab, Überschriften und Bilder.",
+    "Klicke jeden Link einmal, auch alle Rücklinks. Notiere fehlerhafte Ziele mit dem genauen Dateinamen.",
+    "Vergleiche alle Pfade mit den Dateinamen im Ordner, Buchstabe für Buchstabe, einschließlich Groß- und Kleinschreibung und Dateiendung.",
+    "Verkleinere das Browserfenster, bis es etwa so schmal wie ein Handy ist. Prüfe, ob Texte lesbar bleiben und nichts seitlich herausragt.",
+    "Übertrage erst danach den gesamten Ordner mit der Lehrkraft auf die geschützte Plattform und wiederhole dort die Linktests.",
+  ],
+  observe:
+    "Dein Testbericht im Praxisauftrag nennt mindestens drei solcher Tests mit Ergebnis. Fehler, die du gefunden und behoben hast, gehören ausdrücklich dazu. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
 };
 
 return {VERSION,groups,lessons,byId};

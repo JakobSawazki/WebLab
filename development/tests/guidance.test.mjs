@@ -23,3 +23,14 @@ test("Every quiz option is explained and only the correct one is confirmed", () 
       assert.equal(text.startsWith("Richtig"), i === l.answer, `${l.id}: Antwort ${i + 1}`));
   }
 });
+
+test("Optional extensions are complete and never promise extra points", () => {
+  const extended = lessons.filter((l) => l.extension);
+  assert.deepEqual(extended.map((l) => l.id), ["l5", "l9", "l12", "l15"]);
+  for (const { id, extension: e } of extended) {
+    for (const field of ["title", "explanation", "code", "observe"])
+      assert.ok(typeof e[field] === "string" && e[field].trim(), `${id}: ${field}`);
+    assert.ok(e.steps.length >= 3 && e.steps.every((s) => s.trim().length > 20), `${id}: Schritte`);
+    assert.match(e.observe, /keine zusätzlichen Punkte/, `${id}: ohne Zusatzpunkte`);
+  }
+});

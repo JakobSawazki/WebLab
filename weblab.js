@@ -2477,18 +2477,18 @@ function scheduleLessonMenuClose() {
 lessonMenuToggle.onclick = (event) => {
   // Pointer entry may have opened the panel just before this click.
   // Keyboard/touch clicks toggle it; desktop mouse clicks keep it open.
-  const mouseHover = event.detail > 0 && lessonMenuHover.matches;
+  const mouseHover = event.pointerType === "mouse" && lessonMenuHover.matches;
   setLessonMenu(mouseHover || !lessonMenuOpen);
 };
 lessonMenuGroup.addEventListener("pointerenter", (event) => {
   if (event.pointerType === "mouse" && lessonMenuHover.matches) setLessonMenu(true);
 });
-lessonMenuGroup.addEventListener("pointerleave", () => {
-  if (lessonMenuHover.matches) scheduleLessonMenuClose();
+lessonMenuGroup.addEventListener("pointerleave", (event) => {
+  if (event.pointerType === "mouse" && lessonMenuHover.matches) scheduleLessonMenuClose();
 });
 lessonMenuPanel.addEventListener("pointerenter", () => clearTimeout(lessonMenuCloseTimer));
-lessonMenuPanel.addEventListener("pointerleave", () => {
-  if (lessonMenuHover.matches) scheduleLessonMenuClose();
+lessonMenuPanel.addEventListener("pointerleave", (event) => {
+  if (event.pointerType === "mouse" && lessonMenuHover.matches) scheduleLessonMenuClose();
 });
 lessonMenuGroup.addEventListener("keydown", (event) => {
   if (event.key !== "ArrowRight" && event.key !== "ArrowDown") return;

@@ -26,7 +26,7 @@ test("Every quiz option is explained and only the correct one is confirmed", () 
 
 test("Optional extensions are complete and never promise extra points", () => {
   const extended = lessons.filter((l) => l.extension);
-  assert.deepEqual(extended.map((l) => l.id), ["l5", "l9", "l10", "l11", "l12", "l13", "l14", "l15", "l16"]);
+  assert.deepEqual(extended.map((l) => l.id), ["l2", "l5", "l6", "l8", "l9", "l10", "l11", "l12", "l13", "l14", "l15", "l16"]);
   for (const { id, extension: e } of extended) {
     for (const field of ["title", "explanation", "code", "observe"])
       assert.ok(typeof e[field] === "string" && e[field].trim(), `${id}: ${field}`);

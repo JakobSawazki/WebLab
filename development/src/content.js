@@ -1,5 +1,5 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-export const VERSION = "1.20.0";
+export const VERSION = "1.21.0";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -695,4 +695,49 @@ byId("l16").extension = {
   ],
   observe:
     "Kannst du jede Zeile deines Codes erklären und auf Nachfrage selbst verändern? Verwendete KI-Hilfen nennst du offen. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l2").extension = {
+  title: "Ausprobieren: Grundgerüst und Umlaute in Notepad++",
+  explanation:
+    "In Notepad++ gibt es keine Vorschau und keine automatische Prüfung. Umso wichtiger sind Grundgerüst, Dateiname und Kodierung. Die Statusleiste unten rechts zeigt die Kodierung der Datei. Steht dort nicht UTF-8, erscheinen Umlaute im Browser falsch, obwohl im head meta charset=\"utf-8\" steht.",
+  code: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Grüße aus der AG</title>\n</head>\n<body>\n  <h1>Schöne Grüße</h1>\n  <p>Äpfel, Öl und Übungen.</p>\n</body>\n</html>',
+  steps: [
+    "Starte Notepad++ vom Informatik-Stick und lege eine neue Datei an. Prüfe unten rechts in der Statusleiste die Kodierung; wähle bei Bedarf im Menü Kodierung den Eintrag UTF-8.",
+    "Tippe das Grundgerüst aus dem Beispiel selbst ab, ohne zu kopieren. Wähle im Menü Sprache unter H den Eintrag HTML, damit Notepad++ die Tags farbig hervorhebt.",
+    "Speichere die Datei mit Strg+S als index.html in deinem Projektordner. Öffne sie per Doppelklick im Browser und prüfe Titel im Tab und Umlaute.",
+    "Wandle die Datei testweise über das Menü Kodierung in ANSI um, speichere und lade den Browser mit F5 neu. Beobachte die Umlaute und stelle danach UTF-8 wieder her.",
+  ],
+  observe:
+    "Kannst du erklären, warum Datei-Kodierung und meta charset zusammenpassen müssen? Vergleiche deinen getippten Code anschließend mit deinem Entwurf im WebLab. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l6").extension = {
+  title: "Ausprobieren: Den passenden Alternativtext finden",
+  explanation:
+    "Ein guter Alternativtext hängt vom Zweck des Bildes ab, nicht nur von seinem Inhalt. Ein informatives Bild beschreibt die Information, die es vermittelt. Ein Bild, das als Link dient, nennt das Ziel. Ein rein dekoratives Bild erhält ein leeres alt=\"\", damit Vorleseprogramme es überspringen. Wiederhole im alt-Text nicht, was direkt daneben schon steht.",
+  code: '<!-- informativ: Was zeigt das Bild? -->\n<img src="bilder/beet.jpg" alt="Drei Hochbeete mit jungen Salatpflanzen">\n\n<!-- als Link: Wohin führt es? -->\n<a href="kontakt.html"><img src="bilder/brief.png" alt="Kontakt"></a>\n\n<!-- dekorativ: wird übersprungen -->\n<img src="bilder/linie.png" alt="">',
+  steps: [
+    "Suche in deinem Entwurf jedes Bild und entscheide: informativ, Link oder dekorativ?",
+    "Schreibe für jedes informative Bild einen Alternativtext, der die wichtige Information in einem kurzen Satz nennt. Vermeide Anfänge wie „Bild von“.",
+    "Lies deinen Absatz mit Bild laut vor und ersetze dabei das Bild durch seinen alt-Text. Klingt der Text sinnvoll und ohne Doppelungen?",
+    "Ändere absichtlich einen Bildpfad, sodass das Bild nicht geladen wird. Beobachte in der Vorschau, wo der Browser jetzt den alt-Text zeigt, und stelle den Pfad wieder her.",
+  ],
+  observe:
+    "Kannst du für jedes Bild deiner Seite begründen, warum sein alt-Text so lautet? Dasselbe Foto kann je nach Seite einen anderen alt-Text brauchen. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l8").extension = {
+  title: "Ausprobieren: Untertitel als WebVTT-Datei",
+  explanation:
+    "Untertitel stehen in einer eigenen Textdatei im Format WebVTT. Jede Zeitangabe nennt Beginn und Ende im Format Stunden:Minuten:Sekunden.Millisekunden, darunter folgt der Text. Das track-Element verbindet die Datei mit dem Video. Wichtig: Beim Öffnen per Doppelklick blockieren Edge und Chrome die Untertiteldatei aus Sicherheitsgründen. Untertitel testest du deshalb über einen Webserver, etwa die Unterrichtsplattform der Lehrkraft.",
+  code: 'WEBVTT\n\n00:00:00.500 --> 00:00:04.000\nWir bereiten das Hochbeet vor.\n\n00:00:04.500 --> 00:00:08.000\nJetzt säen wir die Radieschen.\n\n<video controls width="480">\n  <source src="medien/garten.mp4" type="video/mp4">\n  <track src="medien/untertitel.vtt" kind="subtitles" srclang="de" label="Deutsch" default>\n</video>',
+  steps: [
+    "Schreibe zu deinem geplanten Video zwei bis drei kurze Untertitel mit Zeitangaben auf. Jeder Untertitel steht höchstens wenige Sekunden.",
+    "Lege in Notepad++ eine Datei untertitel.vtt im Ordner medien an. Die erste Zeile lautet WEBVTT; speichere die Datei als UTF-8.",
+    "Ergänze in deinem Entwurf im video-Element das track-Element mit src, kind, srclang und label.",
+    "Teste die Untertitel auf der Unterrichtsplattform oder einem anderen Webserver. Über den Doppelklick auf index.html erscheinen sie nicht; das ist kein Fehler in deinem Code.",
+  ],
+  observe:
+    "Kannst du erklären, warum Untertitel und Textfassung den Inhalt auch ohne Ton zugänglich machen? Die Laborvorschau lädt keine Mediendateien. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
 };

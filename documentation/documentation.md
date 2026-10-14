@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.20.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.21.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.20.0 |
+| Bereich | Version 1.21.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -183,7 +183,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.20.0):** 31 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.21.0):** 31 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -235,6 +235,16 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.21.0 (Paket 12: Vertiefungen zu Kodierung, Alternativtext und Untertiteln)
+
+- **Einheit 02 „Grundgerüst und Umlaute in Notepad++“:** Grundgerüst von Hand abtippen, Kodierung in der Statusleiste prüfen und im Menü Kodierung auf UTF-8 stellen, Syntaxhervorhebung über Sprache → H → HTML. Ein absichtlicher Wechsel nach ANSI zeigt, warum Dateikodierung und `meta charset` zusammenpassen müssen.
+- **Einheit 06 „Den passenden Alternativtext finden“:** Unterscheidung informativ / als Link / dekorativ (`alt=""`) mit Beispielen, Vorlesen des Absatzes mit alt-Text statt Bild, absichtlich falscher Pfad zeigt, wo der alt-Text erscheint.
+- **Einheit 08 „Untertitel als WebVTT-Datei“:** Aufbau einer `.vtt`-Datei und des track-Elements (kind, srclang, label, default). Fachlich wichtiger Hinweis: Edge und Chrome laden Untertiteldateien beim Öffnen per Doppelklick (`file://`) aus Sicherheitsgründen nicht; getestet wird auf einem Webserver, etwa der Unterrichtsplattform.
+
+Ohne Zusatzpunkte und ohne Änderung an Kriterien, Entwürfen oder Abschlüssen. Vertiefungen jetzt in den Einheiten 02, 05, 06, 08 und 09–16; offen nur 01, 03, 04 und 07.
+
+Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Alle drei Vertiefungen im Browser geöffnet, kein Überlauf, Codeblöcke ohne seitliches Scrollen.
+
 ### 14.10.2026 – Claude – Version 1.20.0 (Paket 11: Vertiefungen für die Projekteinheiten)
 
 Drei weitere eigenständig formulierte Vertiefungen; damit haben alle Projekteinheiten 13–16 eine Vertiefung:
@@ -245,7 +255,7 @@ Drei weitere eigenständig formulierte Vertiefungen; damit haben alle Projektein
 
 Ohne Zusatzpunkte und ohne Änderung an Kriterien, Entwürfen oder Abschlüssen. Vertiefungen jetzt in den Einheiten 05, 09–16.
 
-Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Alle drei Vertiefungen im Browser geöffnet, kein Überlauf, Skizze ohne Umbruch.
+Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Alle drei Vertiefungen im Browser geöffnet, kein Überlauf, Skizze ohne Umbruch. Veröffentlicht mit Commit `9e7c71b`; [Pages-Lauf 38625000998](https://github.com/JakobSawazki/WebLab/actions/runs/38625000998) erfolgreich, Live-Bundle per SHA-256 identisch, Release v1.20.0.
 
 ### 14.10.2026 – Claude – Version 1.19.0 (Paket 10: Vertiefungen zu Kaskade und Kontrast)
 

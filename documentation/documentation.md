@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.22.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.22.1** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.22.0 |
+| Bereich | Version 1.22.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -127,12 +127,15 @@ Voraussetzung für Entwicklung: **Node.js ab 22**. In PowerShell im Projektordne
 ```powershell
 npm test
 npm run build
+npm run qa
 npm run serve
 ```
 
+`npm run qa` führt nach dem Build alle Browserprüfungen ohne sichtbares Fenster in Edge oder Chrome aus (eigenes Temp-Profil, Exitcode 0/1). `npm run serve` bleibt für Vorschau und Sichtprüfung.
+
 Vorschau: `http://127.0.0.1:4188/`. Browserprüfungen: `http://127.0.0.1:4188/__qa`. Nach Quelländerungen neu bauen und im Browser neu laden. Zum Lernen reicht seit 1.4.0 ein Doppelklick auf `index.html` im Projektordner. Der ganze Ordner mit `weblab.js`, `styles.css` und `assets/` muss zusammenbleiben. Node.js und Server sind dafür nicht erforderlich. `start.cmd` wurde beim anschließenden Aufräumen entfernt; der einzige Einstieg für Lernende ist `index.html`. Der Build fasst die weiterhin modular gepflegten Quellen in ein klassisches Skript zusammen; nach Quelländerungen immer neu bauen und `weblab.js` mit committen. Lokaler Dateistart, localhost und Online-Seite haben getrennte Lernstände; bei einem Wechsel JSON-Sicherung verwenden.
 
-Der Build schreibt ausschließlich sieben erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket und veröffentlicht ausschließlich dist. Die Browserprüfungen werden in dieser Fassung lokal ausgeführt, noch nicht automatisch in CI.
+Der Build schreibt ausschließlich sieben erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket, führt seit 1.22.1 die Browserprüfungen mit Chrome aus und veröffentlicht ausschließlich dist.
 
 ## 5. Lernstand, Migration und Sicherheit
 
@@ -183,7 +186,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.22.0):** 31 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.22.1):** 31 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -202,7 +205,7 @@ Offene Erweiterungen, nach Priorität:
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
 4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Noch offen sind vertiefende Korrekturaufgaben, eine interaktive Selektorhilfe, gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
-6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser, optionale Offline-Kopie und Browserprüfungen in CI.
+6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser und optionale Offline-Kopie. Browserprüfungen laufen seit 1.22.1 in CI.
 7. **ThommyWeb:** Browserzugriff ist möglich, K2/K6 geprüft. Übrige Kapitel gezielt prüfen und geeignete Ergänzungen eigenständig ausarbeiten; keine pauschale Inhaltsübernahme.
 
 ### Anforderungsabgleich am 12.10.2026
@@ -235,6 +238,15 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.22.1 (Paket 14: Wartbarkeit und automatische Browserprüfungen)
+
+- **Vertiefungen ausgelagert:** Die 16 Vertiefungen stehen jetzt in `development/src/extensions.js` statt angehängt am Ende von `content.js` (552 statt 793 Zeilen). `content.js` ordnet sie per `extensions[l.id]` zu. Vorher/nachher per JSON-Vergleich aller Einheiten bytegleich bestätigt. Build-Reihenfolge und die Positivliste des lokalen Prüfservers (`serve.mjs`) um das neue Modul ergänzt.
+- **`npm run qa`:** Neuer Prüfstarter `development/tools/run-browser-checks.mjs`. Er startet den lokalen Server auf Port 4199 und Edge oder Chrome ohne Fenster mit frischem Temp-Profil, liest das Ergebnis der Prüfseite über das DevTools-Protokoll (eingebautes `WebSocket` von Node, keine Abhängigkeit) und endet mit Exitcode 0 oder 1. Laufzeit lokal etwa fünf Sekunden. Vorteile: unabhängig vom sichtbaren Browserbereich (dessen Ausblenden ließ Prüfläufe hängen), kein Einfluss auf vorhandene Lernstände, Profil wird danach gelöscht. Voraussetzung: vorher `npm run build`, weil der Server `dist/` ausliefert. Browserpfad bei Bedarf über `BROWSER=…`.
+- **CI:** Der Pages-Workflow führt nach Tests und Build jetzt `npm run qa` mit dem vorinstallierten Chrome des Runners aus. Schlägt eine Browserprüfung fehl, wird nicht veröffentlicht. Damit ist der offene Punkt „Browserprüfungen in CI“ aus Abschnitt 7 umgesetzt.
+- **Prüfung robuster:** Die Mobilprüfung der Rückmeldung (seit 1.18.1) setzte voraus, dass Einheit 01 im Browserspeicher noch offen ist; ein abgebrochener Prüflauf hatte das widerlegt. Sie prüft jetzt unabhängig vom Lernstand: ein Tipp je offenem Kriterium, Checkliste nur bei nicht abgeschlossener Einheit.
+
+Prüfung: 31 Node-Tests und Build bestanden; `npm run qa` 165/165, Temp-Profil anschließend entfernt.
+
 ### 14.10.2026 – Claude – Version 1.22.0 (Paket 13: Vertiefungen in allen Einheiten)
 
 Die letzten vier Einheiten ohne Vertiefung erhalten je eine eigenständig formulierte Vertiefung. Damit hat jede der 16 Einheiten eine; der Node-Test verlangt das jetzt ausdrücklich.
@@ -244,7 +256,7 @@ Die letzten vier Einheiten ohne Vertiefung erhalten je eine eigenständig formul
 - **Einheit 04 „Listen in Listen“:** Unterliste innerhalb des li, absichtlich falsche Position hinter `</li>` vergleichen, Einrückung als Lesehilfe.
 - **Einheit 07 „Zeilenüberschriften und Tabellenbereiche“:** `th scope="row"`, `thead`, `tbody`; Zelle so vorlesen, wie es ein Vorleseprogramm täte. Die Kriterien der Einheit bleiben unverändert.
 
-Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Alle vier Vertiefungen im Browser geöffnet, kein Überlauf, Codeblöcke ohne seitliches Scrollen.
+Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Alle vier Vertiefungen im Browser geöffnet, kein Überlauf, Codeblöcke ohne seitliches Scrollen. Veröffentlicht mit Commit `4158bdc`; [Pages-Lauf 38625613443](https://github.com/JakobSawazki/WebLab/actions/runs/38625613443) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.21.0 (Paket 12: Vertiefungen zu Kodierung, Alternativtext und Untertiteln)
 

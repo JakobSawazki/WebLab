@@ -257,9 +257,15 @@
         // Open criteria with tips, the pitfalls and the checklist must fit too.
         frame.contentDocument.querySelector(".pitfalls summary").click();
         frame.contentDocument.querySelector("#checkButton").click();
+        // Independent of the stored progress: tips appear for every open
+        // criterion, the checklist for every lesson that is not completed.
+        const fd = frame.contentDocument,
+          openCriteria = fd.querySelectorAll(".criteria li.fail").length,
+          completed = fd.querySelector("#completeButton").disabled;
         assert(
-          frame.contentDocument.querySelectorAll(".criteria-tip").length > 0 &&
-            frame.contentDocument.querySelectorAll("#completionStatus li").length === 4,
+          fd.querySelectorAll(".criteria-tip").length === openCriteria &&
+            fd.querySelector(".criteria-summary") &&
+            (completed || fd.querySelectorAll("#completionStatus li").length === 4),
           "Rueckmeldung zeigt Tipps und Abschluss-Checkliste",
         );
       }

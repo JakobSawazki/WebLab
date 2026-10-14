@@ -25,6 +25,8 @@ jobs:
         run: npm test
       - name: Build public files only
         run: npm run build
+      - name: Browser checks in headless Chrome
+        run: npm run qa
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:

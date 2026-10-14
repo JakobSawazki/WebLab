@@ -27,6 +27,7 @@ Entwicklung und Browserprüfungen:
 ```text
 npm test
 npm run build
+npm run qa
 npm run serve
 ```
 
@@ -44,4 +45,4 @@ Seit Version 1.13.0: Profil mit XP-Level, Fortschrittsbalken und direktem Zugang
 
 Seit Version 1.14.0: Jedes offene Kriterium nennt einen konkreten nächsten Schritt; jede Einheit listet typische Stolpersteine. Seit 1.15.0 erklärt der Verständnischeck jede Antwort, und eine Checkliste zeigt vor dem Abschluss, was noch fehlt. Seit 1.16.0 hat das Nachschlagewerk „Siehe auch“-Verweise und eine Suche mit exakten Treffern zuerst.
 
-Prüfungen: `npm test` (Node-Tests, darunter Farbkontraste beider Farbschemata aus `styles.css`) und nach `npm run serve` die Browserprüfungen unter `http://127.0.0.1:4188/__qa`. Die Prüfseite fängt Sicherungsdownloads der App ab.
+Prüfungen: `npm test` (Node-Tests, darunter Farbkontraste beider Farbschemata aus `styles.css`) und nach `npm run build` mit `npm run qa` alle Browserprüfungen ohne sichtbares Fenster in Edge oder Chrome. Alternativ nach `npm run serve` unter `http://127.0.0.1:4188/__qa`. Die Prüfseite fängt Sicherungsdownloads der App ab. GitHub Actions veröffentlicht nur, wenn beide Prüfungen bestehen.

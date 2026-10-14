@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.18.1";
+const VERSION = "1.19.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -613,6 +613,36 @@ byId("l15").extension = {
   ],
   observe:
     "Dein Testbericht im Praxisauftrag nennt mindestens drei solcher Tests mit Ergebnis. Fehler, die du gefunden und behoben hast, gehören ausdrücklich dazu. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l10").extension = {
+  title: "Ausprobieren: Welche Regel gewinnt?",
+  explanation:
+    "Treffen mehrere Regeln dasselbe Element, entscheidet zuerst die Spezifität des Selektors: Eine ID wiegt mehr als eine Klasse, eine Klasse mehr als ein Tag. Haben zwei Regeln dieselbe Spezifität, gewinnt die Regel, die später steht. Sage das Ergebnis jeweils vorher, bevor du in die Vorschau schaust.",
+  code: '<p class="hinweis" id="wichtig">Bitte Handschuhe mitbringen.</p>\n\np { color: navy; }\n.hinweis { color: darkgreen; }\n#wichtig { color: darkred; }\n.hinweis { color: purple; }',
+  steps: [
+    'Ergänze einen Absatz mit class="hinweis" und id="wichtig". Schreibe nur die p-Regel ins CSS und beobachte die Farbe.',
+    "Ergänze die Regel für .hinweis. Sage vorher, ob der Absatz navy oder darkgreen wird, und prüfe deine Vermutung in der Vorschau.",
+    "Ergänze die Regel für #wichtig und darunter die zweite .hinweis-Regel mit purple. Erkläre, warum der Absatz trotzdem darkred bleibt, obwohl die purple-Regel zuletzt steht.",
+    "Entferne die Regel für #wichtig. Vertausche danach die Reihenfolge der beiden .hinweis-Regeln und beobachte, welche Farbe jetzt gilt.",
+  ],
+  observe:
+    "Kannst du für jede Farbe begründen, ob die Spezifität oder die Reihenfolge entschieden hat? Für wiederkehrende Gestaltung bleiben Klassen die beste Wahl; IDs nutzt du sparsam. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l11").extension = {
+  title: "Ausprobieren: Kontrast mit den Entwicklerwerkzeugen prüfen",
+  explanation:
+    "Ob Text gut lesbar ist, hängt vom Kontrast zwischen Schrift- und Hintergrundfarbe ab. Für normalen Text gilt ein Verhältnis von mindestens 4,5 : 1 als gut lesbar, für große Schrift 3 : 1. Edge und Chrome zeigen dieses Verhältnis in den Entwicklerwerkzeugen an. Teste dafür deine exportierte Seite im Browser.",
+  code: "body {\n  color: #9aa5b1;          /* hellgrau: zu schwach */\n  background-color: #ffffff;\n}\n\nbody {\n  color: #2f3b47;          /* dunkelgrau: gut lesbar */\n  background-color: #ffffff;\n}",
+  steps: [
+    "Gib body in deinem Entwurf zunächst die hellgraue Schriftfarbe aus dem Beispiel. Exportiere die Seite und öffne index.html im Browser.",
+    "Drücke F12, wähle mit dem Pfeilsymbol einen Absatz aus und klicke im Bereich Styles auf das Farbquadrat neben color. Lies das angezeigte Kontrastverhältnis ab.",
+    "Ändere die Farbe in deiner style.css so lange, bis das Verhältnis mindestens 4,5 : 1 erreicht. Speichere mit Strg+S und lade mit F5 neu.",
+    "Übernimm die gut lesbare Farbe in deinen Entwurf im WebLab und notiere das erreichte Verhältnis in deinen Notizen.",
+  ],
+  observe:
+    "Wichtige Informationen dürfen nicht nur über Farbe erkennbar sein; ergänze zum Beispiel ein Wort wie „Achtung“. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
 };
 
 return {VERSION,groups,lessons,byId};

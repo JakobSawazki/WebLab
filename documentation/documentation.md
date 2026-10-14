@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.18.1** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.19.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.18.1 |
+| Bereich | Version 1.19.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -183,7 +183,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.18.1):** 31 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.19.0):** 31 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -200,7 +200,7 @@ Offene Erweiterungen, nach Priorität:
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
 2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
-4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Noch offen sind vertiefende Korrekturaufgaben, visuelle Selektorhilfen, gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
+4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Noch offen sind vertiefende Korrekturaufgaben, eine interaktive Selektorhilfe, gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser, optionale Offline-Kopie und Browserprüfungen in CI.
 7. **ThommyWeb:** Browserzugriff ist möglich, K2/K6 geprüft. Übrige Kapitel gezielt prüfen und geeignete Ergänzungen eigenständig ausarbeiten; keine pauschale Inhaltsübernahme.
@@ -235,12 +235,23 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.19.0 (Paket 10: Vertiefungen zu Kaskade und Kontrast)
+
+Zwei weitere eigenständig formulierte Vertiefungen, angelehnt an den offenen Punkt „visuelle Selektorhilfen“ in Abschnitt 7:
+
+- **Einheit 10 „Ausprobieren: Welche Regel gewinnt?“:** Ein Absatz mit Klasse und ID, vier konkurrierende Farbregeln. Die Lernenden sagen das Ergebnis vorher und beobachten dann: Klasse schlägt Tag, ID schlägt Klasse auch bei späterer Klassenregel, bei gleicher Spezifität entscheidet die Reihenfolge. Fachlich stimmig zu [W3C CSS Cascade](https://www.w3.org/TR/css-cascade-5/#cascade-sort); keine pauschale Rangfolge nach Einbindungsart.
+- **Einheit 11 „Ausprobieren: Kontrast mit den Entwicklerwerkzeugen prüfen“:** Hellgrau auf Weiß (2,5 : 1) gegen Dunkelgrau (11,4 : 1); Werte nachgerechnet. Die Lernenden lesen das Kontrastverhältnis in den Entwicklerwerkzeugen von Edge (F12, Farbwähler in „Styles“) ab und verbessern ihre Farbe bis mindestens 4,5 : 1 (große Schrift 3 : 1, WCAG 2.x AA). Bezug zum Hinweis, Informationen nicht nur über Farbe zu vermitteln.
+
+Ohne Zusatzpunkte und ohne Änderung an Kriterien, Entwürfen oder Abschlüssen. Der Node-Test erwartet jetzt Vertiefungen in den Einheiten 05, 09, 10, 11, 12 und 15.
+
+Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Beide Vertiefungen im Browser geöffnet, kein Überlauf. Die Farbe in der isolierten Vorschau lässt sich wegen der Sandbox absichtlich nicht per Skript auslesen.
+
 ### 14.10.2026 – Claude – Version 1.18.1 (Paket 9: Notizen und Mobilprüfung)
 
 - **Meine Notizen:** Die Seite zeigte für alle 16 Einheiten Eingabefelder, auch für gesperrte; deren Titel-Links führten auf die Sperrseite. Jetzt erscheinen freigeschaltete Einheiten und gesperrte nur dann, wenn bereits Notizen vorhanden sind (etwa nach dem Laden einer Sicherung mit Lücke). Keine Notiz wird ausgeblendet oder gelöscht. Ein Hinweis nennt die Zahl der noch folgenden Einheiten; Überschriften tragen die Nummer („Einheit 01: …“).
 - **Neue Browserprüfung:** In der 360-Pixel-Ansicht von Einheit 01 werden „Typische Stolpersteine“ geöffnet und „Auftrag prüfen“ ausgelöst; geprüft wird, dass Tipps und die vierteilige Abschluss-Checkliste erscheinen. Die anschließenden Überlauf-, Buttonhöhen- und Kontrastprüfungen laufen damit auch über diese neuen Elemente in beiden Farbschemata.
 
-Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Notizenseite mit frischem Profil geprüft (eine Einheit, Hinweis auf 15 weitere).
+Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Notizenseite mit frischem Profil geprüft (eine Einheit, Hinweis auf 15 weitere). Veröffentlicht mit Commit `cdc8c97`; [Pages-Lauf 38624242186](https://github.com/JakobSawazki/WebLab/actions/runs/38624242186) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.18.0 (Paket 8: Vertiefungen zu Pfaden und Tests)
 

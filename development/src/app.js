@@ -364,6 +364,20 @@ function exerciseProgress(lessonId) {
   const solved = solvedExercises();
   return exercises[lessonId].filter((_, i) => solved.has(exerciseId(lessonId, i))).length;
 }
+// The rules of all solved exercises, as a short list to revise from.
+function rememberedRules() {
+  const solved = solvedExercises(),
+    items = lessons.flatMap((l) =>
+      (exercises[l.id] || [])
+        .filter((_, i) => solved.has(exerciseId(l.id, i)))
+        .map((e) => `<li><span class="muted">Einheit ${l.id.slice(1).padStart(2, "0")}:</span> ${esc(e.remember)}</li>`),
+    );
+  return `<section class="panel remembered-rules" aria-labelledby="rulesTitle"><h3 id="rulesTitle">Deine Merksätze</h3>${
+    items.length
+      ? `<p class="muted">Aus ${items.length} gelösten ${items.length === 1 ? "Übung" : "Übungen"}. Lies sie vor einer Klassenarbeit noch einmal durch.</p><ul>${items.join("")}</ul>`
+      : '<p class="muted">Sobald du in einer Einheit eine Übung im Mini-Editor löst, sammelt sich hier ihr Merksatz.</p>'
+  }</section>`;
+}
 function exercisePanel(l) {
   const list = exercises[l.id];
   if (!list) return "";
@@ -826,7 +840,7 @@ function render() {
         (l) => lessonAccess(state, l.id).unlocked || state.notes[l.id],
       ),
       hidden = lessons.length - notable.length;
-    html = notable
+    html = rememberedRules() + notable
       .map(
         (l) =>
           `<section class="panel"><h3><a href="#lesson/${l.id}">Einheit ${l.id.slice(1).padStart(2, "0")}: ${esc(l.title)}</a></h3><label for="notes-${l.id}">Deine Notizen</label><textarea class="notes" id="notes-${l.id}" data-note="${l.id}" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>`,

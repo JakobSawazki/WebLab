@@ -1928,3 +1928,10 @@ dialog::backdrop {
 .stats.stats-auto {
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
 }
+.remembered-rules ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+}
+.remembered-rules li + li {
+  margin-top: 0.4rem;
+}

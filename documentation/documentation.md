@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.28.1** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.29.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.28.1 |
+| Bereich | Version 1.29.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -27,7 +27,7 @@ Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein
 | NAGOLD | Zunächst 5 je Abschluss; bearbeitbare Tabelle mit Datum/Uhrzeit, Anlass, −10 bis +5 ohne 0, Ergänzen und Löschen |
 | Abschluss | Technische Kriterien erfüllt, Quiz richtig, alle Selbstkontrollen bestätigt, Profil vollständig |
 | Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich |
-| Übungen | Übungswerkstatt in den Einheiten: kurze Aufgaben (Reparieren, Ergänzen, Selbst schreiben) mit Mini-Editor, Live-Vorschau, Sofortprüfung und Merksatz; ohne Punkte |
+| Übungen | Übungswerkstatt in den Einheiten: kurze Aufgaben (Reparieren, Ergänzen, Selbst schreiben) mit Mini-Editor, Live-Vorschau, Sofortprüfung und Merksatz; ohne Punkte; gesammelte Merksätze unter „Meine Notizen“ |
 | Labor | HTML-/CSS-Dateireiter, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
 | Informatik-Stick | HTML-/CSS-Import und Export, Notepad++-Transferauftrag mit Strg+S/F5 und Dateiverknüpfung |
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
@@ -187,7 +187,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.28.1):** 37 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 168 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.29.0):** 37 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 168 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -239,13 +239,20 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.29.0 (Paket 23: Merksätze sammeln)
+
+- **„Deine Merksätze“** oben auf der Seite „Meine Notizen“: Liste der Merksätze aller gelösten Übungen, mit Einheitennummer, als Wiederholung vor Klassenarbeiten. Ohne gelöste Übungen erscheint ein kurzer Hinweis, wie sich die Liste füllt.
+- Grundlage ist die Gerätemarkierung `weblab-exercises-v1`; Notizen, Lernstand und Sicherung bleiben unverändert.
+
+Prüfung: 37 Node-Tests und Build bestanden; `npm run qa` 168/168. Notizenseite mit vier gelösten Übungen per Edge-Screenshot geprüft.
+
 ### 14.10.2026 – Claude – Version 1.28.1 (Paket 22: Übungsfortschritt sichtbar)
 
 - **Lernpfad:** Freigeschaltete Einheitenkarten zeigen „Übungen: x von y gelöst“.
 - **Erfolge & NAGOLD:** neue Kennzahl „Übungen gelöst (ohne Punkte)“, z. B. 4 / 31. Die fünf Kennzahlen verteilen sich dort automatisch auf so viele Spalten, wie Platz ist (`.stats.stats-auto`); die Startseite behält ihre vier Spalten.
 - Grundlage ist ausschließlich die Gerätemarkierung `weblab-exercises-v1`; XP, NAGOLD, Freischaltung und Sicherungsformat bleiben unverändert.
 
-Prüfung: 37 Node-Tests und Build bestanden; `npm run qa` 168/168. Lernpfad und Erfolge mit vier gelösten Übungen per Edge-Screenshot geprüft.
+Prüfung: 37 Node-Tests und Build bestanden; `npm run qa` 168/168. Lernpfad und Erfolge mit vier gelösten Übungen per Edge-Screenshot geprüft. Veröffentlicht mit Commit `1468a2e`; [Pages-Lauf 38630158144](https://github.com/JakobSawazki/WebLab/actions/runs/38630158144) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.28.0 (Paket 21: Übungen für die Projekteinheiten)
 

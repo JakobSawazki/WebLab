@@ -13,6 +13,9 @@ const inside = (source, open, close) => {
 };
 const text = "[^<]*[^<\\s][^<]*"; // at least one visible character
 const has = (source, pattern) => new RegExp(pattern, "i").test(source);
+// True if a rule for `selector` (regex source) sets `property`, optionally to a value pattern.
+const rule = (source, selector, property, value = "") =>
+  new RegExp(`(^|[\\s};])${selector}\\s*\\{[^}]*\\b${property}\\s*:\\s*${value}`, "i").test(source);
 const imgTag = (source, src) =>
   (source.match(/<img\b[^>]*>/gi) || []).find((tag) => tag.includes(`src="${src}"`)) || "";
 
@@ -240,6 +243,34 @@ export const exercises = {
       remember: "Was man nur hören oder sehen kann, braucht auch eine Textfassung.",
     },
   ],
+  l9: [
+    {
+      type: "repair",
+      title: "Die Verknüpfung zur CSS-Datei",
+      task: "Diese Zeile im head soll style.css einbinden, hat aber zwei Fehler: den Wert von rel und die Schreibweise des Dateinamens. Repariere beides.",
+      code: '<head>\n  <meta charset="utf-8">\n  <link rel="style" href="Style.css">\n</head>',
+      fixed: '<head>\n  <meta charset="utf-8">\n  <link rel="stylesheet" href="style.css">\n</head>',
+      checks: [
+        ['rel="stylesheet"', (s) => /<link\b[^>]*rel="stylesheet"/i.test(s)],
+        ['href="style.css" in Kleinbuchstaben', (s) => /<link\b[^>]*href="style\.css"/.test(s)],
+      ],
+      remember: 'rel="stylesheet" und der exakte Dateiname verbinden HTML und CSS.',
+    },
+    {
+      type: "repair",
+      kind: "css",
+      context: '<h1 id="start">Schulgarten</h1>\n<p>Wir pflanzen gemeinsam.</p>\n<p class="hinweis">Bitte Handschuhe mitbringen.</p>',
+      title: "Reines CSS im CSS-Feld",
+      task: "Im CSS-Feld stehen HTML-Tags, und eine Regel wird nicht geschlossen. Deshalb wirkt keine Farbe. Repariere beides und beobachte die Vorschau.",
+      code: "<style>\nh1 { color: navy; }\np { color: dimgray;\n</style>",
+      fixed: "h1 { color: navy; }\np { color: dimgray; }",
+      checks: [
+        ["Keine style-Tags im CSS", (s) => !/<\/?style/i.test(s)],
+        ["Jede Regel mit } geschlossen", (s) => count(s, /\{/g) > 0 && count(s, /\{/g) === count(s, /\}/g)],
+      ],
+      remember: "Im CSS-Feld steht reines CSS, und jede Regel endet mit }.",
+    },
+  ],
   l10: [
     {
       type: "repair",
@@ -254,6 +285,83 @@ export const exercises = {
         ["ID-Selektor #start in Kleinbuchstaben mit text-align", (s) => /(^|[\s}])#start\s*\{[^}]*text-align\s*:/.test(s)],
       ],
       remember: "Punkt und Klassenname gehören zusammen; Namen müssen exakt übereinstimmen.",
+    },
+    {
+      type: "write",
+      kind: "css",
+      context: '<h1 id="start">Schulgarten</h1>\n<p>Wir pflanzen gemeinsam.</p>\n<p class="hinweis">Bitte Handschuhe mitbringen.</p>',
+      title: "Drei Selektoren, drei Reichweiten",
+      task: "Färbe alle Absätze dunkelgrau, gib den Hinweisen der Klasse hinweis eine dunkelgrüne Farbe und richte die Überschrift mit der ID start mittig aus.",
+      code: "/* Regeln für p, .hinweis und #start */\n",
+      fixed: "p { color: dimgray; }\n.hinweis { color: darkgreen; }\n#start { text-align: center; }",
+      checks: [
+        ["Tagselektor p mit color", (s) => rule(s, "p", "color")],
+        ["Klassenselektor .hinweis mit color", (s) => rule(s, "\\.hinweis", "color")],
+        ["ID-Selektor #start mit text-align: center", (s) => rule(s, "#start", "text-align", "center")],
+      ],
+      remember: "Tag für alle, .klasse für eine Gruppe, #id für genau ein Element.",
+    },
+  ],
+  l11: [
+    {
+      type: "repair",
+      kind: "css",
+      context: '<h1 id="start">Schulgarten</h1>\n<p>Wir pflanzen gemeinsam.</p>\n<p class="hinweis">Bitte Handschuhe mitbringen.</p>',
+      title: "Zwei Werte, die der Browser verwirft",
+      task: "Beide Deklarationen wirken nicht: Bei der Schriftgröße fehlt die Einheit, bei der Zeilenhöhe steht ein Komma. Repariere beide Werte.",
+      code: "body {\n  font-size: 18;\n  line-height: 1,6;\n}",
+      fixed: "body {\n  font-size: 18px;\n  line-height: 1.6;\n}",
+      checks: [
+        ["font-size mit Einheit (px, rem, em oder %)", (s) => rule(s, "body", "font-size", "[\\d.]+(px|rem|em|%)")],
+        ["line-height mit Punkt statt Komma", (s) => rule(s, "body", "line-height", "\\d+(\\.\\d+)?(px|rem|em|%)?\\s*[;}]") && !/line-height\s*:\s*\d+,/.test(s)],
+      ],
+      remember: "Längen brauchen eine Einheit, Dezimalzahlen einen Punkt.",
+    },
+    {
+      type: "write",
+      kind: "css",
+      context: '<h1 id="start">Schulgarten</h1>\n<p>Wir pflanzen gemeinsam.</p>\n<p class="hinweis">Bitte Handschuhe mitbringen.</p>',
+      title: "Lesbare Grundgestaltung",
+      task: "Gib body eine Schriftfarbe, eine Hintergrundfarbe und eine Schriftfamilie mit Ersatzschrift (zum Beispiel sans-serif).",
+      code: "body {\n  \n}",
+      fixed: "body {\n  color: #222;\n  background-color: #f4f7f6;\n  font-family: Arial, sans-serif;\n}",
+      checks: [
+        ["body mit color", (s) => rule(s, "body", "color")],
+        ["body mit background-color", (s) => rule(s, "body", "background-color")],
+        ["font-family mit Ersatzschrift (serif, sans-serif oder monospace)", (s) => rule(s, "body", "font-family", "[^;}]*,\\s*(sans-serif|serif|monospace)")],
+      ],
+      remember: "Eine Schriftfamilie nennt immer auch eine Ersatzschrift.",
+    },
+  ],
+  l12: [
+    {
+      type: "repair",
+      kind: "css",
+      context: '<div class="karte">Bitte Handschuhe mitbringen.</div>',
+      title: "Text klebt am unsichtbaren Rahmen",
+      task: "Der Text klebt am Rand, und der Rahmen bleibt unsichtbar, weil der Linienstil fehlt. Gib der Karte Innenabstand und einen vollständigen Rahmen.",
+      code: ".karte {\n  margin: 20px;\n  padding: 0;\n  border: 2px navy;\n}",
+      fixed: ".karte {\n  margin: 20px;\n  padding: 1rem;\n  border: 2px solid navy;\n}",
+      checks: [
+        ["padding größer als 0", (s) => rule(s, "\\.karte", "padding", "(0*[1-9][\\d.]*|0?\\.\\d*[1-9]\\d*)(px|rem|em|%)")],
+        ["border mit Breite, Stil und Farbe", (s) => rule(s, "\\.karte", "border", "[^;}]*\\b(solid|dashed|dotted|double)\\b")],
+      ],
+      remember: "padding liegt innen, margin außen; ein Rahmen braucht Breite, Stil und Farbe.",
+    },
+    {
+      type: "write",
+      kind: "css",
+      context: '<div class="karte">Unser Schulgarten sucht Helferinnen und Helfer für die Gießdienste in den Ferien.</div>',
+      title: "Eine zentrierte, flexible Karte",
+      task: "Begrenze die Karte auf höchstens 30rem Breite, zentriere sie mit margin und auto und sorge mit box-sizing dafür, dass Innenabstand und Rahmen in der Breite enthalten sind.",
+      code: ".karte {\n  padding: 1rem;\n  border: 1px solid navy;\n}",
+      fixed: ".karte {\n  padding: 1rem;\n  border: 1px solid navy;\n  max-width: 30rem;\n  margin: 1rem auto;\n  box-sizing: border-box;\n}",
+      checks: [
+        ["max-width für die Karte", (s) => rule(s, "\\.karte", "max-width", "[\\d.]+(px|rem|em|%)")],
+        ["margin mit auto zum Zentrieren", (s) => rule(s, "\\.karte", "margin", "[^;}]*\\bauto\\b")],
+        ["box-sizing: border-box", (s) => rule(s, "\\.karte", "box-sizing", "border-box")],
+      ],
+      remember: "max-width und margin: auto zentrieren eine Box, ohne sie starr zu machen.",
     },
   ],
 };

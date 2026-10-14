@@ -26,6 +26,10 @@ test("In repair exercises, fixing only one mistake leaves exactly one check open
     "l10-1": ".hinweis { color: darkgreen; }\n#Start { text-align: center; }",
     "l6-1": '<img src="bilder/beet.jpg" width="640" height="360">',
     "l8-1": '<video src="medien/garten.mp4" controls autoplay width="480"></video>',
+    "l9-1": '<link rel="stylesheet" href="Style.css">',
+    "l9-2": "h1 { color: navy; }\np { color: dimgray;",
+    "l11-1": "body { font-size: 18px; line-height: 1,6; }",
+    "l12-1": ".karte { padding: 1rem; border: 2px navy; }",
   };
   for (const [name, source] of Object.entries(halfFixed)) {
     const e = all.find(([n]) => n === name)[2];
@@ -42,6 +46,9 @@ test("Write exercises accept other correct answers, not only the reference", () 
     "l6-2": '<img alt="" src="bilder/linie.png">\n<img width="640" src="bilder/team.jpg" alt="Die Robotik-AG im Werkraum">',
     "l7-2": '<table><caption>Noten</caption>\n<tr><th scope="col">Fach</th><th scope="col">Note</th></tr>\n<tr><td>Deutsch</td><td>2</td></tr></table>',
     "l8-2": '<video width="400" controls><source src="film.mp4" type="video/mp4"></video>\n<p>Im Film erklären wir unseren Roboter Schritt für Schritt.</p>',
+    "l10-2": "p{color:gray}\n.hinweis{color:green}\n#start{text-align:center}",
+    "l11-2": 'body{color:#111;background-color:white;font-family:"Open Sans", sans-serif}',
+    "l12-2": ".karte{max-width:80%;margin:0 auto;box-sizing:border-box}",
   };
   for (const [name, source] of Object.entries(variants)) {
     const e = all.find(([n]) => n === name)[2];

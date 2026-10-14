@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.11.2** · Status: **lokal geprüft; Veröffentlichung läuft**.
+Version: **1.11.2** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -235,7 +235,7 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ### 14.10.2026 – Codex – Version 1.11.2
 
-Auf Jakobs Wunsch der Marke oben links einen dezenten Logo-Effekt gegeben: Bild wächst bei Maus-Hover um 10 %, hebt sich 1 Pixel und erhält eine feine Lichtkante mit weichem Lichtschein in der zum Farbschema passenden Akzentfarbe. Text und Untertitel ohne Unterstreichung. Derselbe Effekt bei sichtbarem Tastaturfokus; Touchgeräte erhalten keinen bleibenden Maus-Hover. Bei reduzierter Bewegung entfallen Skalierung, Verschiebung und Übergang, die Lichtkante bleibt. Keine Änderung an Lernstand oder Lernfunktionen. Prüfung: 21 Node-Tests und Build bestanden; Edge-Hover und Tastaturfokus in Dark/Light mit berechneter Vergrößerung und Lichtschein geprüft, keine Unterstreichung. Reduzierte Bewegung ohne Transformation, Mobilansicht mit 390 Pixeln und eingeklappte Desktop-Navigation ohne Überlauf, keine Konsolenfehler. `git diff --check` bestanden. Veröffentlichungsnachweis folgt.
+Auf Jakobs Wunsch der Marke oben links einen dezenten Logo-Effekt gegeben: Bild wächst bei Maus-Hover um 10 %, hebt sich 1 Pixel und erhält eine feine Lichtkante mit weichem Lichtschein in der zum Farbschema passenden Akzentfarbe. Text und Untertitel ohne Unterstreichung. Derselbe Effekt bei sichtbarem Tastaturfokus; Touchgeräte erhalten keinen bleibenden Maus-Hover. Bei reduzierter Bewegung entfallen Skalierung, Verschiebung und Übergang, die Lichtkante bleibt. Keine Änderung an Lernstand oder Lernfunktionen. Prüfung: 21 Node-Tests und Build bestanden; Edge-Hover und Tastaturfokus in Dark/Light mit berechneter Vergrößerung und Lichtschein geprüft, keine Unterstreichung. Reduzierte Bewegung ohne Transformation, Mobilansicht mit 390 Pixeln und eingeklappte Desktop-Navigation ohne Überlauf, keine Konsolenfehler. `git diff --check` bestanden. Veröffentlicht mit Commit `a319cc1`; [Pages-Lauf 38613587984](https://github.com/JakobSawazki/WebLab/actions/runs/38613587984) erfolgreich. Logo-Hover auf der Live-Seite im Browser geprüft: Vergrößerung aktiv, Text ohne Unterstreichung.
 
 ### 14.10.2026 – Codex – Version 1.11.1
 

@@ -1,5 +1,5 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-export const VERSION = "1.19.0";
+export const VERSION = "1.20.0";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -638,4 +638,61 @@ byId("l11").extension = {
   ],
   observe:
     "Wichtige Informationen dürfen nicht nur über Farbe erkennbar sein; ergänze zum Beispiel ein Wort wie „Achtung“. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l13").extension = {
+  title: "Ausprobieren: Erst skizzieren, dann programmieren",
+  explanation:
+    "Eine Skizze klärt, welche Inhalte wohin gehören, bevor Code entsteht. Zeichne auf Papier oder notiere in Textform Kasten für Kasten: Was steht im header, welche Links stehen in nav, welche Abschnitte enthält main, was gehört in den footer? Aus der Skizze ergeben sich Überschriften, Dateinamen und Links fast von selbst.",
+  // 33 characters wide, so the sketch does not wrap on narrow screens.
+  code: [
+    "+------------ header -----------+",
+    "| h1: Unser Schulgarten         |",
+    "+------------- nav -------------+",
+    "| Start | Mitmachen             |",
+    "+------------- main ------------+",
+    "| h2 Die Idee   + Bild Hochbeet |",
+    "| h2 Pflanzplan + Tabelle       |",
+    "+------------ footer -----------+",
+    "| Quellen und Rechte            |",
+    "+-------------------------------+",
+  ].join("\n"),
+  steps: [
+    "Notiere Ziel und Zielgruppe deiner Seite in einem Satz. Beispiel: „Schülerinnen und Schüler der Klasse 8 erfahren, wie sie im Schulgarten mitmachen können.“",
+    "Skizziere deine Startseite mit den vier Bereichen header, nav, main und footer. Schreibe in jeden Kasten, welcher Inhalt dort steht.",
+    "Leite aus der Skizze die Dateinamen und Links ab, zum Beispiel index.html und kontakt.html, und plane einen Ordner bilder für deine Bilder.",
+    "Übertrage die Bereiche in deinen Entwurf. Vergleiche die Vorschau mit deiner Skizze und halte Abweichungen in deinen Notizen fest.",
+  ],
+  observe:
+    "Zeige anhand deiner Skizze, warum jeder Inhalt in seinem Bereich steht. Die Gestaltung mit Farben und Abständen folgt erst danach. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l14").extension = {
+  title: "Ausprobieren: Eine vollständige Lizenzangabe schreiben",
+  explanation:
+    "Für Werke unter einer Creative-Commons-Lizenz hat sich eine Angabe aus vier Teilen bewährt: Titel, Urheberin oder Urheber, Quelle und Lizenz. Hast du das Werk verändert, nennst du auch die Änderung. Bei eigenen Inhalten dokumentierst du deine eigene Urheberschaft. Prüfe die Lizenz immer auf der Seite, von der das Werk stammt.",
+  code: '<footer>\n  <h2>Quellen und Rechte</h2>\n  <p>Foto „Hochbeet im Frühling“ von Lena Beispiel,\n     Quelle: <a href="https://commons.wikimedia.org/">Wikimedia Commons</a>,\n     Lizenz: <a href="https://creativecommons.org/licenses/by/4.0/deed.de">CC BY 4.0</a>,\n     zugeschnitten.</p>\n  <p>Alle Texte: eigene Inhalte der Klasse 8b.</p>\n</footer>',
+  steps: [
+    "Liste alle Bilder, Videos und fremden Texte deiner Seite auf. Markiere, was du selbst erstellt hast.",
+    "Suche für jedes fremde Werk die Herkunftsseite und lies dort die Lizenz ab. Notiere Titel, Urheberin oder Urheber, Quelle und Lizenz.",
+    "Schreibe die Angaben in deinen footer. Verlinke Quelle und Lizenz, wenn möglich, und nenne Änderungen wie „zugeschnitten“.",
+    "Entferne jedes Werk, dessen Lizenz du nicht sicher klären kannst, oder ersetze es durch ein eigenes Foto ohne erkennbare fremde Personen.",
+  ],
+  observe:
+    "Kann eine andere Person mit deiner Angabe das Original wiederfinden und die Lizenz prüfen? Ein Disclaimer oder „Bild aus dem Internet“ ersetzt keine Lizenzangabe. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l16").extension = {
+  title: "Vorbereiten: Dein Projekt präsentieren",
+  explanation:
+    "In der Präsentation zeigst du nicht nur das Ergebnis, sondern erklärst deine Entscheidungen und deinen Code. Plane etwa fünf Minuten. Arbeite mit den exportierten Dateien im Browser und in Notepad++, damit du Änderungen live vorführen kannst.",
+  code: "1. Ziel und Zielgruppe (1 Satz)\n2. Seitenstruktur: header, nav, main, footer\n3. Eine Code-Stelle erklären, z. B. eine CSS-Regel\n4. Live-Änderung: Farbe in style.css ändern, Strg+S, F5\n5. Quellen, Rechte und durchgeführte Tests\n6. Was würde ich als Nächstes verbessern?",
+  steps: [
+    "Lege fest, welche Code-Stelle du erklärst. Wähle etwas, das du selbst geschrieben hast, zum Beispiel deine Navigation oder eine Klasse im CSS.",
+    "Übe die Live-Änderung: Öffne index.html im Browser und style.css in Notepad++, ändere eine Farbe, speichere mit Strg+S und lade mit F5 neu.",
+    "Zeige den Weg von der Startseite zur Unterseite und zurück. Erkläre, warum die relativen Pfade auch nach der Übertragung funktionieren.",
+    "Nenne deine Quellen und Lizenzen sowie mindestens einen Test, bei dem du einen Fehler gefunden und behoben hast.",
+  ],
+  observe:
+    "Kannst du jede Zeile deines Codes erklären und auf Nachfrage selbst verändern? Verwendete KI-Hilfen nennst du offen. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
 };

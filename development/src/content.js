@@ -1,5 +1,5 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-export const VERSION = "1.18.0";
+export const VERSION = "1.18.1";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",

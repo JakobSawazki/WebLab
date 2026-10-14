@@ -254,6 +254,14 @@
           frame.contentDocument.querySelector(".debug-challenge").open,
           "Fehlersuche laesst sich bei 360 Pixeln oeffnen",
         );
+        // Open criteria with tips, the pitfalls and the checklist must fit too.
+        frame.contentDocument.querySelector(".pitfalls summary").click();
+        frame.contentDocument.querySelector("#checkButton").click();
+        assert(
+          frame.contentDocument.querySelectorAll(".criteria-tip").length > 0 &&
+            frame.contentDocument.querySelectorAll("#completionStatus li").length === 4,
+          "Rueckmeldung zeigt Tipps und Abschluss-Checkliste",
+        );
       }
       assert(
         frame.contentWindow.innerWidth === 360,

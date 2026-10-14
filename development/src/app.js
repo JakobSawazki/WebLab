@@ -743,12 +743,20 @@ function render() {
     html = achievements();
   } else if (route === "notes") {
     title = "Meine Notizen";
-    html = lessons
+    // Locked lessons only appear once they hold notes (e.g. after an import).
+    const notable = lessons.filter(
+        (l) => lessonAccess(state, l.id).unlocked || state.notes[l.id],
+      ),
+      hidden = lessons.length - notable.length;
+    html = notable
       .map(
         (l) =>
-          `<section class="panel"><h3><a href="#lesson/${l.id}">${esc(l.title)}</a></h3><label for="notes-${l.id}">Deine Notizen</label><textarea class="notes" id="notes-${l.id}" data-note="${l.id}" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>`,
+          `<section class="panel"><h3><a href="#lesson/${l.id}">Einheit ${l.id.slice(1).padStart(2, "0")}: ${esc(l.title)}</a></h3><label for="notes-${l.id}">Deine Notizen</label><textarea class="notes" id="notes-${l.id}" data-note="${l.id}" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>`,
       )
-      .join("");
+      .join("") +
+      (hidden
+        ? `<p class="muted">Notizen zu ${hidden} weiteren ${hidden === 1 ? "Einheit erscheinen" : "Einheiten erscheinen"} hier, sobald du sie freischaltest.</p>`
+        : "");
   } else {
     html = overview();
     if (route !== "home")

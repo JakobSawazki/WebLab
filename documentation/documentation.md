@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.32.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.32.1** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.32.0 |
+| Bereich | Version 1.32.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -189,7 +189,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.32.0):** 38 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 169 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.32.1):** 38 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -241,6 +241,16 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.32.1 (Paket 28: Überschriftenebenen und Feinschliff)
+
+Erneute Zugänglichkeitsprüfung in sieben Ansichten mit allen neuen Elementen geöffnet (Übungen mit Ergebnis und Tipp, Selektorhilfe, Vertiefungen, Startseitenvorschlag): keine Bedienelemente ohne Namen, keine Felder ohne Beschriftung, keine doppelten IDs, keine ins Leere zeigenden `aria-describedby`/`aria-controls`/`aria-labelledby`, alle iframes mit title.
+
+- **Überschriftenebenen:** Auf „Meine Notizen“, „Erfolge & NAGOLD“ und „Nachschlagen“ folgten auf die Seitenüberschrift (h1) direkt h3-Überschriften. Die Abschnittsüberschriften sind jetzt h2 mit unverändertem Aussehen (`.panel-title`, 1,1 rem); im Nachschlagewerk gliedert eine nur für Bildschirmleser sichtbare h2 „Gefundene Einträge“ die Glossarkarten.
+- **Neue Browserprüfung:** Für Startseite, Einheit 01, Einheit 12 und Nachschlagen wird geprüft, dass keine Überschriftenebene übersprungen wird (vier zusätzliche Prüfungen).
+- **Symbol:** „Tabelle bearbeiten“ trug als Knopf ohne Typ das Speichersymbol; er hat jetzt `type="button"` und das vorhandene Bearbeiten-Symbol.
+
+Prüfung: 38 Node-Tests und Build bestanden; `npm run qa` 173/173. Erfolge-Seite per Edge-Screenshot geprüft (Überschriften optisch unverändert, 17,6 px).
+
 ### 14.10.2026 – Claude – Version 1.32.0 (Paket 27: Abgleich mit ThommyWeb)
 
 Offener Punkt 7 aus Abschnitt 7: Die Übersicht aller 13 Wissenskapitel von ThommyWeb (`grundkurs.html`) wurde mit ihren Stichworten über einen unsichtbaren Edge gelesen (das Webwerkzeug scheitert weiterhin) und mit WebLab verglichen. Keine Texte, Bilder oder Aufgaben übernommen. Ergebnis: Alle BPE2-relevanten Themen sind in WebLab vorhanden. Drei Lücken wurden eigenständig geschlossen:
@@ -250,7 +260,7 @@ Offener Punkt 7 aus Abschnitt 7: Die Übersicht aller 13 Wissenskapitel von Thom
 - **Schriftarten einbinden (K9):** ThommyWeb nutzt Google Fonts. Glossareintrag „Webfonts“ zeigt die Einbindung einer lokalen Schriftdatei mit `@font-face` und erklärt, dass beim direkten Laden von fremden Servern die IP-Adresse der Besucher übertragen wird.
 - Bewusst nicht übernommen: externe Icon-Bibliothek (K8) und eingebettete Google-Karten (K10), weil WebLab offline und ohne Fremdabrufe arbeitet; der vorhandene Glossareintrag iframe nennt die Datenübertragung bereits.
 
-Das lokale, nicht versionierte Inventar `ressources/BPE2/ThommyWeb-Abgleich.json` enthält den Abgleich je Kapitel. Glossar jetzt 109 Einträge, Übungswerkstatt 32 Übungen.
+Das lokale, nicht versionierte Inventar `ressources/BPE2/ThommyWeb-Abgleich.json` enthält den Abgleich je Kapitel. Glossar jetzt 109 Einträge, Übungswerkstatt 32 Übungen. Veröffentlicht mit Commit `88c1c7b`; [Pages-Lauf 38632146583](https://github.com/JakobSawazki/WebLab/actions/runs/38632146583) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 Prüfung: 38 Node-Tests und Build bestanden (die Übungs- und Glossartests decken die Ergänzungen ab); `npm run qa` 169/169.
 

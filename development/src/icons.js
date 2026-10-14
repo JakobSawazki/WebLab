@@ -52,6 +52,7 @@ export function decorateIcons(root = document) {
     completeButton: "check",
     takePrevious: "upload",
     csvExport: "download",
+    editNagoldTable: "edit",
     confirmImport: "upload",
   };
   root.querySelectorAll(".button, .icon-button").forEach((node) => {

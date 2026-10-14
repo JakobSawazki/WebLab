@@ -1951,3 +1951,8 @@ dialog::backdrop {
   min-height: 24px;
   font: inherit;
 }
+/* Section headings of overview pages: correct h2 level, h3 appearance. */
+.panel-title {
+  font-size: 1.1rem;
+  margin-bottom: 0.65rem;
+}

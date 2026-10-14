@@ -302,6 +302,14 @@
         root.scrollWidth <= root.clientWidth + 1,
         route + " ohne horizontalen Überlauf",
       );
+      // Screen-reader users jump by heading level; no level may be skipped.
+      const levels = [...frame.contentDocument.querySelectorAll("h1, main h2, main h3, main h4")].map(
+        (h) => Number(h.tagName[1]),
+      );
+      assert(
+        levels.every((level, i) => i === 0 || level <= levels[i - 1] + 1),
+        route + " ohne uebersprungene Ueberschriftenebene",
+      );
       for (const theme of ["dark", "light"]) {
         const doc = frame.contentDocument,
           win = frame.contentWindow;

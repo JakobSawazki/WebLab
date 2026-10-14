@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.32.0";
+const VERSION = "1.32.1";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -4073,7 +4073,7 @@ function rememberedRules() {
         .filter((_, i) => solved.has(exerciseId(l.id, i)))
         .map((e) => `<li><span class="muted">Einheit ${l.id.slice(1).padStart(2, "0")}:</span> ${esc(e.remember)}</li>`),
     );
-  return `<section class="panel remembered-rules" aria-labelledby="rulesTitle"><h3 id="rulesTitle">Deine Merksätze</h3>${
+  return `<section class="panel remembered-rules" aria-labelledby="rulesTitle"><h2 class="panel-title" id="rulesTitle">Deine Merksätze</h2>${
     items.length
       ? `<p class="muted">Aus ${items.length} gelösten ${items.length === 1 ? "Übung" : "Übungen"}. Lies sie vor einer Klassenarbeit noch einmal durch.</p><ul>${items.join("")}</ul>`
       : '<p class="muted">Sobald du in einer Einheit eine Übung im Mini-Editor löst, sammelt sich hier ihr Merksatz.</p>'
@@ -4748,7 +4748,7 @@ function bindStudio(l) {
 }
 function achievements() {
   const rows = nagoldRows(state);
-  return `<p class="lead">Dein Fortschritt auf diesem Gerät. XP motivieren; NAGOLD wird mit der Lehrkraft abgeglichen. Ein abgeschlossener Auftrag zählt einmal: 100 XP und zunächst 5 NAGOLD.</p><div class="stats stats-auto"><div class="stat"><strong>${xp(state)}</strong><small>XP einschließlich Altbestand</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD</small></div><div class="stat"><strong>${state.completed.length}</strong><small>Abgeschlossene Einheiten</small></div><div class="stat"><strong>${lessons.reduce((n, l) => n + (exercises[l.id] ? exerciseProgress(l.id) : 0), 0)} / ${Object.values(exercises).flat().length}</strong><small>Übungen gelöst (ohne Punkte)</small></div><div class="stat"><strong>${state.completed.includes("l16") ? "★" : "◇"}</strong><small>Eigenes Webprojekt</small></div></div><section class="panel"><h3>Meine NAGOLD-Tabelle</h3><div class="table-wrap"><table><thead><tr><th>Datum</th><th>Anlass</th><th>Punkte</th></tr></thead><tbody>${rows.map((e) => `<tr><td>${e.at ? esc(new Date(e.at).toLocaleString("de-DE")) : "Altbestand ohne Zeitangabe"}</td><td>${esc(e.purpose)}</td><td>${e.points}</td></tr>`).join("") || '<tr><td colspan="3">Noch keine Einträge.</td></tr>'}</tbody></table></div><div class="actions"><button class="button secondary" id="editNagoldTable">Tabelle bearbeiten</button><button class="button secondary" id="csvExport">Übersicht als CSV</button></div></section><section class="panel"><h3>Eintrag nach Absprache mit der Lehrkraft</h3><p class="muted">Manuelle Einträge sind selbst erfasst. Sie ersetzen keine bestätigte Leistungsbewertung.</p><form id="nagoldForm"><label for="nagoldPurpose">Anlass</label><input id="nagoldPurpose" maxlength="160" required><label for="nagoldPoints">NAGOLD-Punkte (−10 bis +5, ohne 0)</label><input id="nagoldPoints" type="number" min="-10" max="5" step="1" value="1" required><div class="actions"><button class="button" type="submit">Eintrag dokumentieren</button></div></form></section>${state.legacy ? '<section class="panel"><h3>Übernommener Altbestand</h3><p>Deine alten K1-Missionen und ihr XP-Stand bleiben erhalten. Die neue BPE2-Einheit wird separat bearbeitet.</p></section>' : ""}`;
+  return `<p class="lead">Dein Fortschritt auf diesem Gerät. XP motivieren; NAGOLD wird mit der Lehrkraft abgeglichen. Ein abgeschlossener Auftrag zählt einmal: 100 XP und zunächst 5 NAGOLD.</p><div class="stats stats-auto"><div class="stat"><strong>${xp(state)}</strong><small>XP einschließlich Altbestand</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD</small></div><div class="stat"><strong>${state.completed.length}</strong><small>Abgeschlossene Einheiten</small></div><div class="stat"><strong>${lessons.reduce((n, l) => n + (exercises[l.id] ? exerciseProgress(l.id) : 0), 0)} / ${Object.values(exercises).flat().length}</strong><small>Übungen gelöst (ohne Punkte)</small></div><div class="stat"><strong>${state.completed.includes("l16") ? "★" : "◇"}</strong><small>Eigenes Webprojekt</small></div></div><section class="panel"><h2 class="panel-title">Meine NAGOLD-Tabelle</h2><div class="table-wrap"><table><thead><tr><th>Datum</th><th>Anlass</th><th>Punkte</th></tr></thead><tbody>${rows.map((e) => `<tr><td>${e.at ? esc(new Date(e.at).toLocaleString("de-DE")) : "Altbestand ohne Zeitangabe"}</td><td>${esc(e.purpose)}</td><td>${e.points}</td></tr>`).join("") || '<tr><td colspan="3">Noch keine Einträge.</td></tr>'}</tbody></table></div><div class="actions"><button type="button" class="button secondary" id="editNagoldTable">Tabelle bearbeiten</button><button class="button secondary" id="csvExport">Übersicht als CSV</button></div></section><section class="panel"><h2 class="panel-title">Eintrag nach Absprache mit der Lehrkraft</h2><p class="muted">Manuelle Einträge sind selbst erfasst. Sie ersetzen keine bestätigte Leistungsbewertung.</p><form id="nagoldForm"><label for="nagoldPurpose">Anlass</label><input id="nagoldPurpose" maxlength="160" required><label for="nagoldPoints">NAGOLD-Punkte (−10 bis +5, ohne 0)</label><input id="nagoldPoints" type="number" min="-10" max="5" step="1" value="1" required><div class="actions"><button class="button" type="submit">Eintrag dokumentieren</button></div></form></section>${state.legacy ? '<section class="panel"><h2 class="panel-title">Übernommener Altbestand</h2><p>Deine alten K1-Missionen und ihr XP-Stand bleiben erhalten. Die neue BPE2-Einheit wird separat bearbeitet.</p></section>' : ""}`;
 }
 function bindAchievements() {
   $("#editNagoldTable").onclick = () => profilePanel.open();
@@ -4822,7 +4822,7 @@ function bindAchievements() {
   };
 }
 function reference() {
-  return '<p class="lead">HTML-Elemente, CSS-Eigenschaften und Begriffe schnell nachschlagen.</p><div class="search-row"><input type="search" id="glossarySearch" aria-label="Glossar durchsuchen" placeholder="Begriff, Befehl oder Eigenschaft suchen …"><select id="glossaryKind" aria-label="Glossar filtern"><option value="">Alle Bereiche</option><option value="html">HTML</option><option value="css">CSS</option><option value="begriff">Begriffe</option></select></div><p id="glossaryCount" role="status"></p><div id="glossaryResults" class="glossary-grid"></div>';
+  return '<p class="lead">HTML-Elemente, CSS-Eigenschaften und Begriffe schnell nachschlagen.</p><div class="search-row"><input type="search" id="glossarySearch" aria-label="Glossar durchsuchen" placeholder="Begriff, Befehl oder Eigenschaft suchen …"><select id="glossaryKind" aria-label="Glossar filtern"><option value="">Alle Bereiche</option><option value="html">HTML</option><option value="css">CSS</option><option value="begriff">Begriffe</option></select></div><p id="glossaryCount" role="status"></p><h2 class="sr-only">Gefundene Einträge</h2><div id="glossaryResults" class="glossary-grid"></div>';
 }
 const fold = (s) =>
   s
@@ -4896,7 +4896,7 @@ function render() {
     html = rememberedRules() + notable
       .map(
         (l) =>
-          `<section class="panel"><h3><a href="#lesson/${l.id}">Einheit ${l.id.slice(1).padStart(2, "0")}: ${esc(l.title)}</a></h3><label for="notes-${l.id}">Deine Notizen</label><textarea class="notes" id="notes-${l.id}" data-note="${l.id}" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>`,
+          `<section class="panel"><h2 class="panel-title"><a href="#lesson/${l.id}">Einheit ${l.id.slice(1).padStart(2, "0")}: ${esc(l.title)}</a></h2><label for="notes-${l.id}">Deine Notizen</label><textarea class="notes" id="notes-${l.id}" data-note="${l.id}" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>`,
       )
       .join("") +
       (hidden
@@ -5246,6 +5246,7 @@ function decorateIcons(root = document) {
     completeButton: "check",
     takePrevious: "upload",
     csvExport: "download",
+    editNagoldTable: "edit",
     confirmImport: "upload",
   };
   root.querySelectorAll(".button, .icon-button").forEach((node) => {

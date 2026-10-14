@@ -43,7 +43,7 @@ export function rememberedRules() {
         .filter((_, i) => solved.has(exerciseId(l.id, i)))
         .map((e) => `<li><span class="muted">Einheit ${l.id.slice(1).padStart(2, "0")}:</span> ${esc(e.remember)}</li>`),
     );
-  return `<section class="panel remembered-rules" aria-labelledby="rulesTitle"><h3 id="rulesTitle">Deine Merksätze</h3>${
+  return `<section class="panel remembered-rules" aria-labelledby="rulesTitle"><h2 class="panel-title" id="rulesTitle">Deine Merksätze</h2>${
     items.length
       ? `<p class="muted">Aus ${items.length} gelösten ${items.length === 1 ? "Übung" : "Übungen"}. Lies sie vor einer Klassenarbeit noch einmal durch.</p><ul>${items.join("")}</ul>`
       : '<p class="muted">Sobald du in einer Einheit eine Übung im Mini-Editor löst, sammelt sich hier ihr Merksatz.</p>'

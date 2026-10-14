@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.13.1";
+const VERSION = "1.13.2";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -857,7 +857,7 @@ function bindProfilePanel({ getState, persistLedger, notify }) {
       const date = row.date ? row.date.split("-").reverse().join(".") : "Nicht erfasst";
       return `<tr data-ledger-row="${index}">
         <td data-label="Datum">${edit ? `<input type="date" data-field="date" value="${esc(row.date)}" aria-label="Datum, ${label}">` : esc(date)}</td>
-        <td data-label="Uhrzeit">${edit ? `<input type="time" step="60" data-field="time" value="${esc(row.time)}" aria-label="Uhrzeit, ${label}">` : esc(row.time || "Nicht erfasst")}</td>
+        <td data-label="Uhrzeit">${edit ? `<input type="time" step="60" data-field="time" value="${esc(row.time)}" aria-label="Uhrzeit, ${label}">` : (row.time ? esc(row.time) : '<span aria-label="Nicht erfasst">–</span>')}</td>
         <td data-label="Wofür">${edit ? `<input data-field="purpose" list="nagoldPresets" value="${esc(row.purpose)}" maxlength="160" placeholder="Auswählen oder eintippen" aria-label="Wofür, ${label}">` : esc(row.purpose)}${row.lessonId ? '<small class="muted nagold-origin">Lerneinheit</small>' : ""}</td>
         <td data-label="NAGOLD">${edit ? `<input type="number" data-field="points" min="-10" max="5" step="1" value="${Number.isFinite(row.points) ? row.points : ""}" aria-label="NAGOLD, ${label}">` : row.points}</td>
         <td data-label="Aktionen" class="nagold-row-actions"><button type="button" class="icon-button" data-edit="${index}" aria-label="${label} bearbeiten" title="Eintrag bearbeiten" ${edit ? "disabled" : ""}>${icon("edit")}</button><button type="button" class="icon-button" data-remove="${index}" aria-label="${label} löschen" title="Eintrag löschen">${icon("minus")}</button></td>
@@ -2705,6 +2705,26 @@ document.addEventListener("focusin", (event) => {
   if (!lessonMenuGroup.contains(event.target) && !lessonMenuPanel.contains(event.target))
     setLessonMenu(false);
 });
+// Arrow keys move between the unlocked lessons; ArrowLeft returns to the toggle.
+lessonMenuPanel.addEventListener("keydown", (event) => {
+  const links = [...lessonMenuPanel.querySelectorAll("a")],
+    index = links.indexOf(document.activeElement);
+  if (!links.length) return;
+  const target = {
+    ArrowDown: links[(index + 1) % links.length],
+    ArrowUp: links[(index - 1 + links.length) % links.length],
+    Home: links[0],
+    End: links[links.length - 1],
+  }[event.key];
+  if (target) {
+    event.preventDefault();
+    target.focus();
+  } else if (event.key === "ArrowLeft") {
+    event.preventDefault();
+    setLessonMenu(false);
+    lessonMenuToggle.focus();
+  }
+});
 lessonMenuPanel.addEventListener("click", (event) => {
   if (event.target.closest("a")) setLessonMenu(false);
 });
@@ -2858,7 +2878,7 @@ function debugChallenge(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p>${esc(l.question)}</p><div class="quiz-options">${l.options.map((o, i) => `<button class="button secondary quiz-option" data-answer="${i}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -3265,6 +3285,9 @@ function render() {
     document.querySelectorAll("[data-debug-answer]").forEach((button) => {
       button.onclick = () => {
         const selected = Number(button.dataset.debugAnswer);
+        document
+          .querySelectorAll("[data-debug-answer]")
+          .forEach((option) => option.setAttribute("aria-pressed", String(option === button)));
         const exercise = debugging[l.id];
         const result = $("#debugResult");
         result.textContent = exercise.feedback[selected];
@@ -3279,6 +3302,9 @@ function render() {
       (b) =>
         (b.onclick = () => {
           const ok = Number(b.dataset.answer) === l.answer;
+          document
+            .querySelectorAll("[data-answer]")
+            .forEach((option) => option.setAttribute("aria-pressed", String(option === b)));
           if (ok) {
             state.quiz[l.id] = true;
             save();

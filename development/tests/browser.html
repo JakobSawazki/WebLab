@@ -175,6 +175,26 @@
         lessonPanel.hidden && !lessonPanel.children.length && menuDoc.activeElement === lessonToggle,
         width + ": Escape entfernt Eintraege und setzt Fokus auf den Schalter",
       );
+      lessonGroup.dispatchEvent(new menuFrame.contentWindow.KeyboardEvent("keydown", {
+        key: "ArrowRight", bubbles: true,
+      }));
+      const firstLesson = menuDoc.activeElement;
+      firstLesson.dispatchEvent(new menuFrame.contentWindow.KeyboardEvent("keydown", {
+        key: "End", bubbles: true,
+      }));
+      const lastLesson = [...lessonPanel.querySelectorAll("a")].at(-1);
+      const endWorks = menuDoc.activeElement === lastLesson;
+      lastLesson.dispatchEvent(new menuFrame.contentWindow.KeyboardEvent("keydown", {
+        key: "ArrowDown", bubbles: true,
+      }));
+      const wraps = menuDoc.activeElement === firstLesson;
+      firstLesson.dispatchEvent(new menuFrame.contentWindow.KeyboardEvent("keydown", {
+        key: "ArrowLeft", bubbles: true,
+      }));
+      assert(
+        endWorks && wraps && lessonPanel.hidden && menuDoc.activeElement === lessonToggle,
+        width + ": Pfeiltasten wandern durch freie Einheiten, Pfeil links schliesst",
+      );
       lessonToggle.click();
       menuDoc.querySelector("#viewTitle").dispatchEvent(new menuFrame.contentWindow.PointerEvent("pointerdown", {
         bubbles: true,

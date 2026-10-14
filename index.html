@@ -59,7 +59,7 @@
               title="Lerneinheiten anzeigen"
             ></button>
           </div>
-          <div class="lesson-menu" id="lessonMenu" hidden></div>
+          <div class="lesson-menu" id="lessonMenu" role="group" aria-label="Lerneinheiten" hidden></div>
           <a
             class="nav-item"
             href="#lab"
@@ -171,6 +171,7 @@
         <div class="profile-label-row"><label for="studentName">Schülerkürzel</label><button class="icon-button profile-info" id="profileInfoButton" type="button" aria-label="Informationen zum Schülerkürzel" aria-haspopup="dialog" aria-controls="profileHelpDialog">i</button></div
         ><input
           id="studentName"
+          autofocus
           maxlength="7"
           placeholder="MUS.MAX"
           autocomplete="off"

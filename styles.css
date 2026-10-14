@@ -825,6 +825,15 @@ main {
   justify-content: start;
   font-weight: 400;
 }
+/* The chosen answer stays visible after the feedback appears. */
+.quiz-option[aria-pressed="true"] {
+  border-color: var(--brand);
+  box-shadow:
+    inset 3px 0 var(--brand),
+    inset 0 1px 0 var(--metal-glint),
+    0 0 0 3px color-mix(in srgb, var(--brand) 18%, transparent);
+  font-weight: 600;
+}
 .quiz-result,
 .feedback {
   margin-top: 1rem;
@@ -1376,6 +1385,18 @@ dialog::backdrop {
   .nagold-table td:nth-child(1),.nagold-table td:nth-child(3) { grid-column:1 / -1; }
   .nagold-table td:nth-child(4) { grid-column:2;grid-row:2; }
   .nagold-table td:nth-child(5) { grid-column:1 / -1; }
+  /* Rows that are only read become compact two-line cards: purpose and points
+     on top, date, time and actions below. Edited rows keep their labels. */
+  .nagold-table tr:not(:has(input)) { grid-template-columns:auto auto minmax(0,1fr) auto;gap:.15rem .6rem;align-items:center;padding:.7rem 0; }
+  .nagold-table tr:not(:has(input)) td::before { display:none; }
+  .nagold-table tr:not(:has(input)) td:nth-child(3) { grid-column:1 / 4;grid-row:1;font-weight:600; }
+  .nagold-table tr:not(:has(input)) td:nth-child(4) { grid-column:4;grid-row:1;justify-self:end;font-size:1.15rem;font-weight:700;color:var(--amber); }
+  .nagold-table tr:not(:has(input)) td:nth-child(1),
+  .nagold-table tr:not(:has(input)) td:nth-child(2) { grid-row:2;font-size:.8rem;color:var(--muted); }
+  .nagold-table tr:not(:has(input)) td:nth-child(1) { grid-column:1; }
+  .nagold-table tr:not(:has(input)) td:nth-child(2) { grid-column:2; }
+  .nagold-table tr:not(:has(input)) td:nth-child(5) { grid-column:4;grid-row:2;justify-self:end; }
+  .nagold-table tr:not(:has(input)) .nagold-origin { display:inline;margin:0 0 0 .4rem;font-weight:400; }
 }
 .dialog-heading {
   display: flex;

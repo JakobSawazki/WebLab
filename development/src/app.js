@@ -1,7 +1,7 @@
 import { boxModelView, bindBoxModel } from "./box-model.js";
 import { selectorView, bindSelectorHelper } from "./selector-helper.js";
-import { exercises } from "./exercises.js";
-import { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises } from "./exercise-panel.js";
+import { exercises, normalizeSolved } from "./exercises.js";
+import { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises, solvedExercises, storeSolvedExercises } from "./exercise-panel.js";
 import { esc } from "./html.js";
 import { debugging } from "./debugging.js";
 import { decorateIcons, icon } from "./icons.js";
@@ -30,6 +30,7 @@ const $ = (s) => document.querySelector(s);
 let state,
   storageError = "",
   pendingImport = null,
+  pendingExercises = null,
   activeId = "l1",
   timer,
   toastTimer;
@@ -232,7 +233,8 @@ function download(name, data, type = "text/plain;charset=utf-8") {
 function backup() {
   download(
     `WebLab-${state.profile.name || "Gast"}-${new Date().toISOString().slice(0, 10)}.json`,
-    JSON.stringify(exportBackup(state), null, 2),
+    // Solved exercise markers ride along as an optional field (still format 3).
+    JSON.stringify({ ...exportBackup(state), exercisesSolved: [...solvedExercises()] }, null, 2),
     "application/json",
   );
 }
@@ -985,6 +987,7 @@ $("#themeButton").onclick = () => {
 };
 $("#backupButton").onclick = () => {
   pendingImport = null;
+  pendingExercises = null;
   $("#importFile").value = "";
   $("#importSummary").textContent = "";
   $("#confirmImport").hidden = true;
@@ -993,15 +996,18 @@ $("#backupButton").onclick = () => {
 $("#exportButton").onclick = backup;
 $("#importFile").onchange = async (e) => {
   pendingImport = null;
+  pendingExercises = null;
   $("#confirmImport").hidden = true;
   const file = e.target.files[0];
   if (!file) return;
   try {
     if (file.size > 32000000)
       throw new Error("Diese Datei ist zu groß (maximal 32 MB).");
-    pendingImport = importBackup(JSON.parse(await file.text()));
+    const raw = JSON.parse(await file.text());
+    pendingImport = importBackup(raw);
+    pendingExercises = normalizeSolved(raw.exercisesSolved);
     $("#importSummary").textContent =
-      `Bereit: ${pendingImport.profile.name || "ohne Profil"}, Klasse ${pendingImport.profile.className || "offen"}, ${pendingImport.completed.length} Einheiten. Dein aktueller Stand wird vor dem Ersetzen gesichert.`;
+      `Bereit: ${pendingImport.profile.name || "ohne Profil"}, Klasse ${pendingImport.profile.className || "offen"}, ${pendingImport.completed.length} Einheiten${pendingExercises ? `, ${pendingExercises.length} gelöste Übungen` : ""}. Dein aktueller Stand wird vor dem Ersetzen gesichert.`;
     $("#confirmImport").hidden = false;
   } catch (err) {
     $("#importSummary").textContent = err.message;
@@ -1012,6 +1018,9 @@ $("#confirmImport").onclick = () => {
   backup();
   state = pendingImport;
   pendingImport = null;
+  // Older backups carry no exercise markers; the device's markers stay then.
+  if (pendingExercises) storeSolvedExercises(pendingExercises);
+  pendingExercises = null;
   preventSave = false;
   const stored = save();
   $("#backupDialog").close();

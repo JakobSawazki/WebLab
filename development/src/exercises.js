@@ -591,3 +591,11 @@ export const exerciseHints = {
   "l15-2": "Schreibe <ol> mit drei <li>. Jeder Eintrag nennt in einem kurzen Satz einen Test und sein Ergebnis.",
   "l16-1": "Beginne mit dem Grundgerüst aus Einheit 02. Ergänze im head die link-Zeile aus Einheit 09 und im body eine nav mit Link auf index.html.",
 };
+
+// Solved markers travel in the JSON backup as an optional list next to the
+// learning state. Only known exercise ids survive, without duplicates.
+export function normalizeSolved(list) {
+  if (!Array.isArray(list)) return null;
+  const known = new Set(Object.entries(exercises).flatMap(([id, items]) => items.map((_, i) => exerciseId(id, i))));
+  return [...new Set(list.filter((id) => typeof id === "string" && known.has(id)))];
+}

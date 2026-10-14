@@ -20,6 +20,14 @@ export function solvedExercises() {
     return new Set();
   }
 }
+export function storeSolvedExercises(list) {
+  try {
+    localStorage.setItem(EXERCISE_KEY, JSON.stringify(list));
+    return true;
+  } catch {
+    return false;
+  }
+}
 export function exerciseProgress(lessonId) {
   const solved = solvedExercises();
   return exercises[lessonId].filter((_, i) => solved.has(exerciseId(lessonId, i))).length;
@@ -101,9 +109,7 @@ export function bindExercises(l) {
       box.querySelector(".exercise-solved").hidden = false;
       const solved = solvedExercises();
       solved.add(exerciseId(l.id, i));
-      try {
-        localStorage.setItem(EXERCISE_KEY, JSON.stringify([...solved]));
-      } catch {}
+      storeSolvedExercises([...solved]);
       const done = list.filter((_, n) => solved.has(exerciseId(l.id, n))).length;
       $("#exerciseProgress").textContent = `Kurze Übungen · ${done} von ${list.length} gelöst`;
     };

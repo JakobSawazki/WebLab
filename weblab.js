@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.34.1";
+const VERSION = "1.35.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -4096,7 +4096,15 @@ const exerciseHints = {
   "l16-1": "Beginne mit dem Grundgerüst aus Einheit 02. Ergänze im head die link-Zeile aus Einheit 09 und im body eine nav mit Link auf index.html.",
 };
 
-return {exerciseTypes,exercises,exerciseId,checkExercise,exerciseHints};
+// Solved markers travel in the JSON backup as an optional list next to the
+// learning state. Only known exercise ids survive, without duplicates.
+function normalizeSolved(list) {
+  if (!Array.isArray(list)) return null;
+  const known = new Set(Object.entries(exercises).flatMap(([id, items]) => items.map((_, i) => exerciseId(id, i))));
+  return [...new Set(list.filter((id) => typeof id === "string" && known.has(id)))];
+}
+
+return {exerciseTypes,exercises,exerciseId,checkExercise,exerciseHints,normalizeSolved};
 },
 "exercise-panel.js": function(require) {
 // The exercise workshop: panels with a mini editor and live preview, the home
@@ -4119,6 +4127,14 @@ function solvedExercises() {
     return new Set(Array.isArray(list) ? list.filter((x) => typeof x === "string") : []);
   } catch {
     return new Set();
+  }
+}
+function storeSolvedExercises(list) {
+  try {
+    localStorage.setItem(EXERCISE_KEY, JSON.stringify(list));
+    return true;
+  } catch {
+    return false;
   }
 }
 function exerciseProgress(lessonId) {
@@ -4202,9 +4218,7 @@ function bindExercises(l) {
       box.querySelector(".exercise-solved").hidden = false;
       const solved = solvedExercises();
       solved.add(exerciseId(l.id, i));
-      try {
-        localStorage.setItem(EXERCISE_KEY, JSON.stringify([...solved]));
-      } catch {}
+      storeSolvedExercises([...solved]);
       const done = list.filter((_, n) => solved.has(exerciseId(l.id, n))).length;
       $("#exerciseProgress").textContent = `Kurze Übungen · ${done} von ${list.length} gelöst`;
     };
@@ -4218,13 +4232,13 @@ function bindExercises(l) {
   });
 }
 
-return {EXERCISE_KEY,solvedExercises,exerciseProgress,practiceSuggestion,rememberedRules,exercisePanel,bindExercises};
+return {EXERCISE_KEY,solvedExercises,storeSolvedExercises,exerciseProgress,practiceSuggestion,rememberedRules,exercisePanel,bindExercises};
 },
 "app.js": function(require) {
 const { boxModelView, bindBoxModel } = require("box-model.js");
 const { selectorView, bindSelectorHelper } = require("selector-helper.js");
-const { exercises } = require("exercises.js");
-const { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises } = require("exercise-panel.js");
+const { exercises, normalizeSolved } = require("exercises.js");
+const { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises, solvedExercises, storeSolvedExercises } = require("exercise-panel.js");
 const { esc } = require("html.js");
 const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
@@ -4253,6 +4267,7 @@ const $ = (s) => document.querySelector(s);
 let state,
   storageError = "",
   pendingImport = null,
+  pendingExercises = null,
   activeId = "l1",
   timer,
   toastTimer;
@@ -4455,7 +4470,8 @@ function download(name, data, type = "text/plain;charset=utf-8") {
 function backup() {
   download(
     `WebLab-${state.profile.name || "Gast"}-${new Date().toISOString().slice(0, 10)}.json`,
-    JSON.stringify(exportBackup(state), null, 2),
+    // Solved exercise markers ride along as an optional field (still format 3).
+    JSON.stringify({ ...exportBackup(state), exercisesSolved: [...solvedExercises()] }, null, 2),
     "application/json",
   );
 }
@@ -5208,6 +5224,7 @@ $("#themeButton").onclick = () => {
 };
 $("#backupButton").onclick = () => {
   pendingImport = null;
+  pendingExercises = null;
   $("#importFile").value = "";
   $("#importSummary").textContent = "";
   $("#confirmImport").hidden = true;
@@ -5216,15 +5233,18 @@ $("#backupButton").onclick = () => {
 $("#exportButton").onclick = backup;
 $("#importFile").onchange = async (e) => {
   pendingImport = null;
+  pendingExercises = null;
   $("#confirmImport").hidden = true;
   const file = e.target.files[0];
   if (!file) return;
   try {
     if (file.size > 32000000)
       throw new Error("Diese Datei ist zu groß (maximal 32 MB).");
-    pendingImport = importBackup(JSON.parse(await file.text()));
+    const raw = JSON.parse(await file.text());
+    pendingImport = importBackup(raw);
+    pendingExercises = normalizeSolved(raw.exercisesSolved);
     $("#importSummary").textContent =
-      `Bereit: ${pendingImport.profile.name || "ohne Profil"}, Klasse ${pendingImport.profile.className || "offen"}, ${pendingImport.completed.length} Einheiten. Dein aktueller Stand wird vor dem Ersetzen gesichert.`;
+      `Bereit: ${pendingImport.profile.name || "ohne Profil"}, Klasse ${pendingImport.profile.className || "offen"}, ${pendingImport.completed.length} Einheiten${pendingExercises ? `, ${pendingExercises.length} gelöste Übungen` : ""}. Dein aktueller Stand wird vor dem Ersetzen gesichert.`;
     $("#confirmImport").hidden = false;
   } catch (err) {
     $("#importSummary").textContent = err.message;
@@ -5235,6 +5255,9 @@ $("#confirmImport").onclick = () => {
   backup();
   state = pendingImport;
   pendingImport = null;
+  // Older backups carry no exercise markers; the device's markers stay then.
+  if (pendingExercises) storeSolvedExercises(pendingExercises);
+  pendingExercises = null;
   preventSave = false;
   const stored = save();
   $("#backupDialog").close();

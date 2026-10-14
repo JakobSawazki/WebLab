@@ -74,3 +74,10 @@ test("Every exercise has exactly one hint, and hints never contain the full solu
     assert.notEqual(hint.trim(), e.fixed.trim(), name);
   }
 });
+
+test("Solved markers from a backup keep only known exercise ids", async () => {
+  const { normalizeSolved } = await import("../src/exercises.js");
+  assert.equal(normalizeSolved(undefined), null);
+  assert.equal(normalizeSolved("l1-1"), null);
+  assert.deepEqual(normalizeSolved(["l1-1", "l1-1", "l99-1", 7, "<img>", "l16-1"]), ["l1-1", "l16-1"]);
+});

@@ -1921,3 +1921,10 @@ dialog::backdrop {
 .exercise .code-surface .line-numbers {
   flex-basis: 2.6rem;
 }
+.exercise-count {
+  color: var(--brand);
+}
+/* Five figures on the achievements page: as many columns as fit. */
+.stats.stats-auto {
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+}

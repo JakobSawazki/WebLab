@@ -30,6 +30,8 @@ test("In repair exercises, fixing only one mistake leaves exactly one check open
     "l9-2": "h1 { color: navy; }\np { color: dimgray;",
     "l11-1": "body { font-size: 18px; line-height: 1,6; }",
     "l12-1": ".karte { padding: 1rem; border: 2px navy; }",
+    "l14-1": '<img src="bilder/beet.jpg" alt="Hochbeet im Schulhof">\n<footer>\n  <h2>Quellen und Rechte</h2>\n</footer>',
+    "l15-1": '<link rel="stylesheet" href="style.css">\n<img src="Bilder/Beet.jpg" alt="Hochbeet im Schulhof">',
   };
   for (const [name, source] of Object.entries(halfFixed)) {
     const e = all.find(([n]) => n === name)[2];
@@ -49,9 +51,16 @@ test("Write exercises accept other correct answers, not only the reference", () 
     "l10-2": "p{color:gray}\n.hinweis{color:green}\n#start{text-align:center}",
     "l11-2": 'body{color:#111;background-color:white;font-family:"Open Sans", sans-serif}',
     "l12-2": ".karte{max-width:80%;margin:0 auto;box-sizing:border-box}",
+    "l13-2": '<NAV><a href="index.html">Start</a> <a href="kontakt.html">Kontakt</a></NAV>\n<footer>Klasse 8b, 2026</footer>',
+    "l15-2": "<ol><li>Startseite öffnet per Doppelklick.</li><li>Rücklink führt zu index.html.</li><li>Umlaute werden richtig angezeigt.</li></ol>",
+    "l16-1": '<!DOCTYPE html><html lang="de"><head><title>Kontakt</title><link href="style.css" rel="stylesheet"></head><body><nav><a href="index.html">Start</a></nav></body></html>',
   };
   for (const [name, source] of Object.entries(variants)) {
     const e = all.find(([n]) => n === name)[2];
     assert.ok(checkExercise(e, source).every((r) => r.passed), name);
   }
+});
+
+test("Every lesson offers at least one exercise", () => {
+  for (const l of lessons) assert.ok(exercises[l.id]?.length >= 1, l.id);
 });

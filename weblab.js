@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.27.0";
+const VERSION = "1.28.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -3834,6 +3834,105 @@ const exercises = {
         ["box-sizing: border-box", (s) => rule(s, "\\.karte", "box-sizing", "border-box")],
       ],
       remember: "max-width und margin: auto zentrieren eine Box, ohne sie starr zu machen.",
+    },
+  ],
+  l13: [
+    {
+      type: "repair",
+      title: "Bereiche mit Bedeutung",
+      task: "Diese Seite besteht nur aus div-Elementen. Ersetze sie durch header, nav und main, damit jeder Bereich seine Aufgabe nennt. Die Klassen kannst du weglassen.",
+      code: '<div class="kopf"><h1>Schulgarten</h1></div>\n<div class="menue"><a href="kontakt.html">Mitmachen</a></div>\n<div class="inhalt"><p>Ein Garten für alle.</p></div>',
+      fixed: '<header><h1>Schulgarten</h1></header>\n<nav><a href="kontakt.html">Mitmachen</a></nav>\n<main><p>Ein Garten für alle.</p></main>',
+      checks: [
+        ["Die h1 steht in einem header", (s) => /<header\b[^>]*>\s*<h1>/i.test(s)],
+        ["Der Link steht in einem nav", (s) => /<nav\b[^>]*>\s*<a\b[^>]*href="kontakt\.html"/i.test(s)],
+        ["Der Absatz steht in main", (s) => /<main\b[^>]*>\s*<p>/i.test(s)],
+      ],
+      remember: "header, nav, main und footer sagen, wozu ein Bereich da ist.",
+    },
+    {
+      type: "write",
+      title: "Navigation und Fußbereich",
+      task: "Schreibe eine nav mit zwei Links, zur Startseite index.html und zur Unterseite kontakt.html, und einen footer mit einer kurzen Zeile, zum Beispiel zum Projekt.",
+      code: "<!-- nav mit zwei Links und ein footer -->\n",
+      fixed: '<nav>\n  <a href="index.html">Start</a>\n  <a href="kontakt.html">Mitmachen</a>\n</nav>\n<footer>\n  <p>Ein Projekt der Klasse 8b</p>\n</footer>',
+      checks: [
+        ["nav mit Links auf index.html und kontakt.html", (s) => {
+          const nav = inside(s.toLowerCase(), "<nav>", "</nav>") || "";
+          return has(nav, `<a href="index\\.html">${text}</a>`) && has(nav, `<a href="kontakt\\.html">${text}</a>`);
+        }],
+        ["footer mit eigenem Text", (s) => has(s, "<footer>[^]*?[^<\\s][^]*?</footer>") && (inside(s, "<footer>", "</footer>") || "").replace(/<[^>]+>/g, "").trim().length >= 5],
+      ],
+      remember: "Jede Seite bekommt dieselbe Navigation, damit man immer zurückfindet.",
+    },
+  ],
+  l14: [
+    {
+      type: "repair",
+      title: "Ein fremdes Bild ohne Rechte",
+      task: "Das Bild wird direkt von einer fremden Adresse geladen, und seine Herkunft ist unklar. Verwende stattdessen dein eigenes Foto bilder/beet.jpg und ergänze im footer den Hinweis „Foto: eigene Aufnahme“.",
+      code: '<img src="https://bilder.example.com/beet.jpg" alt="Hochbeet im Schulhof">\n<footer>\n  <h2>Quellen und Rechte</h2>\n</footer>',
+      fixed: '<img src="bilder/beet.jpg" alt="Hochbeet im Schulhof">\n<footer>\n  <h2>Quellen und Rechte</h2>\n  <p>Foto: eigene Aufnahme</p>\n</footer>',
+      checks: [
+        ["Eigenes Bild über den relativen Pfad bilder/beet.jpg", (s) => /<img\b[^>]*src="bilder\/beet\.jpg"/.test(s) && !/src="https?:/i.test(s)],
+        ["Im footer steht „eigene Aufnahme“", (s) => /eigene Aufnahme/i.test(inside(s, "<footer>", "</footer>") || "")],
+      ],
+      remember: "Verwende eigene Inhalte oder solche mit passender Lizenz, und nenne die Herkunft.",
+    },
+    {
+      type: "complete",
+      title: "Eine Lizenzangabe vervollständigen",
+      task: "Vervollständige die Angabe zu einem fremden Foto: Nenne die Urheberin Lena Beispiel, die Quelle commons.wikimedia.org und die Lizenz CC BY 4.0.",
+      code: "<footer>\n  <h2>Quellen und Rechte</h2>\n  <p>Foto „Hochbeet im Frühling“</p>\n</footer>",
+      fixed: "<footer>\n  <h2>Quellen und Rechte</h2>\n  <p>Foto „Hochbeet im Frühling“ von Lena Beispiel, Quelle: commons.wikimedia.org, Lizenz: CC BY 4.0</p>\n</footer>",
+      checks: [
+        ["Urheberin genannt", (s) => /Lena Beispiel/.test(s)],
+        ["Quelle genannt", (s) => /commons\.wikimedia\.org/i.test(s)],
+        ["Lizenz CC BY 4.0 genannt", (s) => /CC[ -]BY 4\.0/i.test(s)],
+      ],
+      remember: "Titel, Urheber, Quelle, Lizenz: Vier Angaben machen eine Quelle prüfbar.",
+    },
+  ],
+  l15: [
+    {
+      type: "repair",
+      title: "Lokal klappt es, auf dem Server nicht",
+      task: "Im Projektordner heißen die Dateien style.css und bilder/beet.jpg. Unter Windows funktioniert alles, auf dem Webserver fehlen Gestaltung und Bild. Repariere beide Pfade.",
+      code: '<link rel="stylesheet" href="Style.CSS">\n<img src="Bilder/Beet.jpg" alt="Hochbeet im Schulhof">',
+      fixed: '<link rel="stylesheet" href="style.css">\n<img src="bilder/beet.jpg" alt="Hochbeet im Schulhof">',
+      checks: [
+        ['href="style.css" genau wie die Datei', (s) => /<link\b[^>]*href="style\.css"/.test(s)],
+        ['src="bilder/beet.jpg" genau wie Ordner und Datei', (s) => /<img\b[^>]*src="bilder\/beet\.jpg"/.test(s)],
+      ],
+      remember: "Auf dem Server zählt jeder Buchstabe: Groß- und Kleinschreibung genau übernehmen.",
+    },
+    {
+      type: "write",
+      title: "Ein kurzer Testbericht",
+      task: "Schreibe einen Testbericht als geordnete Liste mit drei Tests. Jeder Eintrag nennt, was du geprüft hast und mit welchem Ergebnis, zum Beispiel „Link zu kontakt.html öffnet die Unterseite“.",
+      code: "<!-- ol mit drei Testeinträgen -->\n",
+      fixed: "<ol>\n  <li>Link zu kontakt.html öffnet die Unterseite.</li>\n  <li>Das Bild bilder/beet.jpg wird angezeigt.</li>\n  <li>Im schmalen Fenster scrollt nichts seitlich.</li>\n</ol>",
+      checks: [
+        ["Eine geordnete Liste ol", (s) => /<ol>/i.test(s) && /<\/ol>/i.test(s)],
+        ["Drei Einträge mit je mindestens 15 Zeichen", (s) => count(inside(s.toLowerCase(), "<ol>", "</ol>") || "", /<li>[^<]{15,}<\/li>/g) >= 3],
+      ],
+      remember: "Ein guter Test nennt, was geprüft wurde und was dabei herauskam.",
+    },
+  ],
+  l16: [
+    {
+      type: "write",
+      title: "Das Grundgerüst der Unterseite",
+      task: "Schreibe das Grundgerüst für kontakt.html: Doctype, html mit lang=\"de\", im head ein eigener title und die Verknüpfung zu style.css, im body eine nav mit Rücklink zu index.html.",
+      code: "<!-- Grundgerüst für kontakt.html -->\n",
+      fixed: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Kontakt</title>\n  <link rel="stylesheet" href="style.css">\n</head>\n<body>\n  <nav><a href="index.html">Zur Startseite</a></nav>\n</body>\n</html>',
+      checks: [
+        ['Doctype und <html lang="de">', (s) => /^\s*<!doctype html>/i.test(s) && /<html lang="de">/i.test(s)],
+        ["Eigener title im head", (s) => has(s, `<head>[^]*?<title>${text}</title>[^]*?</head>`)],
+        ["Verknüpfung zu style.css im head", (s) => /<head>[\s\S]*?<link\b[^>]*rel="stylesheet"[^>]*href="style\.css"[\s\S]*?<\/head>/i.test(s) || /<head>[\s\S]*?<link\b[^>]*href="style\.css"[^>]*rel="stylesheet"[\s\S]*?<\/head>/i.test(s)],
+        ["nav mit Rücklink zu index.html", (s) => has(inside(s.toLowerCase(), "<nav>", "</nav>") || "", `<a href="index\\.html">${text}</a>`)],
+      ],
+      remember: "Jede Seite bindet dieselbe style.css ein und führt zurück zur Startseite.",
     },
   ],
 };

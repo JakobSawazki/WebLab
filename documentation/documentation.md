@@ -1,8 +1,8 @@
 # WebLab – gemeinsame Projektdokumentation
 
-Stand: **12. Oktober 2026, Europe/Berlin · Claude**
+Stand: **14. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.11.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.11.1** · Status: **lokal geprüft; Veröffentlichung läuft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -232,6 +232,10 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 14.10.2026 – Codex – Version 1.11.1
+
+Auf Jakobs Wunsch die neue fotorealistische WebLab-Projektgrafik aus Sawazki Electronics als Logo oben links übernommen. Motiv: gebürstetes Metall-Browserfenster mit HTML-Klammern und Navy-/Cyan-Flächen. Dasselbe mit integriertem Imagegen erzeugte PNG-Original wurde mit Lanczos auf 256 × 256 Pixel für `assets/weblab-logo.png` verkleinert. Darstellung bleibt 48 × 48 Pixel mit dem vorhandenen 8-Pixel-Radius; Bildkennung auf 1.11.1 aktualisiert. Keine neue Bildgenerierung. Herkunft und vollständiger Bildprompt: `D:\Google Drive\Gewerbe\Sawazki Electronics\docs\weblab-bildprompt.md`. Version in Paket, Quellmodul und erzeugtem Bundle wird gemeinsam angehoben. Prüfung: 21 Node-Tests und Build erfolgreich. Logo in Edge bei 1440 Pixeln in Dark/Light sowie bei 390 Pixeln mobil geprüft: 256-Pixel-Bild korrekt geladen, Anzeige 48 × 48 Pixel, kein horizontaler Überlauf und keine Konsolenfehler. `git diff --check` bestanden. Veröffentlichungsnachweis folgt.
 
 ### 12.10.2026 – Claude – Version 1.11.0
 

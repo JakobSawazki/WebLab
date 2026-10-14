@@ -1,6 +1,6 @@
 import { boxModelView, bindBoxModel } from "./box-model.js";
 import { selectorView, bindSelectorHelper } from "./selector-helper.js";
-import { corrections, checkCorrection } from "./corrections.js";
+import { exercises, exerciseId, checkExercise, exerciseTypes } from "./exercises.js";
 import { debugging } from "./debugging.js";
 import { decorateIcons, icon } from "./icons.js";
 import { VERSION, groups, lessons, byId } from "./content.js";
@@ -348,29 +348,81 @@ function debugChallenge(l) {
   if (!exercise) return "";
   return `<details class="debug-challenge"><summary>Fehler finden: eine kurze Denkaufgabe</summary><p class="muted">Finde die Ursache, bevor du deinen eigenen Code weiterentwickelst. Diese Übung verändert deinen Entwurf nicht und vergibt keine Zusatzpunkte.</p><pre><code>${esc(exercise.code)}</code></pre><p id="debugQuestion">${esc(exercise.question)}</p><div class="quiz-options" role="group" aria-labelledby="debugQuestion">${exercise.options.map((option, i) => `<button type="button" class="button secondary quiz-option" data-debug-answer="${i}">${esc(option)}</button>`).join("")}</div><p id="debugResult" role="status" aria-atomic="true"></p></details>`;
 }
-// Optional repair task; the edited code lives only in this view and is never saved.
-function correctionTask(l) {
-  const task = corrections[l.id];
-  if (!task) return "";
-  return `<details class="debug-challenge correction-task"><summary>Korrekturaufgabe: Repariere den Code</summary><p id="correctionTask">${esc(task.task)}</p><label for="correctionCode">${task.kind === "css" ? "CSS" : "HTML"} zum Reparieren</label><textarea class="code correction-code" id="correctionCode" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="correctionTask" rows="${task.code.split("\n").length + 1}">${esc(task.code)}</textarea><div class="actions"><button type="button" class="button secondary" id="correctionCheck">Korrektur prüfen</button><button type="button" class="button secondary" id="correctionReset">Ausgangscode wiederherstellen</button></div><div id="correctionResult" role="status" aria-atomic="true"></div><p class="muted">Diese Übung verändert deinen Entwurf nicht, wird nicht gespeichert und vergibt keine Punkte.</p></details>`;
+// Short exercises with their own mini editor and live preview. The code lives
+// only in this view; solved exercises are remembered per device under a
+// separate key, outside the learning state and its backups.
+const EXERCISE_KEY = "weblab-exercises-v1";
+function solvedExercises() {
+  try {
+    const list = JSON.parse(localStorage.getItem(EXERCISE_KEY) || "[]");
+    return new Set(Array.isArray(list) ? list.filter((x) => typeof x === "string") : []);
+  } catch {
+    return new Set();
+  }
 }
-function bindCorrectionTask(l) {
-  const task = corrections[l.id];
-  if (!task || !$("#correctionCode")) return;
-  $("#correctionCheck").onclick = () => {
-    const results = checkCorrection(l.id, $("#correctionCode").value),
-      done = results.every((r) => r.passed);
-    $("#correctionResult").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul><p>${done ? "Repariert. Achte in deinem eigenen Code auf dieselben Stellen." : "Noch nicht ganz. Vergleiche die offenen Punkte genau mit dem Code."}</p>`;
-  };
-  $("#correctionReset").onclick = () => {
-    $("#correctionCode").value = task.code;
-    $("#correctionResult").textContent = "";
-    $("#correctionCode").focus();
-  };
+function exercisePanel(l) {
+  const list = exercises[l.id];
+  if (!list) return "";
+  const solved = solvedExercises(),
+    done = list.filter((_, i) => solved.has(exerciseId(l.id, i))).length;
+  return `<section class="panel exercise-panel" id="exercises" aria-labelledby="exercisesTitle"><p class="eyebrow" id="exerciseProgress">Kurze Übungen · ${done} von ${list.length} gelöst</p><h3 id="exercisesTitle">Üben mit dem Mini-Editor</h3><p class="muted">Jede Übung hat einen eigenen kleinen Editor mit Vorschau. Sie verändert deinen Entwurf nicht und vergibt keine Punkte; gelöste Übungen bleiben auf diesem Gerät markiert.</p>${list
+    .map((e, i) => {
+      const id = exerciseId(l.id, i),
+        isSolved = solved.has(id);
+      return `<details class="exercise" data-exercise="${i}"><summary><span class="exercise-type">${exerciseTypes[e.type]}</span> Übung ${i + 1}: ${esc(e.title)}<span class="exercise-solved" ${isSolved ? "" : "hidden"}> · ✓ gelöst</span></summary><p id="exTask${i}">${esc(e.task)}</p><div class="exercise-grid"><div><label class="editor-label" for="exCode${i}">${e.kind === "css" ? "CSS" : "HTML"}</label><div class="code-surface"><pre class="line-numbers" id="exLines${i}" aria-hidden="true"></pre><textarea class="code" id="exCode${i}" aria-describedby="exTask${i} exPos${i}" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" rows="${Math.max(5, e.code.split("\n").length + 1)}">${esc(e.code)}</textarea></div><p class="editor-position" id="exPos${i}"></p><div class="actions"><button type="button" class="button" data-exercise-check="${i}">Übung prüfen</button><button type="button" class="button secondary" data-exercise-reset="${i}">Neu beginnen</button></div></div><div class="exercise-preview"><p class="muted">Vorschau</p><iframe title="Vorschau zu Übung ${i + 1}" sandbox=""></iframe></div></div><div class="exercise-result" id="exResult${i}" role="status" aria-atomic="true"></div></details>`;
+    })
+    .join("")}</section>`;
+}
+function bindExercises(l) {
+  const list = exercises[l.id];
+  if (!list || !$("#exercises")) return;
+  document.querySelectorAll(".exercise").forEach((box) => {
+    const i = Number(box.dataset.exercise),
+      e = list[i],
+      code = box.querySelector("textarea"),
+      frame = box.querySelector("iframe");
+    let pause;
+    const show = () => {
+      // CSS exercises are previewed on their fixed sample HTML.
+      frame.srcdoc = e.kind === "css" ? preview(e.context || "", code.value) : preview(code.value, "");
+    };
+    const updateEditor = bindCodeEditor(code, box.querySelector(".line-numbers"), box.querySelector(".editor-position"));
+    box.addEventListener("toggle", () => {
+      if (box.open) {
+        updateEditor();
+        show();
+      }
+    });
+    code.addEventListener("input", () => {
+      clearTimeout(pause);
+      pause = setTimeout(show, 300);
+    });
+    box.querySelector("[data-exercise-check]").onclick = () => {
+      const results = checkExercise(e, code.value),
+        ok = results.every((r) => r.passed);
+      box.querySelector(".exercise-result").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul>${ok ? `<p class="exercise-remember"><strong>Merke:</strong> ${esc(e.remember)}</p>` : "<p>Noch nicht ganz. Vergleiche die offenen Punkte mit deinem Code und der Vorschau.</p>"}`;
+      if (!ok) return;
+      box.querySelector(".exercise-solved").hidden = false;
+      const solved = solvedExercises();
+      solved.add(exerciseId(l.id, i));
+      try {
+        localStorage.setItem(EXERCISE_KEY, JSON.stringify([...solved]));
+      } catch {}
+      const done = list.filter((_, n) => solved.has(exerciseId(l.id, n))).length;
+      $("#exerciseProgress").textContent = `Kurze Übungen · ${done} von ${list.length} gelöst`;
+    };
+    box.querySelector("[data-exercise-reset]").onclick = () => {
+      code.value = e.code;
+      updateEditor();
+      show();
+      box.querySelector(".exercise-result").textContent = "";
+      code.focus();
+    };
+  });
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${correctionTask(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -804,7 +856,7 @@ function render() {
   if (l) {
     bindBoxModel();
     bindSelectorHelper();
-    bindCorrectionTask(l);
+    bindExercises(l);
     document.querySelectorAll("[data-lesson-anchor]").forEach(
       (link) =>
         (link.onclick = (e) => {

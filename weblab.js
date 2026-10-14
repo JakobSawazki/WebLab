@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.24.0";
+const VERSION = "1.25.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -3469,94 +3469,198 @@ function bindSelectorHelper(root = document) {
 
 return {specificity,selectorView,bindSelectorHelper};
 },
-"corrections.js": function(require) {
-// Optional correction tasks: learners repair faulty code and check it at once.
-// The checks read the written source on purpose: browsers silently repair many
-// HTML mistakes, so a parsed document would hide exactly the errors to train.
-// Nothing here is stored or awarded points. `fixed` is a reference solution
-// used by the tests; it is not shown in the app.
+"exercises.js": function(require) {
+// Short practice exercises with their own small editor and live preview.
+// Types: "repair" (fix two mistakes), "complete" (add what is missing) and
+// "write" (write it yourself). Checks read the written source on purpose:
+// browsers silently repair broken HTML, so a parsed document would hide the
+// very mistakes to practise. `fixed` is a reference solution for the tests and
+// is never shown. `remember` is the short rule shown once an exercise is solved.
+// Exercises never touch drafts, completion or points.
 const count = (source, pattern) => (source.match(pattern) || []).length;
 const inside = (source, open, close) => {
   const start = source.indexOf(open);
   const end = source.indexOf(close, start + open.length);
   return start < 0 || end < 0 ? null : source.slice(start + open.length, end);
 };
+const text = "[^<]*[^<\\s][^<]*"; // at least one visible character
+const has = (source, pattern) => new RegExp(pattern, "i").test(source);
 
-const corrections = {
-  l1: {
-    task: "Die Überschrift wird nicht geschlossen, und strong und p sind falsch verschachtelt. Repariere beides.",
-    code: "<h1>Unser Schulgarten<h1>\n<p>Wir pflanzen <strong>Gemüse</p></strong>",
-    fixed: "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>Gemüse</strong></p>",
-    checks: [
-      ["Genau ein Start-Tag <h1> und ein End-Tag </h1>", (s) => count(s, /<h1>/g) === 1 && count(s, /<\/h1>/g) === 1],
-      ["</strong> steht vor </p>", (s) => /<strong>[^<]*<\/strong>[^<]*<\/p>/.test(s)],
-    ],
-  },
-  l2: {
-    task: "Die sichtbare Überschrift steht im falschen Bereich des Grundgerüsts. Verschiebe sie, ohne den title zu verändern.",
-    code: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Meine AG</title>\n  <h1>Willkommen</h1>\n</head>\n<body>\n</body>\n</html>',
-    fixed: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Meine AG</title>\n</head>\n<body>\n  <h1>Willkommen</h1>\n</body>\n</html>',
-    checks: [
-      ["Die h1 steht im body", (s) => s.indexOf("<h1") > s.indexOf("<body") && s.indexOf("<body") > -1 && s.indexOf("<h1") < s.indexOf("</body>")],
-      ["Der title steht weiterhin im head", (s) => s.indexOf("<title>") > -1 && s.indexOf("<title>") < s.indexOf("</head>")],
-    ],
-  },
-  l4: {
-    task: "In dieser Liste stimmt zweimal etwas nicht: ein Eintrag ohne li und ein li ohne End-Tag. Repariere die Liste.",
-    code: "<ul>\n  Erde\n  <li>Samen</li>\n  <li>Gießkanne\n</ul>",
-    fixed: "<ul>\n  <li>Erde</li>\n  <li>Samen</li>\n  <li>Gießkanne</li>\n</ul>",
-    checks: [
-      ["Drei Einträge mit <li> und </li>", (s) => count(s, /<li>/g) === 3 && count(s, /<\/li>/g) === 3],
-      ["Kein Text direkt in der ul", (s) => {
-        const list = inside(s, "<ul>", "</ul>");
-        // Closed and unclosed li items are removed; whatever text is left stands bare in the ul.
-        return list !== null && !list.replace(/<li>[\s\S]*?<\/li>/g, "").replace(/<li>[^<]*/g, "").trim();
-      }],
-    ],
-  },
-  l5: {
-    task: "Der Sprunglink springt nicht, und der Kontaktlink funktioniert nur auf einem einzigen Rechner. Repariere beide Links.",
-    code: '<a href="#Ideen">Zu den Ideen</a>\n<a href="C:\\Users\\max\\kontakt.html">Kontakt</a>\n<h2 id="ideen">Ideen</h2>',
-    fixed: '<a href="#ideen">Zu den Ideen</a>\n<a href="kontakt.html">Kontakt</a>\n<h2 id="ideen">Ideen</h2>',
-    checks: [
-      ['Sprunglink href="#ideen" passt genau zu id="ideen"', (s) => /href="#ideen"/.test(s) && /id="ideen"/.test(s)],
-      ["Relativer Link auf kontakt.html ohne Laufwerkspfad", (s) => /href="kontakt\.html"/.test(s) && !/[A-Z]:\\/.test(s)],
-    ],
-  },
-  l7: {
-    task: "Die Kopfzellen stehen ohne Zeile direkt in der Tabelle, und eine Datenzeile hat zu wenige Zellen. Repariere die Tabelle.",
-    code: '<table>\n  <caption>Pflanzzeiten</caption>\n  <th scope="col">Pflanze</th><th scope="col">Monat</th>\n  <tr><td>Radieschen</td><td>April</td></tr>\n  <tr><td>Salat</td></tr>\n</table>',
-    fixed: '<table>\n  <caption>Pflanzzeiten</caption>\n  <tr><th scope="col">Pflanze</th><th scope="col">Monat</th></tr>\n  <tr><td>Radieschen</td><td>April</td></tr>\n  <tr><td>Salat</td><td>Mai</td></tr>\n</table>',
-    checks: [
-      ["Die Kopfzellen stehen in einem <tr>", (s) => /<tr>\s*<th scope="col">[^<]+<\/th>\s*<th scope="col">[^<]+<\/th>\s*<\/tr>/.test(s)],
-      ["Jede Datenzeile hat zwei td-Zellen", (s) => {
-        const rows = s.match(/<tr>[\s\S]*?<\/tr>/g) || [];
-        const data = rows.filter((row) => row.includes("<td"));
-        return data.length >= 2 && data.every((row) => count(row, /<td>[^<]+<\/td>/g) === 2);
-      }],
-    ],
-  },
-  l10: {
-    kind: "css",
-    task: 'Beide Regeln wirken nicht auf <p class="hinweis"> und <h1 id="start">. Finde die zwei Schreibfehler in den Selektoren.',
-    code: ". hinweis { color: darkgreen; }\n#Start { text-align: center; }",
-    fixed: ".hinweis { color: darkgreen; }\n#start { text-align: center; }",
-    checks: [
-      ["Klassenselektor .hinweis ohne Leerzeichen mit color", (s) => /(^|[\s}])\.hinweis\s*\{[^}]*color\s*:/.test(s)],
-      ["ID-Selektor #start in Kleinbuchstaben mit text-align", (s) => /(^|[\s}])#start\s*\{[^}]*text-align\s*:/.test(s)],
-    ],
-  },
+const exerciseTypes = {
+  repair: "Reparieren",
+  complete: "Ergänzen",
+  write: "Selbst schreiben",
 };
 
-const checkCorrection = (id, source) =>
-  corrections[id].checks.map(([label, test]) => ({ label, passed: test(source) }));
+const exercises = {
+  l1: [
+    {
+      type: "repair",
+      title: "Überschrift und Betonung reparieren",
+      task: "Die Überschrift wird nicht geschlossen, und strong und p sind falsch verschachtelt. Repariere beides.",
+      code: "<h1>Unser Schulgarten<h1>\n<p>Wir pflanzen <strong>Gemüse</p></strong>",
+      fixed: "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>Gemüse</strong></p>",
+      checks: [
+        ["Genau ein Start-Tag <h1> und ein End-Tag </h1>", (s) => count(s, /<h1>/g) === 1 && count(s, /<\/h1>/g) === 1],
+        ["</strong> steht vor </p>", (s) => /<strong>[^<]*<\/strong>[^<]*<\/p>/.test(s)],
+      ],
+      remember: "Was zuletzt geöffnet wurde, wird zuerst geschlossen.",
+    },
+    {
+      type: "write",
+      title: "Dein erstes Element-Paar",
+      task: "Schreibe eine Überschrift zu deinem Hobby und darunter einen Absatz, in dem ein wichtiges Wort mit strong betont ist.",
+      code: "<!-- Schreibe hier deine Überschrift und deinen Absatz. -->\n",
+      fixed: "<h1>Mein Hobby</h1>\n<p>Ich spiele gern <strong>Schach</strong>.</p>",
+      checks: [
+        ["Eine h1 mit eigenem Text", (s) => has(s, `<h1>${text}</h1>`)],
+        ["Ein Absatz mit einem strong-Wort darin", (s) => has(s, `<p>[^]*?<strong>${text}</strong>[^]*?</p>`)],
+      ],
+      remember: "Start-Tag, Inhalt und End-Tag bilden zusammen ein Element.",
+    },
+  ],
+  l2: [
+    {
+      type: "repair",
+      title: "Die Überschrift an den richtigen Ort",
+      task: "Die sichtbare Überschrift steht im falschen Bereich des Grundgerüsts. Verschiebe sie, ohne den title zu verändern.",
+      code: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Meine AG</title>\n  <h1>Willkommen</h1>\n</head>\n<body>\n</body>\n</html>',
+      fixed: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Meine AG</title>\n</head>\n<body>\n  <h1>Willkommen</h1>\n</body>\n</html>',
+      checks: [
+        ["Die h1 steht im body", (s) => s.indexOf("<body") > -1 && s.indexOf("<h1") > s.indexOf("<body") && s.indexOf("<h1") < s.indexOf("</body>")],
+        ["Der title steht weiterhin im head", (s) => s.indexOf("<title>") > -1 && s.indexOf("<title>") < s.indexOf("</head>")],
+      ],
+      remember: "Sichtbares gehört in den body, Angaben für den Browser in den head.",
+    },
+    {
+      type: "complete",
+      title: "Das Grundgerüst vervollständigen",
+      task: "Diesem Grundgerüst fehlen drei Angaben: der Doctype, die Dokumentsprache Deutsch und der Zeichensatz UTF-8. Ergänze sie.",
+      code: "<html>\n<head>\n  <title>Meine AG</title>\n</head>\n<body>\n  <h1>Willkommen</h1>\n</body>\n</html>",
+      fixed: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Meine AG</title>\n</head>\n<body>\n  <h1>Willkommen</h1>\n</body>\n</html>',
+      checks: [
+        ["Erste Zeile <!doctype html>", (s) => /^\s*<!doctype html>/i.test(s)],
+        ['Start-Tag <html lang="de">', (s) => /<html lang="de">/i.test(s)],
+        ['<meta charset="utf-8"> im head', (s) => /<meta charset="utf-8">/i.test(s) && s.search(/<meta charset/i) < s.indexOf("</head>")],
+      ],
+      remember: "Doctype zuerst, dann html mit lang, im head meta charset.",
+    },
+  ],
+  l3: [
+    {
+      type: "repair",
+      title: "Gliederung statt Zeilenumbrüche",
+      task: "Die Gliederung überspringt eine Überschriftenebene, und zwei Gedanken sind nur mit br getrennt. Mache daraus eine h2 und zwei Absätze.",
+      code: "<h1>Unsere AG</h1>\n<h3>Termine</h3>\nWir treffen uns freitags.<br><br>Bitte pünktlich sein.",
+      fixed: "<h1>Unsere AG</h1>\n<h2>Termine</h2>\n<p>Wir treffen uns freitags.</p>\n<p>Bitte pünktlich sein.</p>",
+      checks: [
+        ["Das Unterthema ist eine h2", (s) => has(s, `<h2>${text}</h2>`) && !/<h3/i.test(s)],
+        ["Zwei Absätze ohne br", (s) => count(s, new RegExp(`<p>${text}</p>`, "gi")) >= 2 && !/<br/i.test(s)],
+      ],
+      remember: "Die Überschriftenebene folgt der Gliederung, nicht der Schriftgröße.",
+    },
+    {
+      type: "write",
+      title: "Betonen mit em und strong",
+      task: "Schreibe einen Absatz, in dem ein Wort sprachlich mit em betont ist, und einen zweiten Absatz mit einem wichtigen Hinweis in strong.",
+      code: "<!-- Zwei Absätze: einer mit em, einer mit strong -->\n",
+      fixed: "<p>Das war <em>wirklich</em> spannend.</p>\n<p><strong>Achtung:</strong> Der Raum ist geschlossen.</p>",
+      checks: [
+        ["Ein Absatz mit em", (s) => has(s, `<p>[^]*?<em>${text}</em>[^]*?</p>`)],
+        ["Ein Absatz mit strong", (s) => has(s, `<p>[^]*?<strong>${text}</strong>[^]*?</p>`)],
+      ],
+      remember: "em betont die Aussprache, strong die Wichtigkeit.",
+    },
+  ],
+  l4: [
+    {
+      type: "repair",
+      title: "Eine kaputte Liste",
+      task: "In dieser Liste stimmt zweimal etwas nicht: ein Eintrag ohne li und ein li ohne End-Tag. Repariere die Liste.",
+      code: "<ul>\n  Erde\n  <li>Samen</li>\n  <li>Gießkanne\n</ul>",
+      fixed: "<ul>\n  <li>Erde</li>\n  <li>Samen</li>\n  <li>Gießkanne</li>\n</ul>",
+      checks: [
+        ["Drei Einträge mit <li> und </li>", (s) => count(s, /<li>/g) === 3 && count(s, /<\/li>/g) === 3],
+        ["Kein Text direkt in der ul", (s) => {
+          const list = inside(s, "<ul>", "</ul>");
+          // Closed and unclosed li items are removed; whatever is left stands bare in the ul.
+          return list !== null && !list.replace(/<li>[\s\S]*?<\/li>/g, "").replace(/<li>[^<]*/g, "").trim();
+        }],
+      ],
+      remember: "Jeder Listeneintrag steht in einem eigenen li.",
+    },
+    {
+      type: "write",
+      title: "Eine Anleitung in Schritten",
+      task: "Schreibe eine Anleitung mit drei Schritten, deren Reihenfolge wichtig ist, zum Beispiel zum Händewaschen. Wähle die passende Liste.",
+      code: "<!-- Drei Schritte in der richtigen Reihenfolge -->\n",
+      fixed: "<ol>\n  <li>Hände nass machen</li>\n  <li>Einseifen</li>\n  <li>Abspülen</li>\n</ol>",
+      checks: [
+        ["Eine geordnete Liste ol", (s) => /<ol>/i.test(s) && /<\/ol>/i.test(s)],
+        ["Drei Schritte als li in der ol", (s) => count(inside(s.toLowerCase(), "<ol>", "</ol>") || "", new RegExp(`<li>${text}</li>`, "g")) >= 3],
+      ],
+      remember: "Reihenfolge wichtig: ol. Reihenfolge egal: ul.",
+    },
+  ],
+  l5: [
+    {
+      type: "repair",
+      title: "Zwei Links, die nicht funktionieren",
+      task: "Der Sprunglink springt nicht, und der Kontaktlink funktioniert nur auf einem einzigen Rechner. Repariere beide Links.",
+      code: '<a href="#Ideen">Zu den Ideen</a>\n<a href="C:\\Users\\max\\kontakt.html">Kontakt</a>\n<h2 id="ideen">Ideen</h2>',
+      fixed: '<a href="#ideen">Zu den Ideen</a>\n<a href="kontakt.html">Kontakt</a>\n<h2 id="ideen">Ideen</h2>',
+      checks: [
+        ['Sprunglink href="#ideen" passt genau zu id="ideen"', (s) => /href="#ideen"/.test(s) && /id="ideen"/.test(s)],
+        ["Relativer Link auf kontakt.html ohne Laufwerkspfad", (s) => /href="kontakt\.html"/.test(s) && !/[A-Z]:\\/.test(s)],
+      ],
+      remember: "Ein Sprungziel muss exakt passen; relative Pfade gelten auf jedem Rechner.",
+    },
+  ],
+  l7: [
+    {
+      type: "repair",
+      title: "Eine verrutschte Tabelle",
+      task: "Die Kopfzellen stehen ohne Zeile direkt in der Tabelle, und eine Datenzeile hat zu wenige Zellen. Repariere die Tabelle.",
+      code: '<table>\n  <caption>Pflanzzeiten</caption>\n  <th scope="col">Pflanze</th><th scope="col">Monat</th>\n  <tr><td>Radieschen</td><td>April</td></tr>\n  <tr><td>Salat</td></tr>\n</table>',
+      fixed: '<table>\n  <caption>Pflanzzeiten</caption>\n  <tr><th scope="col">Pflanze</th><th scope="col">Monat</th></tr>\n  <tr><td>Radieschen</td><td>April</td></tr>\n  <tr><td>Salat</td><td>Mai</td></tr>\n</table>',
+      checks: [
+        ["Die Kopfzellen stehen in einem <tr>", (s) => /<tr>\s*<th scope="col">[^<]+<\/th>\s*<th scope="col">[^<]+<\/th>\s*<\/tr>/.test(s)],
+        ["Jede Datenzeile hat zwei td-Zellen", (s) => {
+          const data = (s.match(/<tr>[\s\S]*?<\/tr>/g) || []).filter((row) => row.includes("<td"));
+          return data.length >= 2 && data.every((row) => count(row, /<td>[^<]+<\/td>/g) === 2);
+        }],
+      ],
+      remember: "Jede Zelle steht in einer Zeile tr, und jede Zeile hat gleich viele Zellen.",
+    },
+  ],
+  l10: [
+    {
+      type: "repair",
+      kind: "css",
+      context: '<h1 id="start">Schulgarten</h1>\n<p class="hinweis">Bitte Handschuhe mitbringen.</p>',
+      title: "Zwei Selektoren, die nichts treffen",
+      task: 'Beide Regeln wirken nicht auf <p class="hinweis"> und <h1 id="start">. Finde die zwei Schreibfehler in den Selektoren.',
+      code: ". hinweis { color: darkgreen; }\n#Start { text-align: center; }",
+      fixed: ".hinweis { color: darkgreen; }\n#start { text-align: center; }",
+      checks: [
+        ["Klassenselektor .hinweis ohne Leerzeichen mit color", (s) => /(^|[\s}])\.hinweis\s*\{[^}]*color\s*:/.test(s)],
+        ["ID-Selektor #start in Kleinbuchstaben mit text-align", (s) => /(^|[\s}])#start\s*\{[^}]*text-align\s*:/.test(s)],
+      ],
+      remember: "Punkt und Klassenname gehören zusammen; Namen müssen exakt übereinstimmen.",
+    },
+  ],
+};
 
-return {corrections,checkCorrection};
+const exerciseId = (lessonId, index) => `${lessonId}-${index + 1}`;
+const checkExercise = (exercise, source) =>
+  exercise.checks.map(([label, test]) => ({ label, passed: test(source) }));
+
+return {exerciseTypes,exercises,exerciseId,checkExercise};
 },
 "app.js": function(require) {
 const { boxModelView, bindBoxModel } = require("box-model.js");
 const { selectorView, bindSelectorHelper } = require("selector-helper.js");
-const { corrections, checkCorrection } = require("corrections.js");
+const { exercises, exerciseId, checkExercise, exerciseTypes } = require("exercises.js");
 const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
 const { VERSION, groups, lessons, byId } = require("content.js");
@@ -3904,29 +4008,81 @@ function debugChallenge(l) {
   if (!exercise) return "";
   return `<details class="debug-challenge"><summary>Fehler finden: eine kurze Denkaufgabe</summary><p class="muted">Finde die Ursache, bevor du deinen eigenen Code weiterentwickelst. Diese Übung verändert deinen Entwurf nicht und vergibt keine Zusatzpunkte.</p><pre><code>${esc(exercise.code)}</code></pre><p id="debugQuestion">${esc(exercise.question)}</p><div class="quiz-options" role="group" aria-labelledby="debugQuestion">${exercise.options.map((option, i) => `<button type="button" class="button secondary quiz-option" data-debug-answer="${i}">${esc(option)}</button>`).join("")}</div><p id="debugResult" role="status" aria-atomic="true"></p></details>`;
 }
-// Optional repair task; the edited code lives only in this view and is never saved.
-function correctionTask(l) {
-  const task = corrections[l.id];
-  if (!task) return "";
-  return `<details class="debug-challenge correction-task"><summary>Korrekturaufgabe: Repariere den Code</summary><p id="correctionTask">${esc(task.task)}</p><label for="correctionCode">${task.kind === "css" ? "CSS" : "HTML"} zum Reparieren</label><textarea class="code correction-code" id="correctionCode" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="correctionTask" rows="${task.code.split("\n").length + 1}">${esc(task.code)}</textarea><div class="actions"><button type="button" class="button secondary" id="correctionCheck">Korrektur prüfen</button><button type="button" class="button secondary" id="correctionReset">Ausgangscode wiederherstellen</button></div><div id="correctionResult" role="status" aria-atomic="true"></div><p class="muted">Diese Übung verändert deinen Entwurf nicht, wird nicht gespeichert und vergibt keine Punkte.</p></details>`;
+// Short exercises with their own mini editor and live preview. The code lives
+// only in this view; solved exercises are remembered per device under a
+// separate key, outside the learning state and its backups.
+const EXERCISE_KEY = "weblab-exercises-v1";
+function solvedExercises() {
+  try {
+    const list = JSON.parse(localStorage.getItem(EXERCISE_KEY) || "[]");
+    return new Set(Array.isArray(list) ? list.filter((x) => typeof x === "string") : []);
+  } catch {
+    return new Set();
+  }
 }
-function bindCorrectionTask(l) {
-  const task = corrections[l.id];
-  if (!task || !$("#correctionCode")) return;
-  $("#correctionCheck").onclick = () => {
-    const results = checkCorrection(l.id, $("#correctionCode").value),
-      done = results.every((r) => r.passed);
-    $("#correctionResult").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul><p>${done ? "Repariert. Achte in deinem eigenen Code auf dieselben Stellen." : "Noch nicht ganz. Vergleiche die offenen Punkte genau mit dem Code."}</p>`;
-  };
-  $("#correctionReset").onclick = () => {
-    $("#correctionCode").value = task.code;
-    $("#correctionResult").textContent = "";
-    $("#correctionCode").focus();
-  };
+function exercisePanel(l) {
+  const list = exercises[l.id];
+  if (!list) return "";
+  const solved = solvedExercises(),
+    done = list.filter((_, i) => solved.has(exerciseId(l.id, i))).length;
+  return `<section class="panel exercise-panel" id="exercises" aria-labelledby="exercisesTitle"><p class="eyebrow" id="exerciseProgress">Kurze Übungen · ${done} von ${list.length} gelöst</p><h3 id="exercisesTitle">Üben mit dem Mini-Editor</h3><p class="muted">Jede Übung hat einen eigenen kleinen Editor mit Vorschau. Sie verändert deinen Entwurf nicht und vergibt keine Punkte; gelöste Übungen bleiben auf diesem Gerät markiert.</p>${list
+    .map((e, i) => {
+      const id = exerciseId(l.id, i),
+        isSolved = solved.has(id);
+      return `<details class="exercise" data-exercise="${i}"><summary><span class="exercise-type">${exerciseTypes[e.type]}</span> Übung ${i + 1}: ${esc(e.title)}<span class="exercise-solved" ${isSolved ? "" : "hidden"}> · ✓ gelöst</span></summary><p id="exTask${i}">${esc(e.task)}</p><div class="exercise-grid"><div><label class="editor-label" for="exCode${i}">${e.kind === "css" ? "CSS" : "HTML"}</label><div class="code-surface"><pre class="line-numbers" id="exLines${i}" aria-hidden="true"></pre><textarea class="code" id="exCode${i}" aria-describedby="exTask${i} exPos${i}" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" rows="${Math.max(5, e.code.split("\n").length + 1)}">${esc(e.code)}</textarea></div><p class="editor-position" id="exPos${i}"></p><div class="actions"><button type="button" class="button" data-exercise-check="${i}">Übung prüfen</button><button type="button" class="button secondary" data-exercise-reset="${i}">Neu beginnen</button></div></div><div class="exercise-preview"><p class="muted">Vorschau</p><iframe title="Vorschau zu Übung ${i + 1}" sandbox=""></iframe></div></div><div class="exercise-result" id="exResult${i}" role="status" aria-atomic="true"></div></details>`;
+    })
+    .join("")}</section>`;
+}
+function bindExercises(l) {
+  const list = exercises[l.id];
+  if (!list || !$("#exercises")) return;
+  document.querySelectorAll(".exercise").forEach((box) => {
+    const i = Number(box.dataset.exercise),
+      e = list[i],
+      code = box.querySelector("textarea"),
+      frame = box.querySelector("iframe");
+    let pause;
+    const show = () => {
+      // CSS exercises are previewed on their fixed sample HTML.
+      frame.srcdoc = e.kind === "css" ? preview(e.context || "", code.value) : preview(code.value, "");
+    };
+    const updateEditor = bindCodeEditor(code, box.querySelector(".line-numbers"), box.querySelector(".editor-position"));
+    box.addEventListener("toggle", () => {
+      if (box.open) {
+        updateEditor();
+        show();
+      }
+    });
+    code.addEventListener("input", () => {
+      clearTimeout(pause);
+      pause = setTimeout(show, 300);
+    });
+    box.querySelector("[data-exercise-check]").onclick = () => {
+      const results = checkExercise(e, code.value),
+        ok = results.every((r) => r.passed);
+      box.querySelector(".exercise-result").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul>${ok ? `<p class="exercise-remember"><strong>Merke:</strong> ${esc(e.remember)}</p>` : "<p>Noch nicht ganz. Vergleiche die offenen Punkte mit deinem Code und der Vorschau.</p>"}`;
+      if (!ok) return;
+      box.querySelector(".exercise-solved").hidden = false;
+      const solved = solvedExercises();
+      solved.add(exerciseId(l.id, i));
+      try {
+        localStorage.setItem(EXERCISE_KEY, JSON.stringify([...solved]));
+      } catch {}
+      const done = list.filter((_, n) => solved.has(exerciseId(l.id, n))).length;
+      $("#exerciseProgress").textContent = `Kurze Übungen · ${done} von ${list.length} gelöst`;
+    };
+    box.querySelector("[data-exercise-reset]").onclick = () => {
+      code.value = e.code;
+      updateEditor();
+      show();
+      box.querySelector(".exercise-result").textContent = "";
+      code.focus();
+    };
+  });
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${correctionTask(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -4360,7 +4516,7 @@ function render() {
   if (l) {
     bindBoxModel();
     bindSelectorHelper();
-    bindCorrectionTask(l);
+    bindExercises(l);
     document.querySelectorAll("[data-lesson-anchor]").forEach(
       (link) =>
         (link.onclick = (e) => {

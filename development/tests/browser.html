@@ -268,19 +268,26 @@
             (completed || fd.querySelectorAll("#completionStatus li").length === 4),
           "Rueckmeldung zeigt Tipps und Abschluss-Checkliste",
         );
-        const draftBeforeCorrection = localStorage.getItem(STORAGE_KEY);
-        fd.querySelector(".correction-task summary").click();
-        fd.querySelector("#correctionCheck").click();
-        const brokenOpen = fd.querySelectorAll("#correctionResult li.fail").length;
-        fd.querySelector("#correctionCode").value =
+        const draftBeforeExercise = localStorage.getItem(STORAGE_KEY),
+          savedExercises = localStorage.getItem("weblab-exercises-v1"),
+          exercise = fd.querySelector('.exercise[data-exercise="0"]');
+        exercise.querySelector("summary").click();
+        exercise.querySelector("[data-exercise-check]").click();
+        const brokenOpen = exercise.querySelectorAll(".exercise-result li.fail").length;
+        exercise.querySelector("textarea").value =
           "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>Gemüse</strong></p>";
-        fd.querySelector("#correctionCheck").click();
+        exercise.querySelector("[data-exercise-check]").click();
         assert(
           brokenOpen === 2 &&
-            !fd.querySelector("#correctionResult li.fail") &&
-            localStorage.getItem(STORAGE_KEY) === draftBeforeCorrection,
-          "Korrekturaufgabe: Fehler offen, Reparatur bestanden, Entwurf unveraendert",
+            !exercise.querySelector(".exercise-result li.fail") &&
+            exercise.querySelector(".exercise-remember") &&
+            !exercise.querySelector(".exercise-solved").hidden &&
+            exercise.querySelector("iframe").getAttribute("sandbox") === "" &&
+            localStorage.getItem(STORAGE_KEY) === draftBeforeExercise,
+          "Uebung: Fehler offen, Reparatur mit Merksatz, Vorschau isoliert, Entwurf unveraendert",
         );
+        if (savedExercises === null) localStorage.removeItem("weblab-exercises-v1");
+        else localStorage.setItem("weblab-exercises-v1", savedExercises);
       }
       assert(
         frame.contentWindow.innerWidth === 360,

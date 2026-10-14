@@ -1856,18 +1856,68 @@ dialog::backdrop {
   color: var(--brand);
   font-size: 0.75rem;
 }
-/* Correction task: a small, unsaved code field inside "Verstehen". */
-.correction-code {
+/* Exercise workshop: one small editor with live preview per exercise. */
+.exercise {
+  margin-top: 0.8rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg) 30%, transparent);
+}
+.exercise summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.exercise-type {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.05rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--brand) 45%, var(--line));
+  border-radius: 999px;
+  color: var(--brand);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.exercise-solved {
+  color: var(--green);
+  font-weight: 600;
+}
+.exercise-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+.exercise-preview iframe {
   width: 100%;
-  min-height: 6rem;
-  padding: 0.7rem;
+  height: 12rem;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 0.85rem;
-  line-height: 1.5;
-  white-space: pre;
-  overflow-x: auto;
-  resize: vertical;
+  background: #fff;
+}
+.exercise-preview p {
+  margin: 0 0 0.3rem;
+  font-size: 0.8rem;
+}
+.exercise-remember {
+  padding: 0.6rem 0.8rem;
+  border-left: 3px solid var(--green);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--green) 12%, transparent);
+}
+@media (max-width: 900px) {
+  .exercise-grid {
+    grid-template-columns: 1fr;
+  }
+}
+/* Short exercises need a short editor; the preview matches its height. */
+.exercise .code-surface .line-numbers,
+.exercise .code-surface textarea.code {
+  height: 12rem;
+  min-height: 9rem;
+}
+.exercise .code-surface .line-numbers {
+  flex-basis: 2.6rem;
 }

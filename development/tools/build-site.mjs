@@ -20,7 +20,9 @@ const modules = [
   "debugging.js",
   "box-model.js",
   "selector-helper.js",
+  "html.js",
   "exercises.js",
+  "exercise-panel.js",
   "app.js",
   "icons.js",
 ];

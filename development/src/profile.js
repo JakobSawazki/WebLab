@@ -2,8 +2,8 @@ import { lessons } from "./content.js";
 import { xp, nagold } from "./state.js";
 import { ledgerDraft, ledgerChanges, localStamp } from "./nagold.js";
 import { icon } from "./icons.js";
+import { esc } from "./html.js";
 
-const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const levels = [
   { min: 0, title: "Webstarter" }, { min: 100, title: "Tag-Entdecker" },
   { min: 300, title: "Seitenbauer" }, { min: 600, title: "HTML-Gestalter" },

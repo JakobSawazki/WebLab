@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.31.0";
+const VERSION = "1.31.1";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -1347,7 +1347,7 @@ const { lessons } = require("content.js");
 const { xp, nagold } = require("state.js");
 const { ledgerDraft, ledgerChanges, localStamp } = require("nagold.js");
 const { icon } = require("icons.js");
-const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const { esc } = require("html.js");
 const levels = [
   { min: 0, title: "Webstarter" }, { min: 100, title: "Tag-Entdecker" },
   { min: 300, title: "Seitenbauer" }, { min: 600, title: "HTML-Gestalter" },
@@ -3469,6 +3469,16 @@ function bindSelectorHelper(root = document) {
 
 return {specificity,selectorView,bindSelectorHelper};
 },
+"html.js": function(require) {
+// Masks text before it is placed into HTML templates.
+const esc = (value) =>
+  String(value ?? "").replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+  );
+
+return {esc};
+},
 "exercises.js": function(require) {
 // Short practice exercises with their own small editor and live preview.
 // Types: "repair" (fix two mistakes), "complete" (add what is missing) and
@@ -3979,10 +3989,134 @@ const exerciseHints = {
 
 return {exerciseTypes,exercises,exerciseId,checkExercise,exerciseHints};
 },
+"exercise-panel.js": function(require) {
+// The exercise workshop: panels with a mini editor and live preview, the home
+// suggestion and the collected rules. Exercise data lives in exercises.js.
+const { lessons } = require("content.js");
+const { lessonAccess } = require("state.js");
+const { preview } = require("checks.js");
+const { bindCodeEditor } = require("editor.js");
+const { esc } = require("html.js");
+const { exercises, exerciseId, checkExercise, exerciseTypes, exerciseHints } = require("exercises.js");
+const $ = (selector) => document.querySelector(selector);
+
+// Short exercises with their own mini editor and live preview. The code lives
+// only in this view; solved exercises are remembered per device under a
+// separate key, outside the learning state and its backups.
+const EXERCISE_KEY = "weblab-exercises-v1";
+function solvedExercises() {
+  try {
+    const list = JSON.parse(localStorage.getItem(EXERCISE_KEY) || "[]");
+    return new Set(Array.isArray(list) ? list.filter((x) => typeof x === "string") : []);
+  } catch {
+    return new Set();
+  }
+}
+function exerciseProgress(lessonId) {
+  const solved = solvedExercises();
+  return exercises[lessonId].filter((_, i) => solved.has(exerciseId(lessonId, i))).length;
+}
+// Home card: the next unsolved exercise of an unlocked lesson, otherwise a
+// random solved one to repeat. Links to #lesson/<id>/<number>.
+function practiceSuggestion(state) {
+  const solved = solvedExercises(),
+    open = lessons.filter((l) => lessonAccess(state, l.id).unlocked && exercises[l.id]),
+    all = open.flatMap((l) => exercises[l.id].map((e, i) => ({ l, e, i, done: solved.has(exerciseId(l.id, i)) })));
+  if (!all.length) return "";
+  const next = all.find((x) => !x.done),
+    pick = next || all[Math.floor(Math.random() * all.length)];
+  return `<section class="panel practice-suggestion"><p class="eyebrow">Kurz üben · ${next ? "nächste offene Übung" : "zur Wiederholung"}</p><h2>${esc(pick.e.title)}</h2><p>Einheit ${pick.l.id.slice(1).padStart(2, "0")} · ${exerciseTypes[pick.e.type]} · ${esc(pick.e.task)}</p><a class="button secondary" href="#lesson/${pick.l.id}/${pick.i + 1}">Übung öffnen</a></section>`;
+}
+// The rules of all solved exercises, as a short list to revise from.
+function rememberedRules() {
+  const solved = solvedExercises(),
+    items = lessons.flatMap((l) =>
+      (exercises[l.id] || [])
+        .filter((_, i) => solved.has(exerciseId(l.id, i)))
+        .map((e) => `<li><span class="muted">Einheit ${l.id.slice(1).padStart(2, "0")}:</span> ${esc(e.remember)}</li>`),
+    );
+  return `<section class="panel remembered-rules" aria-labelledby="rulesTitle"><h3 id="rulesTitle">Deine Merksätze</h3>${
+    items.length
+      ? `<p class="muted">Aus ${items.length} gelösten ${items.length === 1 ? "Übung" : "Übungen"}. Lies sie vor einer Klassenarbeit noch einmal durch.</p><ul>${items.join("")}</ul>`
+      : '<p class="muted">Sobald du in einer Einheit eine Übung im Mini-Editor löst, sammelt sich hier ihr Merksatz.</p>'
+  }</section>`;
+}
+function exercisePanel(l) {
+  const list = exercises[l.id];
+  if (!list) return "";
+  const solved = solvedExercises(),
+    done = list.filter((_, i) => solved.has(exerciseId(l.id, i))).length;
+  return `<section class="panel exercise-panel" id="exercises" aria-labelledby="exercisesTitle"><p class="eyebrow" id="exerciseProgress">Kurze Übungen · ${done} von ${list.length} gelöst</p><h3 id="exercisesTitle">Üben mit dem Mini-Editor</h3><p class="muted">Jede Übung hat einen eigenen kleinen Editor mit Vorschau. Sie verändert deinen Entwurf nicht und vergibt keine Punkte; gelöste Übungen bleiben auf diesem Gerät markiert.</p>${list
+    .map((e, i) => {
+      const id = exerciseId(l.id, i),
+        isSolved = solved.has(id);
+      return `<details class="exercise" data-exercise="${i}"><summary><span class="exercise-type">${exerciseTypes[e.type]}</span> Übung ${i + 1}: ${esc(e.title)}<span class="exercise-solved" ${isSolved ? "" : "hidden"}> · ✓ gelöst</span></summary><p id="exTask${i}">${esc(e.task)}</p><div class="exercise-grid"><div><label class="editor-label" for="exCode${i}">${e.kind === "css" ? "CSS" : "HTML"}</label><div class="code-surface"><pre class="line-numbers" id="exLines${i}" aria-hidden="true"></pre><textarea class="code" id="exCode${i}" aria-describedby="exTask${i} exPos${i}" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" rows="${Math.max(5, e.code.split("\n").length + 1)}">${esc(e.code)}</textarea></div><p class="editor-position" id="exPos${i}"></p><div class="actions"><button type="button" class="button" data-exercise-check="${i}">Übung prüfen</button><button type="button" class="button secondary" data-exercise-reset="${i}">Neu beginnen</button></div></div><div class="exercise-preview"><p class="muted">Vorschau</p><iframe title="Vorschau zu Übung ${i + 1}" sandbox=""></iframe></div></div><div class="exercise-result" id="exResult${i}" role="status" aria-atomic="true"></div></details>`;
+    })
+    .join("")}</section>`;
+}
+function bindExercises(l) {
+  const list = exercises[l.id];
+  if (!list || !$("#exercises")) return;
+  document.querySelectorAll(".exercise").forEach((box) => {
+    const i = Number(box.dataset.exercise),
+      e = list[i],
+      code = box.querySelector("textarea"),
+      frame = box.querySelector("iframe");
+    let pause;
+    const show = () => {
+      // CSS exercises are previewed on their fixed sample HTML.
+      frame.srcdoc = e.kind === "css" ? preview(e.context || "", code.value) : preview(code.value, "");
+    };
+    const updateEditor = bindCodeEditor(code, box.querySelector(".line-numbers"), box.querySelector(".editor-position"));
+    box.addEventListener("toggle", () => {
+      if (box.open) {
+        updateEditor();
+        show();
+      }
+    });
+    code.addEventListener("input", () => {
+      clearTimeout(pause);
+      pause = setTimeout(show, 300);
+    });
+    box.querySelector("[data-exercise-check]").onclick = () => {
+      const results = checkExercise(e, code.value),
+        ok = results.every((r) => r.passed);
+      box.querySelector(".exercise-result").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul>${ok ? `<p class="exercise-remember"><strong>Merke:</strong> ${esc(e.remember)}</p>` : `<p>Noch nicht ganz. Vergleiche die offenen Punkte mit deinem Code und der Vorschau.</p><button type="button" class="text-link" data-exercise-hint aria-expanded="false" aria-controls="exHint${i}">Tipp anzeigen</button><p class="exercise-hint" id="exHint${i}" hidden><strong>Tipp:</strong> ${esc(exerciseHints[exerciseId(l.id, i)])}</p>`}`;
+      const hintButton = box.querySelector("[data-exercise-hint]");
+      if (hintButton)
+        hintButton.onclick = () => {
+          box.querySelector(".exercise-hint").hidden = false;
+          hintButton.setAttribute("aria-expanded", "true");
+          hintButton.hidden = true;
+        };
+      if (!ok) return;
+      box.querySelector(".exercise-solved").hidden = false;
+      const solved = solvedExercises();
+      solved.add(exerciseId(l.id, i));
+      try {
+        localStorage.setItem(EXERCISE_KEY, JSON.stringify([...solved]));
+      } catch {}
+      const done = list.filter((_, n) => solved.has(exerciseId(l.id, n))).length;
+      $("#exerciseProgress").textContent = `Kurze Übungen · ${done} von ${list.length} gelöst`;
+    };
+    box.querySelector("[data-exercise-reset]").onclick = () => {
+      code.value = e.code;
+      updateEditor();
+      show();
+      box.querySelector(".exercise-result").textContent = "";
+      code.focus();
+    };
+  });
+}
+
+return {EXERCISE_KEY,solvedExercises,exerciseProgress,practiceSuggestion,rememberedRules,exercisePanel,bindExercises};
+},
 "app.js": function(require) {
 const { boxModelView, bindBoxModel } = require("box-model.js");
 const { selectorView, bindSelectorHelper } = require("selector-helper.js");
-const { exercises, exerciseId, checkExercise, exerciseTypes, exerciseHints } = require("exercises.js");
+const { exercises } = require("exercises.js");
+const { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises } = require("exercise-panel.js");
+const { esc } = require("html.js");
 const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
 const { VERSION, groups, lessons, byId } = require("content.js");
@@ -4006,19 +4140,7 @@ const { bindCodeEditor, readCodeFiles } = require("editor.js");
 const { journey, startingDraft } = require("journey.js");
 const { nagoldRows } = require("nagold.js");
 const { bindProfilePanel } = require("profile.js");
-const $ = (s) => document.querySelector(s),
-  esc = (s) =>
-    String(s ?? "").replace(
-      /[&<>"']/g,
-      (c) =>
-        ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;",
-        })[c],
-    );
+const $ = (s) => document.querySelector(s);
 let state,
   storageError = "",
   pendingImport = null,
@@ -4250,7 +4372,7 @@ function overview() {
     lessons.find((l) => !state.completed.includes(l.id)) || lessons[0];
   return `<section class="hero"><div class="hero-copy"><p class="eyebrow">BPE2 · Deine eigene Webseite beginnt hier</p><h2>Aus deinen Ideen<br>wird eine Webseite.</h2><p>Lerne HTML und CSS Schritt für Schritt. Probiere deinen Code direkt aus und entwickle am Ende eine eigene statische Webseite.</p><div class="actions"><a class="button" href="#lesson/${next.id}">${state.completed.length ? "Weiterlernen" : "Jetzt starten"} </a><a class="button secondary" href="#lab">Freies Labor</a></div></div><div class="hero-art"><span>&lt;idee&gt; → &lt;webseite&gt;</span></div></section>
  <div class="stats"><div class="stat"><strong>${state.completed.length} / ${lessons.length}</strong><small>Lerneinheiten abgeschlossen</small></div><div class="stat"><strong>${xp(state)}</strong><small>XP gesammelt</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD lokal erfasst</small></div><div class="stat"><strong>Dein Projekt</strong><small>Eine eigene statische Webseite</small></div></div>
- ${resumePanel()}${practiceSuggestion()}${phaseOverview()}`;
+ ${resumePanel()}${practiceSuggestion(state)}${phaseOverview()}`;
 }
 function phaseOverview() {
   const descriptions = [
@@ -4329,114 +4451,6 @@ function debugChallenge(l) {
   const exercise = debugging[l.id];
   if (!exercise) return "";
   return `<details class="debug-challenge"><summary>Fehler finden: eine kurze Denkaufgabe</summary><p class="muted">Finde die Ursache, bevor du deinen eigenen Code weiterentwickelst. Diese Übung verändert deinen Entwurf nicht und vergibt keine Zusatzpunkte.</p><pre><code>${esc(exercise.code)}</code></pre><p id="debugQuestion">${esc(exercise.question)}</p><div class="quiz-options" role="group" aria-labelledby="debugQuestion">${exercise.options.map((option, i) => `<button type="button" class="button secondary quiz-option" data-debug-answer="${i}">${esc(option)}</button>`).join("")}</div><p id="debugResult" role="status" aria-atomic="true"></p></details>`;
-}
-// Short exercises with their own mini editor and live preview. The code lives
-// only in this view; solved exercises are remembered per device under a
-// separate key, outside the learning state and its backups.
-const EXERCISE_KEY = "weblab-exercises-v1";
-function solvedExercises() {
-  try {
-    const list = JSON.parse(localStorage.getItem(EXERCISE_KEY) || "[]");
-    return new Set(Array.isArray(list) ? list.filter((x) => typeof x === "string") : []);
-  } catch {
-    return new Set();
-  }
-}
-function exerciseProgress(lessonId) {
-  const solved = solvedExercises();
-  return exercises[lessonId].filter((_, i) => solved.has(exerciseId(lessonId, i))).length;
-}
-// Home card: the next unsolved exercise of an unlocked lesson, otherwise a
-// random solved one to repeat. Links to #lesson/<id>/<number>.
-function practiceSuggestion() {
-  const solved = solvedExercises(),
-    open = lessons.filter((l) => lessonAccess(state, l.id).unlocked && exercises[l.id]),
-    all = open.flatMap((l) => exercises[l.id].map((e, i) => ({ l, e, i, done: solved.has(exerciseId(l.id, i)) })));
-  if (!all.length) return "";
-  const next = all.find((x) => !x.done),
-    pick = next || all[Math.floor(Math.random() * all.length)];
-  return `<section class="panel practice-suggestion"><p class="eyebrow">Kurz üben · ${next ? "nächste offene Übung" : "zur Wiederholung"}</p><h2>${esc(pick.e.title)}</h2><p>Einheit ${pick.l.id.slice(1).padStart(2, "0")} · ${exerciseTypes[pick.e.type]} · ${esc(pick.e.task)}</p><a class="button secondary" href="#lesson/${pick.l.id}/${pick.i + 1}">Übung öffnen</a></section>`;
-}
-// The rules of all solved exercises, as a short list to revise from.
-function rememberedRules() {
-  const solved = solvedExercises(),
-    items = lessons.flatMap((l) =>
-      (exercises[l.id] || [])
-        .filter((_, i) => solved.has(exerciseId(l.id, i)))
-        .map((e) => `<li><span class="muted">Einheit ${l.id.slice(1).padStart(2, "0")}:</span> ${esc(e.remember)}</li>`),
-    );
-  return `<section class="panel remembered-rules" aria-labelledby="rulesTitle"><h3 id="rulesTitle">Deine Merksätze</h3>${
-    items.length
-      ? `<p class="muted">Aus ${items.length} gelösten ${items.length === 1 ? "Übung" : "Übungen"}. Lies sie vor einer Klassenarbeit noch einmal durch.</p><ul>${items.join("")}</ul>`
-      : '<p class="muted">Sobald du in einer Einheit eine Übung im Mini-Editor löst, sammelt sich hier ihr Merksatz.</p>'
-  }</section>`;
-}
-function exercisePanel(l) {
-  const list = exercises[l.id];
-  if (!list) return "";
-  const solved = solvedExercises(),
-    done = list.filter((_, i) => solved.has(exerciseId(l.id, i))).length;
-  return `<section class="panel exercise-panel" id="exercises" aria-labelledby="exercisesTitle"><p class="eyebrow" id="exerciseProgress">Kurze Übungen · ${done} von ${list.length} gelöst</p><h3 id="exercisesTitle">Üben mit dem Mini-Editor</h3><p class="muted">Jede Übung hat einen eigenen kleinen Editor mit Vorschau. Sie verändert deinen Entwurf nicht und vergibt keine Punkte; gelöste Übungen bleiben auf diesem Gerät markiert.</p>${list
-    .map((e, i) => {
-      const id = exerciseId(l.id, i),
-        isSolved = solved.has(id);
-      return `<details class="exercise" data-exercise="${i}"><summary><span class="exercise-type">${exerciseTypes[e.type]}</span> Übung ${i + 1}: ${esc(e.title)}<span class="exercise-solved" ${isSolved ? "" : "hidden"}> · ✓ gelöst</span></summary><p id="exTask${i}">${esc(e.task)}</p><div class="exercise-grid"><div><label class="editor-label" for="exCode${i}">${e.kind === "css" ? "CSS" : "HTML"}</label><div class="code-surface"><pre class="line-numbers" id="exLines${i}" aria-hidden="true"></pre><textarea class="code" id="exCode${i}" aria-describedby="exTask${i} exPos${i}" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" rows="${Math.max(5, e.code.split("\n").length + 1)}">${esc(e.code)}</textarea></div><p class="editor-position" id="exPos${i}"></p><div class="actions"><button type="button" class="button" data-exercise-check="${i}">Übung prüfen</button><button type="button" class="button secondary" data-exercise-reset="${i}">Neu beginnen</button></div></div><div class="exercise-preview"><p class="muted">Vorschau</p><iframe title="Vorschau zu Übung ${i + 1}" sandbox=""></iframe></div></div><div class="exercise-result" id="exResult${i}" role="status" aria-atomic="true"></div></details>`;
-    })
-    .join("")}</section>`;
-}
-function bindExercises(l) {
-  const list = exercises[l.id];
-  if (!list || !$("#exercises")) return;
-  document.querySelectorAll(".exercise").forEach((box) => {
-    const i = Number(box.dataset.exercise),
-      e = list[i],
-      code = box.querySelector("textarea"),
-      frame = box.querySelector("iframe");
-    let pause;
-    const show = () => {
-      // CSS exercises are previewed on their fixed sample HTML.
-      frame.srcdoc = e.kind === "css" ? preview(e.context || "", code.value) : preview(code.value, "");
-    };
-    const updateEditor = bindCodeEditor(code, box.querySelector(".line-numbers"), box.querySelector(".editor-position"));
-    box.addEventListener("toggle", () => {
-      if (box.open) {
-        updateEditor();
-        show();
-      }
-    });
-    code.addEventListener("input", () => {
-      clearTimeout(pause);
-      pause = setTimeout(show, 300);
-    });
-    box.querySelector("[data-exercise-check]").onclick = () => {
-      const results = checkExercise(e, code.value),
-        ok = results.every((r) => r.passed);
-      box.querySelector(".exercise-result").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul>${ok ? `<p class="exercise-remember"><strong>Merke:</strong> ${esc(e.remember)}</p>` : `<p>Noch nicht ganz. Vergleiche die offenen Punkte mit deinem Code und der Vorschau.</p><button type="button" class="text-link" data-exercise-hint aria-expanded="false" aria-controls="exHint${i}">Tipp anzeigen</button><p class="exercise-hint" id="exHint${i}" hidden><strong>Tipp:</strong> ${esc(exerciseHints[exerciseId(l.id, i)])}</p>`}`;
-      const hintButton = box.querySelector("[data-exercise-hint]");
-      if (hintButton)
-        hintButton.onclick = () => {
-          box.querySelector(".exercise-hint").hidden = false;
-          hintButton.setAttribute("aria-expanded", "true");
-          hintButton.hidden = true;
-        };
-      if (!ok) return;
-      box.querySelector(".exercise-solved").hidden = false;
-      const solved = solvedExercises();
-      solved.add(exerciseId(l.id, i));
-      try {
-        localStorage.setItem(EXERCISE_KEY, JSON.stringify([...solved]));
-      } catch {}
-      const done = list.filter((_, n) => solved.has(exerciseId(l.id, n))).length;
-      $("#exerciseProgress").textContent = `Kurze Übungen · ${done} von ${list.length} gelöst`;
-    };
-    box.querySelector("[data-exercise-reset]").onclick = () => {
-      code.value = e.code;
-      updateEditor();
-      show();
-      box.querySelector(".exercise-result").textContent = "";
-      code.focus();
-    };
-  });
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);

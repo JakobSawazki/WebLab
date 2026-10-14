@@ -246,6 +246,10 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 - **Druckregeln (`@media print`)** am Ende von `styles.css`: schwarzer Text auf Weiß, keine Metallflächen und Schatten, Navigation, Kopfzeilen-Schalter, Fußzeile, Knöpfe, Vorschaufenster, Ablaufnavigation und Schrittleiste ausgeblendet; Abschnitte werden nicht mitten im Panel umbrochen. Nützlich vor allem für „Meine Notizen“ mit den gesammelten Merksätzen und für ausgedruckte Einheiten. Die Bildschirmdarstellung ist unverändert.
 - Geprüft per Edge im Druckmodus (`Emulation.setEmulatedMedia: print`): Notizenseite mit Merksätzen und eigenen Notizen gut lesbar. Aufgeklappte Inhalte erscheinen im Druck nur, wenn sie vorher geöffnet wurden.
 
+Veröffentlicht mit Commit `0cd68ea`; [Pages-Lauf 38633813394](https://github.com/JakobSawazki/WebLab/actions/runs/38633813394) erfolgreich, `styles.css` live per SHA-256 identisch, Release v1.34.1 (fasst 1.29.0–1.34.1 zusammen).
+
+**Stand der offenen Punkte nach dieser Arbeitsrunde (Claude):** Alle in Abschnitt 7 genannten Didaktik- und Technikpunkte, die ohne Klasse, Geräte oder Produktentscheidung umsetzbar waren, sind erledigt. Offen bleiben: (1) Unterrichtserprobung, (2) Original-Anhänge aus OneNote (Download liefert weiterhin keine Datei), (3) Lehrkraftablauf – Produktentscheidung von Jakob, (5) Projektwerkstatt mit mehreren HTML-Dateien – Produktentscheidung, (6) Test auf Schul-PCs/Tablets und mit Bildschirmlesern auf echten Geräten.
+
 Prüfung: 38 Node-Tests und Build bestanden; `npm run qa` 173/173.
 
 ### 14.10.2026 – Claude – Version 1.34.0 (Paket 30: Profi-Aufgaben als Abschluss jeder Etappe)

@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.25.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.26.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.25.0 |
+| Bereich | Version 1.26.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -187,7 +187,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.25.0):** 36 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 168 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.26.0):** 36 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 168 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -239,6 +239,21 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.26.0 (Paket 19: Übungen für die Einheiten 05–08)
+
+Sechs weitere Übungen in der Übungswerkstatt, jetzt 18 insgesamt; die Einheiten 01–08 haben je zwei.
+
+- **05 Selbst schreiben „Eine kleine Navigation“:** relativer Link auf index.html und externer https-Link, Linktexte nennen das Ziel.
+- **06 Reparieren „Ein Bild, das nicht erscheint“:** Pfad `Bilder/Beet.JPG` gegen `bilder/beet.jpg`, fehlender alt-Text. Die Vorschau lädt absichtlich keine Bilddateien und zeigt deshalb den eigenen alt-Text; das macht seine Funktion direkt sichtbar.
+- **06 Ergänzen „Dekoration oder Information?“:** leeres `alt=""` für die Zierlinie, beschreibender alt-Text für das Teamfoto. Die Prüfung sucht das jeweilige img über seinen Pfad, die Reihenfolge der Attribute ist egal.
+- **07 Selbst schreiben „Deine eigene kleine Tabelle“:** caption, Kopfzeile mit zwei `th scope="col"`, eine Datenzeile.
+- **08 Reparieren „Ein Video ohne Bedienung“:** controls ergänzen, autoplay entfernen.
+- **08 Selbst schreiben „Video mit Textfassung“:** video mit controls, source mit `type="video/mp4"`, Textfassung direkt darunter.
+
+Jede Übung hat einen Merksatz (z. B. „Dekoration bekommt alt="", Information eine Beschreibung.“). Tests erweitert: halb reparierte Fassungen von 06/08 lassen genau ein Kriterium offen; abweichende richtige Lösungen der neuen Schreib- und Ergänzungsübungen (andere Texte, Attributreihenfolge, umgebendes nav) werden akzeptiert.
+
+Prüfung: 36 Node-Tests und Build bestanden; `npm run qa` 168/168. Einheit 06 mit gelöster Bildübung per Edge-Screenshot geprüft (alt-Text in der Vorschau, Merksatz).
+
 ### 14.10.2026 – Claude – Version 1.25.0 (Paket 18: Übungswerkstatt mit Mini-Editor)
 
 Auf Jakobs Wunsch nach „guten, einprägsamen Übungen mit HTML-Editor“ werden die Korrekturaufgaben aus 1.24.0 zu einer Übungswerkstatt ausgebaut.
@@ -250,7 +265,7 @@ Auf Jakobs Wunsch nach „guten, einprägsamen Übungen mit HTML-Editor“ werde
 - **Tests:** `exercises.test.mjs` (ersetzt `corrections.test.mjs`): Jede Übung ist vollständig, ihr Ausgangscode fällt durch, ihre Referenzlösung besteht; bei Reparaturübungen lässt ein einzelner behobener Fehler genau ein Kriterium offen; andere richtige Lösungen der Schreibübungen werden akzeptiert. Die Browserprüfung in Einheit 01 (360 Pixel) prüft Fehlschlag, Reparatur, Merksatz, „gelöst“, die isolierte Vorschau und den unveränderten Lernstand und stellt die Übungsmarkierungen danach wieder her.
 - Technischer Hinweis: Der Bundler unterstützt keine umbenannten Importe (`a as b`); der Export heißt deshalb `exerciseTypes`.
 
-Prüfung: 36 Node-Tests und Build bestanden; `npm run qa` 168/168. Edge-Screenshots: Einheit 03 bei 1300 und 390 Pixeln (Dark, Schreibübung gelöst mit Merksatz, kein Überlauf) und Einheit 10 bei 1300 Pixeln (Light, CSS-Übung mit offenen Kriterien; die Vorschau zeigt, dass die fehlerhaften Selektoren nichts gestalten).
+Prüfung: 36 Node-Tests und Build bestanden; `npm run qa` 168/168. Edge-Screenshots: Einheit 03 bei 1300 und 390 Pixeln (Dark, Schreibübung gelöst mit Merksatz, kein Überlauf) und Einheit 10 bei 1300 Pixeln (Light, CSS-Übung mit offenen Kriterien; die Vorschau zeigt, dass die fehlerhaften Selektoren nichts gestalten). Veröffentlicht mit Commit `3413375`; [Pages-Lauf 38628678734](https://github.com/JakobSawazki/WebLab/actions/runs/38628678734) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.24.0 (Paket 17: Korrekturaufgaben)
 

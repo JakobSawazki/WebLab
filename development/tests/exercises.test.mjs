@@ -24,6 +24,8 @@ test("In repair exercises, fixing only one mistake leaves exactly one check open
     "l4-1": "<ul>\n  <li>Erde</li>\n  <li>Samen</li>\n  <li>Gießkanne\n</ul>",
     "l5-1": '<a href="#ideen">Zu den Ideen</a>\n<a href="C:\\Users\\max\\kontakt.html">Kontakt</a>\n<h2 id="ideen">Ideen</h2>',
     "l10-1": ".hinweis { color: darkgreen; }\n#Start { text-align: center; }",
+    "l6-1": '<img src="bilder/beet.jpg" width="640" height="360">',
+    "l8-1": '<video src="medien/garten.mp4" controls autoplay width="480"></video>',
   };
   for (const [name, source] of Object.entries(halfFixed)) {
     const e = all.find(([n]) => n === name)[2];
@@ -36,6 +38,10 @@ test("Write exercises accept other correct answers, not only the reference", () 
     "l1-2": '<h1 >Fußball</h1>\n<p>Mein Verein heißt <strong>TSV</strong> und spielt sonntags.</p>'.replace("<h1 >", "<h1>"),
     "l3-2": "<p>Ich <em>liebe</em> Musik.</p><p>Bitte <strong>leise</strong> sein.</p>",
     "l4-2": "<OL><li>Öffnen</li><li>Lesen</li><li>Schließen</li></OL>",
+    "l5-2": '<nav><a href="index.html">Zur Startseite</a> | <a href="https://www.schule.de/ag">AG-Seite</a></nav>',
+    "l6-2": '<img alt="" src="bilder/linie.png">\n<img width="640" src="bilder/team.jpg" alt="Die Robotik-AG im Werkraum">',
+    "l7-2": '<table><caption>Noten</caption>\n<tr><th scope="col">Fach</th><th scope="col">Note</th></tr>\n<tr><td>Deutsch</td><td>2</td></tr></table>',
+    "l8-2": '<video width="400" controls><source src="film.mp4" type="video/mp4"></video>\n<p>Im Film erklären wir unseren Roboter Schritt für Schritt.</p>',
   };
   for (const [name, source] of Object.entries(variants)) {
     const e = all.find(([n]) => n === name)[2];

@@ -13,6 +13,8 @@ const inside = (source, open, close) => {
 };
 const text = "[^<]*[^<\\s][^<]*"; // at least one visible character
 const has = (source, pattern) => new RegExp(pattern, "i").test(source);
+const imgTag = (source, src) =>
+  (source.match(/<img\b[^>]*>/gi) || []).find((tag) => tag.includes(`src="${src}"`)) || "";
 
 export const exerciseTypes = {
   repair: "Reparieren",
@@ -143,6 +145,44 @@ export const exercises = {
       ],
       remember: "Ein Sprungziel muss exakt passen; relative Pfade gelten auf jedem Rechner.",
     },
+    {
+      type: "write",
+      title: "Eine kleine Navigation",
+      task: "Schreibe zwei Links: einen zur eigenen Startseite index.html und einen externen Link auf eine Webseite mit https://. Beide Linktexte nennen das Ziel.",
+      code: "<!-- Zwei Links: Startseite und externe Seite -->\n",
+      fixed: '<a href="index.html">Startseite</a>\n<a href="https://example.org">Beispielseite</a>',
+      checks: [
+        ["Relativer Link auf index.html mit Linktext", (s) => has(s, `<a href="index\\.html">${text}</a>`)],
+        ["Externer Link mit https:// und Linktext", (s) => has(s, `<a href="https://[^"\\s]+">${text}</a>`)],
+      ],
+      remember: "Eigene Seiten relativ verlinken, fremde mit https://; der Linktext nennt das Ziel.",
+    },
+  ],
+  l6: [
+    {
+      type: "repair",
+      title: "Ein Bild, das nicht erscheint",
+      task: "Das Bild liegt im Projekt unter bilder/beet.jpg. Der Pfad im Code stimmt nicht, und die Bildbeschreibung fehlt. Repariere beides. Die Vorschau lädt keine Bilddateien; sie zeigt deshalb deinen alt-Text.",
+      code: '<img src="Bilder/Beet.JPG" width="640" height="360">',
+      fixed: '<img src="bilder/beet.jpg" alt="Drei Hochbeete mit jungem Salat" width="640" height="360">',
+      checks: [
+        ["Pfad exakt bilder/beet.jpg", (s) => /<img\b[^>]*src="bilder\/beet\.jpg"/.test(s)],
+        ["alt beschreibt das Bild (mindestens 8 Zeichen)", (s) => /<img\b[^>]*alt="[^"]{8,}"/.test(s)],
+      ],
+      remember: "Pfade genau wie Ordner und Datei schreiben; jedes informative Bild braucht alt.",
+    },
+    {
+      type: "complete",
+      title: "Dekoration oder Information?",
+      task: "Die Linie ist reine Dekoration, das Teamfoto zeigt unsere AG beim Pflanzen. Ergänze bei beiden Bildern ein passendes alt-Attribut.",
+      code: '<img src="bilder/linie.png" width="600" height="8">\n<img src="bilder/team.jpg" width="640" height="360">',
+      fixed: '<img src="bilder/linie.png" alt="" width="600" height="8">\n<img src="bilder/team.jpg" alt="Unsere AG beim Pflanzen im Schulgarten" width="640" height="360">',
+      checks: [
+        ['Dekoratives Bild mit leerem alt=""', (s) => /\balt=""/.test(imgTag(s, "bilder/linie.png"))],
+        ["Teamfoto mit beschreibendem alt (mindestens 10 Zeichen)", (s) => /\balt="[^"]{10,}"/.test(imgTag(s, "bilder/team.jpg"))],
+      ],
+      remember: 'Dekoration bekommt alt="", Information eine Beschreibung.',
+    },
   ],
   l7: [
     {
@@ -159,6 +199,45 @@ export const exercises = {
         }],
       ],
       remember: "Jede Zelle steht in einer Zeile tr, und jede Zeile hat gleich viele Zellen.",
+    },
+    {
+      type: "write",
+      title: "Deine eigene kleine Tabelle",
+      task: "Schreibe eine Tabelle mit caption, einer Kopfzeile aus zwei th mit scope=\"col\" und einer Datenzeile mit zwei td, zum Beispiel zu deinem Stundenplan.",
+      code: "<!-- Tabelle mit caption, Kopfzeile und Datenzeile -->\n",
+      fixed: '<table>\n  <caption>Mein Montag</caption>\n  <tr><th scope="col">Stunde</th><th scope="col">Fach</th></tr>\n  <tr><td>1</td><td>Informatik</td></tr>\n</table>',
+      checks: [
+        ["Eine caption mit Text", (s) => has(s, `<table>\\s*<caption>${text}</caption>`)],
+        ['Kopfzeile mit zwei th scope="col"', (s) => has(s, `<tr>\\s*<th scope="col">${text}</th>\\s*<th scope="col">${text}</th>\\s*</tr>`)],
+        ["Datenzeile mit zwei td", (s) => has(s, `<tr>\\s*<td>${text}</td>\\s*<td>${text}</td>\\s*</tr>`)],
+      ],
+      remember: "caption benennt die Tabelle, th überschreibt, td enthält die Daten.",
+    },
+  ],
+  l8: [
+    {
+      type: "repair",
+      title: "Ein Video ohne Bedienung",
+      task: "Das Video startet von selbst und lässt sich nicht bedienen. Ergänze die Bedienleiste und entferne das automatische Abspielen. Die Vorschau lädt keine Mediendateien; die Bedienleiste erscheint trotzdem.",
+      code: '<video src="medien/garten.mp4" autoplay width="480"></video>',
+      fixed: '<video src="medien/garten.mp4" controls width="480"></video>',
+      checks: [
+        ["Das video-Element hat controls", (s) => /<video\b[^>]*\bcontrols\b/i.test(s)],
+        ["Kein autoplay", (s) => /<video\b/i.test(s) && !/autoplay/i.test(s)],
+      ],
+      remember: "controls zeigt die Bedienleiste; automatisches Abspielen stört.",
+    },
+    {
+      type: "write",
+      title: "Video mit Textfassung",
+      task: "Binde ein Video mit controls ein, nenne die Datei in einem source-Element mit type=\"video/mp4\" und schreibe direkt darunter eine Textfassung als Absatz mit mindestens 25 Zeichen.",
+      code: "<!-- Video mit source und Textfassung -->\n",
+      fixed: '<video controls width="480">\n  <source src="medien/garten.mp4" type="video/mp4">\n</video>\n<p>Textfassung: Wir säen Radieschen in das Hochbeet.</p>',
+      checks: [
+        ['video mit controls und source mit type="video/mp4"', (s) => /<video\b[^>]*\bcontrols\b[^>]*>[\s\S]*?<source\b[^>]*src="[^"]+"[^>]*type="video\/mp4"[\s\S]*?<\/video>/i.test(s)],
+        ["Textfassung direkt nach dem Video (mindestens 25 Zeichen)", (s) => /<\/video>\s*<p>[^<]{25,}<\/p>/i.test(s)],
+      ],
+      remember: "Was man nur hören oder sehen kann, braucht auch eine Textfassung.",
     },
   ],
   l10: [

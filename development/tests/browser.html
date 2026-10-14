@@ -697,6 +697,31 @@
         boxDoc.activeElement === box("htmlEditor"),
       "Vertiefung: Sprung in den Editor behaelt die Einheit und fokussiert den Code",
     );
+    // Selector helper in lesson 10 (unlocked in this frame).
+    boxWin.location.hash = "#lesson/l10";
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    // Opening a lesson creates its draft; only the helper must change nothing.
+    const selectorSaved = localStorage.getItem(STORAGE_KEY);
+    const selectorInput = boxDoc.querySelector("#selectorInput");
+    boxDoc.querySelector(".selector-helper summary").click();
+    selectorInput.value = "p.hinweis";
+    selectorInput.dispatchEvent(new boxWin.Event("input"));
+    const matchedLines = [...boxDoc.querySelectorAll(".selector-sample li.is-match")].map(
+      (li) => li.dataset.line,
+    );
+    assert(
+      matchedLines.join(",") === "2,7" &&
+        boxDoc.querySelector("#selectorResult").textContent.includes("(0, 1, 1)"),
+      "Selektorhilfe: p.hinweis trifft zwei Zeilen mit Spezifitaet (0, 1, 1)",
+    );
+    selectorInput.value = ". hinweis";
+    selectorInput.dispatchEvent(new boxWin.Event("input"));
+    assert(
+      selectorInput.getAttribute("aria-invalid") === "true" &&
+        !boxDoc.querySelector(".selector-sample li.is-match") &&
+        localStorage.getItem(STORAGE_KEY) === selectorSaved,
+      "Selektorhilfe: ungueltiger Selektor wird erklaert, Lernstand bleibt unveraendert",
+    );
     // Keep only the teaching model visible on explicit local visual-review runs.
     if (location.hash === "#box-preview") {
       boxFrame.style.width = "1200px";

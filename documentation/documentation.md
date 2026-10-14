@@ -186,7 +186,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.23.0):** 32 Node-Tests in zwölf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Selektorhilfe, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.23.0):** 32 Node-Tests in zwölf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Selektorhilfe, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 167 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -246,7 +246,9 @@ Umsetzung des offenen Punkts „interaktive Selektorhilfe“ aus Abschnitt 7, na
 - **Sicherheit und Lernstand:** Die Auswertung läuft in einem unsichtbaren, inerten Dokument (`document.implementation.createHTMLDocument`); nichts davon wird dargestellt oder ausgeführt. Kein Zugriff auf Entwürfe, Punkte oder Freischaltungen, nichts wird gespeichert.
 - **Neues Modul `development/src/selector-helper.js`** mit `specificity()` für die in Einheit 10 gelehrten einfachen Selektoren; funktionale Pseudoklassen wie `:not()` werden bewusst nicht berechnet und als „nicht berechnet“ angezeigt. Neuer Node-Test `selector-helper.test.mjs` mit elf Fällen.
 
-Prüfung: 32 Node-Tests und Build bestanden; `npm run qa` 165/165. Treffer, Zeilen, Spezifität und ungültige Eingabe im Browser geprüft; Darstellung bei 1300 Pixeln (Dark) und 390 Pixeln (Light) per Edge-Screenshot geprüft, kein Überlauf. Die Prüfseite selbst prüft die Hilfe noch nicht.
+Prüfung: 32 Node-Tests und Build bestanden; `npm run qa` 165/165. Treffer, Zeilen, Spezifität und ungültige Eingabe im Browser geprüft; Darstellung bei 1300 Pixeln (Dark) und 390 Pixeln (Light) per Edge-Screenshot geprüft, kein Überlauf. Veröffentlicht mit Commit `141610a`; [Pages-Lauf 38626861230](https://github.com/JakobSawazki/WebLab/actions/runs/38626861230) erfolgreich, Live-Bundle per SHA-256 identisch.
+
+Nachtrag (Claude, ohne App-Änderung): Zwei neue Browserprüfungen für die Selektorhilfe (Treffer und Spezifität für `p.hinweis`; ungültiger Selektor mit `aria-invalid`, Lernstand unverändert). Erster Entwurf der Prüfung verglich den Lernstand vor dem Öffnen der Einheit; das erste Öffnen legt aber bewusst einen Entwurf an. Korrigiert; jetzt 167/167.
 
 ### 14.10.2026 – Claude – Version 1.22.1 (Paket 14: Wartbarkeit und automatische Browserprüfungen)
 

@@ -6,7 +6,7 @@ Statische Lernumgebung zu **BPE2: Entwicklung von Internetseiten**, im Aufbau un
 - **Repository:** https://github.com/JakobSawazki/WebLab
 - **Gemeinsamer Arbeitsstand:** [documentation/documentation.md](documentation/documentation.md)
 
-16 Lerneinheiten, lokales Schülerprofil, HTML-/CSS-Labor, 84 Glossareinträge, XP, NAGOLD, JSON-Lernstandsicherung und Projektexport.
+16 Lerneinheiten, lokales Schülerprofil, HTML-/CSS-Labor, 107 Glossareinträge, XP, NAGOLD, JSON-Lernstandsicherung und Projektexport.
 
 Seit Version 1.1.0: Editor mit Dateireitern, Zeilennummern, Live-/Handyvorschau, lokalem HTML-/CSS-Import und Übungsablauf für Notepad++ 7.5.1 auf dem Informatik-Stick.
 
@@ -36,8 +36,12 @@ Originalmaterialien unter `ressources/BPE2/` bleiben lokal und werden nicht ver�
 
 Seit Version 1.7.1: neues fotorealistisches Metalllogo; dasselbe Motiv dient als PNG-Tab-Icon.
 
-Seit Version 1.8.0: kurze freiwillige Fehlersuchübungen mit erklärenden Rückmeldungen in den Einheiten 01–12.
+Seit Version 1.8.0: kurze freiwillige Fehlersuchübungen mit erklärenden Rückmeldungen, seit 1.17.0 in allen 16 Einheiten.
 
 Seit Version 1.9.0: interaktive Box-Modell-Hilfe in Einheit 12 mit Innen-/Außenabstand, Rahmen und Vergleich von content-box und border-box.
 
 Seit Version 1.13.0: Profil mit XP-Level, Fortschrittsbalken und direktem Zugang zur bearbeitbaren NAGOLD-Tabelle nach dem Vorbild WorkbenchLab. Einträge ergänzen, bearbeiten und löschen; Änderungen werden erst mit Speichern übernommen.
+
+Seit Version 1.14.0: Jedes offene Kriterium nennt einen konkreten nächsten Schritt; jede Einheit listet typische Stolpersteine. Seit 1.15.0 erklärt der Verständnischeck jede Antwort, und eine Checkliste zeigt vor dem Abschluss, was noch fehlt. Seit 1.16.0 hat das Nachschlagewerk „Siehe auch“-Verweise und eine Suche mit exakten Treffern zuerst.
+
+Prüfungen: `npm test` (Node-Tests, darunter Farbkontraste beider Farbschemata aus `styles.css`) und nach `npm run serve` die Browserprüfungen unter `http://127.0.0.1:4188/__qa`. Die Prüfseite fängt Sicherungsdownloads der App ab.

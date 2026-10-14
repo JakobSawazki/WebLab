@@ -38,9 +38,9 @@
   --muted: #45566b;
   --line: #bac5d1;
   --brand: #244f80;
-  --green: #247653;
-  --amber: #87500f;
-  --red: #b2433b;
+  --green: #195f41;
+  --amber: #7a470c;
+  --red: #973330;
   --shadow: 0 16px 40px #213b5b12;
   --accent: #244f80;
   --accent-end: #193c65;
@@ -486,9 +486,14 @@ a.lesson-menu-item:hover,
   background: var(--brand);
   border-color: var(--brand);
 }
+/* Locked lessons stay readable (WCAG 4.5:1); the dashed number marks the lock. */
 .lesson-menu-item.is-locked {
-  opacity: 0.5;
+  color: var(--muted);
+  font-style: italic;
   cursor: not-allowed;
+}
+.lesson-menu-item.is-locked .lesson-menu-num {
+  border-style: dashed;
 }
 .eyebrow {
   text-transform: uppercase;

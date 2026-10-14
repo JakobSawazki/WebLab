@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.17.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.17.1** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.17.0 |
+| Bereich | Version 1.17.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -183,7 +183,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.17.0):** 29 Node-Tests in neun Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar) und 164 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.17.1):** 30 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 164 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -234,6 +234,17 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 14.10.2026 – Claude – Version 1.17.1 (Paket 7: Zugänglichkeit und Wartbarkeit)
+
+Weiterarbeit nach Jakobs Ziel (`/goal`): selbständig in kleinen Paketen.
+
+- **Zugänglichkeitsprüfung** in neun Ansichten (Übersicht, Lernpfad, Labor, Nachschlagen, Erfolge, Notizen, Einheiten 01/12/16) per Skript: keine Bedienelemente ohne Namen, keine Felder ohne Beschriftung, keine doppelten IDs, keine Überschriftensprünge, keine Bilder ohne alt. Ohne Befund.
+- **Kontraste:** Gesperrte Einheiten im Lernpfad-Menü waren mit 50 % Deckkraft nur 3,4:1 (dunkel) bzw. 2,3:1 (hell) lesbar. Sie stehen jetzt in voller Hilfstextfarbe, kursiv und mit gestrichelter Nummer. Im hellen Schema lagen Grün, Rot und Bernstein auf den dunkelsten Metallflächen knapp unter 4,5:1; die drei Tokens sind etwas dunkler (`--green #195f41`, `--amber #7a470c`, `--red #973330`). Das dunkle Schema ist unverändert.
+- **Neuer Node-Test `contrast.test.mjs`:** liest die Farb-Tokens beider Schemata aus `styles.css` und verlangt für alle sechs Textfarben auf allen sechs Flächen mindestens 4,5:1. Künftige Farbänderungen können Kontraste so nicht mehr unbemerkt verschlechtern.
+- **README** auf den aktuellen Stand gebracht (107 Glossareinträge, Fehlersuche in allen Einheiten, Lernhilfen, Prüfablauf).
+
+Prüfung: 30 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Lernpfad-Menü mit drei abgeschlossenen und zwölf gesperrten Einheiten in Dark und Light visuell geprüft.
 
 ### 14.10.2026 – Claude – Version 1.17.0 (Qualitätsrunde, Paket 6: Fehlersuche in den Projekteinheiten)
 

@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.21.0";
+const VERSION = "1.22.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -745,6 +745,66 @@ byId("l8").extension = {
   ],
   observe:
     "Kannst du erklären, warum Untertitel und Textfassung den Inhalt auch ohne Ton zugänglich machen? Die Laborvorschau lädt keine Mediendateien. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l1").extension = {
+  title: "Ausprobieren: So liest der Browser deinen Code",
+  explanation:
+    "Der Browser baut aus deinem HTML einen Baum aus Elementen. Den geschriebenen Code siehst du mit Strg+U als Quelltext, den daraus gebauten Baum in den Entwicklerwerkzeugen unter Elemente. Fehlt ein End-Tag, repariert der Browser den Baum nach festen Regeln. Das Ergebnis sieht oft trotzdem richtig aus, entspricht aber nicht mehr genau deinem Code.",
+  code: "<!-- So steht es im Code -->\n<p>Wir lernen <strong>HTML</p>\n<p>Zweiter Absatz</p>\n\n<!-- So kann es der Browser reparieren -->\n<p>Wir lernen <strong>HTML</strong></p>\n<p><strong>Zweiter Absatz</strong></p>",
+  steps: [
+    "Exportiere deinen Entwurf als index.html und öffne die Datei im Browser. Drücke Strg+U und vergleiche den Quelltext mit deinem Code.",
+    "Drücke F12 und öffne den Bereich Elemente. Klappe body auf und finde deine h1 und deinen Absatz mit strong.",
+    "Lösche in der exportierten Datei mit Notepad++ das End-Tag </strong>, speichere mit Strg+S und lade mit F5 neu. Beobachte, welcher Text jetzt fett ist und wie der Baum aussieht.",
+    "Stelle das End-Tag wieder her und prüfe, dass Darstellung und Baum wieder deinem Code entsprechen.",
+  ],
+  observe:
+    "Kannst du erklären, warum ein fehlendes End-Tag auch nachfolgende Inhalte betreffen kann? Verlasse dich nicht auf die Reparatur des Browsers, sondern schließe Elemente selbst. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l3").extension = {
+  title: "Ausprobieren: Die Gliederung nur an den Überschriften prüfen",
+  explanation:
+    "Viele Menschen überfliegen eine Seite zuerst über die Überschriften, Vorleseprogramme springen gezielt von Überschrift zu Überschrift. Deine Überschriften sollten deshalb allein schon verraten, worum es geht. Eine h1 nennt das Thema, h2 die Unterthemen, h3 Teile eines Unterthemas. Keine Ebene wird übersprungen.",
+  code: "h1 Unser Schulgarten\n  h2 Die Idee\n  h2 Mitmachen\n    h3 Termine\n    h3 Material\n  h2 Kontakt",
+  steps: [
+    "Schreibe alle Überschriften deines Entwurfs eingerückt untereinander, so wie im Beispiel. Lass den übrigen Text weg.",
+    "Prüfe: Gibt es genau eine h1? Folgt auf eine h2 höchstens eine h3? Wurde eine Ebene übersprungen?",
+    "Lies nur die Überschriften einer Mitschülerin oder einem Mitschüler vor. Kann die Person sagen, worum es auf deiner Seite geht?",
+    "Verbessere unklare Überschriften wie „Text“ oder „Infos“ durch aussagekräftige Formulierungen und passe die Ebenen in deinem Entwurf an.",
+  ],
+  observe:
+    "Kannst du begründen, warum eine Überschrift h2 oder h3 ist, unabhängig von ihrer Schriftgröße? Die Größe passt du später mit CSS an. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l4").extension = {
+  title: "Ausprobieren: Listen in Listen",
+  explanation:
+    "Listen lassen sich verschachteln: Eine Unterliste steht innerhalb eines li, direkt nach dessen Text. So entsteht zum Beispiel eine Einkaufsliste mit Unterpunkten oder eine Anleitung mit Teilschritten. Auch Navigationen bestehen häufig aus einer ul mit Links, weil sie eine Liste von Zielen sind.",
+  code: "<ul>\n  <li>Saatgut\n    <ul>\n      <li>Radieschen</li>\n      <li>Salat</li>\n    </ul>\n  </li>\n  <li>Gießkanne</li>\n</ul>",
+  steps: [
+    "Ergänze in deiner ul bei einem Eintrag eine Unterliste mit zwei Punkten. Sie steht vor dem </li> des übergeordneten Eintrags.",
+    "Prüfe in der Vorschau, dass die Unterpunkte eingerückt erscheinen und ein eigenes Aufzählungszeichen haben.",
+    "Setze die Unterliste absichtlich hinter das </li> und vergleiche die Darstellung. Stelle danach die richtige Position wieder her.",
+    "Rücke deinen Code so ein, dass du an der Einrückung erkennst, welche Liste zu welchem Eintrag gehört.",
+  ],
+  observe:
+    "Kannst du erklären, warum eine Unterliste innerhalb eines li stehen muss und nicht direkt in der ul? Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+};
+
+byId("l7").extension = {
+  title: "Ausprobieren: Zeilenüberschriften und Tabellenbereiche",
+  explanation:
+    "Manche Tabellen haben Überschriften in der ersten Spalte, zum Beispiel einen Wochentag pro Zeile. Solche Kopfzellen sind ebenfalls th, aber mit scope=\"row\". thead und tbody trennen Kopfzeile und Datenzeilen. So können Vorleseprogramme zu jeder Zelle die passende Spalten- und Zeilenüberschrift nennen.",
+  code: '<table>\n  <caption>Gießplan</caption>\n  <thead>\n    <tr><th scope="col">Tag</th><th scope="col">Gruppe</th></tr>\n  </thead>\n  <tbody>\n    <tr><th scope="row">Montag</th><td>Klasse 8a</td></tr>\n    <tr><th scope="row">Mittwoch</th><td>Klasse 8b</td></tr>\n  </tbody>\n</table>',
+  steps: [
+    "Überlege, ob deine Tabelle aus Einheit 07 eine Spalte hat, die jede Zeile benennt. Wenn ja, mache deren Zellen zu th mit scope=\"row\".",
+    "Umschließe die Kopfzeile mit thead und die Datenzeilen mit tbody.",
+    "Prüfe in der Vorschau, dass Zeilenüberschriften standardmäßig fett erscheinen. Die Darstellung kannst du später mit CSS anpassen.",
+    "Lies eine Datenzelle so vor, wie es ein Vorleseprogramm tun würde: Zeilenüberschrift, Spaltenüberschrift, Inhalt. Ergibt das einen verständlichen Satz?",
+  ],
+  observe:
+    "Kannst du für jede th-Zelle begründen, ob sie eine Spalte oder eine Zeile beschreibt? Die automatische Prüfung der Einheit bleibt unverändert. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
 };
 
 return {VERSION,groups,lessons,byId};

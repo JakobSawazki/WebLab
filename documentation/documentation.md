@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.21.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.22.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,10 +16,10 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.21.0 |
+| Bereich | Version 1.22.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
-| Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
+| Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
 | Roter Faden | Nächster offener Lernschritt, 16 Schritte mit aktueller Position, Vorwissen, drei konkrete Arbeitsschritte und Beobachtungsauftrag; eigene Webseite wächst durch Kopien des vorherigen Entwurfs |
 | Orientierung | Vier Etappen mit Fortschritt auf der Startseite; direkte Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern in den Einheiten |
 | Schülerprofil | Kürzel/Klasse, XP-Level und Fortschrittsbalken, direkte NAGOLD-Tabelle; kein Serverkonto |
@@ -183,7 +183,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.21.0):** 31 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.22.0):** 31 Node-Tests in elf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 165 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -235,6 +235,17 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.22.0 (Paket 13: Vertiefungen in allen Einheiten)
+
+Die letzten vier Einheiten ohne Vertiefung erhalten je eine eigenständig formulierte Vertiefung. Damit hat jede der 16 Einheiten eine; der Node-Test verlangt das jetzt ausdrücklich.
+
+- **Einheit 01 „So liest der Browser deinen Code“:** Quelltext (Strg+U) und Elementbaum (F12 → Elemente) vergleichen; ein absichtlich gelöschtes `</strong>` zeigt die Fehlerkorrektur des Browsers. Fachlich nachvollzogen: Nach `<p>Wir lernen <strong>HTML</p>` stellt der HTML-Parser das offene strong im nächsten Absatz wieder her; genau dieses Ergebnis zeigt das Beispiel.
+- **Einheit 03 „Die Gliederung nur an den Überschriften prüfen“:** Überschriften eingerückt herausschreiben, Ebenen prüfen, nur die Überschriften vorlesen lassen, unklare Formulierungen verbessern.
+- **Einheit 04 „Listen in Listen“:** Unterliste innerhalb des li, absichtlich falsche Position hinter `</li>` vergleichen, Einrückung als Lesehilfe.
+- **Einheit 07 „Zeilenüberschriften und Tabellenbereiche“:** `th scope="row"`, `thead`, `tbody`; Zelle so vorlesen, wie es ein Vorleseprogramm täte. Die Kriterien der Einheit bleiben unverändert.
+
+Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Alle vier Vertiefungen im Browser geöffnet, kein Überlauf, Codeblöcke ohne seitliches Scrollen.
+
 ### 14.10.2026 – Claude – Version 1.21.0 (Paket 12: Vertiefungen zu Kodierung, Alternativtext und Untertiteln)
 
 - **Einheit 02 „Grundgerüst und Umlaute in Notepad++“:** Grundgerüst von Hand abtippen, Kodierung in der Statusleiste prüfen und im Menü Kodierung auf UTF-8 stellen, Syntaxhervorhebung über Sprache → H → HTML. Ein absichtlicher Wechsel nach ANSI zeigt, warum Dateikodierung und `meta charset` zusammenpassen müssen.
@@ -243,7 +254,7 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 Ohne Zusatzpunkte und ohne Änderung an Kriterien, Entwürfen oder Abschlüssen. Vertiefungen jetzt in den Einheiten 02, 05, 06, 08 und 09–16; offen nur 01, 03, 04 und 07.
 
-Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Alle drei Vertiefungen im Browser geöffnet, kein Überlauf, Codeblöcke ohne seitliches Scrollen.
+Prüfung: 31 Node-Tests und Build bestanden; 165/165 Browserprüfungen. Alle drei Vertiefungen im Browser geöffnet, kein Überlauf, Codeblöcke ohne seitliches Scrollen. Veröffentlicht mit Commit `b0afcc4`; [Pages-Lauf 38625319856](https://github.com/JakobSawazki/WebLab/actions/runs/38625319856) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.20.0 (Paket 11: Vertiefungen für die Projekteinheiten)
 

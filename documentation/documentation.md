@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.13.0** · Status: **Profil und NAGOLD-Tabelle lokal geprüft; Veröffentlichung folgt**.
+Version: **1.13.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -241,7 +241,7 @@ NAGOLD öffnet eine separate Tabelle mit Datum, Uhrzeit, Wofür, Punkten, Bearbe
 
 Datenkompatibilität: Speicher/JSON-Format bleiben bei Version 3. Bestehende `nagoldEntries`, Profile, Entwürfe und Notizen bleiben erhalten. Optionale `nagoldOverrides` speichern nur Änderungen/Löschungen der automatisch abgeleiteten Abschlusszeilen; `null` bedeutet entfernt. Import normalisiert diese Zuordnungen ausschließlich für bekannte abgeschlossene Einheiten, begrenzt Punkte und Anlass und ignoriert ungültige Überschreibungen. Unbekannte historische Abschlussdaten werden als „Nicht erfasst“ angezeigt, keine Zeitstempel erfunden. Unveränderte Zeitstempel bleiben einschließlich Sekunden/Millisekunden erhalten. Ein erneuter Import in ältere WebLab-Versionen kennt die Überschreibungen nicht; Bearbeitungen daher nur mit 1.13.0 oder neuer weiterführen. NAGOLD-Übersicht, CSV und Profil verwenden denselben Stand. Quellmodule `nagold.js` und `profile.js`, weiterhin klassischer Offline-Build ohne neue Abhängigkeit.
 
-Prüfung: 25 Node-Tests und Build erfolgreich, inklusive vier neuer Tests für Altbestand, Zeitstempelerhalt, Bearbeiten/Löschen ohne XP-/Freischaltänderung, Sicherungs-Roundtrip und ungültige Eingaben. 161/161 Browserprüfungen bestanden, einschließlich neun neuer Prüfungen für Profil-/Tabellenablauf. Zusätzlicher echter Edge-Ablauf mit alten Einträgen, neuer Zeile, Bearbeiten/Löschen, Fehler bei 0, Abbrechen, erneutes Öffnen/Neuladen und Erhalt von Code/Notizen erfolgreich. Profil und Tabelle bei 1440/390 Pixeln in Dark/Light visuell geprüft; keine horizontalen Überläufe. Veröffentlichungsnachweis folgt.
+Prüfung: 25 Node-Tests und Build erfolgreich, inklusive vier neuer Tests für Altbestand, Zeitstempelerhalt, Bearbeiten/Löschen ohne XP-/Freischaltänderung, Sicherungs-Roundtrip und ungültige Eingaben. 161/161 Browserprüfungen bestanden, einschließlich neun neuer Prüfungen für Profil-/Tabellenablauf. Zusätzlicher echter Edge-Ablauf mit alten Einträgen, neuer Zeile, Bearbeiten/Löschen, Fehler bei 0, Abbrechen, erneutes Öffnen/Neuladen und Erhalt von Code/Notizen erfolgreich. Profil und Tabelle bei 1440/390 Pixeln in Dark/Light visuell geprüft; keine horizontalen Überläufe. Veröffentlicht mit Commit `5c73fcd`; [Pages-Lauf 38618112665](https://github.com/JakobSawazki/WebLab/actions/runs/38618112665) erfolgreich. Online den Profilknopf, Level-/XP-Anzeige, NAGOLD-Schaltfläche, neue Tabellenzeile und Schließen ohne Speichern im Browser geprüft.
 
 ### 14.10.2026 – Codex – Version 1.12.0
 

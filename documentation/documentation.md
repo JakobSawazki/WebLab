@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.23.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.24.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.23.0 |
+| Bereich | Version 1.24.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -186,7 +186,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.23.0):** 32 Node-Tests in zwölf Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle, Box-Modell, Selektorhilfe, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 167 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (14.10.2026, Claude, Version 1.24.0):** 35 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Korrekturaufgaben, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 168 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -203,7 +203,7 @@ Offene Erweiterungen, nach Priorität:
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
 2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
-4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10. Noch offen sind vertiefende Korrekturaufgaben, gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
+4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10, seit 1.24.0 Korrekturaufgaben in sechs Einheiten. Noch offen sind gestufte HTML-Aufgaben und weitere Medienaufgaben. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser und optionale Offline-Kopie. Browserprüfungen laufen seit 1.22.1 in CI.
 7. **ThommyWeb:** Browserzugriff ist möglich, K2/K6 geprüft. Übrige Kapitel gezielt prüfen und geeignete Ergänzungen eigenständig ausarbeiten; keine pauschale Inhaltsübernahme.
@@ -238,6 +238,17 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.24.0 (Paket 17: Korrekturaufgaben)
+
+Umsetzung des offenen Punkts „vertiefende Korrekturaufgaben“: In den Einheiten 01, 02, 04, 05, 07 und 10 gibt es im Abschnitt Verstehen eine aufklappbare „Korrekturaufgabe: Repariere den Code“. Ein kleines Codefeld enthält fehlerhaften Code mit genau zwei Fehlern; „Korrektur prüfen“ zeigt je Fehler ein Kriterium, „Ausgangscode wiederherstellen“ setzt zurück. Der geänderte Code lebt nur in dieser Ansicht: nicht gespeichert, keine Punkte, kein Einfluss auf Entwurf, Abschluss oder Freischaltung.
+
+- **Aufgaben:** 01 fehlendes `</h1>` und falsche Verschachtelung strong/p · 02 h1 im head · 04 Eintrag ohne li und li ohne End-Tag · 05 Sprunglink `#Ideen` gegen `id="ideen"` und Laufwerkspfad · 07 Kopfzellen ohne tr und Datenzeile mit einer Zelle · 10 (CSS) `. hinweis` mit Leerzeichen und `#Start` gegen `id="start"`.
+- **Bewusste Prüfung am Quelltext:** Der Browser repariert viele HTML-Fehler stillschweigend (h1 aus dem head wandert in den body, th ohne tr bekommt eine Zeile). Eine Prüfung am geparsten Dokument würde die Fehler daher verdecken. Die Kriterien in `development/src/corrections.js` prüfen deshalb den geschriebenen Code.
+- **Tests:** Neuer Node-Test `corrections.test.mjs`: Jeder Ausgangscode fällt durch, jede hinterlegte Referenzlösung (`fixed`, in der App nicht sichtbar) besteht, und wer nur einen der zwei Fehler behebt, sieht genau ein offenes Kriterium. Neue Browserprüfung in Einheit 01 bei 360 Pixeln: zwei offene Punkte, nach Reparatur alle erfüllt, Lernstand unverändert.
+- **Schutz vor Syntaxfehlern:** Beim Einbau geriet ein echter Zeilenumbruch in ein Zeichenkettenliteral von `app.js`. Die Node-Tests laden `app.js` nicht und hätten das nicht bemerkt; vor dem Commit gefunden und behoben. Neuer Test in `bundle.test.mjs` kompiliert das ausgelieferte `weblab.js` (enthält alle Module).
+
+Prüfung: 35 Node-Tests und Build bestanden; `npm run qa` 168/168. Einheit 07 bei 390 Pixeln per Edge-Screenshot geprüft, kein Überlauf; lange Codezeilen scrollen im Feld wie im Editor.
+
 ### 14.10.2026 – Claude – Version 1.23.0 (Paket 15: Interaktive Selektorhilfe)
 
 Umsetzung des offenen Punkts „interaktive Selektorhilfe“ aus Abschnitt 7, nach dem Muster der Box-Modell-Hilfe aus 1.9.0:
@@ -248,7 +259,7 @@ Umsetzung des offenen Punkts „interaktive Selektorhilfe“ aus Abschnitt 7, na
 
 Prüfung: 32 Node-Tests und Build bestanden; `npm run qa` 165/165. Treffer, Zeilen, Spezifität und ungültige Eingabe im Browser geprüft; Darstellung bei 1300 Pixeln (Dark) und 390 Pixeln (Light) per Edge-Screenshot geprüft, kein Überlauf. Veröffentlicht mit Commit `141610a`; [Pages-Lauf 38626861230](https://github.com/JakobSawazki/WebLab/actions/runs/38626861230) erfolgreich, Live-Bundle per SHA-256 identisch.
 
-Nachtrag (Claude, ohne App-Änderung): Zwei neue Browserprüfungen für die Selektorhilfe (Treffer und Spezifität für `p.hinweis`; ungültiger Selektor mit `aria-invalid`, Lernstand unverändert). Erster Entwurf der Prüfung verglich den Lernstand vor dem Öffnen der Einheit; das erste Öffnen legt aber bewusst einen Entwurf an. Korrigiert; jetzt 167/167.
+Nachtrag (Claude, ohne App-Änderung): Zwei neue Browserprüfungen für die Selektorhilfe (Treffer und Spezifität für `p.hinweis`; ungültiger Selektor mit `aria-invalid`, Lernstand unverändert). Erster Entwurf der Prüfung verglich den Lernstand vor dem Öffnen der Einheit; das erste Öffnen legt aber bewusst einen Entwurf an. Korrigiert; jetzt 167/167. Commit `eb488fa`, [Pages-Lauf 38627311721](https://github.com/JakobSawazki/WebLab/actions/runs/38627311721) mit 167/167 in CI.
 
 ### 14.10.2026 – Claude – Version 1.22.1 (Paket 14: Wartbarkeit und automatische Browserprüfungen)
 

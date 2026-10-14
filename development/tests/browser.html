@@ -268,6 +268,19 @@
             (completed || fd.querySelectorAll("#completionStatus li").length === 4),
           "Rueckmeldung zeigt Tipps und Abschluss-Checkliste",
         );
+        const draftBeforeCorrection = localStorage.getItem(STORAGE_KEY);
+        fd.querySelector(".correction-task summary").click();
+        fd.querySelector("#correctionCheck").click();
+        const brokenOpen = fd.querySelectorAll("#correctionResult li.fail").length;
+        fd.querySelector("#correctionCode").value =
+          "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>Gemüse</strong></p>";
+        fd.querySelector("#correctionCheck").click();
+        assert(
+          brokenOpen === 2 &&
+            !fd.querySelector("#correctionResult li.fail") &&
+            localStorage.getItem(STORAGE_KEY) === draftBeforeCorrection,
+          "Korrekturaufgabe: Fehler offen, Reparatur bestanden, Entwurf unveraendert",
+        );
       }
       assert(
         frame.contentWindow.innerWidth === 360,

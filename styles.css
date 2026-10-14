@@ -1856,3 +1856,18 @@ dialog::backdrop {
   color: var(--brand);
   font-size: 0.75rem;
 }
+/* Correction task: a small, unsaved code field inside "Verstehen". */
+.correction-code {
+  width: 100%;
+  min-height: 6rem;
+  padding: 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  white-space: pre;
+  overflow-x: auto;
+  resize: vertical;
+}

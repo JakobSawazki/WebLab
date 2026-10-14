@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.23.0";
+const VERSION = "1.24.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -3469,9 +3469,94 @@ function bindSelectorHelper(root = document) {
 
 return {specificity,selectorView,bindSelectorHelper};
 },
+"corrections.js": function(require) {
+// Optional correction tasks: learners repair faulty code and check it at once.
+// The checks read the written source on purpose: browsers silently repair many
+// HTML mistakes, so a parsed document would hide exactly the errors to train.
+// Nothing here is stored or awarded points. `fixed` is a reference solution
+// used by the tests; it is not shown in the app.
+const count = (source, pattern) => (source.match(pattern) || []).length;
+const inside = (source, open, close) => {
+  const start = source.indexOf(open);
+  const end = source.indexOf(close, start + open.length);
+  return start < 0 || end < 0 ? null : source.slice(start + open.length, end);
+};
+
+const corrections = {
+  l1: {
+    task: "Die Überschrift wird nicht geschlossen, und strong und p sind falsch verschachtelt. Repariere beides.",
+    code: "<h1>Unser Schulgarten<h1>\n<p>Wir pflanzen <strong>Gemüse</p></strong>",
+    fixed: "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>Gemüse</strong></p>",
+    checks: [
+      ["Genau ein Start-Tag <h1> und ein End-Tag </h1>", (s) => count(s, /<h1>/g) === 1 && count(s, /<\/h1>/g) === 1],
+      ["</strong> steht vor </p>", (s) => /<strong>[^<]*<\/strong>[^<]*<\/p>/.test(s)],
+    ],
+  },
+  l2: {
+    task: "Die sichtbare Überschrift steht im falschen Bereich des Grundgerüsts. Verschiebe sie, ohne den title zu verändern.",
+    code: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Meine AG</title>\n  <h1>Willkommen</h1>\n</head>\n<body>\n</body>\n</html>',
+    fixed: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Meine AG</title>\n</head>\n<body>\n  <h1>Willkommen</h1>\n</body>\n</html>',
+    checks: [
+      ["Die h1 steht im body", (s) => s.indexOf("<h1") > s.indexOf("<body") && s.indexOf("<body") > -1 && s.indexOf("<h1") < s.indexOf("</body>")],
+      ["Der title steht weiterhin im head", (s) => s.indexOf("<title>") > -1 && s.indexOf("<title>") < s.indexOf("</head>")],
+    ],
+  },
+  l4: {
+    task: "In dieser Liste stimmt zweimal etwas nicht: ein Eintrag ohne li und ein li ohne End-Tag. Repariere die Liste.",
+    code: "<ul>\n  Erde\n  <li>Samen</li>\n  <li>Gießkanne\n</ul>",
+    fixed: "<ul>\n  <li>Erde</li>\n  <li>Samen</li>\n  <li>Gießkanne</li>\n</ul>",
+    checks: [
+      ["Drei Einträge mit <li> und </li>", (s) => count(s, /<li>/g) === 3 && count(s, /<\/li>/g) === 3],
+      ["Kein Text direkt in der ul", (s) => {
+        const list = inside(s, "<ul>", "</ul>");
+        // Closed and unclosed li items are removed; whatever text is left stands bare in the ul.
+        return list !== null && !list.replace(/<li>[\s\S]*?<\/li>/g, "").replace(/<li>[^<]*/g, "").trim();
+      }],
+    ],
+  },
+  l5: {
+    task: "Der Sprunglink springt nicht, und der Kontaktlink funktioniert nur auf einem einzigen Rechner. Repariere beide Links.",
+    code: '<a href="#Ideen">Zu den Ideen</a>\n<a href="C:\\Users\\max\\kontakt.html">Kontakt</a>\n<h2 id="ideen">Ideen</h2>',
+    fixed: '<a href="#ideen">Zu den Ideen</a>\n<a href="kontakt.html">Kontakt</a>\n<h2 id="ideen">Ideen</h2>',
+    checks: [
+      ['Sprunglink href="#ideen" passt genau zu id="ideen"', (s) => /href="#ideen"/.test(s) && /id="ideen"/.test(s)],
+      ["Relativer Link auf kontakt.html ohne Laufwerkspfad", (s) => /href="kontakt\.html"/.test(s) && !/[A-Z]:\\/.test(s)],
+    ],
+  },
+  l7: {
+    task: "Die Kopfzellen stehen ohne Zeile direkt in der Tabelle, und eine Datenzeile hat zu wenige Zellen. Repariere die Tabelle.",
+    code: '<table>\n  <caption>Pflanzzeiten</caption>\n  <th scope="col">Pflanze</th><th scope="col">Monat</th>\n  <tr><td>Radieschen</td><td>April</td></tr>\n  <tr><td>Salat</td></tr>\n</table>',
+    fixed: '<table>\n  <caption>Pflanzzeiten</caption>\n  <tr><th scope="col">Pflanze</th><th scope="col">Monat</th></tr>\n  <tr><td>Radieschen</td><td>April</td></tr>\n  <tr><td>Salat</td><td>Mai</td></tr>\n</table>',
+    checks: [
+      ["Die Kopfzellen stehen in einem <tr>", (s) => /<tr>\s*<th scope="col">[^<]+<\/th>\s*<th scope="col">[^<]+<\/th>\s*<\/tr>/.test(s)],
+      ["Jede Datenzeile hat zwei td-Zellen", (s) => {
+        const rows = s.match(/<tr>[\s\S]*?<\/tr>/g) || [];
+        const data = rows.filter((row) => row.includes("<td"));
+        return data.length >= 2 && data.every((row) => count(row, /<td>[^<]+<\/td>/g) === 2);
+      }],
+    ],
+  },
+  l10: {
+    kind: "css",
+    task: 'Beide Regeln wirken nicht auf <p class="hinweis"> und <h1 id="start">. Finde die zwei Schreibfehler in den Selektoren.',
+    code: ". hinweis { color: darkgreen; }\n#Start { text-align: center; }",
+    fixed: ".hinweis { color: darkgreen; }\n#start { text-align: center; }",
+    checks: [
+      ["Klassenselektor .hinweis ohne Leerzeichen mit color", (s) => /(^|[\s}])\.hinweis\s*\{[^}]*color\s*:/.test(s)],
+      ["ID-Selektor #start in Kleinbuchstaben mit text-align", (s) => /(^|[\s}])#start\s*\{[^}]*text-align\s*:/.test(s)],
+    ],
+  },
+};
+
+const checkCorrection = (id, source) =>
+  corrections[id].checks.map(([label, test]) => ({ label, passed: test(source) }));
+
+return {corrections,checkCorrection};
+},
 "app.js": function(require) {
 const { boxModelView, bindBoxModel } = require("box-model.js");
 const { selectorView, bindSelectorHelper } = require("selector-helper.js");
+const { corrections, checkCorrection } = require("corrections.js");
 const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
 const { VERSION, groups, lessons, byId } = require("content.js");
@@ -3819,9 +3904,29 @@ function debugChallenge(l) {
   if (!exercise) return "";
   return `<details class="debug-challenge"><summary>Fehler finden: eine kurze Denkaufgabe</summary><p class="muted">Finde die Ursache, bevor du deinen eigenen Code weiterentwickelst. Diese Übung verändert deinen Entwurf nicht und vergibt keine Zusatzpunkte.</p><pre><code>${esc(exercise.code)}</code></pre><p id="debugQuestion">${esc(exercise.question)}</p><div class="quiz-options" role="group" aria-labelledby="debugQuestion">${exercise.options.map((option, i) => `<button type="button" class="button secondary quiz-option" data-debug-answer="${i}">${esc(option)}</button>`).join("")}</div><p id="debugResult" role="status" aria-atomic="true"></p></details>`;
 }
+// Optional repair task; the edited code lives only in this view and is never saved.
+function correctionTask(l) {
+  const task = corrections[l.id];
+  if (!task) return "";
+  return `<details class="debug-challenge correction-task"><summary>Korrekturaufgabe: Repariere den Code</summary><p id="correctionTask">${esc(task.task)}</p><label for="correctionCode">${task.kind === "css" ? "CSS" : "HTML"} zum Reparieren</label><textarea class="code correction-code" id="correctionCode" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="correctionTask" rows="${task.code.split("\n").length + 1}">${esc(task.code)}</textarea><div class="actions"><button type="button" class="button secondary" id="correctionCheck">Korrektur prüfen</button><button type="button" class="button secondary" id="correctionReset">Ausgangscode wiederherstellen</button></div><div id="correctionResult" role="status" aria-atomic="true"></div><p class="muted">Diese Übung verändert deinen Entwurf nicht, wird nicht gespeichert und vergibt keine Punkte.</p></details>`;
+}
+function bindCorrectionTask(l) {
+  const task = corrections[l.id];
+  if (!task || !$("#correctionCode")) return;
+  $("#correctionCheck").onclick = () => {
+    const results = checkCorrection(l.id, $("#correctionCode").value),
+      done = results.every((r) => r.passed);
+    $("#correctionResult").innerHTML = `<ul class="criteria">${results.map((r) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span></li>`).join("")}</ul><p>${done ? "Repariert. Achte in deinem eigenen Code auf dieselben Stellen." : "Noch nicht ganz. Vergleiche die offenen Punkte genau mit dem Code."}</p>`;
+  };
+  $("#correctionReset").onclick = () => {
+    $("#correctionCode").value = task.code;
+    $("#correctionResult").textContent = "";
+    $("#correctionCode").focus();
+  };
+}
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${correctionTask(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -4255,6 +4360,7 @@ function render() {
   if (l) {
     bindBoxModel();
     bindSelectorHelper();
+    bindCorrectionTask(l);
     document.querySelectorAll("[data-lesson-anchor]").forEach(
       (link) =>
         (link.onclick = (e) => {

@@ -30,3 +30,11 @@ test("bundle rejects missing dependencies and unsupported module syntax", () => 
     /Unsupported/,
   );
 });
+
+test("The shipped weblab.js compiles, so no module carries a syntax error", async () => {
+  const fs = await import("node:fs");
+  // The bundle contains every source module; a syntax error in app.js would
+  // otherwise only show up in the browser.
+  const bundle = fs.readFileSync(new URL("../../weblab.js", import.meta.url), "utf8");
+  assert.doesNotThrow(() => new vm.Script(bundle));
+});

@@ -689,17 +689,21 @@ const fold = (s) =>
 function search() {
   const q = fold($("#glossarySearch").value),
     kind = $("#glossaryKind").value,
-    items = glossary.filter(
-      (g) =>
-        (!kind || g.kind === kind) &&
-        fold(g.term + " " + g.short + " " + g.description).includes(q),
-    );
+    rank = (g) => (fold(g.term) === q ? 0 : fold(g.term).startsWith(q) ? 1 : 2),
+    items = glossary
+      .filter(
+        (g) =>
+          (!kind || g.kind === kind) &&
+          fold(g.term + " " + g.short + " " + g.description).includes(q),
+      )
+      // Exact and leading term matches first, e.g. "p" finds the p element first.
+      .sort((a, b) => (q ? rank(a) - rank(b) : 0));
   $("#glossaryCount").textContent = `${items.length} Einträge`;
   $("#glossaryResults").innerHTML =
     items
       .map(
         (g) =>
-          `<article class="card"><span class="badge">${esc(g.kind.toUpperCase())}</span><h3>${esc(g.term)}</h3><p>${esc(g.description)}</p><pre><code>${esc(g.syntax)}</code></pre></article>`,
+          `<article class="card"><span class="badge">${esc(g.kind.toUpperCase())}</span><h3>${esc(g.term)}</h3><p>${esc(g.description)}</p><pre><code>${esc(g.syntax)}</code></pre>${g.related?.length ? `<p class="glossary-related"><span>Siehe auch:</span> ${g.related.map((term) => `<button type="button" class="text-link" data-glossary-term="${esc(term)}">${esc(term)}</button>`).join(" ")}</p>` : ""}</article>`,
       )
       .join("") || "<p>Kein passender Eintrag gefunden.</p>";
 }
@@ -868,6 +872,15 @@ function render() {
   if (route === "reference") {
     $("#glossarySearch").oninput = search;
     $("#glossaryKind").onchange = search;
+    // "Siehe auch" jumps to the related entry by searching for its name.
+    $("#glossaryResults").onclick = (event) => {
+      const button = event.target.closest("[data-glossary-term]");
+      if (!button) return;
+      $("#glossarySearch").value = button.dataset.glossaryTerm;
+      $("#glossaryKind").value = "";
+      search();
+      $("#glossarySearch").focus();
+    };
     search();
   }
   document.querySelectorAll("[data-note]").forEach(

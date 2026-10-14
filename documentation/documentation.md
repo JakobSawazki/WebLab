@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.15.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.16.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.15.0 |
+| Bereich | Version 1.16.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -30,7 +30,7 @@ Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein
 | Labor | HTML-/CSS-Dateireiter, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
 | Informatik-Stick | HTML-/CSS-Import und Export, Notepad++-Transferauftrag mit Strg+S/F5 und Dateiverknüpfung |
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
-| Nachschlagen | 84 übernommene eigene Glossareinträge aus WebLab 0.5.0, Suche und Bereichsfilter |
+| Nachschlagen | 107 Glossareinträge (84 aus WebLab 0.5.0, 23 ergänzt), Suche mit Trefferreihenfolge, Bereichsfilter, „Siehe auch“-Verweise |
 | Datenschutz | Lernstand auf dem Gerät; kein Tracking, keine externe KI, keine zentrale Schülerdatenbank |
 
 **Grenze:** Die Selbstkontrolle ist eine eigene Erklärung der Lernenden. Sie ist keine authentifizierte Lehrkraftfreigabe. LocalStorage, Sicherungsdateien, XP und NAGOLD sind veränderbar. Sie dürfen nicht ungeprüft als Leistungsbewertung verwendet werden. Automatische Kriterien erkennen ausgewählte Bausteine, keine vollständige HTML-Konformität, Eigenständigkeit oder gestalterische Qualität.
@@ -233,13 +233,24 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.16.0 (Qualitätsrunde, Paket 5: Nachschlagewerk)
+
+Abgleich: Welche Fachbegriffe verwenden die 16 Einheiten, fehlen aber im Glossar? Ergebnis: unter anderem die semantischen Bereiche aus Einheit 13, Pfadarten, Dateinamen, UTF-8, Längeneinheiten, Farbangaben, Kaskade/Spezifität, Creative Commons, Webserver und FTP/SFTP.
+
+- **23 neue, eigenständig formulierte Einträge** (jetzt 107): Relativer Pfad, Absoluter Pfad, Dateiname, UTF-8, lang, download, header, nav, main, footer, section, source, track, scope, border-collapse, max-width, Längeneinheiten, Farbangaben, Kaskade, Spezifität, Creative Commons, Webserver, FTP und SFTP. Im Feld `chapter` steht bei den neuen Einträgen die zugehörige WebLab-Einheit; bei den 84 übernommenen bleiben die alten Kapitelkürzel.
+- **„Siehe auch“:** Die bisher unsichtbaren Querverweise (`related`) erscheinen als Links unter jedem Eintrag; ein Klick sucht den verwandten Begriff.
+- **Suchreihenfolge:** Exakte Begriffstreffer stehen vorn, dann Begriffe, die mit der Eingabe beginnen. Zuvor fand die Suche nach „p“ zuerst Einträge, in deren Beschreibung irgendwo ein p vorkam.
+- Neuer Node-Test `glossary.test.mjs`: Pflichtfelder, eindeutige Begriffe, gültiger Bereich und alle Querverweise vorhanden.
+
+Prüfung: 29 Node-Tests und Build bestanden; 164/164 Browserprüfungen. Suche „p“ (erster Treffer p), „kaskade“ und „Siehe auch: Spezifität“ im Browser geprüft.
+
 ### 14.10.2026 – Claude – Version 1.15.0 (Qualitätsrunde, Paket 4: Rückmeldung und Abschluss)
 
 - **Verständnischeck erklärt jede Antwort:** `guidance.js` enthält zu allen 48 Antwortmöglichkeiten eine kurze, eigenständig formulierte Begründung. Eine falsche Antwort nennt, warum sie nicht passt (z. B. „Ein style-Attribut wirkt nur auf genau dieses eine Element.“), die richtige bestätigt den Kern. Zuvor kam bei jeder falschen Antwort derselbe allgemeine Satz. Neuer Node-Test: je Antwort genau eine Erklärung, nur die richtige beginnt mit „Richtig“.
 - **Abschluss-Checkliste:** Über „Einheit abschließen“ steht eine Liste der vier Voraussetzungen (Praxisauftrag x von y Kriterien, Verständnischeck, Selbstkontrolle x von y, Profil). Sie aktualisiert sich nach jeder Vorschau-Aktualisierung, Quizantwort, Selbstkontrolle und Profiländerung. Zuvor erfuhr man erst nach dem Klick, was fehlt. Die Liste spiegelt nur `complete()`; die Abschlussregeln sind unverändert. Nach dem Abschluss entfällt sie.
 - **Browserprüfungen ohne Speichern-Dialog:** Jakob musste bei jedem Prüflauf einen Speichern-Dialog für `WebLab-Gast-….json` wegklicken. Ursache: Die Prüfseite testet Profilwechsel und Sicherung, und die App löst dabei echte Downloads aus. `development/tests/browser.html` ersetzt jetzt in jedem App-Rahmen `click()` für Download-Links durch eine Protokollierung; die Zusammenfassung meldet die Zahl abgefangener Downloads. Der App-Code bleibt unverändert, normale Links funktionieren weiter.
 
-Prüfung: 28 Node-Tests und Build bestanden; 164/164 Browserprüfungen, dabei 1 Sicherungsdownload abgefangen und kein Dialog. Quiz (falsch, dann richtig), Checkliste nach Code-Eingabe, Selbstkontrolle und Profilspeicherung in Einheit 01 bei 461 Pixeln im Browser geprüft.
+Prüfung: 28 Node-Tests und Build bestanden; 164/164 Browserprüfungen, dabei 1 Sicherungsdownload abgefangen und kein Dialog. Quiz (falsch, dann richtig), Checkliste nach Code-Eingabe, Selbstkontrolle und Profilspeicherung in Einheit 01 bei 461 Pixeln im Browser geprüft. Veröffentlicht mit Commit `1a89ad8`; [Pages-Lauf 38621972838](https://github.com/JakobSawazki/WebLab/actions/runs/38621972838) erfolgreich, Live-Bundle per SHA-256 identisch.
 
 ### 14.10.2026 – Claude – Version 1.14.0 (Qualitätsrunde, Paket 3: Didaktik)
 

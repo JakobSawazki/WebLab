@@ -1784,3 +1784,18 @@ dialog::backdrop {
 .box-key.margin {
   background: #f4bc7f;
 }
+.glossary-related {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.6rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.85rem;
+}
+.glossary-related span {
+  color: var(--muted);
+}
+.glossary-related .text-link {
+  min-height: 24px;
+  font: inherit;
+}

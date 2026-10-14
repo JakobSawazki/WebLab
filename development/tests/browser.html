@@ -7,6 +7,23 @@
     import { lessons } from "/content.js";
     import { checkLesson } from "/checks.js";
     import { blank, STORAGE_KEY } from "/state.js";
+    // App frames trigger backup downloads (profile switch, NAGOLD, reset).
+    // A test run must never open save dialogs or fill the Downloads folder:
+    // every frame gets a click() that records blob downloads instead.
+    const suppressedDownloads = [];
+    document.addEventListener(
+      "load",
+      (event) => {
+        const win = event.target.tagName === "IFRAME" && event.target.contentWindow;
+        if (!win?.HTMLAnchorElement) return;
+        const click = win.HTMLAnchorElement.prototype.click;
+        win.HTMLAnchorElement.prototype.click = function () {
+          if (this.hasAttribute("download")) suppressedDownloads.push(this.download);
+          else click.call(this);
+        };
+      },
+      true,
+    );
     const samples = [
       "<h1>Robotik AG</h1><p>Wir bauen <strong>gemeinsam</strong> Roboter für unsere Schule.</p>",
       '<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Robotik AG</title></head><body><h1>Robotik AG</h1></body></html>',
@@ -723,7 +740,8 @@
     if (savedTheme === null) localStorage.removeItem("weblab-theme-v1");
     else localStorage.setItem("weblab-theme-v1", savedTheme);
     document.querySelector("#results").textContent =
-      `${count - failed}/${count} Prüfungen bestanden, ${failed} fehlgeschlagen.\n\n` +
+      `${count - failed}/${count} Prüfungen bestanden, ${failed} fehlgeschlagen.\n` +
+      `${suppressedDownloads.length} Sicherungsdownloads der App abgefangen, keine Datei gespeichert.\n\n` +
       out.join("\n");
     document.documentElement.dataset.testStatus = failed ? "failed" : "passed";
   </script>

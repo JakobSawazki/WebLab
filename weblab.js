@@ -4,7 +4,7 @@
 const modules = {
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
-const VERSION = "1.14.0";
+const VERSION = "1.15.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -589,9 +589,15 @@ return {VERSION,groups,lessons,byId};
 "guidance.js": function(require) {
 // Eigenständige Lernhilfen zu den Einheiten in content.js.
 // tips[i] erklärt, was für criteria[i] fehlt; die Reihenfolge muss übereinstimmen
-// (geprüft in development/tests/guidance.test.mjs). pitfalls nennt typische Fehler.
+// (geprüft in development/tests/guidance.test.mjs). pitfalls nennt typische Fehler,
+// quiz[i] erklärt die Antwortmöglichkeit options[i] des Verständnischecks.
 const guidance = {
   l1: {
+    quiz: [
+      "Richtig: HTML beschreibt, was ein Inhalt ist – Überschrift, Absatz oder Betonung.",
+      "Hochladen erledigen Übertragungsprogramme wie FTP, nicht HTML.",
+      "Farben und Gestaltung legt CSS fest; HTML bestimmt die Bedeutung der Inhalte.",
+    ],
     tips: [
       "Ersetze den Text zwischen <h1> und </h1> durch einen eigenen Projektnamen mit mindestens drei Zeichen.",
       "Schreibe einen eigenen Satz zwischen <p> und </p>. Der Startsatz zählt nicht.",
@@ -604,6 +610,11 @@ const guidance = {
     ],
   },
   l2: {
+    quiz: [
+      "Der body enthält die sichtbaren Inhalte; der Tab-Titel ist eine Angabe für den Browser.",
+      "Richtig: title steht im head und erscheint im Browser-Tab und in Lesezeichen.",
+      "Der Dateiname bestimmt die Adresse, nicht den angezeigten Titel im Tab.",
+    ],
     tips: [
       "Die erste Zeile lautet <!doctype html>. Davor steht nichts, auch kein Kommentar.",
       'Das Start-Tag des Dokuments lautet <html lang="de">.',
@@ -618,6 +629,11 @@ const guidance = {
     ],
   },
   l3: {
+    quiz: [
+      "Die Schriftgröße regelt CSS. Die Überschriftenebene drückt die Gliederung aus.",
+      "Eine neue Zeile ist kein Unterthema; Fließtext gehört in p.",
+      "Richtig: h2 kennzeichnet ein Unterthema unterhalb der h1.",
+    ],
     tips: [
       "Die Seite braucht eine h1 für das Hauptthema.",
       "Ergänze zwei h2-Überschriften für deine Unterthemen, jede mit mindestens drei Zeichen.",
@@ -631,6 +647,11 @@ const guidance = {
     ],
   },
   l4: {
+    quiz: [
+      "Richtig: ol nummeriert die Einträge, weil ihre Reihenfolge wichtig ist.",
+      "ul passt, wenn die Reihenfolge keine Rolle spielt, etwa bei einer Materialliste.",
+      "Ein Absatz gliedert keine einzelnen Schritte; dafür gibt es Listen.",
+    ],
     tips: [
       "Drei <li>-Einträge müssen direkt in <ul> … </ul> stehen.",
       "Drei <li>-Schritte müssen direkt in <ol> … </ol> stehen.",
@@ -642,6 +663,11 @@ const guidance = {
     ],
   },
   l5: {
+    quiz: [
+      "Ein Laufwerkspfad funktioniert nur auf diesem einen Rechner, nicht auf einem Webserver.",
+      "Richtig: Ein relativer Pfad ohne Ordnerangabe verweist auf eine Datei im selben Ordner.",
+      "Das ist eine absolute Adresse auf einem anderen Server, kein Pfad im eigenen Ordner.",
+    ],
     tips: [
       'Schreibe <a href="kontakt.html">Kontakt</a> – ohne Laufwerksbuchstaben und ohne Ordner.',
       "Ein externer Link beginnt mit https:// und hat einen Linktext mit mindestens drei Zeichen.",
@@ -655,6 +681,11 @@ const guidance = {
     ],
   },
   l6: {
+    quiz: [
+      "Den Dateipfad nennt src. alt beschreibt, was das Bild zeigt oder bedeutet.",
+      "Rahmen und Farben gehören ins CSS.",
+      "Richtig: alt ersetzt die Bildinformation, wenn das Bild nicht gesehen oder geladen wird.",
+    ],
     tips: [
       "Das img braucht src, einen aussagekräftigen alt-Text mit mindestens acht Zeichen sowie width und height.",
     ],
@@ -665,6 +696,11 @@ const guidance = {
     ],
   },
   l7: {
+    quiz: [
+      "Richtig: Tabellen ordnen zusammengehörige Daten in Zeilen und Spalten.",
+      "Für das Seitenlayout sind Tabellen ungeeignet; Bereiche gestaltest du mit CSS.",
+      "Überschriften zeichnest du mit h1 bis h6 aus.",
+    ],
     tips: [
       "Setze <caption> direkt nach <table> und beschreibe darin die Tabelle.",
       'Beide Kopfzellen brauchen scope="col", zum Beispiel <th scope="col">Monat</th>.',
@@ -678,6 +714,11 @@ const guidance = {
     ],
   },
   l8: {
+    quiz: [
+      "Der Dateiname steht in src; die Textfassung gibt den Inhalt wieder.",
+      "Richtig: So erreicht der Inhalt auch Menschen, die nicht hören oder kein Video abspielen können.",
+      "Die Textfassung ist selbst HTML, meist ein Absatz unter dem Video.",
+    ],
     tips: [
       'Schreibe <video controls> und darin <source src="…" type="video/mp4">.',
       "Ergänze einen Absatz, der den Inhalt des Videos in eigenen Worten zusammenfasst (mindestens 25 Zeichen).",
@@ -689,6 +730,11 @@ const guidance = {
     ],
   },
   l9: {
+    quiz: [
+      "Ein style-Attribut wirkt nur auf genau dieses eine Element.",
+      "title benennt die Seite im Browser-Tab und gestaltet nichts.",
+      "Richtig: Mehrere HTML-Seiten können dieselbe style.css einbinden.",
+    ],
     tips: [
       'Ergänze im head: <link rel="stylesheet" href="style.css">.',
       "Schreibe im CSS-Reiter zum Beispiel: body { font-family: Arial, sans-serif; }",
@@ -701,6 +747,11 @@ const guidance = {
     ],
   },
   l10: {
+    quiz: [
+      "Richtig: Eine ID ist eindeutig. Für wiederkehrende Gestaltung nimmst du eine Klasse.",
+      "Mehrfach verwendbar ist eine Klasse, nicht eine ID.",
+      "Eine ID kennzeichnet genau ein Element im Dokument.",
+    ],
     tips: [
       'Zwei Absätze brauchen class="hinweis" und jeweils eigenen Text.',
       'Die h1 erhält id="start" und behält ihren Text.',
@@ -714,6 +765,11 @@ const guidance = {
     ],
   },
   l11: {
+    quiz: [
+      "font-family wählt die Schriftart, nicht den Zeilenabstand.",
+      "Richtig: line-height legt die Zeilenhöhe fest, zum Beispiel 1.6.",
+      "text-align richtet Text links, mittig oder rechts aus.",
+    ],
     tips: [
       "Ergänze in der body-Regel eine Schriftfarbe, zum Beispiel color: #182c35;",
       "Ergänze in der body-Regel eine Hintergrundfarbe, zum Beispiel background-color: #f4f7f6;",
@@ -729,6 +785,11 @@ const guidance = {
     ],
   },
   l12: {
+    quiz: [
+      "Außerhalb des Rahmens liegt margin, der Außenabstand.",
+      "Den Abstand zwischen Buchstaben regelt letter-spacing.",
+      "Richtig: padding ist der Innenabstand zwischen Inhalt und Rahmen.",
+    ],
     tips: [
       'Lege einen Bereich wie <section class="karte"> mit mindestens 15 Zeichen Text an.',
       "Ergänze in .karte { … } einen Innenabstand, zum Beispiel padding: 1.5rem;",
@@ -744,6 +805,11 @@ const guidance = {
     ],
   },
   l13: {
+    quiz: [
+      "Richtig: Ziel, Zielgruppe und Inhalte bestimmen, was die Gestaltung leisten muss.",
+      "Die Schriftgröße ist bereits eine Gestaltungsentscheidung.",
+      "Die Zahl der CSS-Regeln sagt nichts über eine gute Seite aus.",
+    ],
     tips: [
       "Setze deine h1 in <header> … </header>.",
       'Lege in <nav> einen Link <a href="kontakt.html">…</a> mit Linktext an.',
@@ -757,6 +823,11 @@ const guidance = {
     ],
   },
   l14: {
+    quiz: [
+      "Verkleinern ändert nichts an den Rechten am Bild.",
+      "Richtig: Du brauchst eine passende Erlaubnis oder Lizenz und gibst die Quelle an.",
+      "Ein Disclaimer ersetzt keine Nutzungsrechte.",
+    ],
     tips: [
       "Schreibe im footer eine h2, zum Beispiel „Quellen und Rechte“.",
       "Ergänze im footer einen Absatz mit mindestens 40 Zeichen: Wer hat Texte und Bilder erstellt, unter welcher Lizenz?",
@@ -768,6 +839,11 @@ const guidance = {
     ],
   },
   l15: {
+    quiz: [
+      "Farben stehen in style.css; entscheidend ist, dass alle Dateien am richtigen Ort liegen.",
+      "Der Titel allein reicht nicht; Links und Bilder brauchen ihre Dateien.",
+      "Richtig: Relative Pfade funktionieren nur, wenn Dateinamen und Ordner gleich bleiben.",
+    ],
     tips: [
       "Schreibe drei Tests als <li> in einer <ol>, jeder mit mindestens 15 Zeichen, zum Beispiel „Link zu kontakt.html öffnet die Unterseite“.",
     ],
@@ -778,6 +854,11 @@ const guidance = {
     ],
   },
   l16: {
+    quiz: [
+      "Richtig: Erst geprüfte Inhalte, Links, Rechte und Tests machen das Projekt präsentierbar.",
+      "Eine Farbe ist nur ein kleiner Teil der Gestaltung.",
+      "Ein Screenshot zeigt weder Links noch Code noch Rechte.",
+    ],
     tips: [
       "Setze deinen Seitentitel als h1 in den header.",
       'Verlinke in nav die Unterseite: <a href="kontakt.html">…</a>.',
@@ -3103,7 +3184,7 @@ function debugChallenge(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p><button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (
@@ -3128,6 +3209,7 @@ function run() {
   $("#previewStatus").textContent = $("#livePreview").checked
     ? "Vorschau aktuell · aktualisiert nach einer kurzen Schreibpause."
     : "Vorschau manuell aktualisiert · Live-Vorschau ist aus.";
+  if (activeId !== "lab") updateCompletionStatus(byId(activeId));
 }
 function check(l) {
   capture();
@@ -3140,7 +3222,30 @@ function check(l) {
   // Open criteria explain what is missing instead of repeating the label.
   $("#taskFeedback").innerHTML =
     `<p class="criteria-summary"><strong>${passed} von ${results.length} Kriterien erfüllt.</strong></p><ul class="criteria">${results.map((r, i) => `<li class="${r.passed ? "pass" : "fail"}"><span aria-hidden="true">${r.passed ? "✓" : "○"}</span> ${esc(r.label)}<span class="sr-only">${r.passed ? ": erfüllt" : ": noch offen"}</span>${r.passed ? "" : `<small class="criteria-tip">${esc(tips[i])}</small>`}</li>`).join("")}</ul><p>${passed === results.length ? "Alle technischen Kriterien erfüllt. Prüfe zusätzlich Inhalt, Darstellung und Selbstkontrolle." : "Überarbeite die offenen Punkte. Die „Typischen Stolpersteine“ am Praxisauftrag helfen bei der Fehlersuche."}</p>`;
+  updateCompletionStatus(l, results);
   return results.every((r) => r.passed);
+}
+// Shows before the click what the completion still needs; mirrors complete().
+function updateCompletionStatus(l, results) {
+  const list = $("#completionStatus");
+  if (!list) return;
+  if (!results) {
+    const d = draft();
+    results = checkLesson(l, d.html, d.css, (s) =>
+      new DOMParser().parseFromString(s, "text/html"),
+    );
+  }
+  const passed = results.filter((r) => r.passed).length,
+    checks = l.checks.filter((_, i) => state.checks[l.id]?.[i]).length,
+    items = [
+      [passed === results.length, `Praxisauftrag: ${passed} von ${results.length} Kriterien erfüllt`],
+      [Boolean(state.quiz[l.id]), "Verständnischeck richtig beantwortet"],
+      [checks === l.checks.length, `Selbstkontrolle: ${checks} von ${l.checks.length} bestätigt`],
+      [validProfile(state.profile.name) && Boolean(state.profile.className.trim()), "Profil mit Kürzel und Klasse gespeichert"],
+    ];
+  list.innerHTML = items
+    .map(([ok, text]) => `<li class="${ok ? "pass" : "open"}"><span aria-hidden="true">${ok ? "✓" : "○"}</span> ${esc(text)}<span class="sr-only">${ok ? ": erledigt" : ": noch offen"}</span></li>`)
+    .join("");
 }
 function files() {
   capture();
@@ -3522,6 +3627,7 @@ function render() {
         result.className = selected === exercise.answer ? "pass" : "muted";
       };
     });
+    updateCompletionStatus(l);
     $("#lessonBackup").onclick = () => {
       capture();
       backup();
@@ -3537,9 +3643,11 @@ function render() {
             state.quiz[l.id] = true;
             save();
           }
+          const explanation = guidance[l.id].quiz[Number(b.dataset.answer)];
           $("#quizResult").textContent = ok
-            ? "✓ Richtig. Übertrage die Idee auf deinen eigenen Code."
-            : "Noch nicht. Lies die Erklärung erneut und versuche es noch einmal.";
+            ? `✓ ${explanation} Übertrage die Idee auf deinen eigenen Code.`
+            : `Noch nicht. ${explanation} Versuche es noch einmal.`;
+          updateCompletionStatus(l);
         }),
     );
     document.querySelectorAll("[data-check]").forEach(
@@ -3548,6 +3656,7 @@ function render() {
           state.checks[l.id] ||= [];
           state.checks[l.id][Number(c.dataset.check)] = c.checked;
           save();
+          updateCompletionStatus(l);
         }),
     );
     $("#lessonNotes").oninput = (e) => {

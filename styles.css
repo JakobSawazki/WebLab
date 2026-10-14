@@ -844,6 +844,21 @@ main {
 .fail {
   color: var(--amber);
 }
+/* Live checklist above "Einheit abschließen". */
+.completion-status {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0 0 1rem;
+  padding: 0.8rem 1rem;
+  list-style: none;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg) 35%, transparent);
+  font-size: 0.9rem;
+}
+.completion-status .open {
+  color: var(--muted);
+}
 .studio {
   border: 1px solid var(--line);
   border-radius: var(--radius);

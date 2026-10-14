@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.14.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.15.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -16,7 +16,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.14.0 |
+| Bereich | Version 1.15.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche in Einheiten 01–12, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -233,6 +233,14 @@ Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 14.10.2026 – Claude – Version 1.15.0 (Qualitätsrunde, Paket 4: Rückmeldung und Abschluss)
+
+- **Verständnischeck erklärt jede Antwort:** `guidance.js` enthält zu allen 48 Antwortmöglichkeiten eine kurze, eigenständig formulierte Begründung. Eine falsche Antwort nennt, warum sie nicht passt (z. B. „Ein style-Attribut wirkt nur auf genau dieses eine Element.“), die richtige bestätigt den Kern. Zuvor kam bei jeder falschen Antwort derselbe allgemeine Satz. Neuer Node-Test: je Antwort genau eine Erklärung, nur die richtige beginnt mit „Richtig“.
+- **Abschluss-Checkliste:** Über „Einheit abschließen“ steht eine Liste der vier Voraussetzungen (Praxisauftrag x von y Kriterien, Verständnischeck, Selbstkontrolle x von y, Profil). Sie aktualisiert sich nach jeder Vorschau-Aktualisierung, Quizantwort, Selbstkontrolle und Profiländerung. Zuvor erfuhr man erst nach dem Klick, was fehlt. Die Liste spiegelt nur `complete()`; die Abschlussregeln sind unverändert. Nach dem Abschluss entfällt sie.
+- **Browserprüfungen ohne Speichern-Dialog:** Jakob musste bei jedem Prüflauf einen Speichern-Dialog für `WebLab-Gast-….json` wegklicken. Ursache: Die Prüfseite testet Profilwechsel und Sicherung, und die App löst dabei echte Downloads aus. `development/tests/browser.html` ersetzt jetzt in jedem App-Rahmen `click()` für Download-Links durch eine Protokollierung; die Zusammenfassung meldet die Zahl abgefangener Downloads. Der App-Code bleibt unverändert, normale Links funktionieren weiter.
+
+Prüfung: 28 Node-Tests und Build bestanden; 164/164 Browserprüfungen, dabei 1 Sicherungsdownload abgefangen und kein Dialog. Quiz (falsch, dann richtig), Checkliste nach Code-Eingabe, Selbstkontrolle und Profilspeicherung in Einheit 01 bei 461 Pixeln im Browser geprüft.
+
 ### 14.10.2026 – Claude – Version 1.14.0 (Qualitätsrunde, Paket 3: Didaktik)
 
 Alle 16 Einheiten (Erklärung, Beispiel, Auftrag, Hinweis, Quiz, Selbstkontrolle, automatische Kriterien und Vertiefungen) fachlich durchgesehen. Fachlich keine Fehler gefunden; die Inhalte sind stimmig zu BPE2 und den in Abschnitt 3 genannten Referenzen. Die Lücke lag in der Rückmeldung: Ein nicht erfülltes Kriterium zeigte nur ein Stichwort wie „○ Zwei Absätze“ oder bei Einheit 11/12 nur einen Eigenschaftsnamen wie „○ line-height“. Typische Fehler gab es bisher nur als je eine Denkaufgabe in den Einheiten 01–12.
@@ -245,7 +253,7 @@ Alle 16 Einheiten (Erklärung, Beispiel, Auftrag, Hinweis, Quiz, Selbstkontrolle
 
 Unverändert: alle Prüfregeln und Schwellenwerte, Freischaltung, Punkte, Speicherformat. Bestehende Abschlüsse bleiben gültig.
 
-Prüfung: 27 Node-Tests (neu: `guidance.test.mjs` prüft je Kriterium genau einen Tipp, Länge und Doppelungen) und Build bestanden; 164/164 Browserprüfungen. Rückmeldung in Einheit 11 mit teilweise falschem CSS im Browser bei 461 Pixeln geprüft. Offen: Formulierungen mit einer Klasse erproben.
+Prüfung: 27 Node-Tests (neu: `guidance.test.mjs` prüft je Kriterium genau einen Tipp, Länge und Doppelungen) und Build bestanden; 164/164 Browserprüfungen. Rückmeldung in Einheit 11 mit teilweise falschem CSS im Browser bei 461 Pixeln geprüft. Offen: Formulierungen mit einer Klasse erproben. Veröffentlicht mit Commit `6243833`; [Pages-Lauf 38621393990](https://github.com/JakobSawazki/WebLab/actions/runs/38621393990) erfolgreich, Live-Bundle per SHA-256 identisch, Release v1.14.0.
 
 ### 14.10.2026 – Claude – Version 1.13.2 (Qualitätsrunde, Paket 2: Bedienung)
 
@@ -308,7 +316,7 @@ Weitere Rückmeldungen von Jakob aus Edge, direkt nach 1.10.0 umgesetzt:
 
 Zur Frage der Sperre: Einheiten 02–16 sind bereits seit 1.7.0 anfangs gesperrt und werden nacheinander freigeschaltet; das wurde nicht verändert und gilt auch für das neue Menü.
 
-Prüfung: 21 Node-Tests und Build bestanden; 140/140 Browserprüfungen. Zusätzlich im Browser geprüft: Menü aufgeklappt bei frischem Profil zeigt genau einen Link (Einheit 01) und 15 gesperrte Einträge, kein horizontaler Überlauf bei 573 und 1280 Pixeln, weiterhin sechs SVG-Icons in der Navigation, Fußzeile rechtsbündig mit Link und Versions-Tooltip, keine Konsolenfehler. Screenshot: `documentation/WebLab-1.11.0.png`. Veröffentlicht: 1.10.0 mit Commit 6668817 ([Pages-Workflow 38302038137](https://github.com/JakobSawazki/WebLab/actions/runs/38302038137)), 1.11.0 mit Commit 6af40b9 ([Pages-Workflow 38302595479](https://github.com/JakobSawazki/WebLab/actions/runs/38302595479)); beide erfolgreich, Online-Version 1.11.0 bestätigt, Release v1.11.0 angelegt (für 1.10.0 gibt es keinen eigenen Tag). Offen: Für das Lerneinheiten-Menü gibt es noch keine eigene automatische Browserprüfung in `development/tests/browser.html`. Hinweis: Der Prüflauf unter `/__qa` löst über die Sicherungsfunktion einen echten JSON-Download aus (`WebLab-Gast-….json`); je nach Browsereinstellung erscheint dabei ein Speichern-Dialog. Die Datei ist ein Test-Lernstand und kann gelöscht werden.
+Prüfung: 21 Node-Tests und Build bestanden; 140/140 Browserprüfungen. Zusätzlich im Browser geprüft: Menü aufgeklappt bei frischem Profil zeigt genau einen Link (Einheit 01) und 15 gesperrte Einträge, kein horizontaler Überlauf bei 573 und 1280 Pixeln, weiterhin sechs SVG-Icons in der Navigation, Fußzeile rechtsbündig mit Link und Versions-Tooltip, keine Konsolenfehler. Screenshot: `documentation/WebLab-1.11.0.png`. Veröffentlicht: 1.10.0 mit Commit 6668817 ([Pages-Workflow 38302038137](https://github.com/JakobSawazki/WebLab/actions/runs/38302038137)), 1.11.0 mit Commit 6af40b9 ([Pages-Workflow 38302595479](https://github.com/JakobSawazki/WebLab/actions/runs/38302595479)); beide erfolgreich, Online-Version 1.11.0 bestätigt, Release v1.11.0 angelegt (für 1.10.0 gibt es keinen eigenen Tag). Offen: Für das Lerneinheiten-Menü gibt es noch keine eigene automatische Browserprüfung in `development/tests/browser.html`. Hinweis (bis 1.14.0): Der Prüflauf unter `/__qa` löste über die Sicherungsfunktion einen echten JSON-Download aus; seit 1.15.0 fängt die Prüfseite solche Downloads ab.
 
 ### 12.10.2026 – Claude – Version 1.10.0
 

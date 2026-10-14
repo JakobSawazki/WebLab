@@ -14,3 +14,12 @@ test("Every criterion has its own concrete tip and every lesson names typical mi
     assert.equal(new Set(tips).size, tips.length, `${l.id}: keine doppelten Tipps`);
   }
 });
+
+test("Every quiz option is explained and only the correct one is confirmed", () => {
+  for (const l of lessons) {
+    const { quiz } = guidance[l.id];
+    assert.equal(quiz.length, l.options.length, `${l.id}: eine Erklärung je Antwort`);
+    quiz.forEach((text, i) =>
+      assert.equal(text.startsWith("Richtig"), i === l.answer, `${l.id}: Antwort ${i + 1}`));
+  }
+});

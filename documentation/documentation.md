@@ -252,6 +252,8 @@ Neue Hilfsfunktion `rule()` in `exercises.js` prüft, ob eine Regel für einen S
 
 Prüfung: 36 Node-Tests und Build bestanden; `npm run qa` 168/168. Einheit 12 mit gelöster Kartenübung per Edge-Screenshot geprüft.
 
+CI-Nachtrag: Der erste Pages-Lauf (38629372866) brach in den Browserprüfungen ab, weil Chrome auf dem Runner nach 10 Sekunden noch nicht über das DevTools-Protokoll erreichbar war. Es wurde deshalb nicht veröffentlicht, wie vorgesehen. `run-browser-checks.mjs` wartet jetzt bis zu 30 Sekunden auf den Browserstart.
+
 ### 14.10.2026 – Claude – Version 1.26.0 (Paket 19: Übungen für die Einheiten 05–08)
 
 Sechs weitere Übungen in der Übungswerkstatt, jetzt 18 insgesamt; die Einheiten 01–08 haben je zwei.

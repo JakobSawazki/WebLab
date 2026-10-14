@@ -89,7 +89,8 @@ try {
       { stdio: "ignore" },
     ),
   );
-  const targets = await (await waitFor(`http://127.0.0.1:${debugPort}/json`)).json();
+  // A cold browser start on a CI runner can take well over ten seconds.
+  const targets = await (await waitFor(`http://127.0.0.1:${debugPort}/json`, 150)).json();
   const page = targets.find((t) => t.type === "page" && t.url.includes("/__qa"));
   if (!page) throw new Error("Prüfseite im Browser nicht gefunden.");
   const socket = new WebSocket(page.webSocketDebuggerUrl);

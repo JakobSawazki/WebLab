@@ -2,7 +2,7 @@
 
 Stand: **14. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.11.2** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.12.0** · Status: **lokal geprüft; Veröffentlichung läuft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -232,6 +232,10 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 14.10.2026 – Codex – Version 1.12.0
+
+Auf Jakobs Wunsch die Lerneinheitenliste in ein schwebendes Menü rechts neben „Lernpfad“ umgebaut. Öffnet am Desktop bei Maus-Hover, auch aus der eingeklappten Iconleiste; kurze Schließverzögerung erlaubt den Weg über den Abstand zum Fenster. Kein Verschieben der übrigen Navigation. Position und Höhe bleiben innerhalb des sichtbaren Fensters; bei Bedarf eigener Scrollbereich, vollständige Titel umbrechend. Auf schmalen Ansichten per Pfeilschalter als schwebendes Fenster innerhalb des Bildschirms. Tastatur: Schalter oder Pfeil rechts/unten öffnet, Pfeiltasten öffnen mit Fokus auf dem ersten freien Eintrag; Escape schließt und setzt den Fokus zurück. Außenklick, Fokuswechsel nach außen und Ändern der Fenstergröße schließen. Auswahl eines freigeschalteten Eintrags schließt ebenfalls. Liste weiterhin nur geöffnet im DOM; Sperren, Abschlüsse und nächste Einheit werden unverändert aus `lessonAccess()` abgeleitet. Der alte separate Offen-/Geschlossen-Speicherwert wird nicht mehr ausgewertet: klassische Menüs starten geschlossen. Lernstände bleiben unverändert. Prüfung: 21 Node-Tests und Build bestanden, 152/152 Browserprüfungen bestanden (zwölf neue Prüfungen für das Lernpfadfenster). Zusätzlich echter Maus-Hover und Mausweg ins Fenster, Auswahl mit Routennavigation und Schließen, Außenklick, Escape/Fokusrückkehr, Tastaturöffnung, eingeklappte Iconleiste und Mobilansicht bei 390 × 700 in Edge geprüft; Dark/Light visuell kontrolliert. Keine Anwendungsfehler; die reine QA-Seite fordert ein nicht vorhandenes Standard-favicon.ico an (404), die eigentliche App nutzt ihr vorhandenes PNG. `git diff --check` und Syntaxprüfung bestanden. Veröffentlichungsnachweis folgt.
 
 ### 14.10.2026 – Codex – Version 1.11.2
 

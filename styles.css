@@ -378,7 +378,7 @@ small,
   clip-path: inset(50%);
   white-space: nowrap;
 }
-/* "Lernpfad" with a fold-out list of the sixteen lessons. */
+/* Floating lesson flyout beside the learning-path entry. */
 .nav-group {
   position: relative;
   display: grid;
@@ -411,11 +411,11 @@ small,
   height: 8px;
   border-right: 2px solid currentColor;
   border-bottom: 2px solid currentColor;
-  transform: translateY(-2px) rotate(45deg);
+  transform: translateX(-2px) rotate(-45deg);
   transition: transform 160ms ease;
 }
 .nav-toggle[aria-expanded="true"]::before {
-  transform: translateY(2px) rotate(-135deg);
+  transform: translateX(2px) rotate(135deg);
 }
 .nav-toggle:hover,
 .nav-toggle[aria-expanded="true"] {
@@ -424,11 +424,20 @@ small,
   background: color-mix(in srgb, var(--brand) 12%, transparent);
 }
 .lesson-menu {
+  position: fixed;
+  z-index: 30;
+  width: min(390px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   display: grid;
   gap: 1px;
-  margin: 0.1rem 0 0.35rem 1.95rem;
-  padding-left: 0.7rem;
-  border-left: 1px solid color-mix(in srgb, var(--brand) 30%, var(--line));
+  margin: 0;
+  padding: 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--brand) 40%, var(--line));
+  border-radius: 12px;
+  background: var(--metal-surface);
+  box-shadow: inset 0 1px var(--metal-glint), 0 14px 38px #00081a66;
 }
 .lesson-menu[hidden] {
   display: none;
@@ -456,9 +465,7 @@ small,
   font-variant-numeric: tabular-nums;
 }
 .lesson-menu-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 a.lesson-menu-item:hover,
 .lesson-menu-item[aria-current="page"] {
@@ -1427,11 +1434,7 @@ dialog::backdrop {
     transform: none;
   }
   .lesson-menu {
-    grid-column: 1 / -1;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin: 0.2rem 0;
-    padding-left: 0;
-    border-left: 0;
+    grid-template-columns: 1fr;
   }
   .nav-item {
     padding: 0.55rem;
@@ -1566,8 +1569,7 @@ dialog::backdrop {
     padding: 0.65rem 0;
     gap: 0;
   }
-  :root[data-menu="collapsed"] .nav-toggle,
-  :root[data-menu="collapsed"] .lesson-menu {
+  :root[data-menu="collapsed"] .nav-toggle {
     display: none;
   }
 }

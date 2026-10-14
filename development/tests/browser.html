@@ -140,6 +140,50 @@
           ),
         width + ": Ausklappen stellt alle benannten Menuepunkte wieder her",
       );
+      const lessonToggle = menuDoc.querySelector("#lessonMenuButton"),
+        lessonPanel = menuDoc.querySelector("#lessonMenu"),
+        lessonGroup = menuDoc.querySelector("#lessonMenuGroup"),
+        labLink = menuDoc.querySelector('a.nav-item[href="#lab"]'),
+        labTop = labLink.getBoundingClientRect().top,
+        stateBeforeFlyout = localStorage.getItem(STORAGE_KEY);
+      lessonToggle.click();
+      const flyoutBox = lessonPanel.getBoundingClientRect();
+      assert(
+        !lessonPanel.hidden && lessonToggle.getAttribute("aria-expanded") === "true" &&
+          lessonPanel.querySelectorAll(".lesson-menu-item").length === 16 &&
+          !lessonPanel.querySelector("a.is-locked"),
+        width + ": Lernpfadfenster zeigt 16 Einheiten ohne gesperrte Links",
+      );
+      assert(
+        labLink.getBoundingClientRect().top === labTop &&
+          flyoutBox.left >= 0 && flyoutBox.right <= width &&
+          flyoutBox.top >= 0 && flyoutBox.bottom <= 800 &&
+          (width === 360 || flyoutBox.left >= lessonGroup.getBoundingClientRect().right),
+        width + ": Lernpfadfenster bleibt im Bildschirm und verschiebt keine Navigation",
+      );
+      lessonGroup.dispatchEvent(new menuFrame.contentWindow.KeyboardEvent("keydown", {
+        key: "ArrowRight", bubbles: true,
+      }));
+      assert(
+        lessonPanel.contains(menuDoc.activeElement) && menuDoc.activeElement.tagName === "A",
+        width + ": Pfeil rechts setzt Fokus auf eine freie Einheit",
+      );
+      menuDoc.activeElement.dispatchEvent(new menuFrame.contentWindow.KeyboardEvent("keydown", {
+        key: "Escape", bubbles: true,
+      }));
+      assert(
+        lessonPanel.hidden && !lessonPanel.children.length && menuDoc.activeElement === lessonToggle,
+        width + ": Escape entfernt Eintraege und setzt Fokus auf den Schalter",
+      );
+      lessonToggle.click();
+      menuDoc.querySelector("#viewTitle").dispatchEvent(new menuFrame.contentWindow.PointerEvent("pointerdown", {
+        bubbles: true,
+      }));
+      assert(lessonPanel.hidden, width + ": Aussenklick schliesst Lernpfadfenster");
+      assert(
+        localStorage.getItem(STORAGE_KEY) === stateBeforeFlyout,
+        width + ": Lernpfadmenue veraendert keinen Lernstand",
+      );
       menuFrame.remove();
     }
     if (savedMenu === null) localStorage.removeItem("weblab-menu-v1");

@@ -66,6 +66,7 @@ function updateMenu() {
 }
 updateMenu();
 $("#menuButton").onclick = () => {
+  setLessonMenu(false);
   menuCollapsed = !menuCollapsed;
   updateMenu();
   try {
@@ -75,12 +76,23 @@ $("#menuButton").onclick = () => {
     );
   } catch {}
 };
-// The lesson list below "Lernpfad" is rendered only while it is open, so a
-// closed menu never leaves hidden links in the navigation.
+// The floating lesson list is transient and never shifts the navigation.
 let lessonMenuOpen = false;
-try {
-  lessonMenuOpen = localStorage.getItem("weblab-lessonmenu-v1") === "open";
-} catch {}
+let lessonMenuCloseTimer;
+const lessonMenuGroup = $("#lessonMenuGroup"),
+  lessonMenuPanel = $("#lessonMenu"),
+  lessonMenuToggle = $("#lessonMenuButton"),
+  lessonMenuHover = matchMedia("(min-width: 761px) and (hover: hover) and (pointer: fine)");
+function positionLessonMenu() {
+  if (!lessonMenuOpen) return;
+  const rect = lessonMenuGroup.getBoundingClientRect();
+  const left = innerWidth > 760
+    ? Math.min(rect.right + 8, innerWidth - lessonMenuPanel.offsetWidth - 12)
+    : Math.max(12, (innerWidth - lessonMenuPanel.offsetWidth) / 2);
+  const top = Math.max(12, Math.min(rect.top, innerHeight - lessonMenuPanel.offsetHeight - 12));
+  lessonMenuPanel.style.left = `${left}px`;
+  lessonMenuPanel.style.top = `${top}px`;
+}
 function updateLessonMenu() {
   const button = $("#lessonMenuButton"),
     menu = $("#lessonMenu"),
@@ -110,17 +122,63 @@ function updateLessonMenu() {
         })
         .join("")
     : "";
+  positionLessonMenu();
 }
-$("#lessonMenuButton").onclick = () => {
-  lessonMenuOpen = !lessonMenuOpen;
+function setLessonMenu(open) {
+  clearTimeout(lessonMenuCloseTimer);
+  if (lessonMenuOpen === open) return;
+  lessonMenuOpen = open;
   updateLessonMenu();
-  try {
-    localStorage.setItem(
-      "weblab-lessonmenu-v1",
-      lessonMenuOpen ? "open" : "closed",
-    );
-  } catch {}
+}
+function scheduleLessonMenuClose() {
+  clearTimeout(lessonMenuCloseTimer);
+  lessonMenuCloseTimer = setTimeout(() => {
+    if (!lessonMenuPanel.contains(document.activeElement)) setLessonMenu(false);
+  }, 220);
+}
+lessonMenuToggle.onclick = (event) => {
+  // Pointer entry may have opened the panel just before this click.
+  // Keyboard/touch clicks toggle it; desktop mouse clicks keep it open.
+  const mouseHover = event.detail > 0 && lessonMenuHover.matches;
+  setLessonMenu(mouseHover || !lessonMenuOpen);
 };
+lessonMenuGroup.addEventListener("pointerenter", (event) => {
+  if (event.pointerType === "mouse" && lessonMenuHover.matches) setLessonMenu(true);
+});
+lessonMenuGroup.addEventListener("pointerleave", () => {
+  if (lessonMenuHover.matches) scheduleLessonMenuClose();
+});
+lessonMenuPanel.addEventListener("pointerenter", () => clearTimeout(lessonMenuCloseTimer));
+lessonMenuPanel.addEventListener("pointerleave", () => {
+  if (lessonMenuHover.matches) scheduleLessonMenuClose();
+});
+lessonMenuGroup.addEventListener("keydown", (event) => {
+  if (event.key !== "ArrowRight" && event.key !== "ArrowDown") return;
+  event.preventDefault();
+  setLessonMenu(true);
+  lessonMenuPanel.querySelector("a")?.focus();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || !lessonMenuOpen) return;
+  event.preventDefault();
+  setLessonMenu(false);
+  lessonMenuToggle.focus();
+});
+document.addEventListener("pointerdown", (event) => {
+  if (!lessonMenuGroup.contains(event.target) && !lessonMenuPanel.contains(event.target))
+    setLessonMenu(false);
+});
+document.addEventListener("focusin", (event) => {
+  if (!lessonMenuGroup.contains(event.target) && !lessonMenuPanel.contains(event.target))
+    setLessonMenu(false);
+});
+lessonMenuPanel.addEventListener("click", (event) => {
+  if (event.target.closest("a")) setLessonMenu(false);
+});
+window.addEventListener("resize", () => setLessonMenu(false));
+window.addEventListener("scroll", (event) => {
+  if (event.target !== lessonMenuPanel) positionLessonMenu();
+}, true);
 function toast(message) {
   $("#toast").textContent = message;
   clearTimeout(toastTimer);

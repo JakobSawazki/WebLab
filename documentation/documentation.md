@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.36.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.36.1** · Status: **lokal gebaut; Browserprüfung und Veröffentlichung laufen**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.36.0 |
+| Bereich | Version 1.36.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -248,6 +248,13 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 16.10.2026 – Codex – Version 1.36.1: Sicherungsimport bei Speicherfehlern
+
+Unabhängig von den noch unbeantworteten Fragen in tasks.md einen konkreten Fehler im Importpfad behoben: Bei fehlgeschlagenem Speichern wurden bisher der Zustand im Arbeitsspeicher und Übungsmarkierungen trotzdem ersetzt und der Dialog geschlossen. Jetzt bleiben alter Lernstand, Speicherschutz und Übungsmarkierungen erhalten; der Dialog erklärt den Fehler und derselbe Import kann erneut versucht werden. Übungsmarkierungen werden erst nach erfolgreichem Speichern des Lernstands übernommen. Scheitert nur deren separater Schreibvorgang, wird dies ausdrücklich gemeldet statt vollständigen Erfolg vorzutäuschen. Sicherungsformat und bisherige Importregeln bleiben erhalten.
+
+40 Node-Tests und Build bestanden. Sechs Browser-Regressionsprüfungen ergänzt: sichtbare Fehlermeldung, unveränderter Browserspeicher, unveränderter angezeigter Lernstand nach Navigation, Wiederholung ohne neue Dateiauswahl, erst anschließende Übernahme der Übungsmarkierungen und Meldung eines separaten Markierungsfehlers. Die Prüfseite simuliert QuotaExceededError nur im eigenen Test-iframe und stellt die ursprünglichen Speichermethoden danach wieder her. Browserprüfung läuft im vorhandenen CI-Gate vor der Veröffentlichung. Aufgaben 1–5 bleiben offen; keine Antwort wurde angenommen und kein Punkt vorzeitig entfernt.
+
 
 ### 16.10.2026 – Codex – Nummerierte Rückfragen in tasks.md
 

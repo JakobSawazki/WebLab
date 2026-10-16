@@ -815,7 +815,57 @@
       assert(pe("nagoldDialog").scrollWidth <= pe("nagoldDialog").clientWidth + 1 && pd.documentElement.scrollWidth <= 360, "NAGOLD-Tabelle passt bei 360 Pixeln in " + theme);
       pe("nagoldDialog").close(); await new Promise(resolve => pw.requestAnimationFrame(resolve));
     }
+    // A quota failure must preserve both the stored and in-memory old state,
+    // keep exercise markers untouched, and leave the same import retryable.
+    pe("profileDialog").close();
+    const exerciseKey = "weblab-exercises-v1",
+      oldExercises = localStorage.getItem(exerciseKey),
+      beforeImport = localStorage.getItem(STORAGE_KEY),
+      incoming = blank();
+    localStorage.setItem(exerciseKey, JSON.stringify(["l1-1"]));
+    incoming.profile = { name: "NEU.MAX", className: "TEST" };
+    incoming.notes.l1 = "Importierte Notiz";
+    pe("backupButton").click();
+    await pe("importFile").onchange({ target: { files: [new pw.File([
+      JSON.stringify({ app: "WebLab", formatVersion: 3, state: incoming, exercisesSolved: ["l2-1"] }),
+    ], "test-backup.json", { type: "application/json" })] } });
+    const originalSetItem = pw.Storage.prototype.setItem;
+    try {
+      pw.Storage.prototype.setItem = function(key, value) {
+        if (key === STORAGE_KEY) throw new pw.DOMException("Test quota", "QuotaExceededError");
+        return originalSetItem.call(this, key, value);
+      };
+      pe("confirmImport").click();
+      assert(pe("backupDialog").open && pe("importSummary").textContent.includes("nicht gespeichert"), "Import: Speicherfehler bleibt sichtbar im offenen Dialog");
+      assert(localStorage.getItem(STORAGE_KEY) === beforeImport && localStorage.getItem(exerciseKey) === JSON.stringify(["l1-1"]), "Import: Speicherfehler erhaelt alten Lernstand und Uebungsmarkierungen");
+      await new Promise(resolve => {
+        pw.addEventListener("hashchange", resolve, { once: true });
+        pw.location.hash = "#notes";
+      });
+      assert(pe("profileName").textContent === "MUS.MAX" && pd.querySelector("textarea").value === "Bleibt erhalten", "Import: Nach Speicherfehler bleibt auch der angezeigte Lernstand erhalten");
+    } finally {
+      pw.Storage.prototype.setItem = originalSetItem;
+    }
+    pe("confirmImport").click();
+    assert(!pe("backupDialog").open && pe("profileName").textContent === "NEU.MAX" && JSON.parse(localStorage.getItem(STORAGE_KEY)).notes.l1 === "Importierte Notiz", "Import: Derselbe Import gelingt nach Freigabe des Speichers ohne neue Dateiauswahl");
+    assert(localStorage.getItem(exerciseKey) === JSON.stringify(["l2-1"]), "Import: Uebungsmarkierungen werden erst nach erfolgreichem Speichern uebernommen");
+    pe("backupButton").click();
+    await pe("importFile").onchange({ target: { files: [new pw.File([
+      JSON.stringify({ app: "WebLab", formatVersion: 3, state: incoming, exercisesSolved: ["l3-1"] }),
+    ], "test-backup.json", { type: "application/json" })] } });
+    try {
+      pw.Storage.prototype.setItem = function(key, value) {
+        if (key === exerciseKey) throw new pw.DOMException("Test quota", "QuotaExceededError");
+        return originalSetItem.call(this, key, value);
+      };
+      pe("confirmImport").click();
+      assert(!pe("backupDialog").open && pe("toast").textContent.includes("Übungsmarkierungen konnten nicht gespeichert werden") && localStorage.getItem(exerciseKey) === JSON.stringify(["l2-1"]), "Import: Separater Speicherfehler der Uebungsmarkierungen wird gemeldet");
+    } finally {
+      pw.Storage.prototype.setItem = originalSetItem;
+    }
     profileFrame.remove();
+    if (oldExercises === null) localStorage.removeItem(exerciseKey);
+    else localStorage.setItem(exerciseKey, oldExercises);
     if (savedMenu === null) localStorage.removeItem("weblab-menu-v1");
     else localStorage.setItem("weblab-menu-v1", savedMenu);
     if (savedState === null) localStorage.removeItem(STORAGE_KEY);

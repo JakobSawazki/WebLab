@@ -1018,16 +1018,26 @@ $("#importFile").onchange = async (e) => {
 $("#confirmImport").onclick = () => {
   if (!pendingImport) return;
   backup();
+  const before = state,
+    wasPrevented = preventSave;
   state = pendingImport;
+  preventSave = false;
+  if (!save()) {
+    state = before;
+    preventSave = wasPrevented;
+    $("#importSummary").textContent =
+      "Die Sicherung konnte nicht gespeichert werden. Dein bisheriger Lernstand und deine Übungsmarkierungen bleiben erhalten. Behalte die Sicherungsdatei und versuche den Import erneut, wenn der Browserspeicher verfügbar ist.";
+    return;
+  }
   pendingImport = null;
   // Older backups carry no exercise markers; the device's markers stay then.
-  if (pendingExercises) storeSolvedExercises(pendingExercises);
+  const exercisesStored = !pendingExercises || storeSolvedExercises(pendingExercises);
   pendingExercises = null;
-  preventSave = false;
-  const stored = save();
   $("#backupDialog").close();
   render();
-  if (stored) toast("Lernstand übernommen.");
+  toast(exercisesStored
+    ? "Lernstand übernommen."
+    : "Lernstand übernommen, aber die Übungsmarkierungen konnten nicht gespeichert werden. Behalte die Sicherungsdatei und lade sie erneut, wenn der Browserspeicher verfügbar ist.");
 };
 window.addEventListener("hashchange", () => {
   // render() returns true when it already placed focus on a target.

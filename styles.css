@@ -2029,3 +2029,10 @@ dialog::backdrop {
 .review-score {
   font-weight: 650;
 }
+
+.study-case + .study-case {
+  border-top: 1px solid var(--line);
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+}
+.study-cases h4 { margin-bottom: 0.5rem; }

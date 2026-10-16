@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.38.0** · Status: **geprüft und veröffentlicht**.
+Version: **1.39.0** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,10 +24,10 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.38.0 |
+| Bereich | Version 1.39.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
-| Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
+| Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
 | Roter Faden | Nächster offener Lernschritt, 16 Schritte mit aktueller Position, Vorwissen, drei konkrete Arbeitsschritte und Beobachtungsauftrag; eigene Webseite wächst durch Kopien des vorherigen Entwurfs |
 | Orientierung | Vier Etappen mit Fortschritt auf der Startseite; direkte Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern in den Einheiten |
 | Schülerprofil | Kürzel/Klasse, XP-Level und Fortschrittsbalken, direkte NAGOLD-Tabelle; kein Serverkonto |
@@ -86,7 +86,7 @@ OneNote: Notizbuch **Lernfelder**, Abschnitt **2. Internetseiten**. Alle sechs S
 
 Ablage: ressources/BPE2/OneNote-Desktop/Teil-1 bzw. Teil-2, getrennt nach Information, Aufgabe-und-Vorlage, Loesung, Uebersicht und Tools. Gleiche Dateinamen aus verschiedenen Spalten bleiben getrennt. Anhang-Export-Inventar.json im selben Stammordner enthält je Datei Herkunft, Größe, SHA-256 und Prüfergebnis; die beiden lokalen Seiten-XMLs erlauben die Zuordnung. Das frühere Anhang-Inventar.json bleibt als Metadatenaufnahme erhalten. Alle DOCX-/ZIP-Dateien bestehen die ZIP-CRC-Prüfung, DOCX enthält word/document.xml, die drei PDF-Dateien haben die PDF-Signatur. Keine Software oder eingebettete HTML-Seite wurde ausgeführt.
 
-**Fachlicher Textabgleich von Teil 1 durchgeführt.** Alle 29 DOCX (11 Informationsblätter, 14 Aufgaben, vier Übersichten) wurden über ihre extrahierten Absatztexte abgeglichen. Zusätzlich wurden alle eingebetteten Abbildungen aus Information 5/6 und Aufgabe 9/12 angesehen. Andere Abbildungen, ZIP-Vorlagen/Lösungen und Teil 2 sind damit nicht als vollständig geprüft oder fachlich freigegeben verbucht. Die Dateiintegrität aller Anhänge ist geprüft. Die Kopien stammen aus Jakobs OneNote; sie werden nicht ohne Abgleich als identisch mit der zuletzt öffentlich angebotenen Fassung vom 31.07.2025 bezeichnet. Originale, Lösungen, XMLs und Inventare bleiben lokal und außerhalb von Git. Technische Referenz: [Microsoft OneNote Application interface](https://learn.microsoft.com/en-us/office/client-developer/onenote/application-interface-onenote).
+**Fachlicher Textabgleich von Teil 1 durchgeführt.** Alle 29 DOCX (11 Informationsblätter, 14 Aufgaben, vier Übersichten) wurden über ihre extrahierten Absatztexte abgeglichen. Zusätzlich wurden alle eingebetteten Abbildungen aus Information 5/6 und Aufgabe 9/12 angesehen. Seit 1.39.0 sind auch alle 27 DOCX-Absatztexte aus Teil 2 abgeglichen sowie dessen drei PDF-Anlagen als Text und Seitenbilder gelesen. Andere DOCX-Abbildungen und ZIP-Vorlagen/Lösungen sind damit nicht als vollständig geprüft oder fachlich freigegeben verbucht. Die Dateiintegrität aller Anhänge ist geprüft. Die Kopien stammen aus Jakobs OneNote; sie werden nicht ohne Abgleich als identisch mit der zuletzt öffentlich angebotenen Fassung vom 31.07.2025 bezeichnet. Originale, Lösungen, XMLs und Inventare bleiben lokal und außerhalb von Git. Technische Referenz: [Microsoft OneNote Application interface](https://learn.microsoft.com/en-us/office/client-developer/onenote/application-interface-onenote).
 
 **Recherche zum Landesbildungsserver (Aufgabe 1):** Der [offizielle Abschaltungshinweis](https://lehrerfortbildung-bw.de/willkommen/) nennt den 30.09.2026. Alte LBS-Adressen werden auf diese Seite weitergeleitet; gesicherte Materialien können teilweise nach Prüfung über das dort verlinkte [Kontaktformular](https://lehrerfortbildung-bw.de/feedback/) angefragt werden. Der Suchindex nennt noch bpe-2-internetseiten.zip, Stand 31.07.2025, rund 34 MB. Der tatsächliche Abruf der alten ZIP-Adresse liefert jedoch HTTP 200 mit text/html und der Abschaltungsseite, kein Archiv. Auch über öffentliche Suche und die interne LFBS-Suche wurde kein verifizierter neuer Downloadort dieser konkreten Sammlung gefunden. Bisher ist dafür keine Anmeldung angefordert worden. Es wurde keine Anfrage versendet. Der Materialzugang für WebLab ist durch die OneNote-Originalkopien dennoch hergestellt.
 
@@ -136,6 +136,23 @@ Die ursprünglichen Kapitelnummern sind nicht die WebLab-Einheitsnummern. WebLab
 **Fachliche Korrekturen bei der Übertragung:** Inline-CSS ist standardkonform, auch wenn eine gemeinsame externe CSS-Datei für mehrere Seiten zweckmäßiger ist ([WHATWG: style-Attribut](https://html.spec.whatwg.org/multipage/dom.html#the-style-attribute)). Internes CSS gewinnt nicht pauschal gegen externes; es gilt die [CSS-Kaskade](https://www.w3.org/TR/css-cascade-5/#cascade-sort). Die alten Beispiele mit prozentualen HTML-Bildattributen und `height=auto%` werden nicht übernommen; [HTML-Bildgrößen](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-width) und CSS-Größen sind zu unterscheiden. Umlaute brauchen zusammenpassende UTF-8-Dateikodierung und Deklaration; sie sind keine grundsätzliche Browserbeschränkung. Veraltete HTTP-/LBS-Beispiellinks werden nicht als funktionierende Ziele übernommen.
 
 Die Gestaltung von Listenzeichen ist mit [W3C CSS Lists](https://www.w3.org/TR/css-lists-3/#text-markers) abgeglichen, Download-Grenzen mit dem [HTML-Standard](https://html.spec.whatwg.org/multipage/links.html#downloading-resources). Bisherige Prüfgrenzen bleiben ausdrücklich sichtbar: kein vollständiger visueller Abgleich aller DOCX-Seiten und keine fachliche Freigabe aller 81 Anhänge.
+
+### Quellenabgleich Teil 2 – Stand 1.39.0
+
+Alle 27 DOCX aus Teil 2 anhand der extrahierten Absatztexte gelesen (acht Informationen, elf Aufgaben/Anlagen, sieben Lösungen und eine Übersicht). Zusätzlich die drei einseitigen PDF-Anlagen zu Briefkopf, Satzung und Register als Text und gerenderte Seiten gelesen. Poppler meldete fehlende Symbol-/ArialUnicode-Schriften; die geprüften Seiten waren lesbar. Die 68 eingebetteten DOCX-Abbildungen und die beiden ZIP-Lösungen sind noch nicht vollständig visuell beziehungsweise inhaltlich geprüft. Privater Dateinachweis mit SHA-256 und Lesestatus: `ressources/BPE2/OneNote-Desktop/Auswertung/Teil-2-Abgleich.json`. Originale wurden nicht verändert.
+
+| Originalabschnitt | WebLab-Zuordnung | Ergebnis und Grenze |
+| --- | --- | --- |
+| 1.1 Impressum | 14: eigener Fall zu Anbieter, Erreichbarkeit und Anwendungsbereich; Transferentwurf impressum.html in Notepad++ | DDG und MStV statt alter TMG-/RStV-Bezüge; kein Anspruch auf rechtssichere automatische Erstellung |
+| 1.2 Disclaimer | 14: eigener Fall zu ungeklärter Bildnutzung mit Quelle und pauschalem Haftungstext | Herkunftsnennung und Haftungstext verschaffen keine Nutzungsrechte; keine pauschale Aussage zur Haftung für jeden externen Link |
+| 2.1 Lokaler Webserver | 15: eigener Fall zu Datei-/HTTP-Aufruf, localhost, 127.0.0.1 und zweitem Gerät | Vorbereitung, Zielverzeichnis und erlaubter Netzwerkzugriff werden von der Lehrkraft vorgegeben; reale Durchführung noch Unterrichtsaufgabe |
+| 2.2 Übertragung | 15: eigener Fall zu Dateiübertragung, vollständigen Ordnern und anschließendem Browserabruf | WinSCP als bekanntes Unterrichtswerkzeug; keine alten festen Zugangsdaten oder Löschanweisungen übernommen |
+| 2.3 Zugriff aus dem Internet | 15: geschützte Schulabgabe vom öffentlichen Tunnel unterschieden | Kein automatischer Tunnel und keine Netzwerkänderung; schwer erratbare URL ist kein Zugriffsschutz |
+| 3.1–3.3 Urheberrecht und Ansprüche | 14: geschützte Inhalte, Nutzungsrechte, Beseitigung, Unterlassung und verschuldensabhängiger Schadensersatz | Historische Abmahnsummen und Unterlassungstexte nicht als aktuelle Rechtsbewertung übernommen |
+| 3.4 CC und Anwendung | 14: eigene Lizenzentscheidung, bisheriger Quellenauftrag, CC-Glossar präzisiert | Sechs CC-Standardlizenzen plus separates CC0; ND betrifft das Verbreiten bearbeiteter Fassungen; andere Rechte bleiben möglich |
+| 3.5 Externes Quiz | Bereits vorhandener Verständnischeck und eigene Fallfragen in 14 | Kein Socrative-Login erforderlich; historische Antwortliste ist kein Nachweis aktueller Rechtsrichtigkeit |
+
+Offizielle Referenzen, am 16.10.2026 geprüft: [§ 5 DDG](https://www.gesetze-im-internet.de/ddg/__5.html), [§ 18 MStV](https://www.gesetze-bayern.de/Content/Document/MStV-18), [UrhG-Gesamtausgabe, insbesondere §§ 2, 12–19a, 72 und 97](https://www.gesetze-im-internet.de/urhg/BJNR012730965.html), [sechs CC-Lizenzen](https://creativecommons.org/cc-licenses/), [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/deed.de), [CC0](https://creativecommons.org/publicdomain/zero/1.0/deed.de), [RFC 1122 zu lokalen Rückadressen](https://www.rfc-editor.org/rfc/rfc1122#section-3.2.1.3) und [WinSCP: Upload](https://winscp.net/eng/docs/task_upload). Abrufe der Einzelparagraphen 2/97 UrhG waren teilweise nicht verfügbar; die gelesene offizielle Gesamtausgabe enthält die entsprechenden Vorschriften. Die Sammlung unterscheidet Lernfälle von einer Prüfung der konkreten Schulveröffentlichung.
 
 ## 4. Softwarestruktur und Start
 
@@ -243,7 +260,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 Offene Erweiterungen, nach Priorität:
 
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
-2. **Originalquellen:** Alle 81 Anhänge aus Teil 1/2 sind seit 16.10.2026 lokal gesichert und auf Dateiintegrität geprüft. Teil 1 ist anhand aller 29 DOCX-Absatztexte abgeglichen; Status pro Kapitel im Quellenabschnitt. Als Nächstes Teil 2 fachlich abgleichen, veraltete Rechtsmaterialien gesondert prüfen und verbleibende Abbildungen/Vorlagen sichten.
+2. **Originalquellen:** Alle 81 Anhänge aus Teil 1/2 sind seit 16.10.2026 lokal gesichert und auf Dateiintegrität geprüft. Teil 1 ist anhand aller 29 DOCX-Absatztexte abgeglichen; Status pro Kapitel im Quellenabschnitt. Teil 2 ist seit 1.39.0 anhand aller 27 DOCX-Texte und der drei PDF-Anlagen abgeglichen; Rechtsinhalte gezielt mit aktuellen offiziellen Quellen geprüft. Verbleibende DOCX-Abbildungen und ZIP-Vorlagen/Lösungen sind noch nicht vollständig gesichtet.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
 4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10, seit 1.24.0/1.25.0 eine Übungswerkstatt mit Mini-Editor, Live-Vorschau und Merksätzen. Seit 1.33.0 gibt es auch eine Audio-Übung, seit 1.34.0 Profi-Aufgaben am Ende der Etappen 1–3 als oberste Stufe. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
@@ -279,6 +296,16 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 16.10.2026 – Codex – Version 1.39.0: Entscheidungen vor der Veröffentlichung
+
+Textabgleich Teil 2 mit 27 DOCX und drei PDF-Anlagen dokumentiert. Gezielte Aktualisierung der Lerninhalte zu Anbieterinformationen, CC und Veröffentlichung. Historische Originaltexte, Register-/Kontaktangaben, feste Übungszugänge, Quizlösungen und Abmahnschreiben bleiben privat und werden nicht unverändert veröffentlicht. Keine dort enthaltenen Anweisungen zum Starten von Servern/Tunneln, Löschen von Verzeichnissen oder Bezahlen ausgeführt.
+
+Neu: `development/src/case-studies.js` mit drei eigenen Fällen für Einheit 14 und zwei für 15. Die Schüler entscheiden zuerst und können anschließend eine Erklärung mit offiziellen Quellen aufklappen. Anbieterangaben mit DDG/MStV, Lizenzwahl mit BY/SA/NC/ND/CC0, Quellenangabe versus Nutzungserlaubnis und Disclaimer, localhost sowie Übertragung versus HTTP-Aufruf. Konkreter Transfer zur eigenen Seite beziehungsweise zur vorbereiteten Serverübung. CC-Glossar präzisiert: ND untersagt unter dieser Lizenz das Verbreiten bearbeiteter Fassungen, nicht pauschal jede private Bearbeitung.
+
+Die Fallaufgaben stehen im Verstehen-Abschnitt vor der eigenen Praxis, verwenden vorhandene Metallflächen/aufklappbare Erklärungen und speichern keinen Zustand. Keine Änderung an Kriterien, Freischaltung, XP, NAGOLD, Sicherungsformat oder 38 bestehenden Mini-Übungen. Die Hauptseite startet weiterhin direkt über index.html. Die ursprünglichen Übungszugänge und ein öffentlicher Tunnel werden nicht benötigt oder eingerichtet.
+
+Lokal 43 Node-Tests bestanden; das neue Modul ist im statischen Bündel enthalten, das öffentliche Paket bleibt bei sieben Dateien. Acht Browserprüfungen für beide Einheiten, verdeckte Erklärungen, Quellenlinks, 360 Pixel in beiden Farbschemata und unveränderten Lernstand ergänzt. CI und Veröffentlichung folgen.
 
 ### 16.10.2026 – Codex – Version 1.38.0: Listenzeichen und PDF-Transfer
 

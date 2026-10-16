@@ -252,7 +252,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.38.0";
+const VERSION = "1.39.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -2660,7 +2660,7 @@ const glossary = [
     short: "Standardlizenzen, die Nutzung unter Bedingungen erlauben.",
     syntax: "Foto: Max Muster, CC BY 4.0, Quelle: …",
     description:
-      "Creative-Commons-Lizenzen erlauben die Nutzung fremder Werke, wenn du die Bedingungen erfüllst. BY verlangt die Namensnennung, SA die Weitergabe bearbeiteter Werke unter gleicher Lizenz, NC schließt kommerzielle Nutzung aus, ND erlaubt keine Bearbeitung. Nenne Urheber, Titel, Quelle, Lizenz und eigene Änderungen.",
+      "Creative-Commons-Lizenzen erlauben die Nutzung fremder Werke unter Bedingungen: BY verlangt Namensnennung, SA beim Teilen von Bearbeitungen dieselbe oder eine kompatible Lizenz, NC nicht kommerzielle Nutzung. ND erlaubt unter dieser Lizenz kein Verbreiten bearbeiteter Fassungen. Nenne Urheber, Titel, Quelle, Lizenz und Änderungen. CC0 ist ein separates Werkzeug; andere Rechte können weiter bestehen.",
     chapter: "Einheit 14",
     related: ["footer"],
   },
@@ -3514,6 +3514,82 @@ const esc = (value) =>
 
 return {esc};
 },
+"case-studies.js": function(require) {
+const { esc } = require("html.js");
+// Independently written classroom cases; no grading or persistent state.
+const caseStudies = {
+  l14: {
+    title: "Vor der Veröffentlichung: drei Entscheidungen",
+    intro: "Begründe zuerst deine Entscheidung und öffne dann die Erklärung. Halte offene Fragen zu deiner eigenen Seite in den Notizen fest. Die Fälle vergeben keine zusätzlichen Punkte. Quellenstand: 16. Oktober 2026.",
+    cases: [
+      {
+        title: "Wer ist für die Seite verantwortlich?",
+        background: "Ein Impressum macht den Anbieter und seine Erreichbarkeit erkennbar. § 5 DDG regelt Informationspflichten für geschäftsmäßige, in der Regel gegen Entgelt angebotene digitale Dienste. § 18 MStV erfasst auch Angebote, die nicht ausschließlich persönlichen oder familiären Zwecken dienen. Deshalb ist „Unsere Seite kostet nichts“ allein keine ausreichende Begründung gegen Anbieterangaben.",
+        question: "Eine öffentliche Vereinsseite nennt nur die Vornamen zweier Mitglieder. Welche Angaben würdest du mit dem Verein prüfen?",
+        answer: "Prüfe den vollständigen Anbieternamen, die Anschrift und die Vertretungsberechtigten; je nach anwendbarer Vorschrift auch Kontakt, Rechtsform, Register und weitere Angaben. Der Link muss leicht erkennbar, unmittelbar erreichbar und dauerhaft verfügbar sein. Für das Schulprojekt klärt die Lehrkraft den verantwortlichen Anbieter. Trage keine privaten Schüleradressen als Ersatz ein.",
+        sources: [
+          { label: "§ 5 DDG: Anbieterinformationen", url: "https://www.gesetze-im-internet.de/ddg/__5.html" },
+          { label: "§ 18 MStV: Informationspflichten", url: "https://www.gesetze-bayern.de/Content/Document/MStV-18" },
+        ],
+      },
+      {
+        title: "Welche Lizenz passt zur geplanten Nutzung?",
+        background: "CC bietet sechs Standardlizenzen. BY verlangt Namensnennung; SA betrifft die Lizenz beim Teilen bearbeiteter Werke; NC beschränkt die Nutzung auf nicht kommerzielle Zwecke; ND erlaubt unter dieser Lizenz kein Verbreiten bearbeiteter Fassungen. CC0 ist ein separates Werkzeug für einen möglichst weitgehenden Rechteverzicht. Persönlichkeits- oder Markenrechte können trotzdem bestehen.",
+        question: "Du willst ein Foto kreativ verändern und diese Fassung veröffentlichen. Das Original steht unter CC BY-ND 4.0. Reicht die Namensnennung?",
+        answer: "Nein. Unter CC BY-ND 4.0 darfst du die bearbeitete Fassung nicht verbreiten. Eine private Bearbeitung und das Veröffentlichen sind zu unterscheiden. Wähle für diesen Plan ein eigenes Bild, eine passende andere Lizenz oder hole eine gesonderte Erlaubnis ein. Prüfe auch bei kostenlosen Bildportalen die konkrete Lizenz des einzelnen Werks.",
+        sources: [
+          { label: "CC: die sechs Standardlizenzen", url: "https://creativecommons.org/cc-licenses/" },
+          { label: "CC BY-ND 4.0", url: "https://creativecommons.org/licenses/by-nd/4.0/deed.de" },
+          { label: "CC0 und andere Rechte", url: "https://creativecommons.org/publicdomain/zero/1.0/deed.de" },
+        ],
+      },
+      {
+        title: "Quelle und Disclaimer ersetzen keine Erlaubnis",
+        background: "Fotos, Texte, Musik und Programmcode können geschützt sein. Urheber entscheiden grundsätzlich über die Nutzung; Lizenzen und gesetzliche Erlaubnisse können Nutzungen gestatten. Kopieren und öffentliches Bereitstellen sind unterschiedliche Nutzungshandlungen. Ein Disclaimer ist ein Text, mit dem jemand seine Haftung begrenzen möchte; er verschafft dir keine Nutzungsrechte.",
+        question: "Du übernimmst ein fremdes Foto ohne geklärte Erlaubnis. Darunter stehen eine Quellenangabe und „Für fremde Inhalte übernehme ich keine Haftung“. Ist die Nutzung dadurch erlaubt?",
+        answer: "Nein. Die Quellenangabe benennt die Herkunft, ersetzt aber keine Nutzungserlaubnis. Ein pauschaler Disclaimer löst das Problem ebenfalls nicht. Bei einer Rechtsverletzung kommen Beseitigung und Unterlassung, bei Vorsatz oder Fahrlässigkeit auch Schadensersatz in Betracht. Kläre die Rechte vor der Veröffentlichung und verwende bis dahin eigenes oder passend freigegebenes Material.",
+        sources: [
+          { label: "UrhG: Werke, Nutzungsrechte und § 97", url: "https://www.gesetze-im-internet.de/urhg/BJNR012730965.html" },
+        ],
+      },
+    ],
+    transfer: "Übertrage das auf dein Projekt: Notiere Anbieter, geplanten Veröffentlichungsort und noch offene Rechtefragen. Entwirf bei Bedarf in Notepad++ eine impressum.html mit klar gekennzeichneten Platzhaltern und verlinke sie von beiden Seiten. Prüfe den Entwurf mit der Lehrkraft, bevor daraus eine öffentliche Seite wird. Eine bestandene Codeprüfung bestätigt keine Rechtskonformität.",
+  },
+  l15: {
+    title: "Vom Projektordner zum Schulserver",
+    intro: "WebLab selbst startet weiterhin per index.html. Für diese Unterrichtsübung stellt die Lehrkraft einen Webserver und das Zielverzeichnis bereit. Die Fälle vergeben keine zusätzlichen Punkte.",
+    cases: [
+      {
+        title: "localhost zeigt immer auf den eigenen Rechner",
+        background: "Beim Doppelklick liest der Browser eine Datei direkt vom Gerät. Bei http://localhost/projekt/index.html beantwortet ein Webserver auf demselben Gerät die Anfrage. 127.0.0.1 ist ebenfalls eine lokale Rückadresse. Ein anderer Schulrechner braucht den von der Lehrkraft genannten Servernamen oder dessen Netzwerkadresse und eine erlaubte Verbindung.",
+        question: "Deine Seite funktioniert unter localhost. Dein Sitznachbar gibt dieselbe Adresse ein und erhält einen Fehler. Warum?",
+        answer: "Auf seinem Gerät meint localhost seinen eigenen Rechner, nicht deinen. Kopiere das vollständige Projekt in das vorgegebene Serververzeichnis und nutze dort die passende HTTP-Adresse. Testet anschließend vom zweiten Gerät die Serveradresse. Falls der Zugriff scheitert, prüft ihr die Vorgaben mit der Lehrkraft statt selbst Firewall oder Netzwerkfreigaben zu ändern.",
+        sources: [
+          { label: "RFC 1122: lokale Rückadressen", url: "https://www.rfc-editor.org/rfc/rfc1122#section-3.2.1.3" },
+        ],
+      },
+      {
+        title: "Übertragen und im Browser abrufen sind zwei Schritte",
+        background: "WinSCP überträgt Dateien zum Server; der Browser ruft sie anschließend über HTTP oder HTTPS ab. Die Lehrkraft nennt für die Übung Protokoll, Host und dein Zielverzeichnis. SFTP ist eine verschlüsselte Übertragung; eine vorbereitete FTP-Übung ist ein anderes Protokoll. Zugangsdaten stehen nicht im HTML. Ein öffentlicher Tunnel ist für die geschützte Abgabe nicht nötig.",
+        question: "Nach der Übertragung erscheint der Text, aber bilder/beet.jpg fehlt. Was prüfst du?",
+        answer: "Vergleiche den vollständigen Projektordner auf beiden Seiten: HTML, CSS, Bilder, Medien und verlinkte PDF-Dateien samt Unterordnern. Prüfe Schreibweise und Pfade. Übertrage nur in dein zugewiesenes Ziel, ohne fremde Ordner zu löschen. Öffne danach die von der Lehrkraft genannte Webseitenadresse und wiederhole die Link- und Bildtests. Eine schwer zu erratende öffentliche URL ist kein Zugriffsschutz.",
+        sources: [
+          { label: "WinSCP: Dateien übertragen", url: "https://winscp.net/eng/docs/task_upload" },
+        ],
+      },
+    ],
+    transfer: "Führe mit der Lehrkraft drei Schritte durch: vollständigen Projektordner auf den vorbereiteten Server kopieren oder übertragen, Startseite über dessen HTTP-Adresse öffnen, Hin- und Rücklinks sowie Medien von einem zweiten Schulgerät prüfen. Ergänze die Ergebnisse in deinem Testprotokoll. Der tatsächliche Serverzugriff erfolgt außerhalb der Laborvorschau.",
+  },
+};
+
+function caseStudyPanel(lessonId) {
+  const guide = caseStudies[lessonId];
+  if (!guide) return "";
+  return `<section class="panel study-cases" aria-labelledby="caseStudyTitle"><h3 id="caseStudyTitle">${esc(guide.title)}</h3><p>${esc(guide.intro)}</p>${guide.cases.map((item, index) => `<article class="study-case"><h4>Fall ${index + 1}: ${esc(item.title)}</h4><p>${esc(item.background)}</p><p><strong>Deine Entscheidung:</strong> ${esc(item.question)}</p><details class="debug-challenge"><summary>Erklärung ansehen</summary><p>${esc(item.answer)}</p><p class="muted">Nachlesen: ${item.sources.map((source) => `<a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.label)}</a>`).join(" · ")}</p></details></article>`).join("")}<p><strong>Auf deine Webseite übertragen:</strong> ${esc(guide.transfer)}</p></section>`;
+}
+
+return {caseStudies,caseStudyPanel};
+},
 "exercises.js": function(require) {
 // Short practice exercises with their own small editor and live preview.
 // Types: "repair" (fix two mistakes), "complete" (add what is missing) and
@@ -4349,6 +4425,7 @@ return {reviewQuestions,reviewPanel,bindReview};
 },
 "app.js": function(require) {
 const { boxModelView, bindBoxModel } = require("box-model.js");
+const { caseStudyPanel } = require("case-studies.js");
 const { selectorView, bindSelectorHelper } = require("selector-helper.js");
 const { exercises, normalizeSolved } = require("exercises.js");
 const { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises, solvedExercises, storeSolvedExercises } = require("exercise-panel.js");
@@ -4694,7 +4771,7 @@ function debugChallenge(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 function draft() {
   return (

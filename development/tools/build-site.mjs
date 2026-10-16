@@ -21,6 +21,7 @@ const modules = [
   "box-model.js",
   "selector-helper.js",
   "html.js",
+  "case-studies.js",
   "exercises.js",
   "exercise-panel.js",
   "review.js",

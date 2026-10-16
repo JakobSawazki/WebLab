@@ -1151,7 +1151,7 @@ export const glossary = [
     short: "Standardlizenzen, die Nutzung unter Bedingungen erlauben.",
     syntax: "Foto: Max Muster, CC BY 4.0, Quelle: …",
     description:
-      "Creative-Commons-Lizenzen erlauben die Nutzung fremder Werke, wenn du die Bedingungen erfüllst. BY verlangt die Namensnennung, SA die Weitergabe bearbeiteter Werke unter gleicher Lizenz, NC schließt kommerzielle Nutzung aus, ND erlaubt keine Bearbeitung. Nenne Urheber, Titel, Quelle, Lizenz und eigene Änderungen.",
+      "Creative-Commons-Lizenzen erlauben die Nutzung fremder Werke unter Bedingungen: BY verlangt Namensnennung, SA beim Teilen von Bearbeitungen dieselbe oder eine kompatible Lizenz, NC nicht kommerzielle Nutzung. ND erlaubt unter dieser Lizenz kein Verbreiten bearbeiteter Fassungen. Nenne Urheber, Titel, Quelle, Lizenz und Änderungen. CC0 ist ein separates Werkzeug; andere Rechte können weiter bestehen.",
     chapter: "Einheit 14",
     related: ["footer"],
   },

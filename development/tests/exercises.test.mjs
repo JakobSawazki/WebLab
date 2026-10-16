@@ -25,6 +25,7 @@ test("In repair exercises, fixing only one mistake leaves exactly one check open
     "l5-1": '<a href="#ideen">Zu den Ideen</a>\n<a href="C:\\Users\\max\\kontakt.html">Kontakt</a>\n<h2 id="ideen">Ideen</h2>',
     "l10-1": ".hinweis { color: darkgreen; }\n#Start { text-align: center; }",
     "l6-1": '<img src="bilder/beet.jpg" width="640" height="360">',
+    "l7-4": exercises.l7[3].code.replace("<td>Montag</td>", '<td rowspan="2">Montag</td>'),
     "l8-1": '<video src="medien/garten.mp4" controls autoplay width="480"></video>',
     "l9-1": '<link rel="stylesheet" href="Style.css">',
     "l9-2": "h1 { color: navy; }\np { color: dimgray;",
@@ -87,6 +88,28 @@ test("List marker practice distinguishes the two lists and rejects comments or i
   assert.deepEqual(result("ul { list-style-type: squareish; } ol { list-style-type: lower-alphabet; }"), [false, false]);
   assert.deepEqual(result("ul { x-list-style-type: square; } ol { --list-style-type: lower-alpha; }"), [false, false]);
   assert.deepEqual(result("UL { LIST-STYLE-TYPE: SQUARE } OL { list-style-type: LOWER-ALPHA }"), [true, true]);
+});
+
+test("Rowspan practice requires the actual attribute and removal of the occupied cell", () => {
+  const e = exercises.l7[3];
+  const result = (source) => checkExercise(e, source).map((r) => r.passed);
+  assert.deepEqual(result(e.code), [false, false]);
+  assert.deepEqual(result(e.fixed.replace('rowspan="2"', 'rowspan="3"')), [false, true]);
+  assert.deepEqual(result(e.fixed.replace('rowspan="2"', 'data-rowspan="2"')), [false, true]);
+  assert.deepEqual(result(e.fixed.replace('<td>15 Uhr</td>', '<td>Montag</td><td>15 Uhr</td>')), [true, false]);
+  assert.deepEqual(result('<!-- ' + e.fixed + ' -->'), [false, false]);
+  assert.deepEqual(result(e.fixed.replace('rowspan="2"', "class='tag' rowspan='2'")), [true, true]);
+});
+
+test("Responsive image practice requires both a width limit and automatic height", () => {
+  const e = exercises.l12[3];
+  const result = (source) => checkExercise(e, source).map((r) => r.passed);
+  assert.deepEqual(result("img { max-width: 100%; height: 360px; }"), [true, false]);
+  assert.deepEqual(result("img { height: auto; }"), [false, true]);
+  assert.deepEqual(result("img { max-width: 100px; height: auto%; }"), [false, false]);
+  assert.deepEqual(result('/* ' + e.fixed + ' */'), [false, false]);
+  assert.deepEqual(result("IMG { HEIGHT: AUTO; MAX-WIDTH: 100% }"), [true, true]);
+  assert.match(e.context, /src="data:image\/svg\+xml,/);
 });
 
 test("Every exercise has exactly one hint, and hints never contain the full solution", async () => {

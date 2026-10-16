@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.39.0** · Status: **geprüft und veröffentlicht**.
+Version: **1.40.0** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.39.0 |
+| Bereich | Version 1.40.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
@@ -121,13 +121,13 @@ Die ursprünglichen Kapitelnummern sind nicht die WebLab-Einheitsnummern. WebLab
 | 1 | Grundgerüst, Tags, Speichern | 01–03; UTF-8 und Notepad++-Dateistart in 02 |
 | 2 | Externe CSS-Datei, Textfarbe | 09, Syntax-/Verknüpfungsübungen; Anwendung 11 |
 | 3 | Hintergrund, Schrift, Ausrichtung | 10–11 und Mini-Übungen |
-| 4 | Bild, relativer Pfad, Alternativtext | 05–06; responsive Bildgröße bleibt praktische Vertiefung |
+| 4 | Bild, relativer Pfad, Alternativtext | 05–06; seit 1.40.0 eigene Praxis zu proportionaler Bildgröße in 12/4 |
 | 5 | ul/li, Listenzeichen | HTML in 04, seit 1.38.0 CSS-Praxis in 11/4 |
 | 6 | ol/li, Nummerierungsstil | HTML in 04, seit 1.38.0 CSS-Praxis in 11/4; Bedeutung bleibt unabhängig vom Zeichenstil |
 | 7 | Zwei eigene Seiten mit Hin-/Rücklink | 05 und 16; tatsächliche zweite Datei weiterhin in Notepad++, Editor-Erweiterung siehe tasks.md Nr. 2 |
 | 8 | Externer Link, neues Browserfenster | HTTPS-Link in 05, target im Glossar; neues Fenster bisher keine eigene Pflichtübung |
 | 9 | PDF-Datei im Unterordner verlinken | 05: Erklärung und seit 1.38.0 konkreter Export-/Notepad++-Transfer mit service/plan.pdf; Download wird außerhalb der isolierten Vorschau geprüft |
-| 10 | Datentabelle, Gestaltung, verbundene Zellen | Aufbau 07, colspan-Mini-Übung, Formatierung in Vertiefung 12; rowspan bisher nur Glossar |
+| 10 | Datentabelle, Gestaltung, verbundene Zellen | Aufbau 07, colspan-Mini-Übung 07/3, seit 1.40.0 rowspan-Praxis 07/4; Formatierung in Vertiefung 12 |
 | 11 | div, Klassen, Boxmodell | Klassen 10, Boxmodell und interaktives Modell 12 |
 | 12 | Wiederverwendbare Zeilenklassen | Mini-Übung 11/3 seit 1.37.0; Tabellenformatierung 12; Tabellen-hover bleibt Zusatzvertiefung |
 | 13 | Audio/Video, Bildlink, drei CSS-Einbindungen | 08 mit Audio-/Video-Übungen, Bildlink in Vertiefung 06, CSS-Vergleich in 09; reale Mediendateien werden nach Export geprüft |
@@ -153,6 +153,14 @@ Alle 27 DOCX aus Teil 2 anhand der extrahierten Absatztexte gelesen (acht Inform
 | 3.5 Externes Quiz | Bereits vorhandener Verständnischeck und eigene Fallfragen in 14 | Kein Socrative-Login erforderlich; historische Antwortliste ist kein Nachweis aktueller Rechtsrichtigkeit |
 
 Offizielle Referenzen, am 16.10.2026 geprüft: [§ 5 DDG](https://www.gesetze-im-internet.de/ddg/__5.html), [§ 18 MStV](https://www.gesetze-bayern.de/Content/Document/MStV-18), [UrhG-Gesamtausgabe, insbesondere §§ 2, 12–19a, 72 und 97](https://www.gesetze-im-internet.de/urhg/BJNR012730965.html), [sechs CC-Lizenzen](https://creativecommons.org/cc-licenses/), [CC BY-ND 4.0](https://creativecommons.org/licenses/by-nd/4.0/deed.de), [CC0](https://creativecommons.org/publicdomain/zero/1.0/deed.de), [RFC 1122 zu lokalen Rückadressen](https://www.rfc-editor.org/rfc/rfc1122#section-3.2.1.3) und [WinSCP: Upload](https://winscp.net/eng/docs/task_upload). Abrufe der Einzelparagraphen 2/97 UrhG waren teilweise nicht verfügbar; die gelesene offizielle Gesamtausgabe enthält die entsprechenden Vorschriften. Die Sammlung unterscheidet Lernfälle von einer Prüfung der konkreten Schulveröffentlichung.
+
+### Archivprüfung – Stand 1.40.0
+
+Alle 22 ZIP-Dateien im Originalbestand inventarisiert, ohne Software oder Beispielseiten auszuführen. Sie enthalten zusammen 448 Dateieinträge einschließlich mehrfach vorhandener Dateien aus den fortlaufenden Projektständen. 35 HTML- und 14 CSS-Dateien statisch auf Struktur und verwendete Eigenschaften geprüft; 128 Bilddatei-Instanzen auf lesbare Bildstruktur und Abmessungen geprüft, keine Bildprüffehler. Kein Archivpfad führte aus einem relativen Zielverzeichnis heraus. Diese Prüfung ist keine Virenprüfung oder vollständige Sicht-/Funktionsprüfung. Programme/DLLs aus dem Notepad++-Archiv wurden nicht installiert oder ausgeführt; dessen Vorhandensein ersetzt keine Prüfung des tatsächlichen Informatik-Sticks.
+
+Die Vorlagen enthalten erwartete Bilder, Audio/Video, Dokumente und PDF-Dateien; die Lösungen zeigen aufeinander aufbauende Projektstände. Bei der statischen Analyse finden sich wiederholt prozentuale HTML-Bildgrößen, fehlende alt-Attribute sowie rowspan/colspan. Die Wiederholungszahlen zählen auch identische Dateien aus mehreren Archiven, keine unterschiedlichen Aufgaben. WebLab übernimmt die Lernziele, nicht die alten Beispiele unverändert.
+
+Privates Inventar mit Mitgliedspfaden, Größen, Archiv-SHA-256, ausgewählten Strukturmerkmalen und Prüfgrenzen: `ressources/BPE2/OneNote-Desktop/Auswertung/ZIP-Inventar.json`. Zusätzlich alle **81 Originaldateien erneut per SHA-256 gegen das ursprüngliche Exportinventar verglichen: unverändert**. Das ursprüngliche globale Feld contentsRead bleibt unverändert; die differenzierten Lese-/Prüfstände liegen in den Auswertungen. Sichtprüfung aller DOCX-Abbildungen, aller Archivbilder, der eingebetteten DOCX/PDF und Medienwiedergabe ist damit nicht behauptet.
 
 ## 4. Softwarestruktur und Start
 
@@ -296,6 +304,16 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 16.10.2026 – Codex – Version 1.40.0: Verbundene Zellen und proportionale Bilder
+
+Archivprüfung aller 22 ZIPs und erneuten Hashvergleich aller 81 Originaldateien dokumentiert; keine Programme, Originalseiten, Medien, Server oder Tunnel gestartet. Keine Originalmedien in die App übernommen.
+
+Zwei eigene Mini-Übungen schließen die im Quellenabgleich benannten Lücken: **07/4 „Eine Zelle über zwei Zeilen“** verlangt rowspan=2 und das Entfernen der dadurch belegten Zelle in der Folgezeile. Beide Termine bleiben erhalten. Der frühere Merksatz zu gleicher Zellzahl ist auf Tabellen ohne verbundene Zellen präzisiert. **12/4 „Transfer: Ein Bild passt in seinen Bereich“** verlangt max-width:100% und height:auto. Eine eigene eingebettete SVG-Zeichnung zeigt anhand einer runden Sonne den Unterschied zwischen bloßer Breitenbegrenzung und proportionaler Skalierung. Keine externe Bilddatei und kein Netzabruf. Die Aufgabe folgt als optionaler Transfer auf den Etappenabschluss; bestehende Übungsnummern bleiben erhalten.
+
+Insgesamt 40 Mini-Übungen. Alle bestehenden IDs, Entwürfe, XP/NAGOLD, Freischaltungen und Sicherungsformate bleiben erhalten. Referenzen: [WHATWG: Tabellenzellen](https://html.spec.whatwg.org/multipage/tables.html#attr-tdth-rowspan), [W3C: automatische Bildhöhe](https://www.w3.org/TR/CSS22/visudet.html#inline-replaced-height) und [Breitenbegrenzung](https://www.w3.org/TR/CSS22/visudet.html#min-max-widths). Die Prüfungen bleiben auf die genannten einfachen Bausteine begrenzt, kein vollständiger HTML-/CSS-Validator.
+
+Lokal **45 Node-Tests bestanden**, einschließlich fehlendem/falschem rowspan, doppelter belegter Zelle, Kommentaren, alternativer Attributschreibung und beiden Bildgrößenregeln. Neun Browserprüfungen ergänzt: zwei Übungen mit Direktlink/Fokus, offenen Kriterien, Lösung und unverändertem Entwurf, dazu drei geometrische Bildprüfungen im Browser. Die Bildmessung rendert nur unsere feste Zeichnung und CSS-Referenz separat; die eigentliche Schüler-Vorschau behält ihre leere Sandbox. CI und Veröffentlichung folgen.
 
 ### 16.10.2026 – Codex – Version 1.39.0: Entscheidungen vor der Veröffentlichung
 

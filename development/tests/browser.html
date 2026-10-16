@@ -795,6 +795,58 @@
       "Listenzeichen: Beide Regeln bestehen mit isolierter Vorschau ohne Aenderung von Entwurf oder Punkten");
     if (savedRowExercises === null) localStorage.removeItem("weblab-exercises-v1");
     else localStorage.setItem("weblab-exercises-v1", savedRowExercises);
+    let responsiveFixture = "";
+    for (const lessonId of ["l7", "l12"]) {
+      boxWin.location.hash = "#lesson/" + lessonId + "/4";
+      await new Promise(resolve => setTimeout(resolve, 200));
+      const exercise = boxDoc.querySelector('.exercise[data-exercise="3"]');
+      const beforeTransfer = localStorage.getItem(STORAGE_KEY);
+      assert(exercise?.open && boxDoc.activeElement === exercise.querySelector("textarea") && boxDoc.documentElement.scrollWidth <= 360,
+        lessonId + ": Neue Transferuebung ist bei 360 Pixeln erreichbar und fokussiert");
+      exercise.querySelector("[data-exercise-check]").click();
+      assert(exercise.querySelectorAll(".criteria .fail").length === 2,
+        lessonId + ": Beide fehlenden Arbeitsschritte werden gemeldet");
+      const code = exercise.querySelector("textarea");
+      code.value = lessonId === "l7"
+        ? code.value.replace("<td>Montag</td>", '<td rowspan="2">Montag</td>').replace('<tr><td>Montag</td><td>15 Uhr</td></tr>', '<tr><td>15 Uhr</td></tr>')
+        : code.value + "\nimg { max-width: 100%; height: auto; }";
+      code.dispatchEvent(new boxWin.Event("input"));
+      await new Promise(resolve => setTimeout(resolve, 400));
+      exercise.querySelector("[data-exercise-check]").click();
+      assert(exercise.querySelectorAll(".criteria .pass").length === 2 && exercise.querySelector(".exercise-remember") &&
+        exercise.querySelector("iframe").getAttribute("sandbox") === "" && localStorage.getItem(STORAGE_KEY) === beforeTransfer,
+        lessonId + ": Loesung besteht mit isolierter Vorschau und unveraendertem Entwurf");
+      if (lessonId === "l12") responsiveFixture = exercise.querySelector("iframe").srcdoc;
+    }
+    if (savedRowExercises === null) localStorage.removeItem("weblab-exercises-v1");
+    else localStorage.setItem("weblab-exercises-v1", savedRowExercises);
+    // Independently render our fixed vector fixture, never student code. The
+    // actual practice iframe keeps its empty sandbox throughout the UI checks.
+    const imageHost = document.createElement("div");
+    imageHost.style.cssText = "position:absolute;left:-10000px;top:0;width:240px";
+    document.body.append(imageHost);
+    const imageRoot = imageHost.attachShadow({ mode: "open" });
+    const fixture = new DOMParser().parseFromString(responsiveFixture, "text/html");
+    const imageStyle = document.createElement("style");
+    imageRoot.append(imageStyle, ...fixture.body.childNodes);
+    const exampleImage = imageRoot.querySelector("img");
+    await exampleImage.decode();
+    const baseImageCss = ".bildbereich { max-width: 12rem; border: 2px solid navy; }";
+    imageStyle.textContent = baseImageCss;
+    assert(exampleImage.getBoundingClientRect().width > imageRoot.querySelector(".bildbereich").clientWidth,
+      "Bildtransfer: Ausgangsbild ragt tatsaechlich aus dem Bereich");
+    imageStyle.textContent = baseImageCss + " img { max-width: 100%; }";
+    assert(exampleImage.getBoundingClientRect().height === 360 && exampleImage.getBoundingClientRect().width < 640,
+      "Bildtransfer: Nur max-width laesst die feste HTML-Hoehe unveraendert und verzerrt das Bild");
+    imageStyle.textContent = fixture.head.querySelector("style").textContent;
+    const imageFits = () => {
+      const rect = exampleImage.getBoundingClientRect();
+      return rect.width <= imageRoot.querySelector(".bildbereich").clientWidth + 1 && Math.abs(rect.width / rect.height - 640 / 360) < 0.02;
+    };
+    const wideImageFits = imageFits();
+    imageHost.style.width = "120px";
+    assert(wideImageFits && imageFits(), "Bildtransfer: Vollstaendige Loesung bewahrt das Seitenverhaeltnis auch im schmaleren Bereich");
+    imageHost.remove();
     boxWin.location.hash = "#lesson/l5";
     await new Promise((resolve) => setTimeout(resolve, 200));
     const downloadTransfer = boxDoc.querySelector(".lesson-extension");

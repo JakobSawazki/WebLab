@@ -29,6 +29,11 @@ const rowColor = (source, className, value) =>
   cssValue(source, (selector) => [`.${className}`, `tr.${className}`].includes(selector), "background-color", value);
 const listMarker = (source, selector, value) =>
   cssValue(source, (candidate) => candidate.toLowerCase() === selector, "list-style-type", value);
+const tableRow = (source, content) =>
+  (source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/<!--[\s\S]*?-->/g, "").match(/<tr\b[^>]*>[\s\S]*?<\/tr\s*>/gi) || [])
+    .find((row) => row.includes(content)) || "";
+// Own vector illustration: its round sun makes a distorted aspect ratio visible.
+const practiceImage = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><rect width="640" height="360" fill="#d9effa"/><circle cx="480" cy="80" r="42" fill="#f3c453"/><path d="M0 220 Q160 120 320 220 T640 220 V360 H0Z" fill="#44815a"/><rect x="80" y="270" width="180" height="50" fill="#72503b"/><rect x="320" y="270" width="180" height="50" fill="#72503b"/></svg>');
 
 export const exerciseTypes = {
   repair: "Reparieren",
@@ -229,7 +234,7 @@ export const exercises = {
           return data.length >= 2 && data.every((row) => count(row, /<td>[^<]+<\/td>/g) === 2);
         }],
       ],
-      remember: "Jede Zelle steht in einer Zeile tr, und jede Zeile hat gleich viele Zellen.",
+      remember: "Jede Zelle steht in einer Zeile tr. Ohne verbundene Zellen hat jede Zeile gleich viele Zellen.",
     },
     {
       type: "write",
@@ -258,6 +263,21 @@ export const exercises = {
         }],
       ],
       remember: "colspan verbindet Zellen nebeneinander, rowspan Zellen untereinander.",
+    },
+    {
+      type: "repair",
+      title: "Eine Zelle über zwei Zeilen",
+      task: "Die beiden Termine gehören zum Montag. Fasse die zwei Montag-Zellen zu einer Zelle zusammen: Setze in der ersten Datenzeile rowspan auf 2 und entferne in der zweiten Datenzeile die doppelte Montag-Zelle. Die Uhrzeiten bleiben erhalten. Der Platz für die erste Spalte ist in der zweiten Zeile bereits belegt.",
+      code: '<table>\n  <caption>Termine am Montag</caption>\n  <tr><th scope="col">Tag</th><th scope="col">Uhrzeit</th></tr>\n  <tr><td>Montag</td><td>14 Uhr</td></tr>\n  <tr><td>Montag</td><td>15 Uhr</td></tr>\n</table>',
+      fixed: '<table>\n  <caption>Termine am Montag</caption>\n  <tr><th scope="col">Tag</th><th scope="col">Uhrzeit</th></tr>\n  <tr><td rowspan="2">Montag</td><td>14 Uhr</td></tr>\n  <tr><td>15 Uhr</td></tr>\n</table>',
+      checks: [
+        ['Die Montag-Zelle bei 14 Uhr hat rowspan="2"', (s) => /<td\b[^>]*\srowspan\s*=\s*(?:"2"|'2'|2)(?=\s|>)[^>]*>\s*Montag\s*<\/td>/i.test(tableRow(s, "14 Uhr"))],
+        ["Die zweite Datenzeile enthält nur noch die Zelle mit 15 Uhr", (s) => {
+          const row = tableRow(s, "15 Uhr");
+          return count(row, /<t[dh]\b/gi) === 1 && /<td\b[^>]*>\s*15 Uhr\s*<\/td>/i.test(row);
+        }],
+      ],
+      remember: "rowspan belegt Plätze in den folgenden Zeilen mit. Dort schreibst du für diese Plätze keine zusätzlichen Zellen.",
     },
   ],
   l8: [
@@ -485,6 +505,20 @@ export const exercises = {
       ],
       remember: "Erst die Grundschrift für body, dann gezielt einzelne Elemente: So bleibt CSS übersichtlich.",
     },
+    {
+      type: "write",
+      kind: "css",
+      context: `<div class="bildbereich"><img src="${practiceImage}" alt="Gelbe Sonne über grünen Beeten" width="640" height="360"></div>`,
+      title: "Transfer: Ein Bild passt in seinen Bereich",
+      task: "Das Bild hat im HTML eine Ausgangsgröße von 640 × 360. Es ragt aus dem schmalen Bereich heraus. Ergänze eine img-Regel mit max-width: 100% und height: auto. Probiere zuerst nur max-width aus und beobachte, wie die Sonne verzerrt wird. Ergänze dann height: auto: Das Seitenverhältnis bleibt erhalten, und die Sonne ist wieder rund.",
+      code: ".bildbereich {\n  max-width: 12rem;\n  border: 2px solid navy;\n}\n\n/* Ergänze hier die Regel für img. */\n",
+      fixed: ".bildbereich {\n  max-width: 12rem;\n  border: 2px solid navy;\n}\nimg {\n  max-width: 100%;\n  height: auto;\n}",
+      checks: [
+        ["img mit max-width: 100%", (s) => cssValue(s, (selector) => selector.toLowerCase() === "img", "max-width", "100%")],
+        ["img mit height: auto", (s) => cssValue(s, (selector) => selector.toLowerCase() === "img", "height", "auto")],
+      ],
+      remember: "max-width: 100% begrenzt das Bild auf seinen Bereich. height: auto bewahrt dabei das Seitenverhältnis; HTML-Bildgrößen bleiben Zahlen ohne Prozentzeichen.",
+    },
   ],
   l13: [
     {
@@ -610,6 +644,7 @@ export const exerciseHints = {
   "l7-1": "Umschließe die beiden <th> mit <tr> und </tr>. In der Salat-Zeile fehlt eine zweite <td>-Zelle, zum Beispiel ein Monat.",
   "l7-2": "Reihenfolge: <table>, <caption>, eine <tr> mit zwei <th scope=\"col\">, eine <tr> mit zwei <td>, zum Schluss </table>.",
   "l7-3": "Das Attribut heißt colspan. Sein Wert ist die Zahl der Spalten, über die die Zelle reichen soll.",
+  "l7-4": "rowspan gehört in das erste td mit Montag. In der Zeile mit 15 Uhr entfernst du das ganze td mit Montag, nicht die Zeile und nicht die Uhrzeit.",
   "l8-1": "Ergänze im Start-Tag von video das Wort controls und lösche autoplay.",
   "l8-2": "<video controls> … </video> umschließt <source src=\"…\" type=\"video/mp4\">. Direkt nach </video> folgt ein Absatz <p>…</p>.",
   "l8-3": "Das Gerüst ist <audio controls> … </audio>. Dazwischen steht ein source-Element mit src und type; nach </audio> folgt ein Absatz.",
@@ -625,6 +660,7 @@ export const exerciseHints = {
   "l12-1": "Setze padding auf einen Wert größer als 0, zum Beispiel 1rem. Ergänze bei border den Stil solid zwischen Breite und Farbe.",
   "l12-2": "Du brauchst drei Eigenschaften: max-width mit einer Breite, margin mit dem Wort auto und box-sizing mit dem Wert border-box.",
   "l12-3": "Schreibe vier Regeln nacheinander: body, #start, .hinweis und .karte. Die Karte braucht vier Eigenschaften.",
+  "l12-4": "Die beiden neuen Eigenschaften stehen in img { … }. 100% bezieht sich auf den umgebenden Bereich; auto lässt den Browser die passende Bildhöhe berechnen.",
   "l13-1": "Aus der div mit h1 wird <header>, aus der Menü-div <nav>, aus der Inhalt-div <main>. Passe auch die End-Tags an.",
   "l13-2": "Schreibe <nav> mit zwei a-Elementen für index.html und kontakt.html, darunter <footer> mit einer kurzen Zeile Text.",
   "l14-1": "Ersetze die Adresse im src durch bilder/beet.jpg. Ergänze im footer einen Absatz mit „Foto: eigene Aufnahme“.",

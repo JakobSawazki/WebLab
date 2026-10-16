@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.37.0** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
+Version: **1.37.0** · Status: **geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -263,7 +263,7 @@ Ergänzt: optionale Mini-Übung **Einheit 11, Übung 3 „Tabellenzeilen abwechs
 
 37 Mini-Übungen insgesamt. Neue Übung hinten an Einheit 11 angefügt, alle bisherigen IDs und Lösungsmarkierungen bleiben erhalten. Keine zusätzlichen XP, keine Änderung an Freischaltung, Entwürfen oder Sicherungsformat. Prüfung verlangt echte Klassenregeln mit vollständigem Farbwert; Kommentare, leere Werte, falsche Klassen und ähnlich klingende ungültige Farbnamen zählen nicht. Die ausdrücklich verlangten Farbnamen und gleichwertige Hexwerte werden angenommen. Die Prüfung bleibt auf diese zwei einfachen Regeln begrenzt und ist kein vollständiger CSS-Validator.
 
-Lokale Prüfung: **41 Node-Tests bestanden**, einschließlich Startcode, Referenzlösung und gezielter Fehl-/Teil-Lösungen. Statisches Paket mit sieben öffentlichen Dateien gebaut. Drei Browserprüfungen für Direktlink/Fokus bei 360 Pixeln, offene Kriterien/Tipp und erfolgreiches Lösen mit isolierter Vorschau bei unverändertem Entwurf ergänzt; CI-Ergebnis folgt.
+Lokale Prüfung: **41 Node-Tests bestanden**, einschließlich Startcode, Referenzlösung und gezielter Fehl-/Teil-Lösungen. Statisches Paket mit sieben öffentlichen Dateien gebaut. Drei Browserprüfungen für Direktlink/Fokus bei 360 Pixeln, offene Kriterien/Tipp und erfolgreiches Lösen mit isolierter Vorschau bei unverändertem Entwurf ergänzt. **188/188 Browserprüfungen bestanden**; [Pages-Workflow 38957846766](https://github.com/JakobSawazki/WebLab/actions/runs/38957846766) erfolgreich, Implementierungscommit `9585df0`. Live-Bündel per SHA-256 bytegleich mit dem geprüften lokalen Build (`537c55f063de9aa45478c9857117f4798ef214045d1f3d809b468390528bdab0`); Version und Übung online vorhanden. Das Build-Paket liegt außerhalb des Projekts unter `C:\Users\PC\WebLab-Sicherungen\Tabellenklassen-1.37.0-2026-10-16\dist`.
 
 Quellenprüfung lokal unter `ressources/BPE2/OneNote-Desktop/Auswertung/Tabellen/Abgleich.json`. Ein eigener, versteckter, schreibgeschützter Word-Renderlauf lieferte keine PDF und wurde beendet; stattdessen wurden die beiden eingebetteten Aufgabenabbildungen direkt aus dem DOCX gelesen und visuell geprüft. Kein vollständiger Seitenlayout-Abgleich behauptet. Originale und Auswertung bleiben von Git ausgeschlossen. Offene Rückfragen 2–5 in tasks.md bleiben unverändert.
 

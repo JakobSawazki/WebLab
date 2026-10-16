@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.40.0** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
+Version: **1.40.0** · Status: **geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -251,7 +251,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (16.10.2026, Codex, Version 1.39.0):** 43 Node-Tests und 200 Browserprüfungen bestanden. Zusätzlich zu den bisherigen Prüfungen werden die Fallaufgaben in 14/15, aufklappbare Erklärungen, sichere Quellenlinks, beide Farbschemata bei 360 Pixeln und unveränderte Lernstände geprüft. Pages-Lauf 38960299221 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. Dies belegt keine rechtliche Freigabe einer konkreten Schülerseite oder den Betrieb am tatsächlichen Schulserver.
+**Aktueller Stand (16.10.2026, Codex, Version 1.40.0):** 45 Node-Tests und 209 Browserprüfungen bestanden. Zusätzlich zu den bisherigen Prüfungen werden rowspan, das Entfernen belegter Zellen, proportionale Bildgrößen sowie die tatsächliche Browsergeometrie bei zwei Bereichsbreiten geprüft. Pages-Lauf 38961262489 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. Prüfgrenzen zu rechtlicher Freigabe und tatsächlichen Schulgeräten bleiben bestehen.
 
 **Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
@@ -313,7 +313,7 @@ Zwei eigene Mini-Übungen schließen die im Quellenabgleich benannten Lücken: *
 
 Insgesamt 40 Mini-Übungen. Alle bestehenden IDs, Entwürfe, XP/NAGOLD, Freischaltungen und Sicherungsformate bleiben erhalten. Referenzen: [WHATWG: Tabellenzellen](https://html.spec.whatwg.org/multipage/tables.html#attr-tdth-rowspan), [W3C: automatische Bildhöhe](https://www.w3.org/TR/CSS22/visudet.html#inline-replaced-height) und [Breitenbegrenzung](https://www.w3.org/TR/CSS22/visudet.html#min-max-widths). Die Prüfungen bleiben auf die genannten einfachen Bausteine begrenzt, kein vollständiger HTML-/CSS-Validator.
 
-Lokal **45 Node-Tests bestanden**, einschließlich fehlendem/falschem rowspan, doppelter belegter Zelle, Kommentaren, alternativer Attributschreibung und beiden Bildgrößenregeln. Neun Browserprüfungen ergänzt: zwei Übungen mit Direktlink/Fokus, offenen Kriterien, Lösung und unverändertem Entwurf, dazu drei geometrische Bildprüfungen im Browser. Die Bildmessung rendert nur unsere feste Zeichnung und CSS-Referenz separat; die eigentliche Schüler-Vorschau behält ihre leere Sandbox. CI und Veröffentlichung folgen.
+Lokal **45 Node-Tests bestanden**, einschließlich fehlendem/falschem rowspan, doppelter belegter Zelle, Kommentaren, alternativer Attributschreibung und beiden Bildgrößenregeln. Neun Browserprüfungen ergänzt: zwei Übungen mit Direktlink/Fokus, offenen Kriterien, Lösung und unverändertem Entwurf, dazu drei geometrische Bildprüfungen im Browser. Die Bildmessung rendert nur unsere feste Zeichnung und CSS-Referenz separat; die eigentliche Schüler-Vorschau behält ihre leere Sandbox. **209/209 Browserprüfungen und 45/45 Node-Tests bestanden**; [Pages-Lauf 38961262489](https://github.com/JakobSawazki/WebLab/actions/runs/38961262489) erfolgreich. Implementierungscommit `c39ca90`. Live-Bündel bytegleich mit dem lokal geprüften Build, SHA-256 `65a57ca546ce747809af0933af1c3350ffce40ac3183f4cdda71ec4547d73153`; Version und beide Übungen online vorhanden. Die Startseite lädt JS und CSS mit Versionskennung 1.40.0. Build-Ausgabe außerhalb des Projekts unter `C:\Users\PC\WebLab-Sicherungen\Bilder-Tabellen-1.40.0-2026-10-16\dist`; kein dist-Ordner im Projekt.
 
 ### 16.10.2026 – Codex – Version 1.39.0: Entscheidungen vor der Veröffentlichung
 

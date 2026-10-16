@@ -1,6 +1,6 @@
 # WebLab – gemeinsame Projektdokumentation
 
-Stand: **14. Oktober 2026, Europe/Berlin · Claude**
+Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
 Version: **1.36.0** · Status: **lokal geprüft und veröffentlicht**.
 
@@ -225,7 +225,7 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 | HTML direkt programmieren und echte Darstellung sehen | HTML/CSS-Reiter, sandbox-Vorschau, Handyansicht, große Browseransicht; Browserprüfung kontrolliert Eingabe, Darstellung, manuelle Aktualisierung und Entwurftrennung | Umgesetzt |
 | Vorbereitung auf Notepad++ 7.5.1 vom Informatik-Stick | Import, HTML/CSS/ZIP-Export, Transferaufträge mit Strg+S/F5; ZIP-Struktur und Import geprüft | Umgesetzt; Schuleinsatz auf echtem Stick nicht vorgetäuscht |
 | Eigene statische Webseite entwickeln | Abschlussprojekt in Einheit 16, Projektentwurf wächst fortlaufend; Export echter index.html und style.css | Umgesetzt; zusätzliche Unterseite wird aktuell in Notepad++ erstellt |
-| Start durch index.html ohne start.cmd | Klassisches defer-Skript weblab.js, lokale CSS-/Bilddateien, keine Modulimporte oder Netzabrufe im Laufzeitpaket gefunden; start.cmd fehlt | Technisch vorbereitet; Doppelklick und Live-Vorschau im normalen Benutzerbrowser noch praktisch zu bestätigen |
+| Start durch index.html ohne start.cmd | Klassisches defer-Skript weblab.js, lokale CSS-/Bilddateien, keine Modulimporte oder Netzabrufe im Laufzeitpaket gefunden; start.cmd fehlt | Seit 1.35.0 per Edge-Dateitest und Jakobs Nutzung bestätigt |
 | Unnötige Dateien entfernen, Tests/tools aufräumen | Frameworkreste und Startskript archiviert; notwendige Entwicklungsdateien unter development/; Prettier legte einen leeren Cache mit Windows-Metadaten an, am 12.10. wieder extern archiviert | Aktiver Stammordner aufgeräumt; keine Laufzeitinstallation nötig |
 | Einheitliche documentation/documentation.md für Jakob/Codex/Claude | Diese Datei; README und CLAUDE.md verweisen hierher | Umgesetzt |
 | GitHub-Repository und Veröffentlichung | Repository JakobSawazki/WebLab; Release v1.9.1; Pages-Workflow 38293274258 für finalen Dokumentationscommit 80345ce erfolgreich; Runtime-Bundle bereits live per SHA-256 identisch bestätigt | Umgesetzt |
@@ -237,9 +237,22 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 | OneNote-Materialien lokal sichern | Sechs Seitenauszüge, Bildungsplan und Inventar von 81 Anhangverweisen lokal vorhanden; Originaldownload liefert weiterhin keine Datei | Teilweise; Dateiinhalte der Anhänge noch nicht geprüft |
 | ThommyWeb mit der Zeit ergänzen | Browserzugriff erfolgreich; Übersicht inventarisiert und K2/K6 fachlich geprüft; Abweichungen zu aktuellen Standards dokumentiert | Quellenabgleich begonnen; kein behaupteter vollständiger Inhaltsimport |
 
-Der praktische Dateistart wurde Jakob zur kurzen Prüfung vorgelegt. Ohne dessen Ergebnis wird dieser Punkt nicht als erfolgreich getestet verbucht. Der Agentenbrowser unterstützt für diese Prüfung nur HTTP/HTTPS; diese Begrenzung wird nicht umgangen. Der Abgleich ist eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
+Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 16.10.2026 – Codex – Übernahme und Nachprüfung von Version 1.36.0
+
+Die Arbeitskopie lag beim Wiederaufnehmen sauber auf main mit Commit 692f836. Die zwischenzeitlichen Erweiterungen von Claude sind berücksichtigt; der frühere Stand 1.9.2 wird weder erneut gebaut noch veröffentlicht. Keine Änderung an Laufzeitcode, Kriterien, Punkten oder Lernständen.
+
+- Aktuell erneut ausgeführt: 40 Node-Tests bestanden, Build erfolgreich. Der erzeugte klassische Einstieg weblab.js blieb gegenüber Git unverändert.
+- [Pages-Lauf 38634763647](https://github.com/JakobSawazki/WebLab/actions/runs/38634763647) für genau diesen Commit ist erfolgreich; sein Protokoll bestätigt 173/173 Browserprüfungen und 40 Node-Tests. Das sind die Browserergebnisse des CI-Laufs vom 14.10., kein behaupteter neuer lokaler Browserlauf am 16.10.
+- Öffentliches weblab.js und styles.css am 16.10. erneut abgerufen: jeweils HTTP 200 und per SHA-256 exakt identisch mit der lokalen Datei.
+- Die alte lokale Browser-Prüfansicht wurde wegen ihrer Fehlerseiten-URL durch die URL-Richtlinie des Agentenbrowsers gesperrt. Keine Umgehung über andere Browseroberflächen oder Debugger; als unabhängige Nachweise wurden CI-Protokoll und statischer Dateivergleich verwendet.
+- OneNote über Jakobs Freigabelink erneut geöffnet; Anmeldung ist gültig, Teil 1 mit Originalanhängen sichtbar. Ein neuer Downloadversuch des Informationsanhangs 1.docx wurde nach der normalen OneNote-Rückfrage bestätigt. Nach 15 Sekunden kam kein Downloadartefakt; im normalen Downloads-Ordner lag keine passende Datei. Kein Originalinhalt wurde gelesen. Weitere identische Versuche sind ohne geänderten Zugriff nicht sinnvoll.
+- Die bisher widersprüchliche Aussage zum Dateistart im alten Anforderungsabgleich ist korrigiert: Die Bestätigung seit 1.35.0 bleibt gültig.
+
+Für den vollständigen Quellenabgleich werden die Originalanhänge als lokale Dateien unter ressources/BPE2 benötigt. Gleiche Dateinamen müssen dabei nach Teil und Informations-/Aufgaben-/Lösungsspalte getrennt bleiben. Materialien und Lösungen bleiben außerhalb von Git. Neue Unterrichtserprobungen und eine Produktentscheidung zu Lehrkraftablauf oder Mehrdatei-Werkstatt werden nicht als bereits erteilt angenommen. Weitere Laufzeitänderungen werden aus dem allgemeinen Weiterarbeitsauftrag nicht allein zur Verlängerung der Arbeitsrunde erfunden.
 
 ### 14.10.2026 – Claude – Version 1.36.0 (Paket 33: Wiederholungsrunde, Fokus nach Tipp)
 

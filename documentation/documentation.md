@@ -82,9 +82,13 @@ OneNote: Notizbuch **Lernfelder**, Abschnitt **2. Internetseiten**. Alle sechs S
 - `05-Replit.txt` und `06-ThommyWeb.txt`: sichtbare Referenzen/Vorlagenhinweise.
 - `Bildungsplan-Informatik.pdf`: lokale Kopie des Bildungsplans aus WorkbenchLab.
 
-Das lokale Anhang-Inventar `ressources/BPE2/Anhang-Inventar.json` erfasst 81 sichtbare Dateiverweise: 49 in Teil 1 und 32 in Teil 2. Gleiche Dateinamen in Informations-, Aufgaben- und Lösungsspalten sind unterschiedliche Anhänge. Erfasst wurden nur sichtbare Metadaten, keine Dateiinhalte. Der erneute Downloadversuch für den Informationsanhang 1.docx zum HTML-Grundgerüst lieferte auch nach Bestätigung keine Datei; im normalen Downloads-Ordner lag keine entsprechende Datei. Ein erneuter Login ist derzeit nicht nötig. Auch der direkte Öffnungsversuch führt zur OneNote-Meldung, dass die Datei nicht geöffnet, sondern nur als Kopie heruntergeladen werden kann. Es wurde kein Word-Dokument geöffnet und kein Originalinhalt gelesen.
+**Originalanhänge seit 16.10.2026 lokal gesichert:** Nach Jakobs Freigabe der Desktop-Anwendung wurden über die dokumentierte OneNote-COM-Schnittstelle die Seiten Teil 1 und Teil 2 gelesen und ihre eingebetteten Dateien aus dem geprüften lokalen OneNote-Cache kopiert. OneNote-Inhalte wurden dabei nicht verändert. Die 81 Dateien entsprechen zahlenmäßig dem früheren sichtbaren Inventar: 49 aus Teil 1, 32 aus Teil 2; insgesamt 56 DOCX, 22 ZIP und 3 PDF (57.992.045 Byte).
 
-**Noch offen: Originalanhänge als DOCX/ZIP herunterladen.** Ein Anhang wurde über „Speichern unter“ und die normale OneNote-Downloadwarnung angefordert. Der Browser lieferte jedoch kein abrufbares Downloadartefakt. Die gesicherten Textdateien sind Auszüge der sichtbaren Seiten, kein Ersatz für die eingebetteten Informations-, Aufgaben- und Lösungsdateien. Diese Anhänge wurden nicht als gelesen oder inhaltlich ausgewertet verbucht. Lösungen sollen auch künftig lokal bleiben.
+Ablage: ressources/BPE2/OneNote-Desktop/Teil-1 bzw. Teil-2, getrennt nach Information, Aufgabe-und-Vorlage, Loesung, Uebersicht und Tools. Gleiche Dateinamen aus verschiedenen Spalten bleiben getrennt. Anhang-Export-Inventar.json im selben Stammordner enthält je Datei Herkunft, Größe, SHA-256 und Prüfergebnis; die beiden lokalen Seiten-XMLs erlauben die Zuordnung. Das frühere Anhang-Inventar.json bleibt als Metadatenaufnahme erhalten. Alle DOCX-/ZIP-Dateien bestehen die ZIP-CRC-Prüfung, DOCX enthält word/document.xml, die drei PDF-Dateien haben die PDF-Signatur. Keine Software oder eingebettete HTML-Seite wurde ausgeführt.
+
+**Noch offen: fachlicher Abgleich der Originalinhalte.** Die Dateiintegrität ist geprüft, die Dokumentinhalte sind noch nicht als gelesen verbucht. Die Kopien stammen aus Jakobs OneNote; sie werden nicht ohne Abgleich als identisch mit der zuletzt öffentlich angebotenen Fassung vom 31.07.2025 bezeichnet. Originale, Lösungen, XMLs und Inventare bleiben lokal und außerhalb von Git. Technische Referenz: [Microsoft OneNote Application interface](https://learn.microsoft.com/en-us/office/client-developer/onenote/application-interface-onenote).
+
+**Recherche zum Landesbildungsserver (Aufgabe 1):** Der [offizielle Abschaltungshinweis](https://lehrerfortbildung-bw.de/willkommen/) nennt den 30.09.2026. Alte LBS-Adressen werden auf diese Seite weitergeleitet; gesicherte Materialien können teilweise nach Prüfung über das dort verlinkte [Kontaktformular](https://lehrerfortbildung-bw.de/feedback/) angefragt werden. Der Suchindex nennt noch bpe-2-internetseiten.zip, Stand 31.07.2025, rund 34 MB. Der tatsächliche Abruf der alten ZIP-Adresse liefert jedoch HTTP 200 mit text/html und der Abschaltungsseite, kein Archiv. Auch über öffentliche Suche und die interne LFBS-Suche wurde kein verifizierter neuer Downloadort dieser konkreten Sammlung gefunden. Bisher ist dafür keine Anmeldung angefordert worden. Es wurde keine Anfrage versendet. Der Materialzugang für WebLab ist durch die OneNote-Originalkopien dennoch hergestellt.
 
 ThommyWeb: https://informatik.systems/thommyWeb/grundkurs.html
 
@@ -214,7 +218,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 Offene Erweiterungen, nach Priorität:
 
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
-2. **Originalquellen:** DOCX-/ZIP-Anhänge aus OneNote vollständig lokal sichern, inventarisieren und fachlich abgleichen. Veraltete Rechtsmaterialien gesondert prüfen.
+2. **Originalquellen:** Alle 81 Anhänge aus Teil 1/2 sind seit 16.10.2026 lokal gesichert und auf Dateiintegrität geprüft. Als Nächstes Inhalte fachlich abgleichen; veraltete Rechtsmaterialien gesondert prüfen.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
 4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10, seit 1.24.0/1.25.0 eine Übungswerkstatt mit Mini-Editor, Live-Vorschau und Merksätzen. Seit 1.33.0 gibt es auch eine Audio-Übung, seit 1.34.0 Profi-Aufgaben am Ende der Etappen 1–3 als oberste Stufe. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
@@ -244,12 +248,19 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 | Versions-/Gerätehinweis unten links entfernen | sidebar-bottom enthält nur noch Motto; Version steht im allgemeinen Seitenfuß | Umgesetzt |
 | Menü ein- und ausklappen | menuButton mit aria-expanded, desktop Iconleiste und mobilem Einblenden; acht Browserprüfungen für Zustand/Neuladen/Layout | Umgesetzt |
 | Elemente oben rechts gleich hoch | topbar-actions mit gemeinsamer Streckung; zuletzt im echten Online-Tab alle drei Elemente mit 56 px und gleicher Oberkante gemessen | Umgesetzt |
-| OneNote-Materialien lokal sichern | Sechs Seitenauszüge, Bildungsplan und Inventar von 81 Anhangverweisen lokal vorhanden; Originaldownload liefert weiterhin keine Datei | Teilweise; Dateiinhalte der Anhänge noch nicht geprüft |
+| OneNote-Materialien lokal sichern | Sechs Seitenauszüge, Bildungsplan und alle 81 Originalanhänge aus Teil 1/2 mit SHA-256 und Integritätsprüfung lokal vorhanden | Sicherung erledigt; fachlicher Inhaltsabgleich noch offen |
 | ThommyWeb mit der Zeit ergänzen | Browserzugriff erfolgreich; Übersicht inventarisiert und K2/K6 fachlich geprüft; Abweichungen zu aktuellen Standards dokumentiert | Quellenabgleich begonnen; kein behaupteter vollständiger Inhaltsimport |
 
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 16.10.2026 – Codex – Aufgabe 1 erledigt: Quellenrecherche und OneNote-Originale
+
+Jakobs Antwort zu Aufgabe 1 umgesetzt: Alternative Bezugsquelle beim Landesbildungsserver/Lehrerfortbildungsserver geprüft. Die Abschaltung erklärt die Weiterleitung; ein neuer öffentlicher Downloadort der konkreten BPE2-Sammlung konnte nicht verifiziert werden. Der freigegebene alternative Zugriff über die bereits laufende lokale OneNote-Anwendung gelang mit Windows PowerShell 5.1 im STA-Modus. Nur GetHierarchy/GetPageContent und lokale Dateikopien verwendet; keine OneNote-Seite verändert.
+
+Alle 81 eingebetteten Originaldateien aus Teil 1/2 gesichert: 56 DOCX, 22 ZIP, 3 PDF, zusammen 57.992.045 Byte. Pfade nach Teil und Spalte getrennt, Kopierquelle auf den OneNote-Cache begrenzt, Zielpfade auf den lokalen Quellenordner begrenzt. Export-Inventar mit SHA-256, ZIP-CRC bzw. PDF-Signatur vollständig geprüft. Der Git-Ausschluss der Quellen bleibt wirksam. Aufgabe 1 samt Antwort aus tasks.md entfernt; die Nummern 2–5 bleiben unverändert. Fachliche Auswertung der gesicherten Inhalte folgt als selbständig ausführbare Arbeit, nicht als neue Rückfrage an Jakob. Kein App-Update erforderlich; Version 1.36.2 bleibt bestehen.
+
 
 ### 16.10.2026 – Codex – Version 1.36.2: Aktuelle Dateiauswahl beim Sicherungsimport
 

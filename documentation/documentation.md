@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.36.1** · Status: **lokal gebaut; Browserprüfung und Veröffentlichung laufen**.
+Version: **1.36.1** · Status: **geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -197,7 +197,9 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
+**Aktueller Stand (16.10.2026, Codex, Version 1.36.1):** 40 Node-Tests und 179 Browserprüfungen bestanden. Die sechs neuen Browserprüfungen prüfen den Import bei fehlendem Browserspeicher einschließlich Wiederholung und Erhalt des alten Zustands. Pages-Lauf 38955347148 erfolgreich; öffentliches weblab.js per SHA-256 identisch mit dem lokal geprüften Bundle.
+
+**Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
 Älterer Prüfstand, geprüft durch Codex am 12.10.2026:
 
@@ -253,7 +255,7 @@ Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.
 
 Unabhängig von den noch unbeantworteten Fragen in tasks.md einen konkreten Fehler im Importpfad behoben: Bei fehlgeschlagenem Speichern wurden bisher der Zustand im Arbeitsspeicher und Übungsmarkierungen trotzdem ersetzt und der Dialog geschlossen. Jetzt bleiben alter Lernstand, Speicherschutz und Übungsmarkierungen erhalten; der Dialog erklärt den Fehler und derselbe Import kann erneut versucht werden. Übungsmarkierungen werden erst nach erfolgreichem Speichern des Lernstands übernommen. Scheitert nur deren separater Schreibvorgang, wird dies ausdrücklich gemeldet statt vollständigen Erfolg vorzutäuschen. Sicherungsformat und bisherige Importregeln bleiben erhalten.
 
-40 Node-Tests und Build bestanden. Sechs Browser-Regressionsprüfungen ergänzt: sichtbare Fehlermeldung, unveränderter Browserspeicher, unveränderter angezeigter Lernstand nach Navigation, Wiederholung ohne neue Dateiauswahl, erst anschließende Übernahme der Übungsmarkierungen und Meldung eines separaten Markierungsfehlers. Die Prüfseite simuliert QuotaExceededError nur im eigenen Test-iframe und stellt die ursprünglichen Speichermethoden danach wieder her. Browserprüfung läuft im vorhandenen CI-Gate vor der Veröffentlichung. Aufgaben 1–5 bleiben offen; keine Antwort wurde angenommen und kein Punkt vorzeitig entfernt.
+40 Node-Tests und Build bestanden. Sechs Browser-Regressionsprüfungen ergänzt: sichtbare Fehlermeldung, unveränderter Browserspeicher, unveränderter angezeigter Lernstand nach Navigation, Wiederholung ohne neue Dateiauswahl, erst anschließende Übernahme der Übungsmarkierungen und Meldung eines separaten Markierungsfehlers. Die Prüfseite simuliert QuotaExceededError nur im eigenen Test-iframe und stellt die ursprünglichen Speichermethoden danach wieder her. [Pages-Lauf 38955347148](https://github.com/JakobSawazki/WebLab/actions/runs/38955347148) für Implementierungscommit ecb2462 erfolgreich: 40 Node-Tests und 179/179 Browserprüfungen bestanden. Das öffentlich ausgelieferte weblab.js wurde nach der Veröffentlichung per SHA-256 mit der lokalen Datei abgeglichen: identisch. Erzeugtes dist-Paket außerhalb des Projekts unter C:/Users/PC/WebLab-Sicherungen/Importfehler-1.36.1-2026-10-16 archiviert. Aufgaben 1–5 bleiben offen; keine Antwort wurde angenommen und kein Punkt vorzeitig entfernt.
 
 
 ### 16.10.2026 – Codex – Nummerierte Rückfragen in tasks.md

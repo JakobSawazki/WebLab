@@ -2,6 +2,8 @@
 // Fail closed when a module requires syntax this small bundler cannot handle.
 export function bundleModules(sources, entry = "app.js") {
   const factories = Object.entries(sources).map(([id, source]) => {
+    // Git checkouts use CRLF on Windows and LF on CI. Ship identical bytes.
+    source = source.replaceAll("\r\n", "\n");
     const names = [];
     source = source.replace(
       /^import\s*\{([\s\S]*?)\}\s*from\s*["']\.\/([a-z-]+\.js)["'];\s*/gm,

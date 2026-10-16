@@ -16,6 +16,20 @@ test("classic bundle isolates module scopes and shares dependencies", () => {
   assert.equal(JSON.stringify(context.result), "[3,3,7]");
 });
 
+test("Windows and Linux module line endings produce identical executable bundles", () => {
+  const sources = {
+    "shared.js": 'export const message = "Grüße aus der AG";\n',
+    "app.js": 'import { message } from "./shared.js";\nglobalThis.result = message;\n',
+  };
+  const windows = Object.fromEntries(Object.entries(sources).map(([id, source]) => [id, source.replaceAll("\n", "\r\n")]));
+  const bundle = bundleModules(windows);
+  assert.equal(bundle, bundleModules(sources));
+  assert.equal(bundle.includes("\r\n"), false);
+  const context = {};
+  vm.runInNewContext(bundle, context);
+  assert.equal(context.result, "Grüße aus der AG");
+});
+
 test("bundle rejects missing dependencies and unsupported module syntax", () => {
   assert.throws(
     () => bundleModules({ "app.js": 'import { x } from "./missing.js";' }),

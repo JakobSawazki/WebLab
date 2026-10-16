@@ -12,7 +12,11 @@ const inside = (source, open, close) => {
   return start < 0 || end < 0 ? null : source.slice(start + open.length, end);
 };
 const text = "[^<]*[^<\\s][^<]*"; // at least one visible character
-const has = (source, pattern) => new RegExp(pattern, "i").test(source);
+// Tag names are normalized before HTML checks; preserve case-sensitive values.
+const has = (source, pattern) => new RegExp(pattern).test(source);
+const licenseText = (source) =>
+  (source.match(/<footer\b[^>]*>([\s\S]*?)<\/footer>/)?.[1] || "")
+    .replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 // True if a rule for `selector` (regex source) sets `property`, optionally to a value pattern.
 const rule = (source, selector, property, value = "") =>
   new RegExp(`(^|[\\s};])${selector}\\s*\\{[^}]*\\b${property}\\s*:\\s*${value}`, "i").test(source);
@@ -142,7 +146,7 @@ export const exercises = {
     {
       type: "repair",
       title: "Eine kaputte Liste",
-      task: "In dieser Liste stimmt zweimal etwas nicht: ein Eintrag ohne li und ein li ohne End-Tag. Repariere die Liste.",
+      task: "„Erde“ steht direkt in der ul. Umschließe den Eintrag mit li. Schreibe in dieser Übung auch das End-Tag </li> hinter „Gießkanne“ aus, damit alle Einträge vollständig und einheitlich im Code stehen.",
       code: "<ul>\n  Erde\n  <li>Samen</li>\n  <li>Gießkanne\n</ul>",
       fixed: "<ul>\n  <li>Erde</li>\n  <li>Samen</li>\n  <li>Gießkanne</li>\n</ul>",
       checks: [
@@ -189,7 +193,7 @@ export const exercises = {
       fixed: '<a href="index.html">Startseite</a>\n<a href="https://example.org">Beispielseite</a>',
       checks: [
         ["Relativer Link auf index.html mit Linktext", (s) => has(s, `<a href="index\\.html">${text}</a>`)],
-        ["Externer Link mit https:// und Linktext", (s) => has(s, `<a href="https://[^"\\s]+">${text}</a>`)],
+        ["Externer Link mit https:// und Linktext", (s) => has(s, `<a href="[hH][tT][tT][pP][sS]://[^"\\s]+">${text}</a>`)],
       ],
       remember: "Eigene Seiten relativ verlinken, fremde mit https://; der Linktext nennt das Ziel.",
     },
@@ -247,7 +251,7 @@ export const exercises = {
         ['Kopfzeile mit zwei th scope="col"', (s) => has(s, `<tr>\\s*<th scope="col">${text}</th>\\s*<th scope="col">${text}</th>\\s*</tr>`)],
         ["Datenzeile mit zwei td", (s) => has(s, `<tr>\\s*<td>${text}</td>\\s*<td>${text}</td>\\s*</tr>`)],
       ],
-      remember: "caption benennt die Tabelle, th überschreibt, td enthält die Daten.",
+      remember: "caption benennt die Tabelle, th kennzeichnet eine Kopfzelle, td enthält die Daten.",
     },
     {
       type: "complete",
@@ -542,7 +546,7 @@ export const exercises = {
       fixed: '<nav>\n  <a href="index.html">Start</a>\n  <a href="kontakt.html">Mitmachen</a>\n</nav>\n<footer>\n  <p>Ein Projekt der Klasse 8b</p>\n</footer>',
       checks: [
         ["nav mit Links auf index.html und kontakt.html", (s) => {
-          const nav = inside(s.toLowerCase(), "<nav>", "</nav>") || "";
+          const nav = inside(s, "<nav>", "</nav>") || "";
           return has(nav, `<a href="index\\.html">${text}</a>`) && has(nav, `<a href="kontakt\\.html">${text}</a>`);
         }],
         ["footer mit eigenem Text", (s) => has(s, "<footer>[^]*?[^<\\s][^]*?</footer>") && (inside(s, "<footer>", "</footer>") || "").replace(/<[^>]+>/g, "").trim().length >= 5],
@@ -570,9 +574,9 @@ export const exercises = {
       code: "<footer>\n  <h2>Quellen und Rechte</h2>\n  <p>Foto „Hochbeet im Frühling“</p>\n</footer>",
       fixed: "<footer>\n  <h2>Quellen und Rechte</h2>\n  <p>Foto „Hochbeet im Frühling“ von Lena Beispiel, Quelle: commons.wikimedia.org, Lizenz: CC BY 4.0</p>\n</footer>",
       checks: [
-        ["Urheberin genannt", (s) => /Lena Beispiel/.test(s)],
-        ["Quelle genannt", (s) => /commons\.wikimedia\.org/i.test(s)],
-        ["Lizenz CC BY 4.0 genannt", (s) => /CC[ -]BY 4\.0/i.test(s)],
+        ["Urheberin genannt", (s) => /Lena Beispiel/.test(licenseText(s))],
+        ["Quelle genannt", (s) => /commons\.wikimedia\.org/i.test(licenseText(s))],
+        ["Lizenz CC BY 4.0 genannt", (s) => /CC[ -]BY 4\.0/i.test(licenseText(s))],
       ],
       remember: "Titel, Urheber, Quelle, Lizenz: Vier Angaben machen eine Quelle prüfbar.",
     },
@@ -613,8 +617,10 @@ export const exercises = {
       checks: [
         ['Doctype und <html lang="de">', (s) => /^\s*<!doctype html>/i.test(s) && /<html lang="de">/i.test(s)],
         ["Eigener title im head", (s) => has(s, `<head>[^]*?<title>${text}</title>[^]*?</head>`)],
-        ["Verknüpfung zu style.css im head", (s) => /<head>[\s\S]*?<link\b[^>]*rel="stylesheet"[^>]*href="style\.css"[\s\S]*?<\/head>/i.test(s) || /<head>[\s\S]*?<link\b[^>]*href="style\.css"[^>]*rel="stylesheet"[\s\S]*?<\/head>/i.test(s)],
-        ["nav mit Rücklink zu index.html", (s) => has(inside(s.toLowerCase(), "<nav>", "</nav>") || "", `<a href="index\\.html">${text}</a>`)],
+        ["Verknüpfung zu style.css im head", (s) =>
+          ((inside(s, "<head>", "</head>") || "").match(/<link\b[^>]*>/g) || [])
+            .some((tag) => /\srel="stylesheet"/.test(tag) && /\shref="style\.css"/.test(tag))],
+        ["nav mit Rücklink zu index.html", (s) => has(inside(s, "<nav>", "</nav>") || "", `<a href="index\\.html">${text}</a>`)],
       ],
       remember: "Jede Seite bindet dieselbe style.css ein und führt zurück zur Startseite.",
     },
@@ -622,8 +628,66 @@ export const exercises = {
 };
 
 export const exerciseId = (lessonId, index) => `${lessonId}-${index + 1}`;
-export const checkExercise = (exercise, source) =>
-  exercise.checks.map(([label, test]) => ({ label, passed: test(source) }));
+// Normalize spelling only, never the element tree: DOMParser would silently
+// repair the missing/misnested tags that these source exercises teach.
+function exerciseHtml(source) {
+  const tokens = /<!--[\s\S]*?(?:-->|$)|<!doctype\b[^>]*>|<\/?[a-z][a-z0-9:-]*(?=[\s/>])(?:[^"'<>]|"[^"]*"|'[^']*')*>/gi;
+  const attribute = /\s+([^\s=\/"'<>`]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/y;
+  const voidTags = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"]);
+  const insensitiveValues = new Set(["lang", "charset", "rel", "scope"]);
+  const escapeMarkup = (s) => s.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  let result = "", cursor = 0, raw = "", rawDepth = 0, valid = true;
+  for (const match of source.matchAll(tokens)) {
+    const token = match[0], gap = source.slice(cursor, match.index);
+    cursor = match.index + token.length;
+    if (!raw && gap.includes("<")) valid = false;
+    result += raw ? (raw === "title" ? escapeMarkup(gap) : "") : gap;
+    const end = /^<\/([a-z][a-z0-9:-]*)\s*>$/i.exec(token);
+    if (raw) {
+      if (raw === "template" && /^<template\b/i.test(token)) rawDepth++;
+      if (end?.[1].toLowerCase() === raw && --rawDepth === 0) { result += `</${raw}>`; raw = ""; }
+      else if (raw === "title") result += escapeMarkup(token);
+      continue;
+    }
+    if (token.startsWith("<!--")) continue;
+    if (/^<!doctype\s+html\s*>$/i.test(token)) { result += "<!doctype html>"; continue; }
+    if (end) { result += `</${end[1].toLowerCase()}>`; continue; }
+    const start = /^<([a-z][a-z0-9:-]*)([\s\S]*)>$/i.exec(token);
+    if (!start) { valid = false; continue; }
+    const name = start[1].toLowerCase();
+    let tail = start[2], attrs = "", position = 0;
+    if (/\/\s*$/.test(tail)) {
+      if (!voidTags.has(name)) { valid = false; continue; }
+      // A slash directly after an unquoted value belongs to that value.
+      if (tail.trim() === "/") tail = "";
+      else if (/[\s"']\/$/.test(tail)) tail = tail.slice(0, -1);
+    }
+    const seen = new Set();
+    while (tail.slice(position).trim()) {
+      attribute.lastIndex = position;
+      const attr = attribute.exec(tail);
+      if (!attr) { valid = false; break; }
+      position = attribute.lastIndex;
+      const key = attr[1].toLowerCase();
+      if (seen.has(key)) valid = false;
+      seen.add(key);
+      let value = attr[2] ?? attr[3] ?? attr[4] ?? "";
+      if (insensitiveValues.has(key)) value = value.toLowerCase();
+      if (key === "type") value = value.replace(/^[^;]+/, (mime) => mime.toLowerCase());
+      attrs += ` ${key}="${escapeMarkup(value).replaceAll('"', "&quot;")}"`;
+    }
+    result += `<${name}${attrs}>`;
+    if (["script", "style", "textarea", "title", "template"].includes(name)) { raw = name; rawDepth = 1; }
+  }
+  const rest = source.slice(cursor);
+  if (!raw && rest.includes("<")) valid = false;
+  result += raw ? (raw === "title" ? escapeMarkup(rest) : "") : rest;
+  return valid ? result : "";
+}
+export const checkExercise = (exercise, source) => {
+  const checked = exercise.kind === "css" ? source : exerciseHtml(source);
+  return exercise.checks.map(([label, test]) => ({ label, passed: test(checked) }));
+};
 
 // One hint per exercise, shown on request after a failed check. It names the
 // next step without giving away the whole solution.

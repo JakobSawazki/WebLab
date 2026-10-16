@@ -66,6 +66,52 @@ test("Every lesson offers at least one exercise", () => {
   for (const l of lessons) assert.ok(exercises[l.id]?.length >= 1, l.id);
 });
 
+test("HTML exercises accept quote, whitespace and tag-name variants without editing the source", () => {
+  for (const [id, , exercise] of all.filter(([, , e]) => e.kind !== "css")) {
+    const variant = exercise.fixed.replace(/<[^>]+>/g, (tag) => tag
+      .replace(/(<\/?)([a-z][a-z0-9-]*)/i, (_, open, name) => open + name.toUpperCase())
+      .replace(/([a-z-]+)="([^"]*)"/gi, (_, key, value) => `${key.toUpperCase()} = '${value}'`)
+      .replace(/>$/, " >"));
+    assert.ok(checkExercise(exercise, variant).every(r => r.passed), id);
+    assert.ok(variant.includes(" >"), "the fixture actually differs");
+  }
+  assert.ok(checkExercise(exercises.l9[0], '<LINK REL=STYLESHEET HREF=style.css />').every(r => r.passed));
+  assert.ok(!checkExercise(exercises.l9[0], '<link rel=stylesheet href=style.css/>').every(r => r.passed), "slash belongs to an unquoted filename");
+  assert.ok(checkExercise(exercises.l8[1], "<video controls><source src='film.mp4' type='video/mp4'/></video><p>Wir sehen ein Beet entstehen.</p>").every(r => r.passed));
+  assert.ok(checkExercise(exercises.l1[1], '<h1>Mein Hobby</h1><p>Los geht es<br/><strong>gemeinsam</strong>.</p>').every(r => r.passed));
+  assert.ok(checkExercise(exercises.l5[1], "<a href='index.html'>Start</a><a href='HTTPS://example.org'>Extern</a>").every(r => r.passed));
+  assert.ok(checkExercise(exercises.l6[1], '<img src="bilder/linie.png" alt><img src="bilder/team.jpg" alt="Unsere AG im Schulgarten">').every(r => r.passed), "empty attribute syntax is equivalent to an empty value");
+});
+
+test("Spelling normalization preserves case-sensitive file paths and ids", () => {
+  assert.equal(checkExercise(exercises.l5[1], exercises.l5[1].fixed.replace('index.html', 'INDEX.HTML'))[0].passed, false);
+  assert.equal(checkExercise(exercises.l5[0], exercises.l5[0].fixed.replace('id="ideen"', "id='Ideen'"))[0].passed, false);
+  assert.equal(checkExercise(exercises.l13[1], exercises.l13[1].fixed.replace('kontakt.html', 'Kontakt.html'))[0].passed, false);
+  assert.equal(checkExercise(exercises.l16[0], exercises.l16[0].fixed.replace('style.css', 'Style.CSS'))[2].passed, false);
+  assert.equal(checkExercise(exercises.l16[0], exercises.l16[0].fixed.replace('index.html', 'INDEX.HTML'))[3].passed, false);
+  assert.equal(checkExercise(exercises.l10[0], exercises.l10[0].fixed.replace('#start', '#Start'))[1].passed, false, "CSS is not normalized as HTML");
+});
+
+test("HTML spelling normalization never supplies missing tags or counts hidden examples", () => {
+  for (const [id, , exercise] of all.filter(([, , e]) => e.kind !== "css")) {
+    for (const tag of ["script", "style", "textarea", "template"]) {
+      assert.ok(!checkExercise(exercise, `<${tag}>${exercise.fixed}</${tag}>`).every(r => r.passed), `${id}: ${tag}`);
+    }
+    assert.ok(!checkExercise(exercise, `<!-- ${exercise.fixed} -->`).every(r => r.passed), `${id}: comment`);
+  }
+  assert.ok(!checkExercise(exercises.l1[0], '<h1>Titel<h1><p><strong>Text</p></strong>').every(r => r.passed));
+  assert.ok(!checkExercise(exercises.l5[1], '<a href="index.html>Start</a><a href="https://example.org">Extern</a>').every(r => r.passed));
+  assert.ok(!checkExercise(exercises.l5[1], '<a href="falsch.html" href="index.html">Start</a><a href="https://example.org">Extern</a>').every(r => r.passed));
+});
+
+test("License practice requires footer text, not words in an attribute or elsewhere", () => {
+  const e = exercises.l14[1];
+  const words = "Lena Beispiel, commons.wikimedia.org, CC BY 4.0";
+  assert.ok(checkExercise(e, `<footer class='quellen'><p>Lena <em>Beispiel</em>, commons.wikimedia.org, CC BY 4.0</p></footer>`).every(r => r.passed));
+  assert.ok(!checkExercise(e, `<footer title='${words}'><p>Foto im Frühling</p></footer>`).every(r => r.passed));
+  assert.ok(!checkExercise(e, `<p>${words}</p><footer>Foto im Frühling</footer>`).every(r => r.passed));
+});
+
 test("Row colors require active rules for the right classes and complete color values", () => {
   const exercise = exercises.l11[2];
   const result = (source) => checkExercise(exercise, source).map((r) => r.passed);

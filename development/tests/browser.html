@@ -847,6 +847,27 @@
     imageHost.style.width = "120px";
     assert(wideImageFits && imageFits(), "Bildtransfer: Vollstaendige Loesung bewahrt das Seitenverhaeltnis auch im schmaleren Bereich");
     imageHost.remove();
+    boxWin.location.hash = "#lesson/l5/2";
+    await new Promise(resolve => setTimeout(resolve, 200));
+    const spellingExercise = boxDoc.querySelector('.exercise[data-exercise="1"]');
+    const spellingCode = spellingExercise.querySelector("textarea");
+    const spellingSource = "<A HREF = 'index.html' >Startseite</A >\n<A HREF = 'https://example.org' >Extern</A >";
+    const beforeSpelling = localStorage.getItem(STORAGE_KEY);
+    spellingCode.value = spellingSource;
+    spellingExercise.querySelector("[data-exercise-check]").click();
+    assert(spellingExercise.querySelectorAll(".criteria .pass").length === 2 && spellingCode.value === spellingSource &&
+      localStorage.getItem(STORAGE_KEY) === beforeSpelling,
+      "HTML-Schreibweisen: Einfache Anfuehrungszeichen, Leerzeichen und grosse Tags bestehen ohne Codeumschreibung oder Entwurfaenderung");
+    spellingCode.value = spellingSource.replace("index.html", "INDEX.HTML");
+    spellingExercise.querySelector("[data-exercise-check]").click();
+    assert(spellingExercise.querySelectorAll(".criteria .fail").length === 1,
+      "HTML-Schreibweisen: Falsch geschriebener Dateiname bleibt ein Fehler");
+    spellingCode.value = "<!-- " + spellingSource + " -->";
+    spellingExercise.querySelector("[data-exercise-check]").click();
+    assert(spellingExercise.querySelectorAll(".criteria .fail").length === 2,
+      "HTML-Schreibweisen: Auskommentierte Loesungen erfuellen keine Linkkriterien");
+    if (savedRowExercises === null) localStorage.removeItem("weblab-exercises-v1");
+    else localStorage.setItem("weblab-exercises-v1", savedRowExercises);
     boxWin.location.hash = "#lesson/l5";
     await new Promise((resolve) => setTimeout(resolve, 200));
     const downloadTransfer = boxDoc.querySelector(".lesson-extension");

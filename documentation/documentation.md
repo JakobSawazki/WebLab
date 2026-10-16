@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.40.0** · Status: **geprüft und veröffentlicht**.
+Version: **1.40.1** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.40.0 |
+| Bereich | Version 1.40.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
@@ -304,6 +304,18 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 16.10.2026 – Codex – Version 1.40.1: Gültige HTML-Schreibweisen fair prüfen
+
+Konkreter Fehler: In der Mini-Übung 05/2 wurde ein korrekter Link mit einfachen Anführungszeichen als falsch gemeldet. Die HTML-Übungsprüfung vereinheitlicht nun unterstützte Schreibvarianten ausschließlich in einer internen Prüfkopie: einfache/doppelte und zulässige unquotierte Attributwerte, Leerzeichen am Gleichheitszeichen, Großschreibung von Tag-/Attributnamen, leere Attribute sowie gültige Schreibweisen leerer Elemente. Editorinhalt und Vorschau werden dabei nicht umgeschrieben. HTML-Werte wie Pfade und IDs bleiben erhalten; ausgewählte Prüfungen zu Navigation und gemeinsamer CSS-Datei wurden von irrtümlicher Groß-/Kleinschreibungsignorierung befreit. Ein großgeschriebenes HTTPS-Protokoll bleibt zulässig.
+
+Die Prüfung arbeitet weiter am Quelltext und fügt keine fehlenden End-Tags oder reparierte Verschachtelungen hinzu. Kommentare und Beispiele in script/style/textarea/template zählen nicht als erfüllte HTML-Bausteine. Doppelte Attribute und unvollständige Anführungszeichen werden nicht stillschweigend repariert. CSS-Übungen behalten ihren bisherigen Prüfpfad. Das ist eine begrenzte Prüfung der einfachen Übungsformen, kein vollständiger HTML-Parser oder Konformitätsvalidator; etwa beliebige zusätzliche Attribute/Attributreihenfolgen und alle Zeichenreferenzen werden nicht allgemein abgedeckt.
+
+Lizenzübung 14/2 verlangt ihre Angaben im Text des footer statt bloß irgendwo im Quelltext oder in einem Attribut. Der Merksatz zu th spricht jetzt eindeutig von einer Kopfzelle. Die Listen-Reparatur 04/1 formuliert ausgeschriebene li-End-Tags als Vorgabe dieser Grundübung; HTML erlaubt sie unter bestimmten Bedingungen auch wegzulassen. Referenz: [WHATWG: HTML-Syntax und Attribute](https://html.spec.whatwg.org/multipage/syntax.html#attributes-2), [optionale Tags](https://html.spec.whatwg.org/multipage/syntax.html#optional-tags).
+
+Alle 40 Mini-Übungen und ihre IDs bleiben erhalten; bestehende Lösungsmarkierungen werden nicht nachträglich gelöscht. Keine Änderung an XP, NAGOLD, Freischaltungen, Entwürfen, Profilen oder Sicherungsformat. Frühere Markierungen sind weiterhin keine erneute inhaltliche Validierung des damals eingegebenen Codes.
+
+Lokal **49 Node-Tests bestanden**: Schreibvarianten für sämtliche HTML-Referenzlösungen, leere Elemente/Attribute, Pfad-/ID-Großschreibung, nicht reparierte Fehler, Kommentare/versteckte Beispiele und Lizenzangaben im Footer. Drei Browserregressionen für tatsächliche Bedienung, unveränderten Editor/Entwurf, falsche Dateinamen und auskommentierte Links ergänzt. Build erstellt; CI und Veröffentlichung folgen.
 
 ### 16.10.2026 – Codex – Version 1.40.0: Verbundene Zellen und proportionale Bilder
 

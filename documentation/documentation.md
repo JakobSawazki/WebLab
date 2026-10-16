@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.38.0** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
+Version: **1.38.0** · Status: **geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -226,7 +226,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (16.10.2026, Codex, Version 1.36.2):** 40 Node-Tests und 185 Browserprüfungen bestanden. Die zwölf Import-Regressionsprüfungen aus 1.36.1/1.36.2 prüfen Speicherfehler und überholte Dateilesevorgänge. Pages-Lauf 38955772530 erfolgreich; öffentliches weblab.js per SHA-256 identisch mit dem lokal geprüften Bundle.
+**Aktueller Stand (16.10.2026, Codex, Version 1.38.0):** 43 Node-Tests und 192 Browserprüfungen bestanden. Einschließlich Import-Regressionsprüfungen aus 1.36.1/1.36.2, Tabellenklassen, Listenzeichen und PDF-Transfer. Pages-Lauf 38959141395 erfolgreich; öffentliches weblab.js per SHA-256 identisch mit dem normalisierten lokalen Bundle. Prüfumfang und Grenzen stehen im aktuellen Arbeitsprotokoll.
 
 **Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
@@ -243,7 +243,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 Offene Erweiterungen, nach Priorität:
 
 1. **Unterrichtserprobung:** Sprache, Hinweise und Aufgaben mit einer Klasse erproben. Die 16 Einstiegsfassungen sind eine arbeitsfähige Grundlage, keine behauptete pädagogische Endabnahme.
-2. **Originalquellen:** Alle 81 Anhänge aus Teil 1/2 sind seit 16.10.2026 lokal gesichert und auf Dateiintegrität geprüft. Als Nächstes Inhalte fachlich abgleichen; veraltete Rechtsmaterialien gesondert prüfen.
+2. **Originalquellen:** Alle 81 Anhänge aus Teil 1/2 sind seit 16.10.2026 lokal gesichert und auf Dateiintegrität geprüft. Teil 1 ist anhand aller 29 DOCX-Absatztexte abgeglichen; Status pro Kapitel im Quellenabschnitt. Als Nächstes Teil 2 fachlich abgleichen, veraltete Rechtsmaterialien gesondert prüfen und verbleibende Abbildungen/Vorlagen sichten.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
 4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10, seit 1.24.0/1.25.0 eine Übungswerkstatt mit Mini-Editor, Live-Vorschau und Merksätzen. Seit 1.33.0 gibt es auch eine Audio-Übung, seit 1.34.0 Profi-Aufgaben am Ende der Etappen 1–3 als oberste Stufe. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
@@ -288,7 +288,7 @@ Einheit 11 erhält **Übung 4 „Listenzeichen mit CSS gestalten“**: ul mit qu
 
 Vertiefung 05 ergänzt einen echten PDF-Link im Projekt-Unterordner service samt eigenständigem Anlegen/Kopieren der Datei, Download-Attribut, absichtlich fehlerhaftem Pfad und Test im normalen Browser mit Notepad++/Strg+S/F5. Die Anleitung sagt ausdrücklich, dass die verlinkte PDF nicht automatisch im WebLab-Export enthalten ist und die Laborvorschau keine Downloads ausführt. Browser-/Einstellungsunterschiede beim Öffnen oder Herunterladen erklärt. Keine Downloadfreigabe der Vorschau und keine Änderung des Exportformats.
 
-Lokal **43 Node-Tests bestanden**, einschließlich der neuen Prüfung für Listenart, vollständige Werte, Kommentare und alternative CSS-Großschreibung sowie eines Tests für plattformunabhängige Bündel. Vier Browserprüfungen für Mini-Editor/Fokus, offene Kriterien, Lösung mit unverändertem Entwurf und PDF-Transfer bei 360 Pixeln ergänzt. Erster [Pages-Lauf 38958885789](https://github.com/JakobSawazki/WebLab/actions/runs/38958885789) mit 192/192 Browserprüfungen erfolgreich, Inhaltscommit `a17e71a`. Build mit sieben öffentlichen Dateien erstellt. Nachfolgende Build-Normalisierung wird erneut über CI geprüft.
+Lokal **43 Node-Tests bestanden**, einschließlich der neuen Prüfung für Listenart, vollständige Werte, Kommentare und alternative CSS-Großschreibung sowie eines Tests für plattformunabhängige Bündel. Vier Browserprüfungen für Mini-Editor/Fokus, offene Kriterien, Lösung mit unverändertem Entwurf und PDF-Transfer bei 360 Pixeln ergänzt. Erster [Pages-Lauf 38958885789](https://github.com/JakobSawazki/WebLab/actions/runs/38958885789) mit 192/192 Browserprüfungen erfolgreich, Inhaltscommit `a17e71a`. Build mit sieben öffentlichen Dateien erstellt. Auch die Build-Normalisierung ist geprüft: [Pages-Lauf 38959141395](https://github.com/JakobSawazki/WebLab/actions/runs/38959141395) mit **43/43 Node-Tests und 192/192 Browserprüfungen** erfolgreich, Build-Commit `009959c`. Live-Bündel nach diesem Deployment nochmals bytegenau gegen den lokalen LF-Build geprüft. Dieser liegt außerhalb des Projekts unter `C:\Users\PC\WebLab-Sicherungen\Listen-PDF-1.38.0-2026-10-16\LF-Build\dist`; im Projekt bleibt kein dist-Ordner.
 
 Beim Live-Vergleich waren zunächst nur Zeilenenden unterschiedlich (243 CRLF lokal, 0 online; nach Normalisierung identischer Inhalt). Der Bündler normalisiert Module nun unabhängig vom Git-Checkout auf LF. Der neue Test prüft gleiche Bytes und ausführbaren Code aus Windows-/Linux-Eingaben. Das lokale Bündel stimmt anschließend bytegenau mit der bereits veröffentlichten Fassung überein: SHA-256 `81638d90bef3ab09b978e130811398d450fa1b36808fda8e0f996a5b2bc33504`. Die Build-Änderung verändert den bereits veröffentlichten Laufzeitcode nicht, daher bleibt diese Veröffentlichung bei 1.38.0.
 

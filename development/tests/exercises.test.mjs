@@ -65,6 +65,18 @@ test("Every lesson offers at least one exercise", () => {
   for (const l of lessons) assert.ok(exercises[l.id]?.length >= 1, l.id);
 });
 
+test("Row colors require active rules for the right classes and complete color values", () => {
+  const exercise = exercises.l11[2];
+  const result = (source) => checkExercise(exercise, source).map((r) => r.passed);
+  assert.deepEqual(result(".ungerade { background-color: lightblue; }"), [true, false]);
+  assert.deepEqual(result(".gerade { background-color: white; }"), [false, true]);
+  assert.deepEqual(result("/* " + exercise.fixed + " */"), [false, false]);
+  assert.deepEqual(result(".ungerade { background-color: lightblueish; } .gerade { background-color: whitewash; }"), [false, false]);
+  assert.deepEqual(result(".Ungerade { background-color: lightblue; } #gerade { background-color: white; }"), [false, false]);
+  assert.deepEqual(result(".ungerade { background-color: ; } .gerade { color: white; }"), [false, false]);
+  assert.deepEqual(result("tr.gerade { BACKGROUND-COLOR: #FFF } tr.ungerade { background-color: #ADD8E6; }"), [true, true]);
+});
+
 test("Every exercise has exactly one hint, and hints never contain the full solution", async () => {
   const { exerciseHints } = await import("../src/exercises.js");
   assert.deepEqual(Object.keys(exerciseHints).sort(), all.map(([name]) => name).sort());

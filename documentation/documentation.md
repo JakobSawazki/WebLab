@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.36.2** · Status: **geprüft und veröffentlicht**.
+Version: **1.37.0** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.36.2 |
+| Bereich | Version 1.37.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -86,7 +86,7 @@ OneNote: Notizbuch **Lernfelder**, Abschnitt **2. Internetseiten**. Alle sechs S
 
 Ablage: ressources/BPE2/OneNote-Desktop/Teil-1 bzw. Teil-2, getrennt nach Information, Aufgabe-und-Vorlage, Loesung, Uebersicht und Tools. Gleiche Dateinamen aus verschiedenen Spalten bleiben getrennt. Anhang-Export-Inventar.json im selben Stammordner enthält je Datei Herkunft, Größe, SHA-256 und Prüfergebnis; die beiden lokalen Seiten-XMLs erlauben die Zuordnung. Das frühere Anhang-Inventar.json bleibt als Metadatenaufnahme erhalten. Alle DOCX-/ZIP-Dateien bestehen die ZIP-CRC-Prüfung, DOCX enthält word/document.xml, die drei PDF-Dateien haben die PDF-Signatur. Keine Software oder eingebettete HTML-Seite wurde ausgeführt.
 
-**Noch offen: fachlicher Abgleich der Originalinhalte.** Die Dateiintegrität ist geprüft, die Dokumentinhalte sind noch nicht als gelesen verbucht. Die Kopien stammen aus Jakobs OneNote; sie werden nicht ohne Abgleich als identisch mit der zuletzt öffentlich angebotenen Fassung vom 31.07.2025 bezeichnet. Originale, Lösungen, XMLs und Inventare bleiben lokal und außerhalb von Git. Technische Referenz: [Microsoft OneNote Application interface](https://learn.microsoft.com/en-us/office/client-developer/onenote/application-interface-onenote).
+**Fachlicher Abgleich begonnen.** Ein gezielter erster Abgleich umfasst Information 10 (Tabellen, Text) und Aufgabe 12 (Tabellenklassen, Text und beide eingebetteten Abbildungen) aus Teil 1. Die übrigen Originale und Lösungen sind damit nicht als vollständig gelesen oder fachlich freigegeben verbucht. Die Dateiintegrität aller Anhänge ist geprüft. Die Kopien stammen aus Jakobs OneNote; sie werden nicht ohne Abgleich als identisch mit der zuletzt öffentlich angebotenen Fassung vom 31.07.2025 bezeichnet. Originale, Lösungen, XMLs und Inventare bleiben lokal und außerhalb von Git. Technische Referenz: [Microsoft OneNote Application interface](https://learn.microsoft.com/en-us/office/client-developer/onenote/application-interface-onenote).
 
 **Recherche zum Landesbildungsserver (Aufgabe 1):** Der [offizielle Abschaltungshinweis](https://lehrerfortbildung-bw.de/willkommen/) nennt den 30.09.2026. Alte LBS-Adressen werden auf diese Seite weitergeleitet; gesicherte Materialien können teilweise nach Prüfung über das dort verlinkte [Kontaktformular](https://lehrerfortbildung-bw.de/feedback/) angefragt werden. Der Suchindex nennt noch bpe-2-internetseiten.zip, Stand 31.07.2025, rund 34 MB. Der tatsächliche Abruf der alten ZIP-Adresse liefert jedoch HTTP 200 mit text/html und der Abschaltungsseite, kein Archiv. Auch über öffentliche Suche und die interne LFBS-Suche wurde kein verifizierter neuer Downloadort dieser konkreten Sammlung gefunden. Bisher ist dafür keine Anmeldung angefordert worden. Es wurde keine Anfrage versendet. Der Materialzugang für WebLab ist durch die OneNote-Originalkopien dennoch hergestellt.
 
@@ -254,6 +254,18 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 16.10.2026 – Codex – Version 1.37.0: Tabellen mit CSS-Klassen gestalten
+
+Erster gezielter Inhaltsabgleich der gesicherten Originale: `Teil-1/Information/10.docx` erläutert Tabellen, Rahmen, Breite, Zentrierung und verbundene Zellen; `Teil-1/Aufgabe-und-Vorlage/12.docx` fordert abwechselnde Zeilenfarben über zwei wiederverwendbare Klassen. Text beider Dateien sowie beide eingebetteten Aufgabenabbildungen geprüft. Tabellenaufbau ist in Einheit 07, grundlegende Tabellenformatierung als Transfer in Einheit 12 vorhanden. Das allein belegt noch keine vollständige Abdeckung sämtlicher Originalaufgaben.
+
+Ergänzt: optionale Mini-Übung **Einheit 11, Übung 3 „Tabellenzeilen abwechselnd färben“**. Eigene Schulgarten-Tabelle mit vier Datenzeilen; die Klassen `ungerade` und `gerade` sind vorgegeben. Lernende schreiben zwei CSS-Regeln mit `background-color`, sehen die Wirkung direkt und erkennen, dass dieselbe Klasse mehrere Zeilen auswählt. Die Kopfzeile bleibt außerhalb beider Klassen. Platzierung nach Einführung von Klassen (10) und Farben (11). Eigene Inhalte und Farbwahl; keine Originaltexte, Abbildungen oder Lösungen öffentlich übernommen. Hover aus der Zusatzaufgabe bleibt eine spätere Vertiefung. Klassensemantik gegen [W3C Selectors](https://www.w3.org/TR/selectors-3/#class-html) abgeglichen.
+
+37 Mini-Übungen insgesamt. Neue Übung hinten an Einheit 11 angefügt, alle bisherigen IDs und Lösungsmarkierungen bleiben erhalten. Keine zusätzlichen XP, keine Änderung an Freischaltung, Entwürfen oder Sicherungsformat. Prüfung verlangt echte Klassenregeln mit vollständigem Farbwert; Kommentare, leere Werte, falsche Klassen und ähnlich klingende ungültige Farbnamen zählen nicht. Die ausdrücklich verlangten Farbnamen und gleichwertige Hexwerte werden angenommen. Die Prüfung bleibt auf diese zwei einfachen Regeln begrenzt und ist kein vollständiger CSS-Validator.
+
+Lokale Prüfung: **41 Node-Tests bestanden**, einschließlich Startcode, Referenzlösung und gezielter Fehl-/Teil-Lösungen. Statisches Paket mit sieben öffentlichen Dateien gebaut. Drei Browserprüfungen für Direktlink/Fokus bei 360 Pixeln, offene Kriterien/Tipp und erfolgreiches Lösen mit isolierter Vorschau bei unverändertem Entwurf ergänzt; CI-Ergebnis folgt.
+
+Quellenprüfung lokal unter `ressources/BPE2/OneNote-Desktop/Auswertung/Tabellen/Abgleich.json`. Ein eigener, versteckter, schreibgeschützter Word-Renderlauf lieferte keine PDF und wurde beendet; stattdessen wurden die beiden eingebetteten Aufgabenabbildungen direkt aus dem DOCX gelesen und visuell geprüft. Kein vollständiger Seitenlayout-Abgleich behauptet. Originale und Auswertung bleiben von Git ausgeschlossen. Offene Rückfragen 2–5 in tasks.md bleiben unverändert.
 
 ### 16.10.2026 – Codex – Aufgabe 1 erledigt: Quellenrecherche und OneNote-Originale
 

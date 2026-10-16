@@ -250,7 +250,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.36.2";
+const VERSION = "1.37.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -3522,6 +3522,13 @@ const rule = (source, selector, property, value = "") =>
   new RegExp(`(^|[\\s};])${selector}\\s*\\{[^}]*\\b${property}\\s*:\\s*${value}`, "i").test(source);
 const imgTag = (source, src) =>
   (source.match(/<img\b[^>]*>/gi) || []).find((tag) => tag.includes(`src="${src}"`)) || "";
+// This exercise asks for two simple class rules. Ignore comments and require
+// a complete color value, so commented examples and empty declarations fail.
+const rowColor = (source, className, value) =>
+  [...source.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)].some(([, selectors, declarations]) =>
+    selectors.split(",").some((selector) => [`.${className}`, `tr.${className}`].includes(selector.trim())) &&
+    new RegExp(`(^|;)\\s*background-color\\s*:\\s*(?:${value})\\s*(?:;|$)`, "i").test(declarations),
+  );
 
 const exerciseTypes = {
   repair: "Reparieren",
@@ -3900,6 +3907,21 @@ const exercises = {
       ],
       remember: "Eine Schriftfamilie nennt immer auch eine Ersatzschrift.",
     },
+    // Append to preserve the numeric ids of existing solved markers.
+    {
+      type: "write",
+      kind: "css",
+      context: '<table>\n  <caption>Gießdienst im Schulgarten</caption>\n  <tr><th scope="col">Tag</th><th scope="col">Team</th></tr>\n  <tr class="ungerade"><td>Montag</td><td>Team A</td></tr>\n  <tr class="gerade"><td>Dienstag</td><td>Team B</td></tr>\n  <tr class="ungerade"><td>Mittwoch</td><td>Team C</td></tr>\n  <tr class="gerade"><td>Donnerstag</td><td>Team D</td></tr>\n</table>',
+      title: "Tabellenzeilen abwechselnd färben",
+      task: 'Die vier Datenzeilen der Tabelle besitzen abwechselnd class="ungerade" und class="gerade". Schreibe zwei Klassenregeln: .ungerade bekommt mit background-color die Farbe lightblue, .gerade die Farbe white. Beobachte: Eine Klassenregel wirkt auf mehrere Zeilen; die Kopfzeile gehört zu keiner der beiden Klassen.',
+      code: "/* Zwei Klassenregeln für die Datenzeilen */\n",
+      fixed: ".ungerade { background-color: lightblue; }\n.gerade { background-color: white; }",
+      checks: [
+        [".ungerade mit background-color: lightblue", (s) => rowColor(s, "ungerade", "lightblue|#add8e6")],
+        [".gerade mit background-color: white", (s) => rowColor(s, "gerade", "white|#fff|#ffffff")],
+      ],
+      remember: "Eine Klasse kann an mehreren tr stehen. .klassenname wählt diese Zeilen aus; background-color färbt ihren Hintergrund.",
+    },
   ],
   l12: [
     {
@@ -4084,6 +4106,7 @@ const exerciseHints = {
   "l10-2": "Du brauchst drei Regeln, eine für p, eine für .hinweis und eine für #start. Die letzte setzt text-align: center;.",
   "l11-1": "Hänge an 18 eine Einheit wie px an. Schreibe 1.6 mit Punkt statt Komma.",
   "l11-2": "In body { … } stehen drei Zeilen: color, background-color und font-family mit Komma und Ersatzschrift, etwa Arial, sans-serif.",
+  "l11-3": "Beginne mit .ungerade { … } und .gerade { … }. In jeder Regel steht background-color mit Doppelpunkt, Farbname und Semikolon.",
   "l12-1": "Setze padding auf einen Wert größer als 0, zum Beispiel 1rem. Ergänze bei border den Stil solid zwischen Breite und Farbe.",
   "l12-2": "Du brauchst drei Eigenschaften: max-width mit einer Breite, margin mit dem Wort auto und box-sizing mit dem Wert border-box.",
   "l12-3": "Schreibe vier Regeln nacheinander: body, #start, .hinweis und .karte. Die Karte braucht vier Eigenschaften.",

@@ -755,6 +755,27 @@
         localStorage.getItem(STORAGE_KEY) === selectorSaved,
       "Selektorhilfe: ungueltiger Selektor wird erklaert, Lernstand bleibt unveraendert",
     );
+    // New class exercise connects the known table structure to CSS grouping.
+    const savedRowExercises = localStorage.getItem("weblab-exercises-v1");
+    boxWin.location.hash = "#lesson/l11/3";
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    const rowExercise = boxDoc.querySelector('.exercise[data-exercise="2"]');
+    const rowSaved = localStorage.getItem(STORAGE_KEY);
+    assert(rowExercise?.open && boxDoc.activeElement === rowExercise.querySelector("textarea") && boxDoc.documentElement.scrollWidth <= 360,
+      "Tabellenklassen: Direktlink fokussiert den Mini-Editor ohne Ueberlauf bei 360 Pixeln");
+    rowExercise.querySelector("[data-exercise-check]").click();
+    assert(rowExercise.querySelectorAll(".criteria .fail").length === 2 && rowExercise.querySelector("[data-exercise-hint]"),
+      "Tabellenklassen: Leerer Ausgangscode zeigt beide offenen Klassen und einen Tipp");
+    rowExercise.querySelector("textarea").value = ".ungerade { background-color: lightblue; }\n.gerade { background-color: white; }";
+    rowExercise.querySelector("textarea").dispatchEvent(new boxWin.Event("input"));
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    rowExercise.querySelector("[data-exercise-check]").click();
+    assert(rowExercise.querySelectorAll(".criteria .pass").length === 2 && rowExercise.querySelector(".exercise-remember") &&
+      rowExercise.querySelector("iframe").getAttribute("sandbox") === "" && rowExercise.querySelector("iframe").srcdoc.includes('class="ungerade"') &&
+      rowExercise.querySelector("iframe").srcdoc.includes("background-color: lightblue") && localStorage.getItem(STORAGE_KEY) === rowSaved,
+      "Tabellenklassen: Loesung wirkt in isolierter Vorschau, zeigt Merksatz und erhaelt Entwurf und Punkte");
+    if (savedRowExercises === null) localStorage.removeItem("weblab-exercises-v1");
+    else localStorage.setItem("weblab-exercises-v1", savedRowExercises);
     // Direct link from the home suggestion: #lesson/<id>/<exercise number>.
     boxWin.location.hash = "#lesson/l3/2";
     await new Promise((resolve) => setTimeout(resolve, 200));

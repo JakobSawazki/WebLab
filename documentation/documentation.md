@@ -6,6 +6,14 @@ Version: **1.36.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
+### Offene Rückfragen und Aufgaben
+
+Auf Jakobs Wunsch vom 16.10.2026 stehen offene Fragen, Entscheidungen und benötigte Rückmeldungen in [tasks.md](tasks.md) in diesem Ordner. Jakob antwortet dort unter der entsprechenden Nummer. Vor Arbeitsbeginn lesen Codex und Claude beide Dateien und prüfen neue Antworten. Die Reihenfolge der Bearbeitung bestimmen sie selbst; unabhängig ausführbare Arbeiten laufen weiter.
+
+Bestehende Nummern bleiben bis zur Erledigung erhalten; neue Punkte erhalten eine neue, höhere Nummer. Antworten werden erst nach tatsächlich erfolgter Bearbeitung als erledigt verbucht. Dann werden Frage und Antwort aus tasks.md entfernt und hier mit Datum, Autor, Entscheidung, Ergebnis und gegebenenfalls Prüfung dokumentiert. Eine Entscheidung zum Zurückstellen wird hier mit ihrem Umfang festgehalten; sie gilt nicht als umgesetzte Funktion. tasks.md enthält somit nur noch offene Punkte und keine zweite Projekthistorie.
+
+tasks.md bleibt lokal im gemeinsamen Drive-Projektordner und ist von Git ausgeschlossen, damit Jakobs spätere Antworten nicht automatisch öffentlich werden. Die vereinbarte Arbeitsweise und erledigte Ergebnisse werden hier im Git-Verlauf festgehalten. Der bisherige Abschnitt „Offene Erweiterungen“ dient als fachlicher Hintergrund; aktuelle Rückfragen an Jakob werden ausschließlich in tasks.md gepflegt.
+
 ## 1. Ziel und aktueller Funktionsumfang
 
 Schülerinnen und Schüler verstehen HTML und CSS und entwickeln selbständig eine eigene statische Webseite. Die Gestaltung übernimmt Seitenrahmen, Farbwerte, Metallflächen, dunklen Standardmodus, helles Farbschema, Profilkopf und Navigationsidee von WorkbenchLab. Die Anwendung selbst ist auf Webentwicklung zugeschnitten und enthält keine SQL-/Datenbankmodule.
@@ -240,6 +248,10 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 16.10.2026 – Codex – Nummerierte Rückfragen in tasks.md
+
+Jakobs gewünschten Ablauf eingerichtet: documentation/tasks.md enthält fünf offene Punkte zu OneNote-Originalanhängen, Mehrdatei-Werkstatt, Lehrkraftübersicht, Unterrichtsrückmeldungen und Schulgeräten sowie einen Bereich für Antworten mit denselben Nummern. Der bereits bestätigte Edge-Dateistart wird nicht erneut als offene Frage gestellt. Die Aufgabenliste bleibt lokal; .gitignore schützt sie vor versehentlicher Veröffentlichung. Erledigte Punkte werden künftig aus der Liste entfernt und in dieser Dokumentation protokolliert. Keine Änderung an App, Version oder Lernständen; Markdown, eindeutige Nummernzuordnung und Git-Ausschluss geprüft.
 
 ### 16.10.2026 – Codex – Übernahme und Nachprüfung von Version 1.36.0
 

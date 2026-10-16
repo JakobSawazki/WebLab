@@ -11,3 +11,6 @@ ressources/
 resources/
 WebLab-*.json
 WebLab-*.csv
+
+# Lokale Rückfragen und Antworten von Jakob; können interne Angaben enthalten.
+documentation/tasks.md

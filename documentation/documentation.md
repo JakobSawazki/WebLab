@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.39.0** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
+Version: **1.39.0** · Status: **geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -243,7 +243,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (16.10.2026, Codex, Version 1.38.0):** 43 Node-Tests und 192 Browserprüfungen bestanden. Einschließlich Import-Regressionsprüfungen aus 1.36.1/1.36.2, Tabellenklassen, Listenzeichen und PDF-Transfer. Pages-Lauf 38959141395 erfolgreich; öffentliches weblab.js per SHA-256 identisch mit dem normalisierten lokalen Bundle. Prüfumfang und Grenzen stehen im aktuellen Arbeitsprotokoll.
+**Aktueller Stand (16.10.2026, Codex, Version 1.39.0):** 43 Node-Tests und 200 Browserprüfungen bestanden. Zusätzlich zu den bisherigen Prüfungen werden die Fallaufgaben in 14/15, aufklappbare Erklärungen, sichere Quellenlinks, beide Farbschemata bei 360 Pixeln und unveränderte Lernstände geprüft. Pages-Lauf 38960299221 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. Dies belegt keine rechtliche Freigabe einer konkreten Schülerseite oder den Betrieb am tatsächlichen Schulserver.
 
 **Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
@@ -305,7 +305,7 @@ Neu: `development/src/case-studies.js` mit drei eigenen Fällen für Einheit 14 
 
 Die Fallaufgaben stehen im Verstehen-Abschnitt vor der eigenen Praxis, verwenden vorhandene Metallflächen/aufklappbare Erklärungen und speichern keinen Zustand. Keine Änderung an Kriterien, Freischaltung, XP, NAGOLD, Sicherungsformat oder 38 bestehenden Mini-Übungen. Die Hauptseite startet weiterhin direkt über index.html. Die ursprünglichen Übungszugänge und ein öffentlicher Tunnel werden nicht benötigt oder eingerichtet.
 
-Lokal 43 Node-Tests bestanden; das neue Modul ist im statischen Bündel enthalten, das öffentliche Paket bleibt bei sieben Dateien. Acht Browserprüfungen für beide Einheiten, verdeckte Erklärungen, Quellenlinks, 360 Pixel in beiden Farbschemata und unveränderten Lernstand ergänzt. CI und Veröffentlichung folgen.
+Lokal 43 Node-Tests bestanden; das neue Modul ist im statischen Bündel enthalten, das öffentliche Paket bleibt bei sieben Dateien. Acht Browserprüfungen für beide Einheiten, verdeckte Erklärungen, Quellenlinks, 360 Pixel in beiden Farbschemata und unveränderten Lernstand ergänzt. **200/200 Browserprüfungen und 43/43 Node-Tests bestanden**; [Pages-Lauf 38960299221](https://github.com/JakobSawazki/WebLab/actions/runs/38960299221) erfolgreich. Implementierungscommit `2e38e42`. Live-Version und Fallaufgaben im ausgelieferten Bündel vorhanden, SHA-256 bytegleich mit dem geprüften lokalen Build: `c162ecef9b094f8f762b1e49308a0c706089bd6b0be2c61eb05a11c623279001`. Build-Ausgabe außerhalb des Projekts unter `C:\Users\PC\WebLab-Sicherungen\Recht-Server-1.39.0-2026-10-16\dist`; kein dist-Ordner im Projekt.
 
 ### 16.10.2026 – Codex – Version 1.38.0: Listenzeichen und PDF-Transfer
 

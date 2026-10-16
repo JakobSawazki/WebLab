@@ -18,13 +18,17 @@ const rule = (source, selector, property, value = "") =>
   new RegExp(`(^|[\\s};])${selector}\\s*\\{[^}]*\\b${property}\\s*:\\s*${value}`, "i").test(source);
 const imgTag = (source, src) =>
   (source.match(/<img\b[^>]*>/gi) || []).find((tag) => tag.includes(`src="${src}"`)) || "";
-// This exercise asks for two simple class rules. Ignore comments and require
-// a complete color value, so commented examples and empty declarations fail.
-const rowColor = (source, className, value) =>
+// These exercises ask for simple rules. Ignore comments and require a complete
+// property and value, so commented examples and lookalike names fail.
+const cssValue = (source, selectorMatches, property, value) =>
   [...source.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)].some(([, selectors, declarations]) =>
-    selectors.split(",").some((selector) => [`.${className}`, `tr.${className}`].includes(selector.trim())) &&
-    new RegExp(`(^|;)\\s*background-color\\s*:\\s*(?:${value})\\s*(?:;|$)`, "i").test(declarations),
+    selectors.split(",").some((selector) => selectorMatches(selector.trim())) &&
+    new RegExp(`(^|;)\\s*${property}\\s*:\\s*(?:${value})\\s*(?:;|$)`, "i").test(declarations),
   );
+const rowColor = (source, className, value) =>
+  cssValue(source, (selector) => [`.${className}`, `tr.${className}`].includes(selector), "background-color", value);
+const listMarker = (source, selector, value) =>
+  cssValue(source, (candidate) => candidate.toLowerCase() === selector, "list-style-type", value);
 
 export const exerciseTypes = {
   repair: "Reparieren",
@@ -418,6 +422,20 @@ export const exercises = {
       ],
       remember: "Eine Klasse kann an mehreren tr stehen. .klassenname wählt diese Zeilen aus; background-color färbt ihren Hintergrund.",
     },
+    {
+      type: "write",
+      kind: "css",
+      context: '<h2>Material</h2>\n<ul>\n  <li>Erde</li>\n  <li>Samen</li>\n  <li>Gießkanne</li>\n</ul>\n<h2>Arbeitsschritte</h2>\n<ol>\n  <li>Beet vorbereiten</li>\n  <li>Aussäen</li>\n  <li>Gießen</li>\n</ol>',
+      title: "Listenzeichen mit CSS gestalten",
+      task: "Die Materialliste ist eine ul, die Schrittfolge eine ol. Gib ul mit list-style-type den Wert square für quadratische Zeichen und ol den Wert lower-alpha für a, b, c. Schreibe die Zeichen und Buchstaben nicht selbst in die Einträge. Vergleiche danach square mit circle und lower-alpha mit upper-roman; stelle für die Prüfung die geforderten Werte wieder her.",
+      code: "/* Regeln für ul und ol */\n",
+      fixed: "ul { list-style-type: square; }\nol { list-style-type: lower-alpha; }",
+      checks: [
+        ["ul mit list-style-type: square", (s) => listMarker(s, "ul", "square")],
+        ["ol mit list-style-type: lower-alpha", (s) => listMarker(s, "ol", "lower-alpha")],
+      ],
+      remember: "ul und ol legen die Bedeutung der Liste fest. list-style-type verändert nur das Aussehen ihrer Zeichen oder Nummerierung.",
+    },
   ],
   l12: [
     {
@@ -603,6 +621,7 @@ export const exerciseHints = {
   "l11-1": "Hänge an 18 eine Einheit wie px an. Schreibe 1.6 mit Punkt statt Komma.",
   "l11-2": "In body { … } stehen drei Zeilen: color, background-color und font-family mit Komma und Ersatzschrift, etwa Arial, sans-serif.",
   "l11-3": "Beginne mit .ungerade { … } und .gerade { … }. In jeder Regel steht background-color mit Doppelpunkt, Farbname und Semikolon.",
+  "l11-4": "Verwende die Tagselektoren ul und ol. In jeder Regel steht list-style-type mit Doppelpunkt und einem Wert; lower-alpha erzeugt kleine Buchstaben.",
   "l12-1": "Setze padding auf einen Wert größer als 0, zum Beispiel 1rem. Ergänze bei border den Stil solid zwischen Breite und Farbe.",
   "l12-2": "Du brauchst drei Eigenschaften: max-width mit einer Breite, margin mit dem Wort auto und box-sizing mit dem Wert border-box.",
   "l12-3": "Schreibe vier Regeln nacheinander: body, #start, .hinweis und .karte. Die Karte braucht vier Eigenschaften.",

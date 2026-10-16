@@ -58,18 +58,20 @@ export const extensions = {
       "Kannst du erklären, warum eine Unterliste innerhalb eines li stehen muss und nicht direkt in der ul? Diese Vertiefung vergibt keine zusätzlichen Punkte.",
   },
   l5: {
-    title: "Ausprobieren: Pfade in einer Ordnerstruktur",
+    title: "Ausprobieren: Pfade und ein PDF-Download",
     explanation:
-      "Relative Pfade gehen immer von der Datei aus, in der sie stehen. Liegt eine Seite in einem Unterordner, führt ../ einen Ordner nach oben. Ordner- und Dateinamen müssen exakt übereinstimmen, auch in Groß- und Kleinschreibung. Im Labor kannst du nur eine Seite bearbeiten; die Pfade zwischen mehreren Dateien testest du nach dem Export im Projektordner.",
-    code: 'mein-projekt/\n  index.html\n  kontakt.html\n  bilder/\n    beet.jpg\n  seiten/\n    team.html\n\n<!-- in index.html -->\n<a href="seiten/team.html">Unser Team</a>\n<img src="bilder/beet.jpg" alt="Hochbeet im Schulhof">\n\n<!-- in seiten/team.html -->\n<a href="../index.html">Zur Startseite</a>\n<img src="../bilder/beet.jpg" alt="Hochbeet im Schulhof">',
+      "Relative Pfade gehen immer von der Datei aus, in der sie stehen. Liegt eine Seite in einem Unterordner, führt ../ einen Ordner nach oben. Ordner- und Dateinamen müssen exakt übereinstimmen, auch in Groß- und Kleinschreibung. Das gilt auch für PDF-Dateien: Ein Link legt die Datei nicht an, sie muss tatsächlich im Projekt liegen. Die Laborvorschau lädt keine relativen Dateien; teste Seitenwechsel und Download nach dem Export im Projektordner.",
+    code: 'mein-projekt/\n  index.html\n  kontakt.html\n  bilder/\n    beet.jpg\n  seiten/\n    team.html\n  service/\n    plan.pdf\n\n<!-- in index.html -->\n<a href="seiten/team.html">Unser Team</a>\n<a href="service/plan.pdf" download>Plan als PDF herunterladen</a>\n<img src="bilder/beet.jpg" alt="Hochbeet im Schulhof">\n\n<!-- in seiten/team.html -->\n<a href="../index.html">Zur Startseite</a>\n<img src="../bilder/beet.jpg" alt="Hochbeet im Schulhof">',
     steps: [
       'Ergänze in deinem Entwurf einen Link auf seiten/team.html. Er führt von index.html in den Unterordner seiten.',
       "Überlege, welche Pfade in seiten/team.html zur Startseite und zum Bild führen. Notiere sie in deinen Notizen, bevor du weiterliest: Aus dem Unterordner geht es mit ../ zurück.",
       "Exportiere das Projekt-ZIP und entpacke es. Lege den Ordner seiten an und darin mit Notepad++ die Datei team.html mit Rücklink und Bild. Speichere mit Strg+S und teste alle Links im Browser.",
       "Ändere absichtlich einen Pfad in Bilder/beet.jpg mit großem B. Beobachte, was der Browser anzeigt, und stelle den richtigen Pfad wieder her.",
+      'Lege im entpackten Projekt den Ordner service an. Kopiere eine eigene oder von der Lehrkraft freigegebene PDF ohne persönliche Daten hinein und nenne sie plan.pdf. Ergänze in index.html den Link <a href="service/plan.pdf" download>Plan als PDF herunterladen</a>.',
+      'Speichere mit Strg+S und teste den Link in deiner exportierten index.html im normalen Browser. Der Browser kann je nach Einstellungen herunterladen oder die PDF öffnen. Vergleiche auch ohne download. Benenne die PDF kurz um, beobachte den fehlerhaften Link und stelle den richtigen Namen wieder her. Die Laborvorschau führt diesen Download nicht aus.',
     ],
     observe:
-      "Kannst du für jede Datei erklären, von welchem Ordner ihr Pfad ausgeht? Ein Pfad, der in index.html stimmt, ist in seiten/team.html falsch, wenn ../ fehlt. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+      "Kannst du für jede Datei erklären, von welchem Ordner ihr Pfad ausgeht? Das gilt für HTML, Bilder und PDF gleichermaßen. Der Export enthält deine verlinkte PDF nicht automatisch: Sie gehört als echte Datei in den service-Ordner. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
   },
   l6: {
     title: "Ausprobieren: Den passenden Alternativtext finden",

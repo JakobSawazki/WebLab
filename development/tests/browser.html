@@ -776,6 +776,32 @@
       "Tabellenklassen: Loesung wirkt in isolierter Vorschau, zeigt Merksatz und erhaelt Entwurf und Punkte");
     if (savedRowExercises === null) localStorage.removeItem("weblab-exercises-v1");
     else localStorage.setItem("weblab-exercises-v1", savedRowExercises);
+    boxWin.location.hash = "#lesson/l11/4";
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    const markerExercise = boxDoc.querySelector('.exercise[data-exercise="3"]');
+    const markerSaved = localStorage.getItem(STORAGE_KEY);
+    assert(markerExercise?.open && boxDoc.activeElement === markerExercise.querySelector("textarea") && boxDoc.documentElement.scrollWidth <= 360,
+      "Listenzeichen: Neue Uebung ist per Direktlink bei 360 Pixeln erreichbar");
+    markerExercise.querySelector("[data-exercise-check]").click();
+    assert(markerExercise.querySelectorAll(".criteria .fail").length === 2,
+      "Listenzeichen: Beide fehlenden Regeln werden einzeln gemeldet");
+    markerExercise.querySelector("textarea").value = "ul { list-style-type: square; }\nol { list-style-type: lower-alpha; }";
+    markerExercise.querySelector("textarea").dispatchEvent(new boxWin.Event("input"));
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    markerExercise.querySelector("[data-exercise-check]").click();
+    assert(markerExercise.querySelectorAll(".criteria .pass").length === 2 && markerExercise.querySelector(".exercise-remember") &&
+      markerExercise.querySelector("iframe").srcdoc.includes("list-style-type: lower-alpha") &&
+      markerExercise.querySelector("iframe").getAttribute("sandbox") === "" && localStorage.getItem(STORAGE_KEY) === markerSaved,
+      "Listenzeichen: Beide Regeln bestehen mit isolierter Vorschau ohne Aenderung von Entwurf oder Punkten");
+    if (savedRowExercises === null) localStorage.removeItem("weblab-exercises-v1");
+    else localStorage.setItem("weblab-exercises-v1", savedRowExercises);
+    boxWin.location.hash = "#lesson/l5";
+    await new Promise((resolve) => setTimeout(resolve, 200));
+    const downloadTransfer = boxDoc.querySelector(".lesson-extension");
+    downloadTransfer.querySelector("summary").click();
+    assert(downloadTransfer.textContent.includes("service/plan.pdf") && downloadTransfer.textContent.includes("nicht automatisch") &&
+      downloadTransfer.textContent.includes("Laborvorschau führt diesen Download nicht aus") && boxDoc.documentElement.scrollWidth <= 360,
+      "PDF-Transfer: Dateipfad, Exportgrenze und Test ausserhalb des Labors sind bei 360 Pixeln lesbar");
     // Direct link from the home suggestion: #lesson/<id>/<exercise number>.
     boxWin.location.hash = "#lesson/l3/2";
     await new Promise((resolve) => setTimeout(resolve, 200));

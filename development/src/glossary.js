@@ -880,6 +880,17 @@ export const glossary = [
     chapter: "K8",
   },
   {
+    term: "list-style-type",
+    kind: "css",
+    category: "Layout",
+    short: "Die Zeichen oder Nummerierung einer Liste.",
+    syntax: "ul { list-style-type: square; }\nol { list-style-type: lower-alpha; }",
+    description:
+      "disc, circle und square ändern die Aufzählungszeichen. decimal zählt mit Zahlen, lower-alpha mit kleinen Buchstaben und upper-roman mit römischen Zahlen. Die Wahl von ul oder ol richtet sich weiterhin danach, ob die Reihenfolge inhaltlich wichtig ist. Die Listenzeichen ergänzt der Browser.",
+    chapter: "K12",
+    related: ["list-style", "ul", "ol"],
+  },
+  {
     term: "list-style",
     kind: "css",
     category: "Layout",
@@ -888,7 +899,7 @@ export const glossary = [
     description:
       "Mit none verschwinden die Punkte – üblich bei Navigationen, die aus einer Liste gebaut sind.",
     chapter: "K12",
-    related: ["ul"],
+    related: ["ul", "list-style-type"],
   },
   {
     term: ":hover",
@@ -975,7 +986,7 @@ export const glossary = [
     short: "Bietet das Linkziel zum Speichern an.",
     syntax: "<a href=\"plan.pdf\" download>Plan herunterladen</a>",
     description:
-      "Mit download speichert der Browser das Ziel, statt es zu öffnen. Das funktioniert zuverlässig für eigene Dateien derselben Webseite; bei Dateien fremder Domains ignorieren Browser das Attribut häufig.",
+      "download bietet das Linkziel zum Speichern an. Die Datei muss wirklich vorhanden sein. Browser können je nach Einstellungen trotzdem eine Vorschau öffnen; bei fremden Domains wird das Attribut häufig ignoriert. Teste den Download mit deinen exportierten Dateien im normalen Browser, da die Laborvorschau keine Downloads ausführt.",
     chapter: "Einheit 05",
     related: ["a", "href"],
   },

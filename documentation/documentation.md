@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.37.0** · Status: **geprüft und veröffentlicht**.
+Version: **1.38.0** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.37.0 |
+| Bereich | Version 1.38.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -39,7 +39,7 @@ Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein
 | Labor | HTML-/CSS-Dateireiter, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
 | Informatik-Stick | HTML-/CSS-Import und Export, Notepad++-Transferauftrag mit Strg+S/F5 und Dateiverknüpfung |
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
-| Nachschlagen | 109 Glossareinträge (84 aus WebLab 0.5.0, 25 ergänzt), Suche mit Trefferreihenfolge, Bereichsfilter, „Siehe auch“-Verweise |
+| Nachschlagen | 110 Glossareinträge (84 aus WebLab 0.5.0, 26 ergänzt), Suche mit Trefferreihenfolge, Bereichsfilter, „Siehe auch“-Verweise |
 | Datenschutz | Lernstand auf dem Gerät; kein Tracking, keine externe KI, keine zentrale Schülerdatenbank |
 
 **Grenze:** Die Selbstkontrolle ist eine eigene Erklärung der Lernenden. Sie ist keine authentifizierte Lehrkraftfreigabe. LocalStorage, Sicherungsdateien, XP und NAGOLD sind veränderbar. Sie dürfen nicht ungeprüft als Leistungsbewertung verwendet werden. Automatische Kriterien erkennen ausgewählte Bausteine, keine vollständige HTML-Konformität, Eigenständigkeit oder gestalterische Qualität.
@@ -86,7 +86,7 @@ OneNote: Notizbuch **Lernfelder**, Abschnitt **2. Internetseiten**. Alle sechs S
 
 Ablage: ressources/BPE2/OneNote-Desktop/Teil-1 bzw. Teil-2, getrennt nach Information, Aufgabe-und-Vorlage, Loesung, Uebersicht und Tools. Gleiche Dateinamen aus verschiedenen Spalten bleiben getrennt. Anhang-Export-Inventar.json im selben Stammordner enthält je Datei Herkunft, Größe, SHA-256 und Prüfergebnis; die beiden lokalen Seiten-XMLs erlauben die Zuordnung. Das frühere Anhang-Inventar.json bleibt als Metadatenaufnahme erhalten. Alle DOCX-/ZIP-Dateien bestehen die ZIP-CRC-Prüfung, DOCX enthält word/document.xml, die drei PDF-Dateien haben die PDF-Signatur. Keine Software oder eingebettete HTML-Seite wurde ausgeführt.
 
-**Fachlicher Abgleich begonnen.** Ein gezielter erster Abgleich umfasst Information 10 (Tabellen, Text) und Aufgabe 12 (Tabellenklassen, Text und beide eingebetteten Abbildungen) aus Teil 1. Die übrigen Originale und Lösungen sind damit nicht als vollständig gelesen oder fachlich freigegeben verbucht. Die Dateiintegrität aller Anhänge ist geprüft. Die Kopien stammen aus Jakobs OneNote; sie werden nicht ohne Abgleich als identisch mit der zuletzt öffentlich angebotenen Fassung vom 31.07.2025 bezeichnet. Originale, Lösungen, XMLs und Inventare bleiben lokal und außerhalb von Git. Technische Referenz: [Microsoft OneNote Application interface](https://learn.microsoft.com/en-us/office/client-developer/onenote/application-interface-onenote).
+**Fachlicher Textabgleich von Teil 1 durchgeführt.** Alle 29 DOCX (11 Informationsblätter, 14 Aufgaben, vier Übersichten) wurden über ihre extrahierten Absatztexte abgeglichen. Zusätzlich wurden alle eingebetteten Abbildungen aus Information 5/6 und Aufgabe 9/12 angesehen. Andere Abbildungen, ZIP-Vorlagen/Lösungen und Teil 2 sind damit nicht als vollständig geprüft oder fachlich freigegeben verbucht. Die Dateiintegrität aller Anhänge ist geprüft. Die Kopien stammen aus Jakobs OneNote; sie werden nicht ohne Abgleich als identisch mit der zuletzt öffentlich angebotenen Fassung vom 31.07.2025 bezeichnet. Originale, Lösungen, XMLs und Inventare bleiben lokal und außerhalb von Git. Technische Referenz: [Microsoft OneNote Application interface](https://learn.microsoft.com/en-us/office/client-developer/onenote/application-interface-onenote).
 
 **Recherche zum Landesbildungsserver (Aufgabe 1):** Der [offizielle Abschaltungshinweis](https://lehrerfortbildung-bw.de/willkommen/) nennt den 30.09.2026. Alte LBS-Adressen werden auf diese Seite weitergeleitet; gesicherte Materialien können teilweise nach Prüfung über das dort verlinkte [Kontaktformular](https://lehrerfortbildung-bw.de/feedback/) angefragt werden. Der Suchindex nennt noch bpe-2-internetseiten.zip, Stand 31.07.2025, rund 34 MB. Der tatsächliche Abruf der alten ZIP-Adresse liefert jedoch HTTP 200 mit text/html und der Abschaltungsseite, kein Archiv. Auch über öffentliche Suche und die interne LFBS-Suche wurde kein verifizierter neuer Downloadort dieser konkreten Sammlung gefunden. Bisher ist dafür keine Anmeldung angefordert worden. Es wurde keine Anfrage versendet. Der Materialzugang für WebLab ist durch die OneNote-Originalkopien dennoch hergestellt.
 
@@ -111,6 +111,31 @@ Aktuell geprüfte offizielle Referenzen für Einheit 14:
 - https://www.gesetze-im-internet.de/ddg/__5.html – Anbieterinformationen; Anwendbarkeit ist vom Angebot abhängig und wird für die konkrete Schulveröffentlichung mit der Lehrkraft geklärt.
 
 Die WebLab-Texte und Aufgaben sind eigenständig formuliert. Das aktuelle Metalllogo wurde mit dem integrierten Bildgenerator erstellt (Bildprompt im Protokoll zu 1.7.1); das Hero stammt aus der früheren WebLab-Fassung. Keine Unterrichtsoriginale, Lösungen oder Schülerzuordnungen werden ins Repository oder in das Veröffentlichungspaket aufgenommen.
+
+### Quellenabgleich Teil 1 – Stand 1.38.0
+
+Die ursprünglichen Kapitelnummern sind nicht die WebLab-Einheitsnummern. WebLab führt zunächst HTML ein und danach CSS, damit Gestaltung auf bereits verstandenen Strukturen aufbaut. Die folgende Zuordnung bezieht sich auf die Lernziele, keine unveränderte Übernahme des Musikschul-Projekts. Der private Dateinachweis mit SHA-256 und präzisem Lesestatus liegt unter `ressources/BPE2/OneNote-Desktop/Auswertung/Teil-1-Abgleich.json`.
+
+| Originalkapitel | Lernziel | WebLab und verbleibender Umfang |
+| --- | --- | --- |
+| 1 | Grundgerüst, Tags, Speichern | 01–03; UTF-8 und Notepad++-Dateistart in 02 |
+| 2 | Externe CSS-Datei, Textfarbe | 09, Syntax-/Verknüpfungsübungen; Anwendung 11 |
+| 3 | Hintergrund, Schrift, Ausrichtung | 10–11 und Mini-Übungen |
+| 4 | Bild, relativer Pfad, Alternativtext | 05–06; responsive Bildgröße bleibt praktische Vertiefung |
+| 5 | ul/li, Listenzeichen | HTML in 04, seit 1.38.0 CSS-Praxis in 11/4 |
+| 6 | ol/li, Nummerierungsstil | HTML in 04, seit 1.38.0 CSS-Praxis in 11/4; Bedeutung bleibt unabhängig vom Zeichenstil |
+| 7 | Zwei eigene Seiten mit Hin-/Rücklink | 05 und 16; tatsächliche zweite Datei weiterhin in Notepad++, Editor-Erweiterung siehe tasks.md Nr. 2 |
+| 8 | Externer Link, neues Browserfenster | HTTPS-Link in 05, target im Glossar; neues Fenster bisher keine eigene Pflichtübung |
+| 9 | PDF-Datei im Unterordner verlinken | 05: Erklärung und seit 1.38.0 konkreter Export-/Notepad++-Transfer mit service/plan.pdf; Download wird außerhalb der isolierten Vorschau geprüft |
+| 10 | Datentabelle, Gestaltung, verbundene Zellen | Aufbau 07, colspan-Mini-Übung, Formatierung in Vertiefung 12; rowspan bisher nur Glossar |
+| 11 | div, Klassen, Boxmodell | Klassen 10, Boxmodell und interaktives Modell 12 |
+| 12 | Wiederverwendbare Zeilenklassen | Mini-Übung 11/3 seit 1.37.0; Tabellenformatierung 12; Tabellen-hover bleibt Zusatzvertiefung |
+| 13 | Audio/Video, Bildlink, drei CSS-Einbindungen | 08 mit Audio-/Video-Übungen, Bildlink in Vertiefung 06, CSS-Vergleich in 09; reale Mediendateien werden nach Export geprüft |
+| 14 | Selbständiger mehrseitiger Internetauftritt | 13–16 mit Planung, Recht, Test und Präsentation; eigenes Thema statt kopierter Sportstudio-Texte/Adressen |
+
+**Fachliche Korrekturen bei der Übertragung:** Inline-CSS ist standardkonform, auch wenn eine gemeinsame externe CSS-Datei für mehrere Seiten zweckmäßiger ist ([WHATWG: style-Attribut](https://html.spec.whatwg.org/multipage/dom.html#the-style-attribute)). Internes CSS gewinnt nicht pauschal gegen externes; es gilt die [CSS-Kaskade](https://www.w3.org/TR/css-cascade-5/#cascade-sort). Die alten Beispiele mit prozentualen HTML-Bildattributen und `height=auto%` werden nicht übernommen; [HTML-Bildgrößen](https://html.spec.whatwg.org/multipage/embedded-content.html#attr-img-width) und CSS-Größen sind zu unterscheiden. Umlaute brauchen zusammenpassende UTF-8-Dateikodierung und Deklaration; sie sind keine grundsätzliche Browserbeschränkung. Veraltete HTTP-/LBS-Beispiellinks werden nicht als funktionierende Ziele übernommen.
+
+Die Gestaltung von Listenzeichen ist mit [W3C CSS Lists](https://www.w3.org/TR/css-lists-3/#text-markers) abgeglichen, Download-Grenzen mit dem [HTML-Standard](https://html.spec.whatwg.org/multipage/links.html#downloading-resources). Bisherige Prüfgrenzen bleiben ausdrücklich sichtbar: kein vollständiger visueller Abgleich aller DOCX-Seiten und keine fachliche Freigabe aller 81 Anhänge.
 
 ## 4. Softwarestruktur und Start
 
@@ -254,6 +279,16 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 16.10.2026 – Codex – Version 1.38.0: Listenzeichen und PDF-Transfer
+
+Textabgleich aller 29 DOCX aus Teil 1 abgeschlossen; Lernziele der 14 ursprünglichen Kapitel zentral zugeordnet und verbleibende Teilabdeckungen offen benannt. Die vier Übersichten enthalten Kompetenzraster, Ich-kann-Ziele, Befehlsreferenz und Ablauf. Nicht alle Abbildungen oder Vorlagen sind bereits geprüft; Details stehen im Quellenabschnitt und im privaten Dateinachweis. Keine Originaltexte, Abbildungen, Lösungen oder Kontaktdaten veröffentlicht.
+
+Einheit 11 erhält **Übung 4 „Listenzeichen mit CSS gestalten“**: ul mit quadratischen Zeichen, ol mit kleinen Buchstaben, anschließend Variantenvergleich. So wird die bekannte HTML-Struktur aus 04 nach Einführung von CSS angewendet. Neue Übung hinten angefügt, alte Lösungsmarkierungen bleiben zugeordnet. Merksatz trennt Listenbedeutung von Gestaltung. Eintrag `list-style-type` ergänzt das Glossar (jetzt 110 Begriffe); insgesamt 38 Mini-Übungen.
+
+Vertiefung 05 ergänzt einen echten PDF-Link im Projekt-Unterordner service samt eigenständigem Anlegen/Kopieren der Datei, Download-Attribut, absichtlich fehlerhaftem Pfad und Test im normalen Browser mit Notepad++/Strg+S/F5. Die Anleitung sagt ausdrücklich, dass die verlinkte PDF nicht automatisch im WebLab-Export enthalten ist und die Laborvorschau keine Downloads ausführt. Browser-/Einstellungsunterschiede beim Öffnen oder Herunterladen erklärt. Keine Downloadfreigabe der Vorschau und keine Änderung des Exportformats.
+
+Lokal **42 Node-Tests bestanden**, einschließlich der neuen Prüfung für Listenart, vollständige Werte, Kommentare und alternative CSS-Großschreibung. Vier Browserprüfungen für Mini-Editor/Fokus, offene Kriterien, Lösung mit unverändertem Entwurf und PDF-Transfer bei 360 Pixeln ergänzt. Build mit sieben öffentlichen Dateien erstellt; CI und Veröffentlichung folgen.
 
 ### 16.10.2026 – Codex – Version 1.37.0: Tabellen mit CSS-Klassen gestalten
 

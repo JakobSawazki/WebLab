@@ -63,18 +63,20 @@ const extensions = {
       "Kannst du erklären, warum eine Unterliste innerhalb eines li stehen muss und nicht direkt in der ul? Diese Vertiefung vergibt keine zusätzlichen Punkte.",
   },
   l5: {
-    title: "Ausprobieren: Pfade in einer Ordnerstruktur",
+    title: "Ausprobieren: Pfade und ein PDF-Download",
     explanation:
-      "Relative Pfade gehen immer von der Datei aus, in der sie stehen. Liegt eine Seite in einem Unterordner, führt ../ einen Ordner nach oben. Ordner- und Dateinamen müssen exakt übereinstimmen, auch in Groß- und Kleinschreibung. Im Labor kannst du nur eine Seite bearbeiten; die Pfade zwischen mehreren Dateien testest du nach dem Export im Projektordner.",
-    code: 'mein-projekt/\n  index.html\n  kontakt.html\n  bilder/\n    beet.jpg\n  seiten/\n    team.html\n\n<!-- in index.html -->\n<a href="seiten/team.html">Unser Team</a>\n<img src="bilder/beet.jpg" alt="Hochbeet im Schulhof">\n\n<!-- in seiten/team.html -->\n<a href="../index.html">Zur Startseite</a>\n<img src="../bilder/beet.jpg" alt="Hochbeet im Schulhof">',
+      "Relative Pfade gehen immer von der Datei aus, in der sie stehen. Liegt eine Seite in einem Unterordner, führt ../ einen Ordner nach oben. Ordner- und Dateinamen müssen exakt übereinstimmen, auch in Groß- und Kleinschreibung. Das gilt auch für PDF-Dateien: Ein Link legt die Datei nicht an, sie muss tatsächlich im Projekt liegen. Die Laborvorschau lädt keine relativen Dateien; teste Seitenwechsel und Download nach dem Export im Projektordner.",
+    code: 'mein-projekt/\n  index.html\n  kontakt.html\n  bilder/\n    beet.jpg\n  seiten/\n    team.html\n  service/\n    plan.pdf\n\n<!-- in index.html -->\n<a href="seiten/team.html">Unser Team</a>\n<a href="service/plan.pdf" download>Plan als PDF herunterladen</a>\n<img src="bilder/beet.jpg" alt="Hochbeet im Schulhof">\n\n<!-- in seiten/team.html -->\n<a href="../index.html">Zur Startseite</a>\n<img src="../bilder/beet.jpg" alt="Hochbeet im Schulhof">',
     steps: [
       'Ergänze in deinem Entwurf einen Link auf seiten/team.html. Er führt von index.html in den Unterordner seiten.',
       "Überlege, welche Pfade in seiten/team.html zur Startseite und zum Bild führen. Notiere sie in deinen Notizen, bevor du weiterliest: Aus dem Unterordner geht es mit ../ zurück.",
       "Exportiere das Projekt-ZIP und entpacke es. Lege den Ordner seiten an und darin mit Notepad++ die Datei team.html mit Rücklink und Bild. Speichere mit Strg+S und teste alle Links im Browser.",
       "Ändere absichtlich einen Pfad in Bilder/beet.jpg mit großem B. Beobachte, was der Browser anzeigt, und stelle den richtigen Pfad wieder her.",
+      'Lege im entpackten Projekt den Ordner service an. Kopiere eine eigene oder von der Lehrkraft freigegebene PDF ohne persönliche Daten hinein und nenne sie plan.pdf. Ergänze in index.html den Link <a href="service/plan.pdf" download>Plan als PDF herunterladen</a>.',
+      'Speichere mit Strg+S und teste den Link in deiner exportierten index.html im normalen Browser. Der Browser kann je nach Einstellungen herunterladen oder die PDF öffnen. Vergleiche auch ohne download. Benenne die PDF kurz um, beobachte den fehlerhaften Link und stelle den richtigen Namen wieder her. Die Laborvorschau führt diesen Download nicht aus.',
     ],
     observe:
-      "Kannst du für jede Datei erklären, von welchem Ordner ihr Pfad ausgeht? Ein Pfad, der in index.html stimmt, ist in seiten/team.html falsch, wenn ../ fehlt. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
+      "Kannst du für jede Datei erklären, von welchem Ordner ihr Pfad ausgeht? Das gilt für HTML, Bilder und PDF gleichermaßen. Der Export enthält deine verlinkte PDF nicht automatisch: Sie gehört als echte Datei in den service-Ordner. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
   },
   l6: {
     title: "Ausprobieren: Den passenden Alternativtext finden",
@@ -250,7 +252,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.37.0";
+const VERSION = "1.38.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -2387,6 +2389,17 @@ const glossary = [
     chapter: "K8",
   },
   {
+    term: "list-style-type",
+    kind: "css",
+    category: "Layout",
+    short: "Die Zeichen oder Nummerierung einer Liste.",
+    syntax: "ul { list-style-type: square; }\nol { list-style-type: lower-alpha; }",
+    description:
+      "disc, circle und square ändern die Aufzählungszeichen. decimal zählt mit Zahlen, lower-alpha mit kleinen Buchstaben und upper-roman mit römischen Zahlen. Die Wahl von ul oder ol richtet sich weiterhin danach, ob die Reihenfolge inhaltlich wichtig ist. Die Listenzeichen ergänzt der Browser.",
+    chapter: "K12",
+    related: ["list-style", "ul", "ol"],
+  },
+  {
     term: "list-style",
     kind: "css",
     category: "Layout",
@@ -2395,7 +2408,7 @@ const glossary = [
     description:
       "Mit none verschwinden die Punkte – üblich bei Navigationen, die aus einer Liste gebaut sind.",
     chapter: "K12",
-    related: ["ul"],
+    related: ["ul", "list-style-type"],
   },
   {
     term: ":hover",
@@ -2482,7 +2495,7 @@ const glossary = [
     short: "Bietet das Linkziel zum Speichern an.",
     syntax: "<a href=\"plan.pdf\" download>Plan herunterladen</a>",
     description:
-      "Mit download speichert der Browser das Ziel, statt es zu öffnen. Das funktioniert zuverlässig für eigene Dateien derselben Webseite; bei Dateien fremder Domains ignorieren Browser das Attribut häufig.",
+      "download bietet das Linkziel zum Speichern an. Die Datei muss wirklich vorhanden sein. Browser können je nach Einstellungen trotzdem eine Vorschau öffnen; bei fremden Domains wird das Attribut häufig ignoriert. Teste den Download mit deinen exportierten Dateien im normalen Browser, da die Laborvorschau keine Downloads ausführt.",
     chapter: "Einheit 05",
     related: ["a", "href"],
   },
@@ -3522,13 +3535,17 @@ const rule = (source, selector, property, value = "") =>
   new RegExp(`(^|[\\s};])${selector}\\s*\\{[^}]*\\b${property}\\s*:\\s*${value}`, "i").test(source);
 const imgTag = (source, src) =>
   (source.match(/<img\b[^>]*>/gi) || []).find((tag) => tag.includes(`src="${src}"`)) || "";
-// This exercise asks for two simple class rules. Ignore comments and require
-// a complete color value, so commented examples and empty declarations fail.
-const rowColor = (source, className, value) =>
+// These exercises ask for simple rules. Ignore comments and require a complete
+// property and value, so commented examples and lookalike names fail.
+const cssValue = (source, selectorMatches, property, value) =>
   [...source.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)].some(([, selectors, declarations]) =>
-    selectors.split(",").some((selector) => [`.${className}`, `tr.${className}`].includes(selector.trim())) &&
-    new RegExp(`(^|;)\\s*background-color\\s*:\\s*(?:${value})\\s*(?:;|$)`, "i").test(declarations),
+    selectors.split(",").some((selector) => selectorMatches(selector.trim())) &&
+    new RegExp(`(^|;)\\s*${property}\\s*:\\s*(?:${value})\\s*(?:;|$)`, "i").test(declarations),
   );
+const rowColor = (source, className, value) =>
+  cssValue(source, (selector) => [`.${className}`, `tr.${className}`].includes(selector), "background-color", value);
+const listMarker = (source, selector, value) =>
+  cssValue(source, (candidate) => candidate.toLowerCase() === selector, "list-style-type", value);
 
 const exerciseTypes = {
   repair: "Reparieren",
@@ -3922,6 +3939,20 @@ const exercises = {
       ],
       remember: "Eine Klasse kann an mehreren tr stehen. .klassenname wählt diese Zeilen aus; background-color färbt ihren Hintergrund.",
     },
+    {
+      type: "write",
+      kind: "css",
+      context: '<h2>Material</h2>\n<ul>\n  <li>Erde</li>\n  <li>Samen</li>\n  <li>Gießkanne</li>\n</ul>\n<h2>Arbeitsschritte</h2>\n<ol>\n  <li>Beet vorbereiten</li>\n  <li>Aussäen</li>\n  <li>Gießen</li>\n</ol>',
+      title: "Listenzeichen mit CSS gestalten",
+      task: "Die Materialliste ist eine ul, die Schrittfolge eine ol. Gib ul mit list-style-type den Wert square für quadratische Zeichen und ol den Wert lower-alpha für a, b, c. Schreibe die Zeichen und Buchstaben nicht selbst in die Einträge. Vergleiche danach square mit circle und lower-alpha mit upper-roman; stelle für die Prüfung die geforderten Werte wieder her.",
+      code: "/* Regeln für ul und ol */\n",
+      fixed: "ul { list-style-type: square; }\nol { list-style-type: lower-alpha; }",
+      checks: [
+        ["ul mit list-style-type: square", (s) => listMarker(s, "ul", "square")],
+        ["ol mit list-style-type: lower-alpha", (s) => listMarker(s, "ol", "lower-alpha")],
+      ],
+      remember: "ul und ol legen die Bedeutung der Liste fest. list-style-type verändert nur das Aussehen ihrer Zeichen oder Nummerierung.",
+    },
   ],
   l12: [
     {
@@ -4107,6 +4138,7 @@ const exerciseHints = {
   "l11-1": "Hänge an 18 eine Einheit wie px an. Schreibe 1.6 mit Punkt statt Komma.",
   "l11-2": "In body { … } stehen drei Zeilen: color, background-color und font-family mit Komma und Ersatzschrift, etwa Arial, sans-serif.",
   "l11-3": "Beginne mit .ungerade { … } und .gerade { … }. In jeder Regel steht background-color mit Doppelpunkt, Farbname und Semikolon.",
+  "l11-4": "Verwende die Tagselektoren ul und ol. In jeder Regel steht list-style-type mit Doppelpunkt und einem Wert; lower-alpha erzeugt kleine Buchstaben.",
   "l12-1": "Setze padding auf einen Wert größer als 0, zum Beispiel 1rem. Ergänze bei border den Stil solid zwischen Breite und Farbe.",
   "l12-2": "Du brauchst drei Eigenschaften: max-width mit einer Breite, margin mit dem Wort auto und box-sizing mit dem Wert border-box.",
   "l12-3": "Schreibe vier Regeln nacheinander: body, #start, .hinweis und .karte. Die Karte braucht vier Eigenschaften.",

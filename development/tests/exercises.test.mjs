@@ -77,6 +77,18 @@ test("Row colors require active rules for the right classes and complete color v
   assert.deepEqual(result("tr.gerade { BACKGROUND-COLOR: #FFF } tr.ungerade { background-color: #ADD8E6; }"), [true, true]);
 });
 
+test("List marker practice distinguishes the two lists and rejects comments or incomplete values", () => {
+  const exercise = exercises.l11[3];
+  const result = (source) => checkExercise(exercise, source).map((r) => r.passed);
+  assert.deepEqual(result("ul { list-style-type: square; }"), [true, false]);
+  assert.deepEqual(result("ol { list-style-type: lower-alpha; }"), [false, true]);
+  assert.deepEqual(result("ul { list-style-type: lower-alpha; } ol { list-style-type: square; }"), [false, false]);
+  assert.deepEqual(result("/* " + exercise.fixed + " */"), [false, false]);
+  assert.deepEqual(result("ul { list-style-type: squareish; } ol { list-style-type: lower-alphabet; }"), [false, false]);
+  assert.deepEqual(result("ul { x-list-style-type: square; } ol { --list-style-type: lower-alpha; }"), [false, false]);
+  assert.deepEqual(result("UL { LIST-STYLE-TYPE: SQUARE } OL { list-style-type: LOWER-ALPHA }"), [true, true]);
+});
+
 test("Every exercise has exactly one hint, and hints never contain the full solution", async () => {
   const { exerciseHints } = await import("../src/exercises.js");
   assert.deepEqual(Object.keys(exerciseHints).sort(), all.map(([name]) => name).sort());

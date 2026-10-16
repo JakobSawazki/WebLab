@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.36.2** · Status: **lokal gebaut; Browserprüfung und Veröffentlichung laufen**.
+Version: **1.36.2** · Status: **geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -197,7 +197,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (16.10.2026, Codex, Version 1.36.1):** 40 Node-Tests und 179 Browserprüfungen bestanden. Die sechs neuen Browserprüfungen prüfen den Import bei fehlendem Browserspeicher einschließlich Wiederholung und Erhalt des alten Zustands. Pages-Lauf 38955347148 erfolgreich; öffentliches weblab.js per SHA-256 identisch mit dem lokal geprüften Bundle.
+**Aktueller Stand (16.10.2026, Codex, Version 1.36.2):** 40 Node-Tests und 185 Browserprüfungen bestanden. Die zwölf Import-Regressionsprüfungen aus 1.36.1/1.36.2 prüfen Speicherfehler und überholte Dateilesevorgänge. Pages-Lauf 38955772530 erfolgreich; öffentliches weblab.js per SHA-256 identisch mit dem lokal geprüften Bundle.
 
 **Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
@@ -255,7 +255,7 @@ Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.
 
 Konkreten Reihenfolgefehler beim asynchronen Einlesen behoben: Ein langsamer alter Dateilesevorgang konnte nach einer neueren Auswahl fertig werden und deren Importkandidaten samt Übungsmarkierungen ersetzen. Jede Auswahl und jede neue Dialogsitzung erhält jetzt eine fortlaufende Kennung. Nach dem Einlesen sowie im Fehlerfall werden veraltete oder zu einem geschlossenen Dialog gehörende Ergebnisse verworfen. Neue Auswahl, leere Auswahl und Dialogschluss setzen den Importkandidaten zurück. Während des Lesens zeigt der Dialog einen passenden Status.
 
-40 Node-Tests und Build bestanden. Sechs Browser-Regressionsprüfungen mit gezielt vertauschter Auflösungsreihenfolge ergänzt: spätes altes Ergebnis, tatsächliche Übernahme nur der zuletzt gewählten Datei, verspäteter alter Lesefehler, neuere ungültige Auswahl, Schließen/Wiederöffnen und leere Auswahl. Die Tests verwenden den echten Importhandler und steuerbare Leseversprechen, keine zeitabhängigen Warteannahmen. Prüfung im vorhandenen CI-Gate vor Veröffentlichung läuft. Aufgaben 1–5 in tasks.md weiterhin ohne Antwort; keine Produktentscheidung unterstellt.
+40 Node-Tests und Build bestanden. Sechs Browser-Regressionsprüfungen mit gezielt vertauschter Auflösungsreihenfolge ergänzt: spätes altes Ergebnis, tatsächliche Übernahme nur der zuletzt gewählten Datei, verspäteter alter Lesefehler, neuere ungültige Auswahl, Schließen/Wiederöffnen und leere Auswahl. Die Tests verwenden den echten Importhandler und steuerbare Leseversprechen, keine zeitabhängigen Warteannahmen. [Pages-Lauf 38955772530](https://github.com/JakobSawazki/WebLab/actions/runs/38955772530) für Implementierungscommit a2ee061 erfolgreich: 40 Node-Tests und 185/185 Browserprüfungen bestanden. Das öffentlich ausgelieferte weblab.js ist per SHA-256 identisch mit der lokalen Datei. Erzeugtes dist-Paket außerhalb des Projekts unter C:/Users/PC/WebLab-Sicherungen/Dateiauswahl-1.36.2-2026-10-16 archiviert. Aufgaben 1–5 in tasks.md weiterhin ohne Antwort; keine Produktentscheidung unterstellt.
 
 
 ### 16.10.2026 – Codex – Version 1.36.1: Sicherungsimport bei Speicherfehlern

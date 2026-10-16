@@ -2,7 +2,7 @@
 
 Stand: **16. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.36.1** · Status: **geprüft und veröffentlicht**.
+Version: **1.36.2** · Status: **lokal gebaut; Browserprüfung und Veröffentlichung laufen**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.36.1 |
+| Bereich | Version 1.36.2 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen |
@@ -250,6 +250,13 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 16.10.2026 – Codex – Version 1.36.2: Aktuelle Dateiauswahl beim Sicherungsimport
+
+Konkreten Reihenfolgefehler beim asynchronen Einlesen behoben: Ein langsamer alter Dateilesevorgang konnte nach einer neueren Auswahl fertig werden und deren Importkandidaten samt Übungsmarkierungen ersetzen. Jede Auswahl und jede neue Dialogsitzung erhält jetzt eine fortlaufende Kennung. Nach dem Einlesen sowie im Fehlerfall werden veraltete oder zu einem geschlossenen Dialog gehörende Ergebnisse verworfen. Neue Auswahl, leere Auswahl und Dialogschluss setzen den Importkandidaten zurück. Während des Lesens zeigt der Dialog einen passenden Status.
+
+40 Node-Tests und Build bestanden. Sechs Browser-Regressionsprüfungen mit gezielt vertauschter Auflösungsreihenfolge ergänzt: spätes altes Ergebnis, tatsächliche Übernahme nur der zuletzt gewählten Datei, verspäteter alter Lesefehler, neuere ungültige Auswahl, Schließen/Wiederöffnen und leere Auswahl. Die Tests verwenden den echten Importhandler und steuerbare Leseversprechen, keine zeitabhängigen Warteannahmen. Prüfung im vorhandenen CI-Gate vor Veröffentlichung läuft. Aufgaben 1–5 in tasks.md weiterhin ohne Antwort; keine Produktentscheidung unterstellt.
+
 
 ### 16.10.2026 – Codex – Version 1.36.1: Sicherungsimport bei Speicherfehlern
 

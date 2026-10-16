@@ -863,6 +863,45 @@
     } finally {
       pw.Storage.prototype.setItem = originalSetItem;
     }
+    // Control completion order without timers: the real import handler reads
+    // each file asynchronously, just as it does with a slow disk or Drive.
+    const selectBackup = file => pe("importFile").onchange({ target: { files: file ? [file] : [] } });
+    const backupText = (name, solved) => JSON.stringify({
+      app: "WebLab", formatVersion: 3,
+      state: { ...blank(), profile: { name, className: "TEST" } },
+      exercisesSolved: [solved],
+    });
+    const delayedBackup = () => {
+      let resolve, reject;
+      const value = new Promise((yes, no) => { resolve = yes; reject = no; });
+      return { file: { size: 500, text: () => value }, resolve, reject };
+    };
+    const currentBackup = { size: 500, text: async () => backupText("ZWE.MAX", "l4-1") };
+    pe("backupButton").click();
+    const slowFirst = delayedBackup(), firstRead = selectBackup(slowFirst.file);
+    await selectBackup(currentBackup);
+    slowFirst.resolve(backupText("ALT.MAX", "l1-1")); await firstRead;
+    assert(pe("importSummary").textContent.includes("Bereit: ZWE.MAX") && !pe("confirmImport").hidden, "Import: Spaetes Ergebnis einer alten Dateiauswahl ersetzt die aktuelle Auswahl nicht");
+    pe("confirmImport").click();
+    assert(JSON.parse(localStorage.getItem(STORAGE_KEY)).profile.name === "ZWE.MAX" && localStorage.getItem(exerciseKey) === JSON.stringify(["l4-1"]), "Import: Bestaetigen uebernimmt ausschliesslich die zuletzt gewaehlte Datei");
+    pe("backupButton").click();
+    const slowError = delayedBackup(), errorRead = selectBackup(slowError.file);
+    await selectBackup(currentBackup);
+    slowError.reject(new Error("Veralteter Lesefehler")); await errorRead;
+    assert(pe("importSummary").textContent.includes("Bereit: ZWE.MAX") && !pe("confirmImport").hidden, "Import: Veralteter Lesefehler verdeckt keine neuere gueltige Datei");
+    const slowValid = delayedBackup(), validRead = selectBackup(slowValid.file);
+    await selectBackup({ size: 10, text: async () => "invalid JSON" });
+    const invalidMessage = pe("importSummary").textContent;
+    slowValid.resolve(backupText("ALT.MAX", "l1-1")); await validRead;
+    assert(pe("confirmImport").hidden && pe("importSummary").textContent === invalidMessage && Boolean(invalidMessage), "Import: Eine neuere ungueltige Auswahl kann nicht durch ein altes Ergebnis bestaetigbar werden");
+    const slowClosed = delayedBackup(), closedRead = selectBackup(slowClosed.file);
+    pe("backupDialog").close(); pe("backupButton").click();
+    slowClosed.resolve(backupText("ALT.MAX", "l1-1")); await closedRead;
+    assert(pe("backupDialog").open && pe("confirmImport").hidden && pe("importSummary").textContent === "", "Import: Spaetes Ergebnis aus geschlossenem Dialog bleibt nach Wiedereroeffnen verworfen");
+    const slowCancelled = delayedBackup(), cancelledRead = selectBackup(slowCancelled.file);
+    await selectBackup(null);
+    slowCancelled.resolve(backupText("ALT.MAX", "l1-1")); await cancelledRead;
+    assert(pe("confirmImport").hidden && pe("importSummary").textContent === "", "Import: Leere Dateiauswahl verwirft einen noch laufenden Lesevorgang");
     profileFrame.remove();
     if (oldExercises === null) localStorage.removeItem(exerciseKey);
     else localStorage.setItem(exerciseKey, oldExercises);

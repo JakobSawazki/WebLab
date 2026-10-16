@@ -32,6 +32,7 @@ let state,
   storageError = "",
   pendingImport = null,
   pendingExercises = null,
+  importRead = 0,
   activeId = "l1",
   timer,
   toastTimer;
@@ -987,9 +988,17 @@ $("#themeButton").onclick = () => {
     localStorage.setItem("weblab-theme-v1", theme);
   } catch {}
 };
-$("#backupButton").onclick = () => {
+function resetPendingImport() {
+  importRead++;
   pendingImport = null;
   pendingExercises = null;
+  $("#confirmImport").hidden = true;
+}
+$("#backupDialog").addEventListener("close", () => {
+  if (!$("#backupDialog").open) resetPendingImport();
+});
+$("#backupButton").onclick = () => {
+  resetPendingImport();
   $("#importFile").value = "";
   $("#importSummary").textContent = "";
   $("#confirmImport").hidden = true;
@@ -997,21 +1006,24 @@ $("#backupButton").onclick = () => {
 };
 $("#exportButton").onclick = backup;
 $("#importFile").onchange = async (e) => {
-  pendingImport = null;
-  pendingExercises = null;
-  $("#confirmImport").hidden = true;
-  const file = e.target.files[0];
+  resetPendingImport();
+  const read = importRead,
+    file = e.target.files[0];
+  $("#importSummary").textContent = file ? "Sicherung wird eingelesen …" : "";
   if (!file) return;
   try {
     if (file.size > 32000000)
       throw new Error("Diese Datei ist zu groß (maximal 32 MB).");
-    const raw = JSON.parse(await file.text());
+    const text = await file.text();
+    if (read !== importRead || !$("#backupDialog").open) return;
+    const raw = JSON.parse(text);
     pendingImport = importBackup(raw);
     pendingExercises = normalizeSolved(raw.exercisesSolved);
     $("#importSummary").textContent =
       `Bereit: ${pendingImport.profile.name || "ohne Profil"}, Klasse ${pendingImport.profile.className || "offen"}, ${pendingImport.completed.length} Einheiten${pendingExercises ? `, ${pendingExercises.length} gelöste Übungen` : ""}. Dein aktueller Stand wird vor dem Ersetzen gesichert.`;
     $("#confirmImport").hidden = false;
   } catch (err) {
+    if (read !== importRead || !$("#backupDialog").open) return;
     $("#importSummary").textContent = err.message;
   }
 };

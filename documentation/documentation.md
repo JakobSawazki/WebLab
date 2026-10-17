@@ -16,7 +16,7 @@ tasks.md bleibt lokal im gemeinsamen Drive-Projektordner und ist von Git ausgesc
 
 ## 1. Ziel und aktueller Funktionsumfang
 
-Schülerinnen und Schüler verstehen HTML und CSS und entwickeln selbständig eine eigene statische Webseite. Die Gestaltung übernimmt Seitenrahmen, Farbwerte, Metallflächen, dunklen Standardmodus, helles Farbschema, Profilkopf und Navigationsidee von WorkbenchLab. Die Anwendung selbst ist auf Webentwicklung zugeschnitten und enthält keine SQL-/Datenbankmodule.
+Schülerinnen und Schüler verstehen HTML und CSS und entwickeln selbständig eine eigene statische Webseite. Die Gestaltung lehnt Seitenrahmen, Farbpalette, Metallflächen, dunklen Standardmodus, helles Farbschema, Profilkopf und Navigation an WorkbenchLab an. Die Anwendung selbst ist auf Webentwicklung zugeschnitten und enthält keine SQL-/Datenbankmodule.
 
 Repository: https://github.com/JakobSawazki/WebLab
 
@@ -251,7 +251,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (17.10.2026, Codex, Version 1.40.3):** 52 Node-Tests und 218 Browserprüfungen bestanden. Logo und Tab-Icon zeigen nachweislich dasselbe geladene Motiv. Zusätzlich zu den bisherigen Prüfungen werden genaue CSS-Eigenschaften, passende Selektoren, Kommentare/Zeichenfolgen, vollständige Werte und einfache Deklarationspriorität geprüft. Pages-Lauf 39002477989 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. HTML-/CSS-Mini-Prüfungen bleiben ausdrücklich auf die beschriebenen einfachen Aufgabenformen begrenzt.
+**Aktueller Stand (17.10.2026, Codex, Version 1.40.3):** 52 Node-Tests und 226 Browserprüfungen bestanden. Logo und Tab-Icon zeigen nachweislich dasselbe geladene Motiv. Zusätzlich zu den bisherigen Prüfungen werden genaue CSS-Eigenschaften, passende Selektoren, Kommentare/Zeichenfolgen, vollständige Werte und einfache Deklarationspriorität geprüft. Pages-Lauf 39002609189 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. HTML-/CSS-Mini-Prüfungen bleiben ausdrücklich auf die beschriebenen einfachen Aufgabenformen begrenzt.
 
 **Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
@@ -292,16 +292,30 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 | Start durch index.html ohne start.cmd | Klassisches defer-Skript weblab.js, lokale CSS-/Bilddateien, keine Modulimporte oder Netzabrufe im Laufzeitpaket gefunden; start.cmd fehlt | Seit 1.35.0 per Edge-Dateitest und Jakobs Nutzung bestätigt |
 | Unnötige Dateien entfernen, Tests/tools aufräumen | Frameworkreste und Startskript archiviert; notwendige Entwicklungsdateien unter development/; keine start.cmd, node_modules, tests oder tools im Projektstamm; Build-Ausgaben außerhalb des Projekts archiviert | Aktiver Stammordner aufgeräumt; keine Laufzeitinstallation nötig |
 | Einheitliche documentation/documentation.md für Jakob/Codex/Claude | Diese Datei; README und CLAUDE.md verweisen hierher | Umgesetzt |
-| GitHub-Repository und Veröffentlichung | Repository JakobSawazki/WebLab; Version 1.40.3, Pages-Lauf 39002477989 mit 52 Node-/218 Browserprüfungen; Bundle und Logo live per SHA-256 identisch | Umgesetzt |
-| Edle Buttons, gebürstetes Metall, passende Schrift und Icons | styles.css, icons.js; visuell geprüft, Kontrast und 360-Pixel-Layout in Browserprüfungen | Umgesetzt |
+| GitHub-Repository und Veröffentlichung | Repository JakobSawazki/WebLab; Version 1.40.3, Pages-Lauf 39002609189 mit 52 Node-/226 Browserprüfungen; Bundle und Logo live per SHA-256 identisch | Umgesetzt |
+| Edle Buttons, gebürstetes Metall, passende Schrift und Icons | styles.css, icons.js; dokumentierte Sichtprüfungen, aktuelle Kontrast-/Layoutprüfungen und sechs gerenderte Metallrahmen bei 1200/360 Pixeln in Dark/Light | Umgesetzt |
 | Neues fotorealistisches Logo auch als Tab-Icon | Eine gemeinsame Referenz auf assets/weblab-logo.png in index.html; Browserregression prüft identische URLs und geladenes 256-Pixel-Motiv | Abweichendes altes Tab-Icon in 1.40.3 korrigiert; lokal und veröffentlicht geprüft |
 | Versions-/Gerätehinweis unten links entfernen | Sidebar endet direkt nach der Navigation; Seitenfuß enthält nur Designed by, Versionsnummer lediglich als Tooltip | Umgesetzt |
 | Menü ein- und ausklappen | menuButton mit aria-expanded, desktop Iconleiste und mobilem Einblenden; acht Browserprüfungen für Zustand/Neuladen/Layout | Umgesetzt |
-| Elemente oben rechts gleich hoch | topbar-actions mit gemeinsamer Streckung; zuletzt im echten Online-Tab alle drei Elemente mit 56 px und gleicher Oberkante gemessen | Umgesetzt |
+| Elemente oben rechts gleich hoch | topbar-actions mit gemeinsamer Streckung; aktuelle Browserprüfung misst alle drei Höhen bei 1200/360 Pixeln in Dark/Light, jeweils mindestens 56 px und unter 1 px Abweichung | Umgesetzt |
 | OneNote-Materialien lokal sichern | Sechs Seitenauszüge, Bildungsplan und alle 81 Originalanhänge aus Teil 1/2 mit SHA-256 und Integritätsprüfung lokal vorhanden | Sicherung erledigt; sämtliche 56 DOCX-Texte und drei PDF-Anlagen abgeglichen, ZIP-Strukturen geprüft; Grenzen der Bild-/Medienprüfung im Quellenabschnitt |
 | ThommyWeb mit der Zeit ergänzen | Browserzugriff erfolgreich; Übersicht inventarisiert und K2/K6 fachlich geprüft; Abweichungen zu aktuellen Standards dokumentiert | Quellenabgleich begonnen; kein behaupteter vollständiger Inhaltsimport |
 
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
+
+### Abschlussprüfung des vereinbarten Umsetzungsauftrags am 17.10.2026
+
+Der vollständige Anforderungsabgleich oben bleibt maßgeblich. Für den vereinbarten Umsetzungsauftrag sind keine erforderlichen technischen Arbeiten mehr offen. Diese Aussage bezieht sich auf die bereitgestellte Lernanwendung und ihre vereinbarten Funktionen; sie behauptet keine bereits durchgeführte Unterrichtserprobung.
+
+Für die Abschlussprüfung wurden alle 16 aktuellen Lernziele, Praxisaufträge und Kriterien sowie sämtliche Lernpfadschritte erneut gelesen. Die Inhalte führen vom ersten HTML-Text über Grundgerüst, Dateinamen/Pfade, Listen, Links, Bilder, Tabellen und Medien zu CSS-Einbindung, Selektoren, Typografie und Box-Modell; Planung, Rechte, geschützter Transfer und das eigene statische Projekt schließen den Weg ab. Der Bildungsplan auf PDF-Seite 11 wurde beim Abgleich erneut gelesen. Der echte Upload auf ein geschütztes Schulziel ist ein angeleiteter Unterrichtsauftrag, kein vorgetäuschter Upload durch WebLab.
+
+Die maßgeblichen Nachweise wurden in den aktuellen Dateien kontrolliert: progression.test.mjs prüft alle 16 Freischaltstufen, Lücken und einmalige Punkte; journey.test.mjs die vollständige Kette und den Erhalt vorhandener Entwürfe; state.test.mjs Profilvoraussetzungen, Migration und Sicherung. Die Browserprüfseite bedient den tatsächlichen HTML-/CSS-Editor, Live- und manuelle Vorschau, große Ansicht, Dateireiter und Import, Profil/NAGOLD, Speichern/Laden und gesperrte Direktlinks. Dateistart mit klassischem defer-Bundle ist vorhanden und seit 1.35.0 in Edge sowie durch Jakobs eigene Nutzung bestätigt. Aktuelle Index-/CSS-Dateien enthalten das ein-/ausklappbare Menü, die gemeinsame Logo-/Tab-Icon-Adresse und keinen sichtbaren Versions-/Gerätetext unten links.
+
+Acht zusätzliche Browserprüfungen messen nun ausdrücklich die gleichen Höhen der drei oberen Bedienelemente und prüfen die sechs Metallrahmen der SVG-Menüicons: je 1200/360 Pixel und Dark/Light. Testcommit de868cb; [Pages-Lauf 39002609189](https://github.com/JakobSawazki/WebLab/actions/runs/39002609189) erfolgreich: **52 Node-Tests und 226 Browserprüfungen, keine Fehler**. Die Anwendung bleibt Version 1.40.3; nur Prüfungen und Dokumentation wurden ergänzt. Das veröffentlichte Bundle bleibt unverändert.
+
+Alle 81 Originaldateien wurden erneut anhand von Größe und SHA-256 gegen das Exportinventar geprüft: unverändert, insgesamt 57.992.045 Byte. Private Originale und tasks.md sind nicht im Git-Index. Projektstamm kontrolliert: keine start.cmd, node_modules, dist oder alten tests/tools-Ordner; notwendige Entwicklungsdateien liegen unter development/. README und CLAUDE.md verweisen auf diese zentrale Dokumentation. WorkbenchLab/index.html, state.js und styles.css erneut als Struktur-/Gestaltungsreferenz verglichen. Kein Anspruch auf identische spätere Funktionsstände beider Projekte.
+
+Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
 

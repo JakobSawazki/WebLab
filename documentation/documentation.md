@@ -2,7 +2,7 @@
 
 Stand: **17. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.40.3** · Status: **lokal vorbereitet; Veröffentlichung wird geprüft**.
+Version: **1.40.3** · Status: **geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -251,7 +251,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (17.10.2026, Codex, Version 1.40.2):** 52 Node-Tests und 216 Browserprüfungen bestanden. Zusätzlich zu den bisherigen Prüfungen werden genaue CSS-Eigenschaften, passende Selektoren, Kommentare/Zeichenfolgen, vollständige Werte und einfache Deklarationspriorität geprüft. Pages-Lauf 39002096591 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. HTML-/CSS-Mini-Prüfungen bleiben ausdrücklich auf die beschriebenen einfachen Aufgabenformen begrenzt.
+**Aktueller Stand (17.10.2026, Codex, Version 1.40.3):** 52 Node-Tests und 218 Browserprüfungen bestanden. Logo und Tab-Icon zeigen nachweislich dasselbe geladene Motiv. Zusätzlich zu den bisherigen Prüfungen werden genaue CSS-Eigenschaften, passende Selektoren, Kommentare/Zeichenfolgen, vollständige Werte und einfache Deklarationspriorität geprüft. Pages-Lauf 39002477989 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. HTML-/CSS-Mini-Prüfungen bleiben ausdrücklich auf die beschriebenen einfachen Aufgabenformen begrenzt.
 
 **Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
@@ -292,9 +292,9 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 | Start durch index.html ohne start.cmd | Klassisches defer-Skript weblab.js, lokale CSS-/Bilddateien, keine Modulimporte oder Netzabrufe im Laufzeitpaket gefunden; start.cmd fehlt | Seit 1.35.0 per Edge-Dateitest und Jakobs Nutzung bestätigt |
 | Unnötige Dateien entfernen, Tests/tools aufräumen | Frameworkreste und Startskript archiviert; notwendige Entwicklungsdateien unter development/; keine start.cmd, node_modules, tests oder tools im Projektstamm; Build-Ausgaben außerhalb des Projekts archiviert | Aktiver Stammordner aufgeräumt; keine Laufzeitinstallation nötig |
 | Einheitliche documentation/documentation.md für Jakob/Codex/Claude | Diese Datei; README und CLAUDE.md verweisen hierher | Umgesetzt |
-| GitHub-Repository und Veröffentlichung | Repository JakobSawazki/WebLab; zuletzt verifiziertes Release v1.40.2, Pages-Lauf 39002096591 mit 52 Node-/216 Browserprüfungen; Bundle live per SHA-256 identisch. Veröffentlichung 1.40.3 wird unten protokolliert | Umgesetzt |
+| GitHub-Repository und Veröffentlichung | Repository JakobSawazki/WebLab; Version 1.40.3, Pages-Lauf 39002477989 mit 52 Node-/218 Browserprüfungen; Bundle und Logo live per SHA-256 identisch | Umgesetzt |
 | Edle Buttons, gebürstetes Metall, passende Schrift und Icons | styles.css, icons.js; visuell geprüft, Kontrast und 360-Pixel-Layout in Browserprüfungen | Umgesetzt |
-| Neues fotorealistisches Logo auch als Tab-Icon | Eine gemeinsame Referenz auf assets/weblab-logo.png in index.html; Browserregression prüft identische URLs und geladenes 256-Pixel-Motiv | Abweichendes altes Tab-Icon in 1.40.3 korrigiert; Prüfung folgt |
+| Neues fotorealistisches Logo auch als Tab-Icon | Eine gemeinsame Referenz auf assets/weblab-logo.png in index.html; Browserregression prüft identische URLs und geladenes 256-Pixel-Motiv | Abweichendes altes Tab-Icon in 1.40.3 korrigiert; lokal und veröffentlicht geprüft |
 | Versions-/Gerätehinweis unten links entfernen | Sidebar endet direkt nach der Navigation; Seitenfuß enthält nur Designed by, Versionsnummer lediglich als Tooltip | Umgesetzt |
 | Menü ein- und ausklappen | menuButton mit aria-expanded, desktop Iconleiste und mobilem Einblenden; acht Browserprüfungen für Zustand/Neuladen/Layout | Umgesetzt |
 | Elemente oben rechts gleich hoch | topbar-actions mit gemeinsamer Streckung; zuletzt im echten Online-Tab alle drei Elemente mit 56 px und gleicher Oberkante gemessen | Umgesetzt |
@@ -309,7 +309,7 @@ Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.
 
 Der Anforderungsabgleich hat ein übersehenes altes Tab-Icon gezeigt: Seit 1.11.1 verwendete die Marke das neue metallische Browserfenster, das Tab-Icon weiterhin das frühere W. Beide referenzieren nun dieselbe vorhandene 256-Pixel-PNG-Datei mit derselben Cache-Kennung. Keine Änderung am akzeptierten Bildmotiv. Altes Icon außerhalb des Projekts unter C:/Users/PC/WebLab-Sicherungen/Logo-1.40.3-2026-10-17/favicon-alt.png archiviert. Das Veröffentlichungspaket enthält nur noch sechs Dateien. Zwei Browserregressionen prüfen bei 1200 und 360 Pixeln gemeinsame Bildadresse, Größenangabe und tatsächlich geladenes Bild.
 
-README auf Projekteinstieg, Dateistart und Entwicklungsbefehle gekürzt; veraltete doppelte Versionsgeschichte und Glossarzahl entfernt. Anforderungsabgleich mit aktuellem Quellenstand und korrektem Seitenfuß aktualisiert. Offene Antworten in tasks.md bleiben unverändert. Prüf- und Veröffentlichungsnachweis folgt.
+README auf Projekteinstieg, Dateistart und Entwicklungsbefehle gekürzt; veraltete doppelte Versionsgeschichte und Glossarzahl entfernt. Anforderungsabgleich mit aktuellem Quellenstand und korrektem Seitenfuß aktualisiert. Offene Antworten in tasks.md bleiben unverändert. 52/52 Node-Tests und 218/218 Browserprüfungen bestanden. [Pages-Lauf 39002477989](https://github.com/JakobSawazki/WebLab/actions/runs/39002477989) erfolgreich, Implementierungscommit 3944d35. Live-HTML referenziert für beide Bilder denselben Pfad mit Versionskennung 1.40.3. Live-Bundle und Logo bytegleich zum geprüften lokalen Build: SHA-256 EC1E7A74ACBE771AC23E510453BB38647DD7A800962FF0624B511195404D19E6 beziehungsweise CF8D48772A41F79D4E1E1773718FB48715F99AAEDAB2AAC49B2A344A6A361270. Build-Ausgabe und Vergleichsdownloads außerhalb des Projekts unter C:/Users/PC/WebLab-Sicherungen/Logo-1.40.3-2026-10-17 gesichert. Keine neue Anmeldung erforderlich.
 
 
 ### 17.10.2026 – Codex – Version 1.40.2: CSS-Rückmeldungen präzisieren

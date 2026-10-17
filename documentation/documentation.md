@@ -1,8 +1,8 @@
 # WebLab – gemeinsame Projektdokumentation
 
-Stand: **16. Oktober 2026, Europe/Berlin · Codex**
+Stand: **17. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.40.1** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
+Version: **1.40.1** · Status: **geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -251,7 +251,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (16.10.2026, Codex, Version 1.40.0):** 45 Node-Tests und 209 Browserprüfungen bestanden. Zusätzlich zu den bisherigen Prüfungen werden rowspan, das Entfernen belegter Zellen, proportionale Bildgrößen sowie die tatsächliche Browsergeometrie bei zwei Bereichsbreiten geprüft. Pages-Lauf 38961262489 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. Prüfgrenzen zu rechtlicher Freigabe und tatsächlichen Schulgeräten bleiben bestehen.
+**Aktueller Stand (17.10.2026, Codex, Version 1.40.1):** 49 Node-Tests und 212 Browserprüfungen bestanden. Zusätzlich zu den bisherigen Prüfungen werden alternative HTML-Schreibweisen, unveränderter Editorinhalt, weiterhin exakte Pfade/IDs sowie Kommentare und Lizenzangaben im Footer geprüft. Pages-Lauf 38963466974 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. Weiterhin begrenzte Übungen und keine vollständige HTML-Konformitätsprüfung.
 
 **Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
@@ -305,6 +305,12 @@ Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 17.10.2026 – Codex – Abschluss von Version 1.40.1 und Git-Metadaten
+
+Den bereits erfolgreichen CI-Lauf der Korrektur erneut geprüft, Live-Bündel und Startdatei mit 1.40.1 verifiziert und den endgültigen Veröffentlichungsstand eingetragen. Die Quellenänderung stammt vom 16.10.; der heutige Abschluss umfasst Prüfung, Dokumentation, Tag und Release.
+
+Git meldete eine beschädigte Referenz `refs/tags/desktop.ini`. Im Ref-Baum lagen fünf UTF-16LE-Windows-Metadatendateien mit geprüftem ShellClassInfo-Header (refs selbst, heads, tags, remotes und remotes/origin). Diese eng eingegrenzten Dateien unverändert außerhalb des Projekts nach `C:\Users\PC\WebLab-Sicherungen\HTML-Pruefung-1.40.1-2026-10-17\Git-Ref-Metadaten` verschoben. Die erste Formatprüfung erkannte die UTF-16-Dateien nicht; vor dem Verschieben wurde die Kodierung geprüft. Anschließend Tagabfrage ohne diese Warnung und sauberer Git-Arbeitsstand. Keine echten Git-Referenzen, Hooks, Anmeldedaten oder Sicherheitskonfigurationen geändert. Drive kann solche Metadateien erneut erzeugen; es wurde kein automatischer Löschmechanismus eingerichtet.
+
 ### 16.10.2026 – Codex – Version 1.40.1: Gültige HTML-Schreibweisen fair prüfen
 
 Konkreter Fehler: In der Mini-Übung 05/2 wurde ein korrekter Link mit einfachen Anführungszeichen als falsch gemeldet. Die HTML-Übungsprüfung vereinheitlicht nun unterstützte Schreibvarianten ausschließlich in einer internen Prüfkopie: einfache/doppelte und zulässige unquotierte Attributwerte, Leerzeichen am Gleichheitszeichen, Großschreibung von Tag-/Attributnamen, leere Attribute sowie gültige Schreibweisen leerer Elemente. Editorinhalt und Vorschau werden dabei nicht umgeschrieben. HTML-Werte wie Pfade und IDs bleiben erhalten; ausgewählte Prüfungen zu Navigation und gemeinsamer CSS-Datei wurden von irrtümlicher Groß-/Kleinschreibungsignorierung befreit. Ein großgeschriebenes HTTPS-Protokoll bleibt zulässig.
@@ -315,7 +321,7 @@ Lizenzübung 14/2 verlangt ihre Angaben im Text des footer statt bloß irgendwo 
 
 Alle 40 Mini-Übungen und ihre IDs bleiben erhalten; bestehende Lösungsmarkierungen werden nicht nachträglich gelöscht. Keine Änderung an XP, NAGOLD, Freischaltungen, Entwürfen, Profilen oder Sicherungsformat. Frühere Markierungen sind weiterhin keine erneute inhaltliche Validierung des damals eingegebenen Codes.
 
-Lokal **49 Node-Tests bestanden**: Schreibvarianten für sämtliche HTML-Referenzlösungen, leere Elemente/Attribute, Pfad-/ID-Großschreibung, nicht reparierte Fehler, Kommentare/versteckte Beispiele und Lizenzangaben im Footer. Drei Browserregressionen für tatsächliche Bedienung, unveränderten Editor/Entwurf, falsche Dateinamen und auskommentierte Links ergänzt. Build erstellt; CI und Veröffentlichung folgen.
+Lokal **49 Node-Tests bestanden**: Schreibvarianten für sämtliche HTML-Referenzlösungen, leere Elemente/Attribute, Pfad-/ID-Großschreibung, nicht reparierte Fehler, Kommentare/versteckte Beispiele und Lizenzangaben im Footer. Drei Browserregressionen für tatsächliche Bedienung, unveränderten Editor/Entwurf, falsche Dateinamen und auskommentierte Links ergänzt. **212/212 Browserprüfungen und 49/49 Node-Tests bestanden**; [Pages-Lauf 38963466974](https://github.com/JakobSawazki/WebLab/actions/runs/38963466974) erfolgreich. Implementierungscommit `9e162e6`. Live-Bündel am 17.10.2026 erneut bytegleich mit dem lokal geprüften Build bestätigt, SHA-256 `371523026619b5c7858922cedb48328d70ff7c3520d872a1b0f8e3a8120358da`; Startseite lädt das Skript mit Versionskennung 1.40.1. Build außerhalb des Projekts unter `C:\Users\PC\WebLab-Sicherungen\HTML-Pruefung-1.40.1-2026-10-17\dist`; kein dist-Ordner im Projekt.
 
 ### 16.10.2026 – Codex – Version 1.40.0: Verbundene Zellen und proportionale Bilder
 

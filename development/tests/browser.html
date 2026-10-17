@@ -131,6 +131,27 @@
           brandLogo.naturalWidth === 256 && brandLogo.naturalHeight === 256,
         width + ": Logo und Tab-Icon verwenden dasselbe geladene Metallmotiv",
       );
+      for (const theme of ["dark", "light"]) {
+        if (menuDoc.documentElement.dataset.theme !== theme)
+          menuDoc.querySelector("#themeButton").click();
+        const controls = [...menuDoc.querySelectorAll(".topbar-actions > button")],
+          heights = controls.map((button) => button.getBoundingClientRect().height);
+        assert(
+          controls.length === 3 && heights.every((height) => height >= 56 &&
+            Math.abs(height - heights[0]) < 1),
+          width + " " + theme + ": alle drei oberen Bedienelemente gleich hoch",
+        );
+        const frames = [...menuDoc.querySelectorAll(".nav-item > [data-icon]")];
+        assert(
+          frames.length === 6 && frames.every((frame) => {
+            const style = menuFrame.contentWindow.getComputedStyle(frame);
+            return frame.querySelector('svg[aria-hidden="true"]') &&
+              parseFloat(style.borderTopWidth) >= 1 && style.borderTopStyle === "solid" &&
+              style.backgroundImage.includes("gradient") && style.boxShadow !== "none";
+          }),
+          width + " " + theme + ": sechs einheitliche Icons mit Metallrahmen",
+        );
+      }
       menuDoc.querySelector("#menuButton").click();
       const side = menuDoc.querySelector("#sidebar");
       assert(

@@ -2,7 +2,7 @@
 
 Stand: **17. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.40.2** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
+Version: **1.40.2** · Status: **geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -251,7 +251,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (17.10.2026, Codex, Version 1.40.1):** 49 Node-Tests und 212 Browserprüfungen bestanden. Zusätzlich zu den bisherigen Prüfungen werden alternative HTML-Schreibweisen, unveränderter Editorinhalt, weiterhin exakte Pfade/IDs sowie Kommentare und Lizenzangaben im Footer geprüft. Pages-Lauf 38963466974 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. Weiterhin begrenzte Übungen und keine vollständige HTML-Konformitätsprüfung.
+**Aktueller Stand (17.10.2026, Codex, Version 1.40.2):** 52 Node-Tests und 216 Browserprüfungen bestanden. Zusätzlich zu den bisherigen Prüfungen werden genaue CSS-Eigenschaften, passende Selektoren, Kommentare/Zeichenfolgen, vollständige Werte und einfache Deklarationspriorität geprüft. Pages-Lauf 39002096591 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. HTML-/CSS-Mini-Prüfungen bleiben ausdrücklich auf die beschriebenen einfachen Aufgabenformen begrenzt.
 
 **Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
@@ -315,7 +315,7 @@ Bei mehrfachen passenden Deklarationen entscheidet in diesem begrenzten Modell d
 
 **Prüfgrenze:** Dies ist kein vollständiger CSS-Parser, Wertvalidator oder Modell sämtlicher berechneter Stile. Bedingte/verschachtelte Regeln, beliebige Selektorgrammatik, CSS-Escapes, Variablen und alle fortgeschrittenen Werte sind nicht allgemein abgedeckt. Die Mini-Aufgaben verlangen weiterhin ihre einfachen direkten Regeln; das freie Labor und die isolierte Browser-Vorschau bleiben unverändert. Gegenprüfung anhand [W3C CSS Syntax](https://www.w3.org/TR/css-syntax-3/), [Selektoren](https://www.w3.org/TR/selectors-3/#casesens) und [Kaskade](https://www.w3.org/TR/css-cascade-5/#cascade-order); keine vollständige Standardkonformität behauptet.
 
-Lokal **52 Node-Tests bestanden**: ganze Eigenschaften, Namen, Kommentare/Zeichenfolgen, vollständige Werte, Reihenfolge, !important, unterstützte Spezifität und Kurzformen sowie alle bestehenden Referenz-/Teil-Lösungen. Vier Browserregressionen für fehlende Schriftfarbe, Kommentare, gültige Großschreibung bei unverändertem Editor/Lernstand und falsche Klassennamen/IDs ergänzt. Der Build enthält den Helfer im Bündel; weiterhin sieben öffentliche Dateien. Alle 40 Übungsnummern, vorhandenen Lösungsmarkierungen, Freischaltungen, XP/NAGOLD, Entwürfe und Sicherungsformate bleiben erhalten. CI und Veröffentlichung folgen.
+Lokal **52 Node-Tests bestanden**: ganze Eigenschaften, Namen, Kommentare/Zeichenfolgen, vollständige Werte, Reihenfolge, !important, unterstützte Spezifität und Kurzformen sowie alle bestehenden Referenz-/Teil-Lösungen. Vier Browserregressionen für fehlende Schriftfarbe, Kommentare, gültige Großschreibung bei unverändertem Editor/Lernstand und falsche Klassennamen/IDs ergänzt. Der Build enthält den Helfer im Bündel; weiterhin sieben öffentliche Dateien. Alle 40 Übungsnummern, vorhandenen Lösungsmarkierungen, Freischaltungen, XP/NAGOLD, Entwürfe und Sicherungsformate bleiben erhalten. **216/216 Browserprüfungen und 52/52 Node-Tests bestanden**; [Pages-Lauf 39002096591](https://github.com/JakobSawazki/WebLab/actions/runs/39002096591) erfolgreich. Implementierungscommit `f28ca51`. Live-Bündel bytegleich mit dem lokal geprüften Build, SHA-256 `31314743cfeb31d9661e9a1aa6e40c87dd16871c096ff97b1dd6d5838ebb98e0`; Startseite lädt die Versionskennung 1.40.2. Build-Ausgabe außerhalb des Projekts unter `C:\Users\PC\WebLab-Sicherungen\CSS-Pruefung-1.40.2-2026-10-17\dist`; kein dist-Ordner im Projekt.
 
 ### 17.10.2026 – Codex – Abschluss von Version 1.40.1 und Git-Metadaten
 

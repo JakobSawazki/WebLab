@@ -2,7 +2,7 @@
 
 Stand: **17. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.40.2** · Status: **geprüft und veröffentlicht**.
+Version: **1.40.3** · Status: **lokal vorbereitet; Veröffentlichung wird geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.40.2 |
+| Bereich | Version 1.40.3 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
@@ -275,7 +275,7 @@ Offene Erweiterungen, nach Priorität:
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser und optionale Offline-Kopie. Browserprüfungen laufen seit 1.22.1 in CI.
 7. **ThommyWeb:** K2/K6 im Detail, alle übrigen Kapitel seit 1.32.0 über Übersicht und Stichworte abgeglichen; Lücken (Zellen verbinden, b/i, Webfonts) eigenständig geschlossen. Detailtexte der übrigen Kapitel bei Bedarf noch prüfen.
 
-### Anforderungsabgleich am 12.10.2026
+### Anforderungsabgleich am 17.10.2026
 
 Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend konkret gewünschten Änderungen. Die obigen Erweiterungsideen sind keine neu vereinbarten Pflichtanforderungen. Eine Unterrichtserprobung kann Codex nicht als bereits erfolgt bestätigen.
 
@@ -290,20 +290,27 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 | Vorbereitung auf Notepad++ 7.5.1 vom Informatik-Stick | Import, HTML/CSS/ZIP-Export, Transferaufträge mit Strg+S/F5; ZIP-Struktur und Import geprüft | Umgesetzt; Schuleinsatz auf echtem Stick nicht vorgetäuscht |
 | Eigene statische Webseite entwickeln | Abschlussprojekt in Einheit 16, Projektentwurf wächst fortlaufend; Export echter index.html und style.css | Umgesetzt; zusätzliche Unterseite wird aktuell in Notepad++ erstellt |
 | Start durch index.html ohne start.cmd | Klassisches defer-Skript weblab.js, lokale CSS-/Bilddateien, keine Modulimporte oder Netzabrufe im Laufzeitpaket gefunden; start.cmd fehlt | Seit 1.35.0 per Edge-Dateitest und Jakobs Nutzung bestätigt |
-| Unnötige Dateien entfernen, Tests/tools aufräumen | Frameworkreste und Startskript archiviert; notwendige Entwicklungsdateien unter development/; Prettier legte einen leeren Cache mit Windows-Metadaten an, am 12.10. wieder extern archiviert | Aktiver Stammordner aufgeräumt; keine Laufzeitinstallation nötig |
+| Unnötige Dateien entfernen, Tests/tools aufräumen | Frameworkreste und Startskript archiviert; notwendige Entwicklungsdateien unter development/; keine start.cmd, node_modules, tests oder tools im Projektstamm; Build-Ausgaben außerhalb des Projekts archiviert | Aktiver Stammordner aufgeräumt; keine Laufzeitinstallation nötig |
 | Einheitliche documentation/documentation.md für Jakob/Codex/Claude | Diese Datei; README und CLAUDE.md verweisen hierher | Umgesetzt |
-| GitHub-Repository und Veröffentlichung | Repository JakobSawazki/WebLab; Release v1.9.1; Pages-Workflow 38293274258 für finalen Dokumentationscommit 80345ce erfolgreich; Runtime-Bundle bereits live per SHA-256 identisch bestätigt | Umgesetzt |
+| GitHub-Repository und Veröffentlichung | Repository JakobSawazki/WebLab; zuletzt verifiziertes Release v1.40.2, Pages-Lauf 39002096591 mit 52 Node-/216 Browserprüfungen; Bundle live per SHA-256 identisch. Veröffentlichung 1.40.3 wird unten protokolliert | Umgesetzt |
 | Edle Buttons, gebürstetes Metall, passende Schrift und Icons | styles.css, icons.js; visuell geprüft, Kontrast und 360-Pixel-Layout in Browserprüfungen | Umgesetzt |
-| Neues fotorealistisches Logo auch als Tab-Icon | assets/weblab-logo.png und favicon.png; beide in index.html referenziert und veröffentlicht | Umgesetzt |
-| Versions-/Gerätehinweis unten links entfernen | sidebar-bottom enthält nur noch Motto; Version steht im allgemeinen Seitenfuß | Umgesetzt |
+| Neues fotorealistisches Logo auch als Tab-Icon | Eine gemeinsame Referenz auf assets/weblab-logo.png in index.html; Browserregression prüft identische URLs und geladenes 256-Pixel-Motiv | Abweichendes altes Tab-Icon in 1.40.3 korrigiert; Prüfung folgt |
+| Versions-/Gerätehinweis unten links entfernen | Sidebar endet direkt nach der Navigation; Seitenfuß enthält nur Designed by, Versionsnummer lediglich als Tooltip | Umgesetzt |
 | Menü ein- und ausklappen | menuButton mit aria-expanded, desktop Iconleiste und mobilem Einblenden; acht Browserprüfungen für Zustand/Neuladen/Layout | Umgesetzt |
 | Elemente oben rechts gleich hoch | topbar-actions mit gemeinsamer Streckung; zuletzt im echten Online-Tab alle drei Elemente mit 56 px und gleicher Oberkante gemessen | Umgesetzt |
-| OneNote-Materialien lokal sichern | Sechs Seitenauszüge, Bildungsplan und alle 81 Originalanhänge aus Teil 1/2 mit SHA-256 und Integritätsprüfung lokal vorhanden | Sicherung erledigt; fachlicher Inhaltsabgleich noch offen |
+| OneNote-Materialien lokal sichern | Sechs Seitenauszüge, Bildungsplan und alle 81 Originalanhänge aus Teil 1/2 mit SHA-256 und Integritätsprüfung lokal vorhanden | Sicherung erledigt; sämtliche 56 DOCX-Texte und drei PDF-Anlagen abgeglichen, ZIP-Strukturen geprüft; Grenzen der Bild-/Medienprüfung im Quellenabschnitt |
 | ThommyWeb mit der Zeit ergänzen | Browserzugriff erfolgreich; Übersicht inventarisiert und K2/K6 fachlich geprüft; Abweichungen zu aktuellen Standards dokumentiert | Quellenabgleich begonnen; kein behaupteter vollständiger Inhaltsimport |
 
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.10.2026 – Codex – Version 1.40.3: einheitliches Logo und Dokumentation
+
+Der Anforderungsabgleich hat ein übersehenes altes Tab-Icon gezeigt: Seit 1.11.1 verwendete die Marke das neue metallische Browserfenster, das Tab-Icon weiterhin das frühere W. Beide referenzieren nun dieselbe vorhandene 256-Pixel-PNG-Datei mit derselben Cache-Kennung. Keine Änderung am akzeptierten Bildmotiv. Altes Icon außerhalb des Projekts unter C:/Users/PC/WebLab-Sicherungen/Logo-1.40.3-2026-10-17/favicon-alt.png archiviert. Das Veröffentlichungspaket enthält nur noch sechs Dateien. Zwei Browserregressionen prüfen bei 1200 und 360 Pixeln gemeinsame Bildadresse, Größenangabe und tatsächlich geladenes Bild.
+
+README auf Projekteinstieg, Dateistart und Entwicklungsbefehle gekürzt; veraltete doppelte Versionsgeschichte und Glossarzahl entfernt. Anforderungsabgleich mit aktuellem Quellenstand und korrektem Seitenfuß aktualisiert. Offene Antworten in tasks.md bleiben unverändert. Prüf- und Veröffentlichungsnachweis folgt.
+
 
 ### 17.10.2026 – Codex – Version 1.40.2: CSS-Rückmeldungen präzisieren
 

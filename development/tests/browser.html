@@ -123,6 +123,14 @@
       document.body.append(menuFrame);
       await menuLoaded;
       let menuDoc = menuFrame.contentDocument;
+      const brandLogo = menuDoc.querySelector(".brand img"),
+        tabIcon = menuDoc.querySelector('link[rel="icon"]');
+      await brandLogo.decode();
+      assert(
+        tabIcon.href === brandLogo.src && tabIcon.sizes.value === "256x256" &&
+          brandLogo.naturalWidth === 256 && brandLogo.naturalHeight === 256,
+        width + ": Logo und Tab-Icon verwenden dasselbe geladene Metallmotiv",
+      );
       menuDoc.querySelector("#menuButton").click();
       const side = menuDoc.querySelector("#sidebar");
       assert(

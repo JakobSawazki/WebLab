@@ -1,8 +1,8 @@
 # WebLab – gemeinsame Projektdokumentation
 
-Stand: **17. Oktober 2026, Europe/Berlin · Codex**
+Stand: **17. Oktober 2026, Europe/Berlin · Claude**
 
-Version: **1.40.3** · Status: **geprüft und veröffentlicht**.
+Version: **1.41.0** · Status: **lokal geprüft und committet, noch nicht veröffentlicht** (veröffentlicht ist weiterhin 1.40.3).
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.40.3 |
+| Bereich | Version 1.41.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
@@ -36,8 +36,8 @@ Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein
 | Abschluss | Technische Kriterien erfüllt, Quiz richtig, alle Selbstkontrollen bestätigt, Profil vollständig |
 | Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich |
 | Übungen | Übungswerkstatt in den Einheiten: kurze Aufgaben (Reparieren, Ergänzen, Selbst schreiben, Profi-Aufgabe je Etappe) mit Mini-Editor, Live-Vorschau, Sofortprüfung, Tipp nach Fehlversuch und Merksatz; ohne Punkte; gesammelte Merksätze und Wiederholungsrunde unter „Meine Notizen“ |
-| Labor | HTML-/CSS-Dateireiter, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
-| Informatik-Stick | HTML-/CSS-Import und Export, Notepad++-Transferauftrag mit Strg+S/F5 und Dateiverknüpfung |
+| Labor | HTML-/CSS-Dateireiter, seit 1.41.0 bis zu vier Unterseiten wie kontakt.html mit Verweisprüfung, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
+| Informatik-Stick | HTML-/CSS-Import und Export einschließlich Unterseiten, Notepad++-Transferauftrag mit Strg+S/F5 und Dateiverknüpfung |
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
 | Nachschlagen | 110 Glossareinträge (84 aus WebLab 0.5.0, 26 ergänzt), Suche mit Trefferreihenfolge, Bereichsfilter, „Siehe auch“-Verweise |
 | Datenschutz | Lernstand auf dem Gerät; kein Tracking, keine externe KI, keine zentrale Schülerdatenbank |
@@ -124,7 +124,7 @@ Die ursprünglichen Kapitelnummern sind nicht die WebLab-Einheitsnummern. WebLab
 | 4 | Bild, relativer Pfad, Alternativtext | 05–06; seit 1.40.0 eigene Praxis zu proportionaler Bildgröße in 12/4 |
 | 5 | ul/li, Listenzeichen | HTML in 04, seit 1.38.0 CSS-Praxis in 11/4 |
 | 6 | ol/li, Nummerierungsstil | HTML in 04, seit 1.38.0 CSS-Praxis in 11/4; Bedeutung bleibt unabhängig vom Zeichenstil |
-| 7 | Zwei eigene Seiten mit Hin-/Rücklink | 05 und 16; tatsächliche zweite Datei weiterhin in Notepad++, Editor-Erweiterung siehe tasks.md Nr. 2 |
+| 7 | Zwei eigene Seiten mit Hin-/Rücklink | 05 und 16; zweite Datei seit 1.41.0 wahlweise als Unterseite in WebLab oder in Notepad++ |
 | 8 | Externer Link, neues Browserfenster | HTTPS-Link in 05, target im Glossar; neues Fenster bisher keine eigene Pflichtübung |
 | 9 | PDF-Datei im Unterordner verlinken | 05: Erklärung und seit 1.38.0 konkreter Export-/Notepad++-Transfer mit service/plan.pdf; Download wird außerhalb der isolierten Vorschau geprüft |
 | 10 | Datentabelle, Gestaltung, verbundene Zellen | Aufbau 07, colspan-Mini-Übung 07/3, seit 1.40.0 rowspan-Praxis 07/4; Formatierung in Vertiefung 12 |
@@ -271,7 +271,7 @@ Offene Erweiterungen, nach Priorität:
 2. **Originalquellen:** Alle 81 Anhänge aus Teil 1/2 sind seit 16.10.2026 lokal gesichert und auf Dateiintegrität geprüft. Teil 1 ist anhand aller 29 DOCX-Absatztexte abgeglichen; Status pro Kapitel im Quellenabschnitt. Teil 2 ist seit 1.39.0 anhand aller 27 DOCX-Texte und der drei PDF-Anlagen abgeglichen; Rechtsinhalte gezielt mit aktuellen offiziellen Quellen geprüft. Verbleibende DOCX-Abbildungen und ZIP-Vorlagen/Lösungen sind noch nicht vollständig gesichtet.
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
 4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10, seit 1.24.0/1.25.0 eine Übungswerkstatt mit Mini-Editor, Live-Vorschau und Merksätzen. Seit 1.33.0 gibt es auch eine Audio-Übung, seit 1.34.0 Profi-Aufgaben am Ende der Etappen 1–3 als oberste Stufe. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
-5. **Projektwerkstatt:** zusätzliche HTML-Unterseiten und Medienverwaltung ergänzen. index.html und style.css sind seit 1.1.0 als Reiter vorhanden; ein Projekt mit beliebig vielen Dateien bleibt offen.
+5. **Projektwerkstatt:** Seit 1.41.0 bis zu vier Unterseiten neben index.html und style.css, mit Verweisprüfung, Mehrdatei-Import und ZIP-Export. Offen bleibt eine Medienverwaltung für echte Bild-/Mediendateien statt eingebetteter Datenadressen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser und optionale Offline-Kopie. Browserprüfungen laufen seit 1.22.1 in CI.
 7. **ThommyWeb:** K2/K6 im Detail, alle übrigen Kapitel seit 1.32.0 über Übersicht und Stichworte abgeglichen; Lücken (Zellen verbinden, b/i, Webfonts) eigenständig geschlossen. Detailtexte der übrigen Kapitel bei Bedarf noch prüfen.
 
@@ -288,7 +288,7 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 | Anfangs nur Einheit 01, danach 02, 03 usw. | progression.test.mjs prüft sämtliche 16 Freischaltstufen, einmalige XP und Lücken; Browserprüfung prüft Direktlinks und Erhalt nach Neuladen | Umgesetzt |
 | HTML direkt programmieren und echte Darstellung sehen | HTML/CSS-Reiter, sandbox-Vorschau, Handyansicht, große Browseransicht; Browserprüfung kontrolliert Eingabe, Darstellung, manuelle Aktualisierung und Entwurftrennung | Umgesetzt |
 | Vorbereitung auf Notepad++ 7.5.1 vom Informatik-Stick | Import, HTML/CSS/ZIP-Export, Transferaufträge mit Strg+S/F5; ZIP-Struktur und Import geprüft | Umgesetzt; Schuleinsatz auf echtem Stick nicht vorgetäuscht |
-| Eigene statische Webseite entwickeln | Abschlussprojekt in Einheit 16, Projektentwurf wächst fortlaufend; Export echter index.html und style.css | Umgesetzt; zusätzliche Unterseite wird aktuell in Notepad++ erstellt |
+| Eigene statische Webseite entwickeln | Abschlussprojekt in Einheit 16, Projektentwurf wächst fortlaufend; Export echter index.html, style.css und Unterseiten | Umgesetzt; Unterseite seit 1.41.0 auch direkt in WebLab |
 | Start durch index.html ohne start.cmd | Klassisches defer-Skript weblab.js, lokale CSS-/Bilddateien, keine Modulimporte oder Netzabrufe im Laufzeitpaket gefunden; start.cmd fehlt | Seit 1.35.0 per Edge-Dateitest und Jakobs Nutzung bestätigt |
 | Unnötige Dateien entfernen, Tests/tools aufräumen | Frameworkreste und Startskript archiviert; notwendige Entwicklungsdateien unter development/; keine start.cmd, node_modules, tests oder tools im Projektstamm; Build-Ausgaben außerhalb des Projekts archiviert | Aktiver Stammordner aufgeräumt; keine Laufzeitinstallation nötig |
 | Einheitliche documentation/documentation.md für Jakob/Codex/Claude | Diese Datei; README und CLAUDE.md verweisen hierher | Umgesetzt |
@@ -315,9 +315,30 @@ Acht zusätzliche Browserprüfungen messen nun ausdrücklich die gleichen Höhen
 
 Alle 81 Originaldateien wurden erneut anhand von Größe und SHA-256 gegen das Exportinventar geprüft: unverändert, insgesamt 57.992.045 Byte. Private Originale und tasks.md sind nicht im Git-Index. Projektstamm kontrolliert: keine start.cmd, node_modules, dist oder alten tests/tools-Ordner; notwendige Entwicklungsdateien liegen unter development/. README und CLAUDE.md verweisen auf diese zentrale Dokumentation. WorkbenchLab/index.html, state.js und styles.css erneut als Struktur-/Gestaltungsreferenz verglichen. Kein Anspruch auf identische spätere Funktionsstände beider Projekte.
 
+Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und umgesetzt, siehe Arbeitsprotokoll. Die Punkte 3–5 bleiben offen.
+
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.10.2026 – Claude – Version 1.41.0: Unterseiten direkt in WebLab (tasks.md Nr. 2)
+
+**Entscheidung:** Jakob hat am 17.10.2026 beauftragt, offene Fragen möglichst selbst zu entscheiden. Punkt 2 („Mehrere HTML-Seiten direkt in WebLab?“) wurde deshalb von Claude entschieden: **Ja, ergänzend – der Notepad++-Transfer bleibt.** Begründung: Das Abschlussprojekt verlangt zwei verknüpfte Seiten mit gemeinsamer CSS-Datei. Bisher konnten Lernende die Verweise zwischen den Seiten erst nach dem Export prüfen; jetzt sehen sie bereits beim Schreiben, ob ein Linkziel existiert. Die Übung mit Notepad++ vom Informatik-Stick bleibt unverändert Pflichtinhalt und wird durch den Mehrdatei-Import sogar erleichtert (Projekt auf dem Stick weiterbearbeiten und zurückladen). Die Frage ist aus tasks.md entfernt.
+
+**Umsetzung:**
+
+- Neues Modul `development/src/pages.js`: sichere Dateinamen (Kleinbuchstaben, Ziffern, Bindestrich; „Über uns“ wird ueber-uns.html), höchstens vier Unterseiten, Startgerüst mit UTF-8, Titel, CSS-Verknüpfung und Rücklink, Verweisanalyse.
+- Werkstatt und freies Labor: Reiter für index.html, alle Unterseiten und style.css; „+ Unterseite“ und „Seite entfernen“ (mit vorheriger Sicherung). Pfeiltasten, Pos1 und Ende wechseln durch alle Reiter. Die Vorschau zeigt die gewählte Seite.
+- Verweisprüfung „Verweise zwischen deinen Seiten“ unter der Vorschau: ✓ Ziel vorhanden, ○ Ziel fehlt mit konkretem nächsten Schritt.
+- Export: Projekt-ZIP enthält alle Unterseiten; jede bekommt bei Bedarf automatisch die CSS-Verknüpfung. Der Einzelexport speichert die gerade geöffnete HTML-Datei.
+- Import: Mehrere HTML-Dateien sind erlaubt, wenn genau eine index.html heißt; die übrigen werden Unterseiten. Eine einzelne HTML-Datei ersetzt wie bisher index.html.
+- Lernstand: optionales Feld `pages` je Entwurf, weiter `formatVersion: 3`. Ältere Sicherungen bleiben unverändert ladbar. Übernommene Entwürfe kopieren Unterseiten tief, damit Einheiten sich nicht gegenseitig verändern.
+- Die automatischen Kriterien prüfen weiterhin index.html. Eine Unterseite ist bewusst kein Pflichtkriterium, damit der Notepad++-Weg gleichwertig bleibt.
+- Texte in Einheit 16 und der Rechts-Fallaufgabe (impressum.html) nennen beide Wege.
+
+**Prüfung:** 60/60 Node-Tests (8 neue in pages.test.mjs: Dateinamen, Begrenzung, Sicherung/Laden, tiefe Kopie, Startgerüst, Verweisprüfung, Mehrdatei-Import) und 234/234 Browserprüfungen (8 neue: Anlegen, Doppelname, Vorschau je Seite, getrennte Speicherung, Verweisprüfung, Tastatur, Entfernen) mit `npm run qa`. Zusätzlich im integrierten Browser: ZIP-Export enthält kontakt.html mit CSS-Verknüpfung; Reiter und Verweisprüfung bei schmaler Breite angesehen; Testdaten danach wieder entfernt. Beim ersten QA-Lauf fiel auf, dass die neuen Knöpfe unter 44 px hoch waren – auf 2,75 rem korrigiert.
+
+**Nicht veröffentlicht:** Commit lokal, kein Push. Jakobs früherer Hinweis an Claude lautete, Stände zuerst lokal anzusehen; die Freigabe zur Veröffentlichung von 1.41.0 bleibt bei Jakob. Offen bleiben tasks.md Nr. 3–5, weil sie Jakobs Unterrichtswissen beziehungsweise reale Schulgeräte erfordern.
 
 ### 17.10.2026 – Codex – Version 1.40.3: einheitliches Logo und Dokumentation
 

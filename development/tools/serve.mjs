@@ -21,7 +21,7 @@ http
     }
     // Source modules are available only on the local test server, never in dist.
     const sourceName = new URL(req.url, "http://localhost").pathname.slice(1);
-    if (["content.js", "extensions.js", "checks.js", "state.js", "nagold.js"].includes(sourceName)) {
+    if (["content.js", "extensions.js", "checks.js", "state.js", "nagold.js", "pages.js"].includes(sourceName)) {
       res.writeHead(200, {
         "Content-Type": types[".js"],
         "Cache-Control": "no-store",

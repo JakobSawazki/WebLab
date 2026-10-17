@@ -1,5 +1,6 @@
 import { lessons, byId } from "./content.js";
 import { nagoldRows } from "./nagold.js";
+import { normalizePages } from "./pages.js";
 export const STORAGE_KEY = "weblab-state-v3";
 export const blank = () => ({
   profile: { name: "", className: "" },
@@ -26,8 +27,11 @@ export function normalize(raw) {
   if (!validProfile(s.profile.name)) s.profile.name = "";
   for (const l of lessons) {
     const d = raw.drafts?.[l.id];
-    if (record(d))
+    if (record(d)) {
       s.drafts[l.id] = { html: clip(d.html, 1500000), css: clip(d.css, 40000) };
+      const pages = normalizePages(d.pages);
+      if (pages.length) s.drafts[l.id].pages = pages;
+    }
     if (Array.isArray(raw.checks?.[l.id]))
       s.checks[l.id] = l.checks.map((_, i) => raw.checks[l.id][i] === true);
     if (raw.quiz?.[l.id] === true) s.quiz[l.id] = true;
@@ -39,11 +43,14 @@ export function normalize(raw) {
     )
       s.completedAt[l.id] = new Date(raw.completedAt[l.id]).toISOString();
   }
-  if (record(raw.drafts?.lab))
+  if (record(raw.drafts?.lab)) {
     s.drafts.lab = {
       html: clip(raw.drafts.lab.html, 1500000),
       css: clip(raw.drafts.lab.css, 40000),
     };
+    const pages = normalizePages(raw.drafts.lab.pages);
+    if (pages.length) s.drafts.lab.pages = pages;
+  }
   s.completed = [
     ...new Set(
       Array.isArray(raw.completed)

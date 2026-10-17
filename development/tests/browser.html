@@ -491,6 +491,71 @@
         el("htmlEditor").value.includes("Live-Test"),
       "CSS-Import ersetzt nur CSS und erhält HTML",
     );
+    // Zusätzliche HTML-Seiten: anlegen, wechseln, Verweise prüfen, entfernen.
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    el("htmlTab").click();
+    win.prompt = () => "Kontakt";
+    el("addPage").click();
+    await wait(50);
+    assert(
+      el("pageTab0")?.dataset.file === "kontakt.html" &&
+        el("pageTab0").getAttribute("aria-selected") === "true" &&
+        el("htmlFileName").textContent === "kontakt.html" &&
+        el("htmlEditor").value.includes('<a href="index.html">') &&
+        !el("removePage").hidden,
+      "Unterseite kontakt.html wird mit eigenem Startgerüst angelegt und geöffnet",
+    );
+    el("addPage").click();
+    await wait(50);
+    assert(
+      doc.querySelectorAll("#fileTabs [role=tab]").length === 3,
+      "Doppelter Seitenname legt keine zweite kontakt.html an",
+    );
+    input("htmlEditor", '<h1>Kontaktseite</h1>\n<a href="index.html">Start</a>');
+    el("runButton").click();
+    assert(
+      el("previewFrame").srcdoc.includes("Kontaktseite"),
+      "Vorschau zeigt die gewählte Unterseite",
+    );
+    el("htmlTab").click();
+    await wait(50);
+    assert(
+      el("htmlEditor").value.includes("Live-Test") &&
+        el("previewFrame").srcdoc.includes("Live-Test") &&
+        el("removePage").hidden,
+      "Wechsel zurück zu index.html erhält beide Seiten getrennt",
+    );
+    input("htmlEditor", el("htmlEditor").value + '\n<a href="kontakt.html">Kontakt</a> <a href="fehlt.html">Fehlt</a>');
+    el("runButton").click();
+    assert(
+      doc.querySelectorAll("#linkReport .pass").length === 2 &&
+        doc.querySelectorAll("#linkReport .open").length === 1 &&
+        el("linkReport").textContent.includes("fehlt.html"),
+      "Verweisprüfung meldet vorhandene und fehlende Seiten",
+    );
+    const storedLab = JSON.parse(win.localStorage.getItem(STORAGE_KEY)).drafts.lab;
+    assert(
+      storedLab.pages?.[0]?.name === "kontakt.html" &&
+        storedLab.pages[0].html.includes("Kontaktseite") &&
+        storedLab.html.includes("Live-Test"),
+      "Unterseite wird getrennt von index.html gespeichert",
+    );
+    el("htmlTab").focus();
+    el("htmlTab").dispatchEvent(new win.KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
+    await wait(50);
+    assert(
+      doc.activeElement === el("pageTab0") && el("htmlFileName").textContent === "kontakt.html",
+      "Pfeiltaste wechselt auch zu Unterseiten-Reitern",
+    );
+    win.confirm = () => true;
+    el("removePage").click();
+    await wait(50);
+    assert(
+      !el("pageTab0") &&
+        el("htmlTab").getAttribute("aria-selected") === "true" &&
+        !JSON.parse(win.localStorage.getItem(STORAGE_KEY)).drafts.lab.pages,
+      "Unterseite lässt sich wieder entfernen",
+    );
     // Restore the original lab draft rather than retaining QA examples.
     input("htmlEditor", previousHTML);
     input("cssEditor", previousCSS);

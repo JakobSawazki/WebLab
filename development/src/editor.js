@@ -1,3 +1,4 @@
+import { MAX_PAGES, PAGE_MAX, validPageName } from "./pages.js";
 // Small, dependency-free editing helpers. Student code remains plain text.
 export function indentEdit(value, start, end, backwards = false) {
   if (start === end && !backwards)
@@ -73,37 +74,65 @@ export function bindCodeEditor(textarea, gutter, status) {
   return update;
 }
 
+// Eine einzelne HTML-Datei ersetzt immer index.html (wie bisher). Bei mehreren
+// HTML-Dateien muss eine index.html heißen; die übrigen werden Unterseiten.
 export async function readCodeFiles(files) {
   const result = {};
-  if (!files.length || files.length > 2)
+  const htmlFiles = [], cssFiles = [];
+  if (!files.length || files.length > MAX_PAGES + 2)
     throw new Error(
-      "Wähle eine HTML-Datei und/oder eine CSS-Datei aus (höchstens zwei Dateien).",
+      `Wähle HTML- und CSS-Dateien aus (höchstens ${MAX_PAGES + 1} HTML-Dateien und eine CSS-Datei).`,
     );
   for (const file of files) {
-    const kind = /\.html?$/i.test(file.name)
-      ? "html"
-      : /\.css$/i.test(file.name)
-        ? "css"
-        : null;
-    if (!kind)
+    if (/\.html?$/i.test(file.name)) htmlFiles.push(file);
+    else if (/\.css$/i.test(file.name)) cssFiles.push(file);
+    else
       throw new Error(
         "Erlaubt sind .html, .htm und .css. Entpacke ZIP-Dateien zuerst.",
       );
-    if (kind in result)
+  }
+  if (cssFiles.length > 1)
+    throw new Error("Wähle höchstens eine CSS-Datei aus.");
+  if (htmlFiles.length > MAX_PAGES + 1)
+    throw new Error(`Wähle höchstens ${MAX_PAGES + 1} HTML-Dateien aus.`);
+  const targets = [];
+  if (htmlFiles.length === 1) targets.push([htmlFiles[0], "html"]);
+  else if (htmlFiles.length > 1) {
+    const index = htmlFiles.filter((f) => /^index\.html?$/i.test(f.name));
+    if (index.length !== 1)
       throw new Error(
-        "Wähle höchstens eine HTML-Datei und eine CSS-Datei aus.",
+        "Bei mehreren HTML-Dateien muss genau eine index.html heißen. Die anderen werden zu Unterseiten.",
       );
-    const max = kind === "html" ? 1500000 : 40000;
+    for (const f of htmlFiles) {
+      if (f === index[0]) {
+        targets.push([f, "html"]);
+        continue;
+      }
+      const name = f.name.toLowerCase().replace(/\.htm$/, ".html");
+      if (!validPageName(name))
+        throw new Error(
+          `Der Dateiname „${f.name}“ passt nicht: nur Kleinbuchstaben, Ziffern und Bindestrich, zum Beispiel kontakt.html.`,
+        );
+      if (targets.some(([, kind]) => kind === "page:" + name))
+        throw new Error(`Die Datei ${name} wurde doppelt ausgewählt.`);
+      targets.push([f, "page:" + name]);
+    }
+  }
+  if (cssFiles.length) targets.push([cssFiles[0], "css"]);
+  for (const [file, kind] of targets) {
+    const max = kind === "css" ? 40000 : kind === "html" ? 1500000 : PAGE_MAX;
     if (file.size > max)
       throw new Error(
-        `Die ${kind.toUpperCase()}-Datei ist zu groß (maximal ${max / 1000} KB).`,
+        `Die Datei ${file.name} ist zu groß (maximal ${max / 1000} KB).`,
       );
     const text = await file.text();
     if (text.length > max || text.includes("\u0000") || text.includes("\uFFFD"))
       throw new Error(
         "Bitte eine gültige Textdatei mit UTF-8-Kodierung auswählen.",
       );
-    result[kind] = text.replace(/\r\n?/g, "\n");
+    const clean = text.replace(/\r\n?/g, "\n");
+    if (kind.startsWith("page:")) (result.pages ||= {})[kind.slice(5)] = clean;
+    else result[kind] = clean;
   }
   return result;
 }

@@ -947,6 +947,60 @@ textarea#cssEditor {
   border-bottom: 3px solid var(--brand);
   font-weight: 700;
 }
+/* Dateileiste: Reiter für index.html, Unterseiten und style.css. */
+.file-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0.8rem;
+}
+.file-bar .file-tabs {
+  flex-wrap: wrap;
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding-bottom: 0.35rem;
+}
+.page-actions .button {
+  min-height: 2.75rem;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.9rem;
+}
+.link-report {
+  margin: 0.6rem 0;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bg) 35%, transparent);
+  font-size: 0.9rem;
+}
+.link-report summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+.link-list {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
+.link-list .open {
+  color: var(--muted);
+}
+.link-hint {
+  display: block;
+  margin-left: 1.35rem;
+  color: var(--text);
+}
 .editor-label {
   display: block;
   margin-bottom: 0.5rem;

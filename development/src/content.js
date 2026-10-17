@@ -1,6 +1,6 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 import { extensions } from "./extensions.js";
-export const VERSION = "1.40.3";
+export const VERSION = "1.41.0";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -508,7 +508,7 @@ export const lessons = [
     "Ich entwickle selbständig eine vollständige Webseite.",
     "Verbinde die erlernten Bausteine zu einer eigenen Informationswebseite. Wähle ein überschaubares Thema: Verein, Schulprojekt, Hobby oder eine erfundene Initiative. Passend zum bisherigen Unterrichtsprojekt kannst du ein Thema aus BPE3 erklären, etwa Client-Server, WLAN oder Datenschutz. Dokumentiere dabei auch verwendete KI-Hilfen. Entwickle mindestens zwei verknüpfte Seiten mit gemeinsamer externer CSS-Datei. Nutze eine begründete Auswahl aus Bildern, Listen und Tabellen. Erkläre deine Entscheidungen und zeige, dass du den Code selbst verändern kannst.",
     "<!-- Plane → Entwickle → Teste → Verbessere → Präsentiere -->",
-    "Entwickle deine Startseite im Labor und exportiere sie mit style.css. Erstelle kontakt.html außerhalb des Labors. Ergänze auf beiden Seiten Navigation und Rücklink. Füge Bild, Liste, sinnvolle Tabelle und Quellenangaben hinzu. Teste alle Dateien gemeinsam und präsentiere sie auf der geschützten Unterrichtsplattform.",
+    "Entwickle deine Startseite im Labor und exportiere sie mit style.css. Lege kontakt.html mit „+ Unterseite“ an oder erstelle sie in Notepad++. Ergänze auf beiden Seiten Navigation und Rücklink. Füge Bild, Liste, sinnvolle Tabelle und Quellenangaben hinzu. Teste alle Dateien gemeinsam und präsentiere sie auf der geschützten Unterrichtsplattform.",
     "Die automatische Prüfung kontrolliert nur Bausteine der Startseite. Eigenständigkeit, Qualität, Unterseite, Links und Veröffentlichung werden im Gespräch geprüft.",
     "Wann ist dein Projekt bereit zur Präsentation?",
     [

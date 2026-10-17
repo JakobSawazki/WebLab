@@ -37,7 +37,7 @@ export const caseStudies = {
         ],
       },
     ],
-    transfer: "Übertrage das auf dein Projekt: Notiere Anbieter, geplanten Veröffentlichungsort und noch offene Rechtefragen. Entwirf bei Bedarf in Notepad++ eine impressum.html mit klar gekennzeichneten Platzhaltern und verlinke sie von beiden Seiten. Prüfe den Entwurf mit der Lehrkraft, bevor daraus eine öffentliche Seite wird. Eine bestandene Codeprüfung bestätigt keine Rechtskonformität.",
+    transfer: "Übertrage das auf dein Projekt: Notiere Anbieter, geplanten Veröffentlichungsort und noch offene Rechtefragen. Entwirf bei Bedarf über „+ Unterseite“ oder in Notepad++ eine impressum.html mit klar gekennzeichneten Platzhaltern und verlinke sie von beiden Seiten. Prüfe den Entwurf mit der Lehrkraft, bevor daraus eine öffentliche Seite wird. Eine bestandene Codeprüfung bestätigt keine Rechtskonformität.",
   },
   l15: {
     title: "Vom Projektordner zum Schulserver",

@@ -25,6 +25,7 @@ import {
 import { checkLesson, preview } from "./checks.js";
 import { zipFiles } from "./export.js";
 import { bindCodeEditor, readCodeFiles } from "./editor.js";
+import { copyDraft, linkReport, MAX_PAGES, pageStarter, suggestPageName } from "./pages.js";
 import { journey, startingDraft } from "./journey.js";
 import { nagoldRows } from "./nagold.js";
 import { bindProfilePanel } from "./profile.js";
@@ -35,6 +36,7 @@ let state,
   pendingExercises = null,
   importRead = 0,
   activeId = "l1",
+  htmlFile = "index.html",
   timer,
   toastTimer;
 try {
@@ -313,14 +315,14 @@ function studio(id, free = false) {
   return `<section class="studio" aria-labelledby="studioTitle">
     <div class="studio-header"><h3 id="studioTitle">${free ? "Freies HTML- & CSS-Labor" : "Deine Werkstatt"}</h3><div class="actions"><button class="button secondary" id="runButton">Vorschau aktualisieren</button>${free ? "" : '<button class="button" id="checkButton">Auftrag prüfen</button>'}</div></div>
     <div class="studio-grid"><div class="editors">
-      <div class="file-tabs" role="tablist" aria-label="Projektdatei auswählen"><button id="htmlTab" role="tab" aria-selected="true" aria-controls="htmlPane">index.html</button><button id="cssTab" role="tab" aria-selected="false" aria-controls="cssPane" tabindex="-1">style.css</button></div>
-      ${["html", "css"].map((kind) => `<div id="${kind}Pane" role="tabpanel" aria-labelledby="${kind}Tab" ${kind === "css" ? "hidden" : ""}><label class="editor-label" for="${kind}Editor">${kind === "html" ? "HTML · Inhalt und Struktur" : "CSS · Gestaltung"}</label><div class="code-surface"><pre class="line-numbers" id="${kind}Lines" aria-hidden="true"></pre><textarea class="code" id="${kind}Editor" aria-describedby="editorHelp ${kind}Position" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" maxlength="${kind === "html" ? 1500000 : 40000}">${esc(d[kind])}</textarea></div><p class="editor-position" id="${kind}Position"></p></div>`).join("")}
+      <div class="file-bar"><div class="file-tabs" role="tablist" aria-label="Projektdatei auswählen" id="fileTabs">${fileTabs(d)}</div><div class="page-actions"><button type="button" class="button secondary" id="addPage">+ Unterseite</button><button type="button" class="button secondary" id="removePage" hidden>Seite entfernen</button></div></div>
+      ${["html", "css"].map((kind) => `<div id="${kind}Pane" role="tabpanel" aria-labelledby="${kind}Tab" ${kind === "css" ? "hidden" : ""}><label class="editor-label" for="${kind}Editor">${kind === "html" ? 'HTML · Inhalt und Struktur von <span id="htmlFileName">index.html</span>' : "CSS · Gestaltung für alle Seiten"}</label><div class="code-surface"><pre class="line-numbers" id="${kind}Lines" aria-hidden="true"></pre><textarea class="code" id="${kind}Editor" aria-describedby="editorHelp ${kind}Position" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" maxlength="${kind === "html" ? 1500000 : 40000}">${esc(d[kind])}</textarea></div><p class="editor-position" id="${kind}Position"></p></div>`).join("")}
       <p class="muted" id="editorHelp">Tab: zwei Leerzeichen einrücken · Umschalt+Tab: ausrücken · Escape, dann Tab: Editor verlassen. Schreibe den Code selbst – wie später in Notepad++.</p>
       <div class="actions"><button id="imageButton" class="button secondary">Bild einfügen</button><input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button id="resetButton" class="button secondary">Startcode laden</button></div>
       <p class="muted">Entwürfe werden auf diesem Gerät gespeichert. Sichere deinen Lernstand regelmäßig im Profil. HTML und CSS bleiben beim Reiterwechsel erhalten.</p>
-    </div><div class="preview-area"><div class="preview-tools"><label class="check-row"><input id="livePreview" type="checkbox" checked> Live-Vorschau</label><button class="button secondary" id="largePreviewButton">Webseite groß ansehen</button><label for="previewWidth">Ansicht <select id="previewWidth"><option value="full">Verfügbare Breite</option><option value="360">Handy · 360 px</option></select></label></div><div class="preview-viewport"><iframe id="previewFrame" title="Isolierte Vorschau deiner Webseite" sandbox=""></iframe></div><p id="previewStatus" role="status"></p><p class="muted">HTML beschreibt Inhalte, CSS gestaltet sie. Externe Medien und Skripte sind hier blockiert. Relative Links, Unterseiten und Medien prüfst du nach dem Export im Browser.</p></div></div>
-    <dialog id="largePreviewDialog" class="large-preview" aria-labelledby="largePreviewTitle"><div class="studio-header"><h3 id="largePreviewTitle">Deine Webseite im Browser</h3><button class="button secondary" id="closeLargePreview">Zurück zum Code</button></div><iframe id="largePreviewFrame" title="Große Browseransicht deiner Webseite" sandbox=""></iframe><p>Das ist dein aktueller HTML- und CSS-Code als Webseite. Relative Dateien und Links testest du nach dem Export im Projektordner.</p></dialog><div class="panel"><h3>Vom WebLab zum Informatik-Stick</h3><p>Hier übst du mit direkter Vorschau. Für die Klassenarbeit trainierst du auch mit <strong>Notepad++ 7.5.1 auf dem Informatik-Stick</strong>. Dort ist der Informatik-Stick das erlaubte Werkzeug; WebLab gehört nicht dazu.</p><div class="actions"><button class="button secondary" id="htmlExport">index.html</button><button class="button secondary" id="cssExport">style.css</button><button class="button" id="zipExport">Projekt-ZIP herunterladen</button><button class="button secondary" id="codeImportButton">HTML / CSS vom Stick laden</button><input id="codeImportFile" type="file" accept=".html,.htm,.css" multiple hidden></div><p class="muted">Geladene Dateien ersetzen nach Bestätigung nur die ausgewählten Dateitypen im aktuellen Entwurf. Sie werden lokal verarbeitet. Exportnamen: index.html und style.css.</p>
-    <details><summary>Notepad++ üben: speichern → Browser → prüfen</summary><ol><li>Lade das Projekt-ZIP herunter und entpacke es in einen eigenen Projektordner auf deinem Stick. index.html und style.css liegen im selben Ordner.</li><li>Starte Notepad++ vom Informatik-Stick. Öffne beide Dateien in Notepad++ und index.html zusätzlich im Browser.</li><li>Ändere deinen Code in Notepad++. Speichere die bearbeitete Datei mit <kbd>Strg</kbd> + <kbd>S</kbd>. Wechsle zum Browser und aktualisiere mit <kbd>F5</kbd>.</li><li>Prüfe Dateinamen und Endungen: index.html, nicht index.html.txt. Verwende UTF-8. Der HTML-Kopf verknüpft die Gestaltung mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li><li>Teste auch Links und Bilder im Projektordner. Über „HTML / CSS vom Stick laden“ kannst du deinen Code später wieder in dieser Einheit weiterbearbeiten.</li></ol><p><strong>Transfer-Auftrag:</strong> Ändere eine Überschrift und eine CSS-Farbe ausschließlich in Notepad++. Speichere beide Dateien, aktualisiere den Browser und erkläre, welche Datei welche Änderung bewirkt hat.</p></details>
+    </div><div class="preview-area"><div class="preview-tools"><label class="check-row"><input id="livePreview" type="checkbox" checked> Live-Vorschau</label><button class="button secondary" id="largePreviewButton">Webseite groß ansehen</button><label for="previewWidth">Ansicht <select id="previewWidth"><option value="full">Verfügbare Breite</option><option value="360">Handy · 360 px</option></select></label></div><div class="preview-viewport"><iframe id="previewFrame" title="Isolierte Vorschau deiner Webseite" sandbox=""></iframe></div><p id="previewStatus" role="status"></p><details class="link-report" open><summary>Verweise zwischen deinen Seiten</summary><div id="linkReport" role="status"></div></details><p class="muted">HTML beschreibt Inhalte, CSS gestaltet sie. Externe Medien und Skripte sind hier blockiert. Die Vorschau zeigt die gewählte Seite; Klicks auf Links öffnen hier keine andere Seite. Ob Links, Bilder und Medien im Projektordner wirklich funktionieren, prüfst du nach dem Export im Browser.</p></div></div>
+    <dialog id="largePreviewDialog" class="large-preview" aria-labelledby="largePreviewTitle"><div class="studio-header"><h3 id="largePreviewTitle">Deine Webseite im Browser</h3><button class="button secondary" id="closeLargePreview">Zurück zum Code</button></div><iframe id="largePreviewFrame" title="Große Browseransicht deiner Webseite" sandbox=""></iframe><p>Das ist dein aktueller HTML- und CSS-Code als Webseite. Relative Dateien und Links testest du nach dem Export im Projektordner.</p></dialog><div class="panel"><h3>Vom WebLab zum Informatik-Stick</h3><p>Hier übst du mit direkter Vorschau. Für die Klassenarbeit trainierst du auch mit <strong>Notepad++ 7.5.1 auf dem Informatik-Stick</strong>. Dort ist der Informatik-Stick das erlaubte Werkzeug; WebLab gehört nicht dazu.</p><div class="actions"><button class="button secondary" id="htmlExport">index.html speichern</button><button class="button secondary" id="cssExport">style.css</button><button class="button" id="zipExport">Projekt-ZIP herunterladen</button><button class="button secondary" id="codeImportButton">HTML / CSS vom Stick laden</button><input id="codeImportFile" type="file" accept=".html,.htm,.css" multiple hidden></div><p class="muted">Geladene Dateien ersetzen nach Bestätigung nur die ausgewählten Dateien im aktuellen Entwurf. Sie werden lokal verarbeitet. Wählst du mehrere HTML-Dateien, muss eine index.html heißen; die anderen werden Unterseiten. Das Projekt-ZIP enthält index.html, style.css und alle Unterseiten.</p>
+    <details><summary>Notepad++ üben: speichern → Browser → prüfen</summary><ol><li>Lade das Projekt-ZIP herunter und entpacke es in einen eigenen Projektordner auf deinem Stick. index.html, style.css und deine Unterseiten liegen im selben Ordner.</li><li>Starte Notepad++ vom Informatik-Stick. Öffne beide Dateien in Notepad++ und index.html zusätzlich im Browser.</li><li>Ändere deinen Code in Notepad++. Speichere die bearbeitete Datei mit <kbd>Strg</kbd> + <kbd>S</kbd>. Wechsle zum Browser und aktualisiere mit <kbd>F5</kbd>.</li><li>Prüfe Dateinamen und Endungen: index.html, nicht index.html.txt. Verwende UTF-8. Der HTML-Kopf verknüpft die Gestaltung mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li><li>Teste auch Links und Bilder im Projektordner. Über „HTML / CSS vom Stick laden“ kannst du deinen Code später wieder in dieser Einheit weiterbearbeiten.</li></ol><p><strong>Transfer-Auftrag:</strong> Ändere eine Überschrift und eine CSS-Farbe ausschließlich in Notepad++. Speichere beide Dateien, aktualisiere den Browser und erkläre, welche Datei welche Änderung bewirkt hat.</p></details>
     </div></section>`;
 }
 function lessonJourney(l) {
@@ -347,6 +349,32 @@ function lessonView(l) {
   const done = state.completed.includes(l.id);
   return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><p class="eyebrow">${l.minutes} Minuten · 100 XP · 5 NAGOLD</p><h2>${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
+// Reiter für index.html, alle Unterseiten und style.css.
+function fileTabs(d) {
+  const tab = (id, file, label) =>
+    `<button id="${id}" role="tab" data-file="${esc(file)}" aria-selected="${file === "index.html"}" aria-controls="${file === "style.css" ? "cssPane" : "htmlPane"}" ${file === "index.html" ? "" : 'tabindex="-1"'}>${esc(label)}</button>`;
+  return [
+    tab("htmlTab", "index.html", "index.html"),
+    ...(d.pages || []).map((page, i) => tab(`pageTab${i}`, page.name, page.name)),
+    tab("cssTab", "style.css", "style.css"),
+  ].join("");
+}
+function pageHtml(d, file = htmlFile) {
+  if (file === "index.html") return d.html;
+  return d.pages?.find((page) => page.name === file)?.html ?? d.html;
+}
+function showLinkReport(d) {
+  const box = $("#linkReport");
+  if (!box) return;
+  const report = linkReport(d).filter((entry) => entry.links.length);
+  box.innerHTML = report.length
+    ? `<ul class="link-list">${report
+        .map((entry) => entry.links
+          .map((link) => `<li class="${link.exists ? "pass" : "open"}"><span aria-hidden="true">${link.exists ? "✓" : "○"}</span> ${esc(entry.page)} → ${esc(link.target)}<span class="${link.exists ? "sr-only" : "link-hint"}">${link.exists ? ": Seite vorhanden" : "Diese Seite fehlt noch. Lege sie mit „+ Unterseite“ an oder prüfe den Dateinamen."}</span></li>`)
+          .join(""))
+        .join("")}</ul>`
+    : '<p class="muted">Noch keine Verweise auf andere HTML-Seiten deines Projekts.</p>';
+}
 function draft() {
   return (
     state.drafts[activeId] || {
@@ -357,18 +385,26 @@ function draft() {
 }
 function capture() {
   if (!$("#htmlEditor")) return;
-  state.drafts[activeId] = {
-    html: $("#htmlEditor").value,
-    css: $("#cssEditor").value,
-  };
+  const d = draft(),
+    value = $("#htmlEditor").value,
+    next = {
+      html: htmlFile === "index.html" ? value : d.html,
+      css: $("#cssEditor").value,
+    };
+  if (d.pages?.length)
+    next.pages = d.pages.map((page) =>
+      page.name === htmlFile ? { ...page, html: value } : { ...page },
+    );
+  state.drafts[activeId] = next;
   save();
 }
 function run() {
   capture();
   const d = draft();
-  $("#previewFrame").srcdoc = preview(d.html, d.css);
+  $("#previewFrame").srcdoc = preview(pageHtml(d), d.css);
+  showLinkReport(d);
   $("#previewStatus").textContent = $("#livePreview").checked
-    ? "Vorschau aktuell · aktualisiert nach einer kurzen Schreibpause."
+    ? `Vorschau von ${htmlFile} aktuell · aktualisiert nach einer kurzen Schreibpause.`
     : "Vorschau manuell aktualisiert · Live-Vorschau ist aus.";
   if (activeId !== "lab") updateCompletionStatus(byId(activeId));
 }
@@ -408,26 +444,29 @@ function updateCompletionStatus(l, results) {
     .map(([ok, text]) => `<li class="${ok ? "pass" : "open"}"><span aria-hidden="true">${ok ? "✓" : "○"}</span> ${esc(text)}<span class="sr-only">${ok ? ": erledigt" : ": noch offen"}</span></li>`)
     .join("");
 }
-function files() {
-  capture();
-  const d = draft(),
-    doc = new DOMParser().parseFromString(d.html, "text/html");
+function withStylesheet(html) {
+  const doc = new DOMParser().parseFromString(html, "text/html");
   if (!doc.querySelector('link[rel="stylesheet"][href="style.css"]')) {
     const link = doc.createElement("link");
     link.rel = "stylesheet";
     link.href = "style.css";
     doc.head.append(link);
   }
-  return {
-    "index.html": "<!doctype html>\n" + doc.documentElement.outerHTML,
-    "style.css": d.css,
-  };
+  return "<!doctype html>\n" + doc.documentElement.outerHTML;
+}
+function files() {
+  capture();
+  const d = draft(),
+    result = { "index.html": withStylesheet(d.html) };
+  for (const page of d.pages || []) result[page.name] = withStylesheet(page.html);
+  result["style.css"] = d.css;
+  return result;
 }
 function bindStudio(l) {
   $("#runButton").onclick = run;
   $("#largePreviewButton").onclick = () => {
     run();
-    $("#largePreviewFrame").srcdoc = preview(draft().html, draft().css);
+    $("#largePreviewFrame").srcdoc = preview(pageHtml(draft()), draft().css);
     $("#largePreviewDialog").showModal();
   };
   $("#closeLargePreview").onclick = () => $("#largePreviewDialog").close();
@@ -451,22 +490,114 @@ function bindStudio(l) {
       return;
     capture();
     backup();
-    state.drafts[l.id] = { ...state.drafts[previous] };
+    state.drafts[l.id] = copyDraft(state.drafts[previous]);
     save();
     render();
   });
   const updates = {};
-  const selectFile = (kind, focus = false) => {
-    for (const type of ["html", "css"]) {
-      $("#" + type + "Pane").hidden = type !== kind;
-      $("#" + type + "Tab").setAttribute(
-        "aria-selected",
-        String(type === kind),
-      );
-      $("#" + type + "Tab").tabIndex = type === kind ? 0 : -1;
+  const tabs = () => [...document.querySelectorAll("#fileTabs [role=tab]")];
+  // Ein HTML-Editor für index.html und alle Unterseiten; CSS hat einen eigenen.
+  const selectTab = (tab, focus = false) => {
+    const file = tab.dataset.file,
+      css = file === "style.css";
+    if (!css && file !== htmlFile) {
+      capture();
+      htmlFile = file;
+      $("#htmlEditor").value = pageHtml(draft());
+      $("#htmlFileName").textContent = file;
+      $("#htmlEditor").scrollTop = 0;
     }
-    updates[kind]();
-    if (focus) $("#" + kind + "Tab").focus();
+    $("#htmlPane").hidden = css;
+    $("#cssPane").hidden = !css;
+    if (!css) $("#htmlPane").setAttribute("aria-labelledby", tab.id);
+    for (const other of tabs()) {
+      const active = other === tab;
+      other.setAttribute("aria-selected", String(active));
+      other.tabIndex = active ? 0 : -1;
+    }
+    $("#removePage").hidden = htmlFile === "index.html" || css;
+    $("#htmlExport").textContent = `${htmlFile} speichern`;
+    updates[css ? "css" : "html"]();
+    if (!css) run();
+    if (focus) tab.focus();
+  };
+  const selectFile = (kind) =>
+    selectTab(
+      kind === "css"
+        ? $("#cssTab")
+        : tabs().find((tab) => tab.dataset.file === htmlFile) || $("#htmlTab"),
+    );
+  const bindTabs = () => {
+    for (const tab of tabs()) {
+      tab.onclick = () => selectTab(tab);
+      tab.onkeydown = (e) => {
+        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
+        e.preventDefault();
+        const all = tabs(),
+          i = all.indexOf(tab),
+          target =
+            e.key === "Home"
+              ? all[0]
+              : e.key === "End"
+                ? all[all.length - 1]
+                : all[(i + (e.key === "ArrowRight" ? 1 : all.length - 1)) % all.length];
+        selectTab(target, true);
+      };
+    }
+  };
+  const refreshTabs = (file = htmlFile) => {
+    $("#fileTabs").innerHTML = fileTabs(draft());
+    bindTabs();
+    htmlFile = "index.html";
+    $("#htmlEditor").value = draft().html;
+    $("#htmlFileName").textContent = "index.html";
+    selectTab(tabs().find((tab) => tab.dataset.file === file) || $("#htmlTab"));
+  };
+  htmlFile = "index.html";
+  bindTabs();
+  $("#addPage").onclick = () => {
+    capture();
+    const d = draft();
+    if ((d.pages || []).length >= MAX_PAGES) {
+      toast(`Ein Projekt hat hier höchstens ${MAX_PAGES} Unterseiten neben index.html.`);
+      return;
+    }
+    const answer = prompt(
+      "Name der neuen Unterseite, zum Beispiel kontakt oder ueber-uns:",
+      "kontakt",
+    );
+    if (answer === null) return;
+    const name = suggestPageName(answer);
+    if (!name) {
+      toast("Bitte einen Namen aus Buchstaben, Ziffern oder Bindestrich wählen, zum Beispiel kontakt.");
+      return;
+    }
+    if ((d.pages || []).some((page) => page.name === name)) {
+      toast(`${name} gibt es in diesem Projekt schon.`);
+      return;
+    }
+    state.drafts[activeId] = {
+      ...copyDraft(d),
+      pages: [...(d.pages || []).map((page) => ({ ...page })), { name, html: pageStarter(name) }],
+    };
+    save();
+    refreshTabs(name);
+    toast(`${name} angelegt. Verlinke sie von index.html aus.`);
+  };
+  $("#removePage").onclick = () => {
+    if (htmlFile === "index.html") return;
+    const name = htmlFile;
+    if (!confirm(`${name} aus diesem Entwurf entfernen? Dein Lernstand wird zuerst als Datei gesichert.`)) return;
+    capture();
+    backup();
+    const d = draft(),
+      next = copyDraft(d);
+    next.pages = (d.pages || []).filter((page) => page.name !== name).map((page) => ({ ...page }));
+    if (!next.pages.length) delete next.pages;
+    state.drafts[activeId] = next;
+    save();
+    refreshTabs("index.html");
+    toast(`${name} wurde entfernt.`);
   };
   for (const kind of ["html", "css"]) {
     updates[kind] = bindCodeEditor(
@@ -474,21 +605,6 @@ function bindStudio(l) {
       $("#" + kind + "Lines"),
       $("#" + kind + "Position"),
     );
-    $("#" + kind + "Tab").onclick = () => selectFile(kind);
-    $("#" + kind + "Tab").onkeydown = (e) => {
-      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
-      e.preventDefault();
-      selectFile(
-        e.key === "Home"
-          ? "html"
-          : e.key === "End"
-            ? "css"
-            : kind === "html"
-              ? "css"
-              : "html",
-        true,
-      );
-    };
     $("#" + kind + "Editor").addEventListener("input", () => {
       clearTimeout(timer);
       capture();
@@ -519,24 +635,42 @@ function bindStudio(l) {
     try {
       const incoming = await readCodeFiles(selected);
       if (routeId !== activeId || !$("#htmlEditor")) return;
+      const names = [
+        ..."html" in incoming ? ["index.html"] : [],
+        ...Object.keys(incoming.pages || {}),
+        ..."css" in incoming ? ["style.css"] : [],
+      ];
       if (
         !confirm(
-          `${Object.keys(incoming)
-            .map((k) => (k === "html" ? "index.html" : "style.css"))
-            .join(
-              " und ",
-            )} im aktuellen Entwurf ersetzen? Dein bisheriger Lernstand wird zuerst als Sicherung heruntergeladen.`,
+          `${names.join(", ")} im aktuellen Entwurf ersetzen? Dein bisheriger Lernstand wird zuerst als Sicherung heruntergeladen.`,
         )
       )
         return;
       capture();
       backup();
-      for (const [kind, text] of Object.entries(incoming)) {
-        $("#" + kind + "Editor").value = text;
-        updates[kind]();
+      const d = draft(),
+        next = copyDraft(d);
+      if ("html" in incoming) next.html = incoming.html;
+      if ("css" in incoming) next.css = incoming.css;
+      if (incoming.pages) {
+        const pages = (d.pages || []).map((page) => ({ ...page }));
+        for (const [name, text] of Object.entries(incoming.pages)) {
+          const existing = pages.find((page) => page.name === name);
+          if (existing) existing.html = text;
+          else pages.push({ name, html: text });
+        }
+        if (pages.length > MAX_PAGES) {
+          toast(`Ein Projekt hat hier höchstens ${MAX_PAGES} Unterseiten. Entferne zuerst eine Seite.`);
+          return;
+        }
+        next.pages = pages;
       }
-      selectFile("html" in incoming ? "html" : "css");
-      capture();
+      state.drafts[activeId] = next;
+      save();
+      $("#cssEditor").value = next.css;
+      updates.css();
+      refreshTabs("html" in incoming || incoming.pages ? htmlFile : "style.css");
+      if (!("html" in incoming) && !incoming.pages) selectFile("css");
       if ($("#livePreview").checked) run();
       else
         $("#previewStatus").textContent =
@@ -558,6 +692,7 @@ function bindStudio(l) {
       return;
     backup();
     state.drafts[activeId] = { html: l.starter, css: "" };
+    htmlFile = "index.html";
     save();
     render();
   };
@@ -592,7 +727,7 @@ function bindStudio(l) {
     reader.readAsDataURL(f);
   };
   $("#htmlExport").onclick = () =>
-    download("index.html", files()["index.html"], "text/html;charset=utf-8");
+    download(htmlFile, files()[htmlFile], "text/html;charset=utf-8");
   $("#cssExport").onclick = () =>
     download("style.css", files()["style.css"], "text/css;charset=utf-8");
   $("#zipExport").onclick = () =>

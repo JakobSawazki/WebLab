@@ -11,6 +11,7 @@ const modules = [
   "guidance.js",
   "state.js",
   "nagold.js",
+  "pages.js",
   "profile.js",
   "checks.js",
   "glossary.js",

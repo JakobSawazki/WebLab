@@ -1,4 +1,5 @@
 import { lessons } from "./content.js";
+import { copyDraft } from "./pages.js";
 
 // Each step adds to the same student-chosen website; no completed solutions.
 const stages = [
@@ -179,8 +180,8 @@ export const journey = Object.fromEntries(
 );
 
 export function startingDraft(drafts, id) {
-  if (drafts[id]) return { ...drafts[id] };
+  if (drafts[id]) return copyDraft(drafts[id]);
   const previous = journey[id]?.previous;
-  if (previous && drafts[previous]) return { ...drafts[previous] };
+  if (previous && drafts[previous]) return copyDraft(drafts[previous]);
   return { html: lessons.find((lesson) => lesson.id === id).starter, css: "" };
 }

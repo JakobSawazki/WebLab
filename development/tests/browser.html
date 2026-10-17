@@ -847,6 +847,34 @@
     imageHost.style.width = "120px";
     assert(wideImageFits && imageFits(), "Bildtransfer: Vollstaendige Loesung bewahrt das Seitenverhaeltnis auch im schmaleren Bereich");
     imageHost.remove();
+    boxWin.location.hash = "#lesson/l11/2";
+    await new Promise(resolve => setTimeout(resolve, 200));
+    const cssPractice = boxDoc.querySelector('.exercise[data-exercise="1"]');
+    const cssPracticeCode = cssPractice.querySelector("textarea");
+    const beforeCssPractice = localStorage.getItem(STORAGE_KEY);
+    cssPracticeCode.value = "body { background-color:white; font-family:Arial,sans-serif; }";
+    cssPractice.querySelector("[data-exercise-check]").click();
+    assert(cssPractice.querySelectorAll(".criteria .fail").length === 1,
+      "CSS-Pruefung: Hintergrundfarbe erfuellt die fehlende Schriftfarbe nicht");
+    const validCssPractice = "BODY { COLOR:#222; BACKGROUND-COLOR:white; FONT-FAMILY:Arial,sans-serif; }";
+    cssPracticeCode.value = "/* " + validCssPractice + " */";
+    cssPractice.querySelector("[data-exercise-check]").click();
+    assert(cssPractice.querySelectorAll(".criteria .fail").length === 3,
+      "CSS-Pruefung: Auskommentierte Regeln erfuellen keine Kriterien");
+    cssPracticeCode.value = validCssPractice;
+    cssPractice.querySelector("[data-exercise-check]").click();
+    assert(cssPractice.querySelectorAll(".criteria .pass").length === 3 && cssPracticeCode.value === validCssPractice &&
+      localStorage.getItem(STORAGE_KEY) === beforeCssPractice,
+      "CSS-Pruefung: Gueltige grosse CSS-Schreibweise besteht ohne Codeumschreibung, Entwurf- oder Punkteveraenderung");
+    boxWin.location.hash = "#lesson/l10/2";
+    await new Promise(resolve => setTimeout(resolve, 200));
+    const selectorPractice = boxDoc.querySelector('.exercise[data-exercise="1"]');
+    selectorPractice.querySelector("textarea").value = "p { color:gray } .Hinweis { color:green } #Start { text-align:center }";
+    selectorPractice.querySelector("[data-exercise-check]").click();
+    assert(selectorPractice.querySelectorAll(".criteria .fail").length === 2,
+      "CSS-Pruefung: Abweichende Grossschreibung bei Klasse und ID bleibt ein Fehler");
+    if (savedRowExercises === null) localStorage.removeItem("weblab-exercises-v1");
+    else localStorage.setItem("weblab-exercises-v1", savedRowExercises);
     boxWin.location.hash = "#lesson/l5/2";
     await new Promise(resolve => setTimeout(resolve, 200));
     const spellingExercise = boxDoc.querySelector('.exercise[data-exercise="1"]');

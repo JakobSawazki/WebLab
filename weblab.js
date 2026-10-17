@@ -252,7 +252,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.40.1";
+const VERSION = "1.40.2";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -3598,6 +3598,7 @@ return {caseStudies,caseStudyPanel};
 // very mistakes to practise. `fixed` is a reference solution for the tests and
 // is never shown. `remember` is the short rule shown once an exercise is solved.
 // Exercises never touch drafts, completion or points.
+const { cssPracticeValue, stripCssComments } = require("css-practice.js");
 const count = (source, pattern) => (source.match(pattern) || []).length;
 const inside = (source, open, close) => {
   const start = source.indexOf(open);
@@ -3612,18 +3613,25 @@ const licenseText = (source) =>
     .replace(/<[^>]+>/g, " ").replace(/\s+/g, " ");
 // True if a rule for `selector` (regex source) sets `property`, optionally to a value pattern.
 const rule = (source, selector, property, value = "") =>
-  new RegExp(`(^|[\\s};])${selector}\\s*\\{[^}]*\\b${property}\\s*:\\s*${value}`, "i").test(source);
+  cssValue(source, (candidate) => new RegExp(`^(?:${selector})$`, /[#\\.]/.test(selector) ? "" : "i").test(candidate), property, value);
 const imgTag = (source, src) =>
   (source.match(/<img\b[^>]*>/gi) || []).find((tag) => tag.includes(`src="${src}"`)) || "";
 // These exercises ask for simple rules. Ignore comments and require a complete
 // property and value, so commented examples and lookalike names fail.
-const cssValue = (source, selectorMatches, property, value) =>
-  [...source.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/([^{}]+)\{([^{}]*)\}/g)].some(([, selectors, declarations]) =>
-    selectors.split(",").some((selector) => selectorMatches(selector.trim())) &&
-    new RegExp(`(^|;)\\s*${property}\\s*:\\s*(?:${value})\\s*(?:;|$)`, "i").test(declarations),
-  );
+const cssValue = (source, selectorMatches, property, expected = "") => {
+  const value = cssPracticeValue(source, selectorMatches, property);
+  return value !== null && (typeof expected === "function" ? expected(value) : new RegExp(`^(?:${expected || "[\\s\\S]+"})$`, "i").test(value));
+};
 const rowColor = (source, className, value) =>
-  cssValue(source, (selector) => [`.${className}`, `tr.${className}`].includes(selector), "background-color", value);
+  cssValue(source, (selector) => selector === `.${className}` ? 1 : selector === `tr.${className}` ? 2 : 0, "background-color", value);
+const centers = (value) => {
+  const parts = value.toLowerCase().split(/\s+/);
+  return parts.length === 1 ? parts[0] === "auto" : parts.length <= 4 && parts[1] === "auto" && (parts.length < 4 || parts[3] === "auto");
+};
+const positivePadding = (value) => {
+  const parts = value.split(/\s+/);
+  return parts.length <= 4 && parts.every((part) => /^(?:0|(?:\d+(?:\.\d+)?|\.\d+)(?:px|rem|em|%))$/i.test(part)) && parts.some((part) => parseFloat(part) > 0);
+};
 const listMarker = (source, selector, value) =>
   cssValue(source, (candidate) => candidate.toLowerCase() === selector, "list-style-type", value);
 const tableRow = (source, content) =>
@@ -3973,8 +3981,8 @@ const exercises = {
       code: ". hinweis { color: darkgreen; }\n#Start { text-align: center; }",
       fixed: ".hinweis { color: darkgreen; }\n#start { text-align: center; }",
       checks: [
-        ["Klassenselektor .hinweis ohne Leerzeichen mit color", (s) => /(^|[\s}])\.hinweis\s*\{[^}]*color\s*:/.test(s)],
-        ["ID-Selektor #start in Kleinbuchstaben mit text-align", (s) => /(^|[\s}])#start\s*\{[^}]*text-align\s*:/.test(s)],
+        ["Klassenselektor .hinweis ohne Leerzeichen mit color", (s) => rule(s, "\\.hinweis", "color")],
+        ["ID-Selektor #start in Kleinbuchstaben mit text-align", (s) => rule(s, "#start", "text-align")],
       ],
       remember: "Punkt und Klassenname gehören zusammen; Namen müssen exakt übereinstimmen.",
     },
@@ -4004,8 +4012,8 @@ const exercises = {
       code: "body {\n  font-size: 18;\n  line-height: 1,6;\n}",
       fixed: "body {\n  font-size: 18px;\n  line-height: 1.6;\n}",
       checks: [
-        ["font-size mit Einheit (px, rem, em oder %)", (s) => rule(s, "body", "font-size", "[\\d.]+(px|rem|em|%)")],
-        ["line-height mit Punkt statt Komma", (s) => rule(s, "body", "line-height", "\\d+(\\.\\d+)?(px|rem|em|%)?\\s*[;}]") && !/line-height\s*:\s*\d+,/.test(s)],
+        ["font-size mit Einheit (px, rem, em oder %)", (s) => rule(s, "body", "font-size", "(?:\\d+(?:\\.\\d+)?|\\.\\d+)(px|rem|em|%)")],
+        ["line-height mit Punkt statt Komma", (s) => rule(s, "body", "line-height", "(?:\\d+(?:\\.\\d+)?|\\.\\d+)(px|rem|em|%)?")],
       ],
       remember: "Längen brauchen eine Einheit, Dezimalzahlen einen Punkt.",
     },
@@ -4020,7 +4028,7 @@ const exercises = {
       checks: [
         ["body mit color", (s) => rule(s, "body", "color")],
         ["body mit background-color", (s) => rule(s, "body", "background-color")],
-        ["font-family mit Ersatzschrift (serif, sans-serif oder monospace)", (s) => rule(s, "body", "font-family", "[^;}]*,\\s*(sans-serif|serif|monospace)")],
+        ["font-family mit Ersatzschrift (serif, sans-serif oder monospace)", (s) => rule(s, "body", "font-family", "[\\s\\S]+,\\s*(sans-serif|serif|monospace)")],
       ],
       remember: "Eine Schriftfamilie nennt immer auch eine Ersatzschrift.",
     },
@@ -4064,8 +4072,8 @@ const exercises = {
       code: ".karte {\n  margin: 20px;\n  padding: 0;\n  border: 2px navy;\n}",
       fixed: ".karte {\n  margin: 20px;\n  padding: 1rem;\n  border: 2px solid navy;\n}",
       checks: [
-        ["padding größer als 0", (s) => rule(s, "\\.karte", "padding", "(0*[1-9][\\d.]*|0?\\.\\d*[1-9]\\d*)(px|rem|em|%)")],
-        ["border mit Breite, Stil und Farbe", (s) => rule(s, "\\.karte", "border", "[^;}]*\\b(solid|dashed|dotted|double)\\b")],
+        ["padding größer als 0", (s) => rule(s, "\\.karte", "padding", positivePadding)],
+        ["border mit Breite, Stil und Farbe", (s) => rule(s, "\\.karte", "border", "[^;}]*\\b(solid|dashed|dotted|double)\\b[^;}]*")],
       ],
       remember: "padding liegt innen, margin außen; ein Rahmen braucht Breite, Stil und Farbe.",
     },
@@ -4078,8 +4086,8 @@ const exercises = {
       code: ".karte {\n  padding: 1rem;\n  border: 1px solid navy;\n}",
       fixed: ".karte {\n  padding: 1rem;\n  border: 1px solid navy;\n  max-width: 30rem;\n  margin: 1rem auto;\n  box-sizing: border-box;\n}",
       checks: [
-        ["max-width für die Karte", (s) => rule(s, "\\.karte", "max-width", "[\\d.]+(px|rem|em|%)")],
-        ["margin mit auto zum Zentrieren", (s) => rule(s, "\\.karte", "margin", "[^;}]*\\bauto\\b")],
+        ["max-width für die Karte", (s) => rule(s, "\\.karte", "max-width", "(?:\\d+(?:\\.\\d+)?|\\.\\d+)(px|rem|em|%)")],
+        ["margin mit auto zum Zentrieren", (s) => rule(s, "\\.karte", "margin", centers)],
         ["box-sizing: border-box", (s) => rule(s, "\\.karte", "box-sizing", "border-box")],
       ],
       remember: "max-width und margin: auto zentrieren eine Box, ohne sie starr zu machen.",
@@ -4093,12 +4101,12 @@ const exercises = {
       code: "/* Gestalte body, #start, .hinweis und .karte */\n",
       fixed: "body {\n  font-family: Arial, sans-serif;\n  line-height: 1.6;\n}\n#start { text-align: center; }\n.hinweis { color: darkgreen; }\n.karte {\n  padding: 1rem;\n  border: 1px solid navy;\n  max-width: 30rem;\n  margin: 1rem auto;\n}",
       checks: [
-        ["body: font-family mit Ersatzschrift", (s) => rule(s, "body", "font-family", "[^;}]*,\\s*(sans-serif|serif|monospace)")],
+        ["body: font-family mit Ersatzschrift", (s) => rule(s, "body", "font-family", "[\\s\\S]+,\\s*(sans-serif|serif|monospace)")],
         ["body: line-height", (s) => rule(s, "body", "line-height")],
         ["#start: text-align: center", (s) => rule(s, "#start", "text-align", "center")],
         [".hinweis: color", (s) => rule(s, "\\.hinweis", "color")],
-        [".karte: padding und border mit Linienstil", (s) => rule(s, "\\.karte", "padding") && rule(s, "\\.karte", "border", "[^;}]*\\b(solid|dashed|dotted|double)\\b")],
-        [".karte: max-width und margin mit auto", (s) => rule(s, "\\.karte", "max-width") && rule(s, "\\.karte", "margin", "[^;}]*\\bauto\\b")],
+        [".karte: padding und border mit Linienstil", (s) => rule(s, "\\.karte", "padding") && rule(s, "\\.karte", "border", "[^;}]*\\b(solid|dashed|dotted|double)\\b[^;}]*")],
+        [".karte: max-width und margin mit auto", (s) => rule(s, "\\.karte", "max-width") && rule(s, "\\.karte", "margin", centers)],
       ],
       remember: "Erst die Grundschrift für body, dann gezielt einzelne Elemente: So bleibt CSS übersichtlich.",
     },
@@ -4278,7 +4286,7 @@ function exerciseHtml(source) {
   return valid ? result : "";
 }
 const checkExercise = (exercise, source) => {
-  const checked = exercise.kind === "css" ? source : exerciseHtml(source);
+  const checked = exercise.kind === "css" ? stripCssComments(source) : exerciseHtml(source);
   return exercise.checks.map(([label, test]) => ({ label, passed: test(checked) }));
 };
 
@@ -4336,6 +4344,60 @@ function normalizeSolved(list) {
 }
 
 return {exerciseTypes,exercises,exerciseId,checkExercise,exerciseHints,normalizeSolved};
+},
+"css-practice.js": function(require) {
+// Read the simple, flat CSS rules used by the mini exercises without running
+// learner code. This is deliberately not a complete CSS parser or validator.
+const stripCssComments = (source) => source.replace(
+  /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|\/\*[\s\S]*?(?:\*\/|$)/g,
+  (token) => token.startsWith("/*") ? " " : token,
+);
+
+function flatRules(source) {
+  const rules = [];
+  const clean = stripCssComments(source);
+  let depth = 0, cursor = 0, bodyStart = 0, selector = "", nested = false;
+  for (const token of clean.matchAll(/"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[{};]/g)) {
+    if (token[0] === ";" && depth === 0) cursor = token.index + 1;
+    if (token[0] === "{") {
+      if (depth === 0) {
+        selector = clean.slice(cursor, token.index).trim();
+        bodyStart = token.index + 1;
+        nested = false;
+      } else nested = true;
+      depth++;
+    } else if (token[0] === "}" && depth > 0) {
+      depth--;
+      if (depth === 0) {
+        if (!nested && !selector.startsWith("@")) rules.push([selector, clean.slice(bodyStart, token.index)]);
+        cursor = token.index + 1;
+      }
+    }
+  }
+  return rules;
+}
+
+// selectorMatches returns true for an exact simple selector, or a numeric rank
+// when an exercise accepts alternatives of different specificity.
+function cssPracticeValue(source, selectorMatches, property) {
+  let selected = null;
+  for (const [selectors, body] of flatRules(source)) {
+    const rank = Math.max(0, ...selectors.split(",").map((selector) => Number(selectorMatches(selector.trim())) || 0));
+    if (!rank) continue;
+    const declarations = /(?:^|;)\s*([a-z_-][a-z0-9_-]*)\s*:\s*((?:[^;"']|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')*)(?=;|$)/gi;
+    for (const [, name, raw] of body.matchAll(declarations)) {
+      if (name.toLowerCase() !== property.toLowerCase()) continue;
+      const important = /!\s*important\s*$/i.test(raw);
+      const value = raw.replace(/\s*!\s*important\s*$/i, "").trim();
+      if (!value) continue;
+      if (!selected || (important && !selected.important) || (important === selected.important && rank >= selected.rank))
+        selected = { value, important, rank };
+    }
+  }
+  return selected?.value ?? null;
+}
+
+return {stripCssComments,cssPracticeValue};
 },
 "exercise-panel.js": function(require) {
 // The exercise workshop: panels with a mini editor and live preview, the home

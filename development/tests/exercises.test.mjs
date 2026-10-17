@@ -158,6 +158,37 @@ test("Responsive image practice requires both a width limit and automatic height
   assert.match(e.context, /src="data:image\/svg\+xml,/);
 });
 
+test("CSS practice matches whole properties and exact class/id names while accepting HTML tag case", () => {
+  const results = (e, source) => checkExercise(e, source).map(r => r.passed);
+  assert.deepEqual(results(exercises.l11[1], 'body { background-color: white; font-family: Arial, sans-serif; }'), [false, true, true]);
+  assert.deepEqual(results(exercises.l10[1], 'p { color: gray; } .Hinweis { color: green; } #Start { text-align: center; }'), [true, false, false]);
+  assert.deepEqual(results(exercises.l10[0], '.hinweis { background-color: green; } #start { text-align: center; }'), [false, true]);
+  assert.deepEqual(results(exercises.l10[1], 'P { COLOR: gray } .hinweis { COLOR: green } #start { TEXT-ALIGN: CENTER }'), [true, true, true]);
+  assert.ok(checkExercise(exercises.l11[1], 'BODY, main { COLOR: black; BACKGROUND-COLOR: white; FONT-FAMILY: "/* Example; { font } */", sans-serif; }').every(r => r.passed));
+});
+
+test("CSS practice ignores comments, conditional blocks and property-like text inside strings", () => {
+  assert.ok(checkExercise(exercises.l10[1], '/* ' + exercises.l10[1].fixed + ' */').every(r => !r.passed));
+  assert.equal(checkExercise(exercises.l9[1], '/* h1 { color: red; } */')[1].passed, false);
+  assert.equal(checkExercise(exercises.l10[0], '.hin/**/weis { color: green; } #start { text-align: center; }')[0].passed, false);
+  assert.equal(checkExercise(exercises.l10[0], '.hinweis { content: "hello; color: green;"; } #start { text-align: center; }')[0].passed, false);
+  assert.equal(checkExercise(exercises.l10[1], 'p { color:gray } .hinweis { color:green } @media print { #start { text-align:center } }')[2].passed, false);
+});
+
+test("CSS practice checks complete values and the winning simple declaration", () => {
+  const results = (e, source) => checkExercise(e, source).map(r => r.passed);
+  assert.deepEqual(results(exercises.l12[1], '.karte { max-width:30remXYZ; margin:1rem auto; box-sizing:border-boxish }'), [false, true, false]);
+  assert.deepEqual(results(exercises.l12[1], '.karte { max-width:.5em; margin:1rem auto 2rem; box-sizing:BORDER-BOX }'), [true, true, true]);
+  assert.equal(checkExercise(exercises.l12[1], '.karte { max-width:30rem; margin:auto 1rem; box-sizing:border-box }')[1].passed, false);
+  assert.equal(checkExercise(exercises.l12[0], '.karte { padding:0 1rem; border:2px solid navy }')[0].passed, true);
+  assert.equal(checkExercise(exercises.l12[0], '.karte { padding:1..5rem; border:2px solid navy }')[0].passed, false);
+  assert.equal(checkExercise(exercises.l11[0], 'body { font-size:1..8px; line-height:1.6 }')[0].passed, false);
+  assert.equal(checkExercise(exercises.l10[1], exercises.l10[1].fixed + '\n#start { text-align:left }')[2].passed, false);
+  assert.equal(checkExercise(exercises.l10[1], exercises.l10[1].fixed.replace('center;', 'center ! important;') + '\n#start { text-align:left }')[2].passed, true);
+  assert.equal(checkExercise(exercises.l11[2], 'tr.gerade { background-color:white } .gerade { background-color:cyan }')[1].passed, true);
+  assert.equal(checkExercise(exercises.l11[2], 'tr.gerade { background-color:white } .gerade { background-color:cyan !important }')[1].passed, false);
+});
+
 test("Every exercise has exactly one hint, and hints never contain the full solution", async () => {
   const { exerciseHints } = await import("../src/exercises.js");
   assert.deepEqual(Object.keys(exerciseHints).sort(), all.map(([name]) => name).sort());

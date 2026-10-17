@@ -2,7 +2,7 @@
 
 Stand: **17. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.40.1** · Status: **geprüft und veröffentlicht**.
+Version: **1.40.2** · Status: **lokal geprüft, Veröffentlichung wird geprüft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.40.1 |
+| Bereich | Version 1.40.2 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
@@ -304,6 +304,18 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 Aktualisierung am 16.10.2026: Der frühere offene Dateistart ist seit Version 1.35.0 durch den dokumentierten Edge-Dateitest und Jakobs Nutzung bestätigt (siehe Arbeitsprotokoll). Die frühere Einschränkung des Agentenbrowsers ist kein noch fehlender Produktbaustein. Der Abgleich bleibt eine technische Bestandsaufnahme und keine pädagogische Endabnahme.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.10.2026 – Codex – Version 1.40.2: CSS-Rückmeldungen präzisieren
+
+Vier falsche Positivmeldungen vorab reproduziert: background-color erfüllte color; .Hinweis/#Start bestanden trotz abweichender Namen; auskommentierte Lösungen erfüllten Kriterien; Werte mit ungültigen Anhängen wie 30remXYZ oder border-boxish wurden als korrekt gemeldet.
+
+Gemeinsamer Helfer `development/src/css-practice.js` liest einfache, vollständig geschlossene CSS-Regelblöcke und Deklarationen. Ganze Eigenschaftsnamen statt Wortteiltreffer, keine Kommentare als Lösung, vollständige verlangte Werte statt Präfixe. Klassennamen/IDs werden exakt verglichen, die verwendeten HTML-Tagselektoren sowie Eigenschaftsnamen und CSS-Schlüsselwörter dürfen in Großschreibung vorkommen. Kommentare werden ohne Zusammenkleben von Wörtern entfernt; Zeichenfolgen mit Kommentarzeichen, Semikolon oder geschweiften Klammern bleiben erhalten.
+
+Bei mehrfachen passenden Deklarationen entscheidet in diesem begrenzten Modell die spätere Deklaration, sofern nicht !important oder ein ausdrücklich unterstützter spezifischerer Selektor Vorrang hat. Die Zeilenfarben-Aufgabe unterscheidet .klasse und tr.klasse. Für Karten werden einfache numerische padding-Kurzformen und horizontal automatische margin-Werte mit zwei, drei oder vier Angaben berücksichtigt. Kein Umschreiben des eingegebenen CSS, keine Ausführung oder externen Abrufe durch den Prüfhelfer.
+
+**Prüfgrenze:** Dies ist kein vollständiger CSS-Parser, Wertvalidator oder Modell sämtlicher berechneter Stile. Bedingte/verschachtelte Regeln, beliebige Selektorgrammatik, CSS-Escapes, Variablen und alle fortgeschrittenen Werte sind nicht allgemein abgedeckt. Die Mini-Aufgaben verlangen weiterhin ihre einfachen direkten Regeln; das freie Labor und die isolierte Browser-Vorschau bleiben unverändert. Gegenprüfung anhand [W3C CSS Syntax](https://www.w3.org/TR/css-syntax-3/), [Selektoren](https://www.w3.org/TR/selectors-3/#casesens) und [Kaskade](https://www.w3.org/TR/css-cascade-5/#cascade-order); keine vollständige Standardkonformität behauptet.
+
+Lokal **52 Node-Tests bestanden**: ganze Eigenschaften, Namen, Kommentare/Zeichenfolgen, vollständige Werte, Reihenfolge, !important, unterstützte Spezifität und Kurzformen sowie alle bestehenden Referenz-/Teil-Lösungen. Vier Browserregressionen für fehlende Schriftfarbe, Kommentare, gültige Großschreibung bei unverändertem Editor/Lernstand und falsche Klassennamen/IDs ergänzt. Der Build enthält den Helfer im Bündel; weiterhin sieben öffentliche Dateien. Alle 40 Übungsnummern, vorhandenen Lösungsmarkierungen, Freischaltungen, XP/NAGOLD, Entwürfe und Sicherungsformate bleiben erhalten. CI und Veröffentlichung folgen.
 
 ### 17.10.2026 – Codex – Abschluss von Version 1.40.1 und Git-Metadaten
 

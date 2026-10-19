@@ -252,7 +252,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.41.0";
+const VERSION = "1.41.1";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -1424,15 +1424,51 @@ function pageStarter(name) {
 </html>`;
 }
 
-// Ziele relativer Verweise auf HTML-Dateien desselben Ordners.
+// The app uses the browser's inert HTML parser: comments, quoted examples and
+// raw-text elements are not actual links. This fallback keeps the pure Node
+// checks dependency-free; the browser tests also exercise the real DOM parser.
+function sourceHrefs(html) {
+  const clean = html
+    .replace(/<!--[\s\S]*?(?:-->|$)/g, "")
+    .replace(/<(script|style|textarea|title|xmp|iframe|noembed|noframes|template)\b(?:[^"'<>]|"[^"]*"|'[^']*')*>[\s\S]*?(?:<\/\1\s*>|$)/gi, "")
+    .replace(/<plaintext\b[\s\S]*$/gi, "");
+  const hrefs = [];
+  for (const tag of clean.matchAll(/<a(?=[\s/>])(?:[^"'<>]|"[^"]*"|'[^']*')*>/gi)) {
+    const attributes = tag[0].slice(2, -1);
+    for (const attr of attributes.matchAll(/([^\s"'<>/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g)) {
+      if (attr[1].toLowerCase() !== "href") continue;
+      hrefs.push(attr[2] ?? attr[3] ?? attr[4] ?? "");
+      break;
+    }
+  }
+  return hrefs;
+}
+
+// Relative URL spelling may include ./, a query or a fragment, but file-name
+// case stays significant. Never treat a parent folder or a host root as a
+// file belonging to this project's flat set of HTML pages.
 function pageLinks(html) {
+  const source = String(html || "");
+  const hrefs = typeof DOMParser === "function"
+    ? Array.from(new DOMParser().parseFromString(source, "text/html").querySelectorAll("a[href]"), (a) => a.getAttribute("href"))
+    : sourceHrefs(source);
   const links = [];
-  const pattern = /<a\b[^>]*?\bhref\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/gi;
-  for (const match of String(html || "").matchAll(pattern)) {
-    const href = (match[2] ?? match[3] ?? match[4] ?? "").trim().split("#")[0];
-    if (!href || /^[a-z][a-z0-9+.-]*:/i.test(href) || href.startsWith("/") || href.startsWith("//")) continue;
-    if (!/\.html?$/i.test(href)) continue;
-    links.push(href);
+  for (const value of hrefs) {
+    const href = value.trim();
+    if (!href || /^[a-z][a-z0-9+.-]*:/i.test(href) || /^[/#?\\]/.test(href)) continue;
+    const path = href.split(/[?#]/)[0];
+    if (!/\.html?$/i.test(path)) continue;
+    try {
+      const resolved = new URL(path, "https://weblab.invalid/project/");
+      if (resolved.origin !== "https://weblab.invalid") continue;
+      const target = resolved.pathname.startsWith("/project/")
+        ? decodeURI(resolved.pathname.slice("/project/".length))
+        : path;
+      links.push(target);
+    } catch {
+      // Invalid URL spellings are not promoted to existing project files.
+      links.push(path);
+    }
   }
   return [...new Set(links)];
 }

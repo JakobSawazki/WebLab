@@ -7,10 +7,12 @@ import { spawn } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import net from "node:net";
+import { randomUUID } from "node:crypto";
 
 const root = path.resolve(import.meta.dirname, "../..");
-const port = Number(process.env.QA_PORT || 4199);
-const debugPort = port + 1;
+let port, debugPort;
+const runId = randomUUID();
 const candidates = [
   process.env.BROWSER,
   "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
@@ -65,7 +67,28 @@ async function waitFor(url, attempts = 50) {
   throw new Error(`Nicht erreichbar: ${url}`);
 }
 
+async function reservePort(requested = 0) {
+  const server = net.createServer();
+  await new Promise((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(requested, "127.0.0.1", resolve);
+  });
+  return { server, port: server.address().port };
+}
+
 try {
+  // Probe both ports while holding the first one. Occupied explicit ports
+  // fail instead of silently connecting to another server or browser.
+  const web = await reservePort(process.env.QA_PORT ? Number(process.env.QA_PORT) : 0);
+  let debug;
+  try {
+    debug = await reservePort(process.env.QA_PORT ? web.port + 1 : 0);
+  } finally {
+    await new Promise(resolve => web.server.close(resolve));
+  }
+  port = web.port; debugPort = debug.port;
+  await new Promise(resolve => debug.server.close(resolve));
+  const qaUrl = `http://127.0.0.1:${port}/__qa#run-${runId}`;
   children.push(
     spawn(process.execPath, [path.join(root, "development/tools/serve.mjs")], {
       env: { ...process.env, PORT: String(port) },
@@ -84,14 +107,14 @@ try {
         `--user-data-dir=${profile}`,
         `--remote-debugging-port=${debugPort}`,
         "--window-size=1400,1000",
-        `http://127.0.0.1:${port}/__qa`,
+        qaUrl,
       ],
       { stdio: "ignore" },
     ),
   );
   // A cold browser start on a CI runner can take well over ten seconds.
   const targets = await (await waitFor(`http://127.0.0.1:${debugPort}/json`, 150)).json();
-  const page = targets.find((t) => t.type === "page" && t.url.includes("/__qa"));
+  const page = targets.find((t) => t.type === "page" && t.url === qaUrl);
   if (!page) throw new Error("Prüfseite im Browser nicht gefunden.");
   const socket = new WebSocket(page.webSocketDebuggerUrl);
   await new Promise((resolve, reject) => {
@@ -100,8 +123,13 @@ try {
   });
   let id = 0;
   const pending = new Map();
+  let scriptError = "";
   socket.onmessage = (event) => {
     const message = JSON.parse(event.data);
+    if (message.method === "Runtime.exceptionThrown") {
+      const detail = message.params.exceptionDetails;
+      scriptError = detail.exception?.description || detail.text || "Skriptfehler in der Prüfseite.";
+    }
     pending.get(message.id)?.(message.result?.result?.value);
   };
   const evaluate = (expression) =>
@@ -109,9 +137,11 @@ try {
       pending.set(++id, resolve);
       socket.send(JSON.stringify({ id, method: "Runtime.evaluate", params: { expression, returnByValue: true } }));
     });
+  socket.send(JSON.stringify({ id: ++id, method: "Runtime.enable" }));
   let status;
   for (let i = 0; i < 300 && !status; i++) {
     await sleep(500);
+    if (scriptError) { socket.close(); throw new Error(scriptError); }
     status = await evaluate("document.documentElement.dataset.testStatus");
   }
   const text = await evaluate("document.querySelector('#results').textContent");

@@ -533,6 +533,33 @@
         el("linkReport").textContent.includes("fehlt.html"),
       "Verweisprüfung meldet vorhandene und fehlende Seiten",
     );
+    const linkSource = el("htmlEditor").value;
+    const pageLinkSpellingSource = linkSource + '\n<a href="./kontakt.html">Kontakt</a><a href="kontakt.html?modus=druck#oben">Druck</a><a href="%6bontakt.html">Kontakt</a><a href="seiten/../kontakt.html">Kontakt</a>';
+    input("htmlEditor", pageLinkSpellingSource);
+    el("runButton").click();
+    assert(
+      doc.querySelectorAll("#linkReport .pass").length === 2 &&
+        doc.querySelectorAll("#linkReport .open").length === 1 &&
+        el("htmlEditor").value === pageLinkSpellingSource,
+      "Verweisprüfung akzeptiert relative URL-Schreibweisen ohne den Schülercode umzuschreiben",
+    );
+    input("htmlEditor", linkSource + '\n<!-- <a href="kommentar.html">Beispiel</a> --><script>const x = \'<a href="skript.html">\';<\/script><textarea><a href="text.html">Beispiel</a></textarea><template><a href="vorlage.html">Beispiel</a></template><a data-href="daten.html" title=\'href="titel.html"\'>Kein Link</a>');
+    el("runButton").click();
+    assert(
+      doc.querySelectorAll("#linkReport .pass").length === 2 &&
+        doc.querySelectorAll("#linkReport .open").length === 1,
+      "Verweisprüfung mit echtem HTML-Parser zählt keine Kommentare, Textbeispiele oder data-href",
+    );
+    input("htmlEditor", linkSource + '\n<a href="Kontakt.html">Andere Schreibweise</a><a href="../kontakt.html">Anderer Ordner</a><a href="/kontakt.html">Serverwurzel</a>');
+    el("runButton").click();
+    assert(
+      doc.querySelectorAll("#linkReport .open").length === 3 &&
+        el("linkReport").textContent.includes("Kontakt.html") &&
+        el("linkReport").textContent.includes("../kontakt.html"),
+      "Verweisprüfung erhält Großschreibung und verwechselt Elternordner nicht mit Projektdateien",
+    );
+    input("htmlEditor", linkSource);
+    el("runButton").click();
     const storedLab = JSON.parse(win.localStorage.getItem(STORAGE_KEY)).drafts.lab;
     assert(
       storedLab.pages?.[0]?.name === "kontakt.html" &&

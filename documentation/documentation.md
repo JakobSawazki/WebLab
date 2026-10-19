@@ -1,8 +1,8 @@
 # WebLab – gemeinsame Projektdokumentation
 
-Stand: **17. Oktober 2026, Europe/Berlin · Claude**
+Stand: **19. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.41.0** · Status: **lokal geprüft und committet, noch nicht veröffentlicht** (veröffentlicht ist weiterhin 1.40.3).
+Version: **1.41.1** · Status: **lokal geprüft; Veröffentlichung läuft** (bisher online: 1.40.3).
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.41.0 |
+| Bereich | Version 1.41.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
@@ -320,6 +320,16 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 19.10.2026 – Codex – Version 1.41.1: Mehrseiten-Version übernehmen und Verweise zuverlässig prüfen
+
+Jakobs aktueller Auftrag autorisiert selbständige Weiterarbeit und Veröffentlichung geeigneter Stände. Damit ist die Veröffentlichung nicht mehr von der in tasks.md Nr. 6 erbetenen Einzelbestätigung abhängig. Claudes lokal committierte 1.41.0 erneut gelesen und mit Build, 60 Node-Tests und Browserlauf geprüft. Dabei ergab die weitere Prüfung einen Fehler im QA-Werkzeug: Bei einem bereits belegten Debug-Port konnte es ein älteres, erfolgreiches Prüffenster auswählen. Diese ersten Browserergebnisse sind daher kein alleiniger Nachweis des aktuellen Standes.
+
+Die Verweisprüfung verwendet in der Anwendung jetzt den inerten HTML-Parser des Browsers. Auskommentierte Links, maskierte Beispiele, Texte in script/textarea/template und Attribute wie data-href sind keine echten Links. Gültige relative Schreibweisen wie `./kontakt.html`, `kontakt.html?modus=druck#oben`, kodierte Dateibuchstaben und aufgelöste Punktsegmente erkennen die vorhandene Seite. Groß-/Kleinschreibung bleibt bedeutsam, übergeordnete Ordner werden nicht als Dateien des flachen Projektordners bestätigt. Schülercode wird weder berichtigt noch umgeschrieben. Der bibliotheksfreie Node-Fallback ist separat geprüft.
+
+QA-Werkzeug: standardmäßig zwei freie, getrennte Ports und eindeutige Kennung je Prüflauf; nur das Browserziel mit exakt dieser URL wird gelesen. Explizit angegebene belegte Ports führen zum Fehler. Skriptfehler der aktuellen Prüfseite werden über das DevTools-Ereignis erkannt. Fremde Browserfenster oder Prozesse werden nicht beendet. Unter Windows kann ein temporäres Browserprofil wegen noch offener Handles zurückbleiben; der Pfad wird gemeldet.
+
+Prüfung des korrigierten Standes: 63 Node-Tests, Build und 237/237 Browserprüfungen erfolgreich. Eine neue Syntaxprüfung kompiliert das eingebettete QA-Modul vor dem Browserstart; zwei neue Node-Tests sowie drei neue Browserprüfungen decken falsche Linktreffer, relative URL-Schreibweisen, unveränderten Schülercode und die Abgrenzung anderer Ordner ab. Negativtest mit selbst belegtem Port 4381: QA endet erwartungsgemäß mit Exitcode 1 und EADDRINUSE, ohne einen Browserlauf als bestanden zu verbuchen. Zusätzlich Mehrseiten-Werkstatt und Verweisbericht bei 1440/390 Pixeln in Dark/Light visuell geprüft. Echter Projekt-ZIP-Download enthält index.html, kontakt.html und style.css; CRC und Unterseiteninhalt unabhängig mit Python geprüft. Veröffentlichung und Live-Prüfung folgen.
 
 ### 17.10.2026 – Claude – Version 1.41.0: Unterseiten direkt in WebLab (tasks.md Nr. 2)
 

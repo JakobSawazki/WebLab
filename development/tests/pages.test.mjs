@@ -100,3 +100,30 @@ test("Mehrere HTML-Dateien: index.html plus Unterseiten", async () => {
   ])
     await assert.rejects(readCodeFiles(files));
 });
+
+test("Verweisprüfung ignoriert Beispiele, Kommentare und ähnlich benannte Attribute", () => {
+  assert.deepEqual(pageLinks(`
+    <!-- <a href="kommentar.html">Beispiel</a> -->
+    <script>const text = '<a href="skript.html">';</script>
+    <style>p::after { content: '<a href="stil.html">'; }</style>
+    <textarea><a href="text.html">Beispiel</a></textarea>
+    <template><a href="vorlage.html">Beispiel</a></template>
+    &lt;a href="maskiert.html"&gt;
+    <a data-href="daten.html" title='href="titel.html"'>Kein Verweis</a>
+    <a data-href="falsch.html" href="kontakt.html" title="2 > 1">Kontakt</a>
+    <A HREF='index.html'>Start</A>
+  `), ["kontakt.html", "index.html"]);
+});
+
+test("Verweisprüfung erkennt gültige relative URL-Schreibweisen und erhält Dateinamen", () => {
+  const report = linkReport({
+    html: '<a href="./kontakt.html">K</a><a href="kontakt.html?modus=druck#oben">K</a><a href="%6bontakt.html">K</a><a href="seiten/../kontakt.html">K</a><a href="Kontakt.html">Andere Datei</a><a href="../kontakt.html">Anderer Ordner</a><a href="/kontakt.html">Serverwurzel</a><a href="?ziel=kontakt.html">Abfrage</a><a href="https://example.org/kontakt.html">Extern</a>',
+    pages: [{ name: "kontakt.html", html: '<a href="./index.html#start">Start</a>' }],
+  });
+  assert.deepEqual(report[0].links, [
+    { target: "kontakt.html", exists: true },
+    { target: "Kontakt.html", exists: false },
+    { target: "../kontakt.html", exists: false },
+  ]);
+  assert.deepEqual(report[1].links, [{ target: "index.html", exists: true }]);
+});

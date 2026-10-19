@@ -2,7 +2,7 @@
 
 Stand: **19. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.42.0** · Status: **lokal geprüft; Veröffentlichung läuft** (bisher online: 1.41.1).
+Version: **1.42.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -325,7 +325,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 
 Jakobs ergänzten Auftrag aufgegriffen: Materialien unter ressources/BPE2 dienen als fachlicher Hintergrund; neue Situationen und Aufgaben werden bevorzugt eigenständig formuliert. Einheit 05 erhält die freiwillige Lernsituation „Zwei Seiten für die Schul-AG“ mit Start-/Kontaktseite, Ordner- und Codebeispiel sowie drei Entscheidungen: Ein Link erzeugt keine Datei, ein Rücklink führt zur Startdatei, grüne Verweishaken ersetzen keinen Klicktest. Jede Erklärung bleibt zunächst geschlossen. Transfer auf das eigene Thema mit Datei anlegen, eigenem Text, Hin-/Rücklink und Test im entpackten Export. Beschrieben wird der tatsächliche Ablauf mit Dateireitern und isolierter Vorschau. Keine zusätzlichen Punkte oder Abschlussbedingungen, keine Fremdtexte oder neuen Netzabrufe. Metallgestaltung und vorhandene fotorealistische Markenbilder bleiben passend eingebunden. Quellenfreie eigene Situationen zeigen keine leere „Nachlesen“-Zeile.
 
-Prüfung: 65 Node-Tests, Build und 242/242 Browserprüfungen bestanden. Neue Tests sichern Vollständigkeit der Fälle, maskierte HTML-Beispiele, freiwilligen Charakter, sichtbare Antworten erst nach Öffnen, unveränderte Lernstände und Darstellung bei 360 Pixeln ab. Zusätzlich bei 1440/390 Pixeln in Dark/Light visuell geprüft. Veröffentlichung und Live-Prüfung folgen.
+Prüfung: 65 Node-Tests, Build und 242/242 Browserprüfungen bestanden. Neue Tests sichern Vollständigkeit der Fälle, maskierte HTML-Beispiele, freiwilligen Charakter, sichtbare Antworten erst nach Öffnen, unveränderte Lernstände und Darstellung bei 360 Pixeln ab. Zusätzlich bei 1440/390 Pixeln in Dark/Light visuell geprüft. Veröffentlicht mit Commit `8290768`; [Pages-Lauf 39288196273](https://github.com/JakobSawazki/WebLab/actions/runs/39288196273) erfolgreich, auch in CI 65 Node-Tests und 242 Browserprüfungen. Live Einheit 05 mit drei Fällen, geöffnetem Erklärungstext und Versionskennung im Browser geprüft; vorheriger Browserspeicher wiederhergestellt. Online-Bundle per SHA-256 byteidentisch mit der lokal geprüften Datei.
 
 ### 19.10.2026 – Codex – Version 1.41.1: Mehrseiten-Version übernehmen und Verweise zuverlässig prüfen
 

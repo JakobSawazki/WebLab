@@ -252,7 +252,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.42.0";
+const VERSION = "1.42.1";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -426,7 +426,7 @@ const lessons = [
     'Ein a-Element wird mit href zu einem Link. kontakt.html ist ein relativer Pfad im gleichen Ordner, ../index.html geht einen Ordner nach oben. Eine vollständige Adresse wie https://example.org ist absolut. #ideen springt zu einem Element mit id="ideen". Linktexte sollen das Ziel benennen. Das download-Attribut bietet eigene Dateien zum Herunterladen an; bei fremden Domains gelten Browserbeschränkungen.',
     '<a href="kontakt.html">Kontakt</a>\n<a href="#ideen">Zu den Ideen</a>\n<h2 id="ideen">Ideen</h2>\n<a href="https://example.org">Beispielseite</a>',
     'Erstelle einen relativen Link zu kontakt.html, einen externen HTTPS-Link mit verständlichem Linktext und einen funktionierenden Sprunglink zu einer Überschrift mit id="ideen".',
-    'href="#ideen" verweist auf id="ideen". Die Schreibweise muss genau übereinstimmen.',
+    'href="#ideen" verweist auf id="ideen". Die Schreibweise muss genau übereinstimmen. Ein Link erzeugt keine Datei: kontakt.html kannst du über „+ Unterseite“ oder nach dem Export in Notepad++ anlegen.',
     "Welcher Pfad führt in den gleichen Ordner?",
     [
       "C:\\Schule\\kontakt.html",
@@ -671,8 +671,8 @@ const lessons = [
     "Ich kann Zielgruppe und Seitenstruktur entwerfen.",
     "Beginne vor dem Gestalten mit Ziel und Zielgruppe. Welche Informationen braucht dein Publikum? Skizziere eine Startseite und mindestens eine Unterseite. Ordne Inhalte in header, nav, main und footer. Plane Bilder, Dateinamen und Links. Schreibe einen ersten Entwurf ohne aufwendige Gestaltung. Eine klare Informationsstruktur spart später Umbauten.",
     '<header><h1>Schulgarten</h1></header>\n<nav><a href="kontakt.html">Mitmachen</a></nav>\n<main><h2>Unsere Idee</h2><p>Ein Garten für alle.</p></main>\n<footer><p>Schulprojekt</p></footer>',
-    "Entwirf eine Startseite mit header, nav, main und footer. Schreibe in main einen Absatz mit mindestens 40 Zeichen zu Ziel und Zielgruppe. Verlinke eine geplante Unterseite kontakt.html. Halte die Seitenskizze in deinen Notizen fest.",
-    "Nutze sinnvolle Bereiche statt eine Tabelle als Layout. Die Unterseite erstellst du im Abschlussprojekt lokal.",
+    "Entwirf eine Startseite mit header, nav, main und footer. Schreibe in main einen Absatz mit mindestens 40 Zeichen zu Ziel und Zielgruppe. Verlinke deine vorhandene oder geplante Unterseite kontakt.html. Halte die Seitenskizze in deinen Notizen fest.",
+    "Nutze sinnvolle Bereiche statt eine Tabelle als Layout. Eine fehlende Unterseite kannst du über „+ Unterseite“ oder nach dem Export in Notepad++ anlegen. Vorhandene Unterseiten gehören bereits zum Projekt-ZIP.",
     "Was sollte vor der Farbwahl feststehen?",
     [
       "Ziel, Zielgruppe und Inhalte",
@@ -760,7 +760,7 @@ const lessons = [
     "Ich entwickle selbständig eine vollständige Webseite.",
     "Verbinde die erlernten Bausteine zu einer eigenen Informationswebseite. Wähle ein überschaubares Thema: Verein, Schulprojekt, Hobby oder eine erfundene Initiative. Passend zum bisherigen Unterrichtsprojekt kannst du ein Thema aus BPE3 erklären, etwa Client-Server, WLAN oder Datenschutz. Dokumentiere dabei auch verwendete KI-Hilfen. Entwickle mindestens zwei verknüpfte Seiten mit gemeinsamer externer CSS-Datei. Nutze eine begründete Auswahl aus Bildern, Listen und Tabellen. Erkläre deine Entscheidungen und zeige, dass du den Code selbst verändern kannst.",
     "<!-- Plane → Entwickle → Teste → Verbessere → Präsentiere -->",
-    "Entwickle deine Startseite im Labor und exportiere sie mit style.css. Lege kontakt.html mit „+ Unterseite“ an oder erstelle sie in Notepad++. Ergänze auf beiden Seiten Navigation und Rücklink. Füge Bild, Liste, sinnvolle Tabelle und Quellenangaben hinzu. Teste alle Dateien gemeinsam und präsentiere sie auf der geschützten Unterrichtsplattform.",
+    "Arbeite in der Werkstatt dieser Einheit an deinem übernommenen Projekt weiter. Falls kontakt.html noch fehlt, lege sie mit „+ Unterseite“ oder nach dem Export in Notepad++ an. Ergänze auf beiden Seiten Navigation und Rücklink. Füge Bild, Liste, sinnvolle Tabelle und Quellenangaben hinzu. Exportiere das Projekt-ZIP mit allen Seiten und style.css. Entpacke es, teste alle Dateien gemeinsam und präsentiere sie auf der geschützten Unterrichtsplattform.",
     "Die automatische Prüfung kontrolliert nur Bausteine der Startseite. Eigenständigkeit, Qualität, Unterseite, Links und Veröffentlichung werden im Gespräch geprüft.",
     "Wann ist dein Projekt bereit zur Präsentation?",
     [
@@ -1103,8 +1103,13 @@ return {guidance};
 "state.js": function(require) {
 const { lessons, byId } = require("content.js");
 const { nagoldRows } = require("nagold.js");
-const { normalizePages } = require("pages.js");
+const { normalizePages, MAX_PAGES, HTML_MAX, CSS_MAX } = require("pages.js");
 const STORAGE_KEY = "weblab-state-v3";
+// File preflight must cover every supported draft, even with JSON escapes
+// (up to six bytes per UTF-16 unit). Extra room covers notes, NAGOLD and metadata.
+// Browser storage quota remains separate and import is transactional on failure.
+const BACKUP_MAX_BYTES =
+  (lessons.length + 1) * ((MAX_PAGES + 1) * HTML_MAX + CSS_MAX) * 6 + 4000000;
 const blank = () => ({
   profile: { name: "", className: "" },
   drafts: {},
@@ -1131,7 +1136,7 @@ function normalize(raw) {
   for (const l of lessons) {
     const d = raw.drafts?.[l.id];
     if (record(d)) {
-      s.drafts[l.id] = { html: clip(d.html, 1500000), css: clip(d.css, 40000) };
+      s.drafts[l.id] = { html: clip(d.html, HTML_MAX), css: clip(d.css, CSS_MAX) };
       const pages = normalizePages(d.pages);
       if (pages.length) s.drafts[l.id].pages = pages;
     }
@@ -1148,8 +1153,8 @@ function normalize(raw) {
   }
   if (record(raw.drafts?.lab)) {
     s.drafts.lab = {
-      html: clip(raw.drafts.lab.html, 1500000),
-      css: clip(raw.drafts.lab.css, 40000),
+      html: clip(raw.drafts.lab.html, HTML_MAX),
+      css: clip(raw.drafts.lab.css, CSS_MAX),
     };
     const pages = normalizePages(raw.drafts.lab.pages);
     if (pages.length) s.drafts.lab.pages = pages;
@@ -1223,7 +1228,7 @@ function migrateOld(raw) {
   };
   s.drafts.l1 = {
     html: clip(raw.html, 20000) || byId("l1").starter,
-    css: clip(raw.css, 40000),
+    css: clip(raw.css, CSS_MAX),
   };
   return normalize(s);
 }
@@ -1287,7 +1292,7 @@ function load(storage) {
   return old ? migrateOld(JSON.parse(old)) : blank();
 }
 
-return {STORAGE_KEY,blank,validProfile,normalize,migrateOld,importBackup,exportBackup,xp,nagold,lessonAccess,complete,load};
+return {STORAGE_KEY,BACKUP_MAX_BYTES,blank,validProfile,normalize,migrateOld,importBackup,exportBackup,xp,nagold,lessonAccess,complete,load};
 },
 "nagold.js": function(require) {
 const { byId } = require("content.js");
@@ -1356,7 +1361,11 @@ return {nagoldRows,localStamp,ledgerDraft,ledgerChanges};
 // index.html und style.css bleiben die festen Grunddateien; weitere Seiten
 // liegen als Liste im Entwurf: { html, css, pages: [{ name, html }] }.
 const MAX_PAGES = 4;
-const PAGE_MAX = 300000;
+// The editor and image insertion already allow this much HTML. All pages must
+// retain the same amount when saved, backed up, imported or copied forward.
+const HTML_MAX = 1500000;
+const CSS_MAX = 40000;
+const PAGE_MAX = HTML_MAX;
 const record = (x) => x && typeof x === "object" && !Array.isArray(x);
 const clip = (x, n) => (typeof x === "string" ? x.slice(0, n) : "");
 
@@ -1483,7 +1492,7 @@ function linkReport(draft) {
   }));
 }
 
-return {MAX_PAGES,PAGE_MAX,validPageName,suggestPageName,normalizePages,copyDraft,pageStarter,pageLinks,linkReport};
+return {MAX_PAGES,HTML_MAX,CSS_MAX,PAGE_MAX,validPageName,suggestPageName,normalizePages,copyDraft,pageStarter,pageLinks,linkReport};
 },
 "profile.js": function(require) {
 const { lessons } = require("content.js");
@@ -2924,7 +2933,7 @@ function zipFiles(files) {
 return {zipFiles};
 },
 "editor.js": function(require) {
-const { MAX_PAGES, PAGE_MAX, validPageName } = require("pages.js");
+const { MAX_PAGES, HTML_MAX, CSS_MAX, validPageName } = require("pages.js");
 // Small, dependency-free editing helpers. Student code remains plain text.
 function indentEdit(value, start, end, backwards = false) {
   if (start === end && !backwards)
@@ -3046,17 +3055,23 @@ async function readCodeFiles(files) {
   }
   if (cssFiles.length) targets.push([cssFiles[0], "css"]);
   for (const [file, kind] of targets) {
-    const max = kind === "css" ? 40000 : kind === "html" ? 1500000 : PAGE_MAX;
-    if (file.size > max)
+    const max = kind === "css" ? CSS_MAX : HTML_MAX;
+    // textarea/storage limits count UTF-16 units, not bytes. A unit can use up
+    // to three UTF-8 bytes (plus an optional BOM). Check text after decoding.
+    if (file.size > max * 3 + 3)
       throw new Error(
-        `Die Datei ${file.name} ist zu groß (maximal ${max / 1000} KB).`,
+        `Die Datei ${file.name} ist zu groß (höchstens ${max.toLocaleString("de-DE")} Zeichen).`,
       );
     const text = await file.text();
-    if (text.length > max || text.includes("\u0000") || text.includes("\uFFFD"))
+    if (text.includes("\u0000") || text.includes("\uFFFD"))
       throw new Error(
         "Bitte eine gültige Textdatei mit UTF-8-Kodierung auswählen.",
       );
     const clean = text.replace(/\r\n?/g, "\n");
+    if (clean.length > max)
+      throw new Error(
+        `Die Datei ${file.name} ist zu groß (höchstens ${max.toLocaleString("de-DE")} Zeichen).`,
+      );
     if (kind.startsWith("page:")) (result.pages ||= {})[kind.slice(5)] = clean;
     else result[kind] = clean;
   }
@@ -3116,7 +3131,7 @@ const stages = [
     [
       "Ergänze einen Link zu kontakt.html und einen HTTPS-Link mit verständlichem Text.",
       "Gib einer h2 die id ideen und ergänze davor den Link mit href #ideen.",
-      "Teste den Sprunglink in der Vorschau. Lege kontakt.html beim Arbeiten auf dem Stick separat an und teste dort den relativen Link.",
+      "Teste den Sprunglink in der Vorschau. kontakt.html kannst du mit „+ Unterseite“ oder nach dem Export in Notepad++ anlegen. Teste den relativen Link im entpackten Projekt.",
     ],
     "Ein Sprunglink führt zum passenden Abschnitt. Externe und relative Ziele prüfst du im exportierten Projekt im Browser.",
   ],
@@ -3214,7 +3229,7 @@ const stages = [
     "Du hast eine gestaltete Seite mit Quellenangaben.",
     "Du testest die echten Dateien systematisch außerhalb des Labors.",
     [
-      "Exportiere das Projekt und ergänze im Projektordner die Unterseite, Bilder und Medien an ihren relativen Pfaden.",
+      "Exportiere das Projekt-ZIP und entpacke es auf dem Stick. Vorhandene Unterseiten sind enthalten. Ergänze fehlende Seiten in Notepad++ sowie Bilder und Medien an ihren relativen Pfaden.",
       "Öffne index.html im Browser. Teste Links, Bilder und eine schmale Fensterbreite; bearbeite gefundene Fehler in Notepad++.",
       "Dokumentiere drei konkrete Testergebnisse als Liste auf deiner Seite. Lade korrigierte HTML-/CSS-Dateien bei Bedarf wieder hier hinein.",
     ],
@@ -3224,9 +3239,9 @@ const stages = [
     "Du hast alle Bausteine geübt und dein Projekt im Browser getestet.",
     "Du führst dein Projekt zu einer selbständig erklärbaren eigenen Webseite zusammen.",
     [
-      "Vergleiche dein Projekt mit dem Abschlussauftrag. Ergänze fehlende Inhalte passend zu deinem Thema.",
-      "Teste das Projekt-ZIP auf dem Stick, kontrolliere Unterseite, Quellen und Gestaltung und präsentiere deine Webseite.",
-      "Erkläre an deinem eigenen Code ein HTML-Element, eine CSS-Regel und einen relativen Pfad. Sichere Projekt und Lernstand.",
+      "Vergleiche dein Projekt in der Werkstatt dieser Einheit mit dem Abschlussauftrag. Ergänze fehlende Inhalte passend zu deinem Thema.",
+      "Entpacke das Projekt-ZIP auf dem Stick. Öffne index.html, teste Hin- und Rücklink und kontrolliere Quellen und Gestaltung. Präsentiere deine Webseite.",
+      "Erkläre an deinem eigenen Code ein HTML-Element, eine CSS-Regel und einen relativen Pfad. Sichere zusätzlich deinen Lernstand als JSON und prüfe, dass die Datei auf deinem Stick liegt.",
     ],
     "Deine eigene statische Webseite stellt ein klares Thema vor. Du kannst Aufbau und Gestaltung begründen und Änderungen selbst durchführen.",
   ],
@@ -4800,6 +4815,7 @@ const { glossary } = require("glossary.js");
 const { guidance } = require("guidance.js");
 const {
   STORAGE_KEY,
+  BACKUP_MAX_BYTES,
   blank,
   load,
   validProfile,
@@ -4813,7 +4829,7 @@ const {
 const { checkLesson, preview } = require("checks.js");
 const { zipFiles } = require("export.js");
 const { bindCodeEditor, readCodeFiles } = require("editor.js");
-const { copyDraft, linkReport, MAX_PAGES, pageStarter, suggestPageName } = require("pages.js");
+const { copyDraft, linkReport, MAX_PAGES, HTML_MAX, CSS_MAX, pageStarter, suggestPageName } = require("pages.js");
 const { journey, startingDraft } = require("journey.js");
 const { nagoldRows } = require("nagold.js");
 const { bindProfilePanel } = require("profile.js");
@@ -5104,13 +5120,13 @@ function studio(id, free = false) {
     <div class="studio-header"><h3 id="studioTitle">${free ? "Freies HTML- & CSS-Labor" : "Deine Werkstatt"}</h3><div class="actions"><button class="button secondary" id="runButton">Vorschau aktualisieren</button>${free ? "" : '<button class="button" id="checkButton">Auftrag prüfen</button>'}</div></div>
     <div class="studio-grid"><div class="editors">
       <div class="file-bar"><div class="file-tabs" role="tablist" aria-label="Projektdatei auswählen" id="fileTabs">${fileTabs(d)}</div><div class="page-actions"><button type="button" class="button secondary" id="addPage">+ Unterseite</button><button type="button" class="button secondary" id="removePage" hidden>Seite entfernen</button></div></div>
-      ${["html", "css"].map((kind) => `<div id="${kind}Pane" role="tabpanel" aria-labelledby="${kind}Tab" ${kind === "css" ? "hidden" : ""}><label class="editor-label" for="${kind}Editor">${kind === "html" ? 'HTML · Inhalt und Struktur von <span id="htmlFileName">index.html</span>' : "CSS · Gestaltung für alle Seiten"}</label><div class="code-surface"><pre class="line-numbers" id="${kind}Lines" aria-hidden="true"></pre><textarea class="code" id="${kind}Editor" aria-describedby="editorHelp ${kind}Position" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" maxlength="${kind === "html" ? 1500000 : 40000}">${esc(d[kind])}</textarea></div><p class="editor-position" id="${kind}Position"></p></div>`).join("")}
+      ${["html", "css"].map((kind) => `<div id="${kind}Pane" role="tabpanel" aria-labelledby="${kind}Tab" ${kind === "css" ? "hidden" : ""}><label class="editor-label" for="${kind}Editor">${kind === "html" ? 'HTML · Inhalt und Struktur von <span id="htmlFileName">index.html</span>' : "CSS · Gestaltung für alle Seiten"}</label><div class="code-surface"><pre class="line-numbers" id="${kind}Lines" aria-hidden="true"></pre><textarea class="code" id="${kind}Editor" aria-describedby="editorHelp ${kind}Position" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" maxlength="${kind === "html" ? HTML_MAX : CSS_MAX}">${esc(d[kind])}</textarea></div><p class="editor-position" id="${kind}Position"></p></div>`).join("")}
       <p class="muted" id="editorHelp">Tab: zwei Leerzeichen einrücken · Umschalt+Tab: ausrücken · Escape, dann Tab: Editor verlassen. Schreibe den Code selbst – wie später in Notepad++.</p>
       <div class="actions"><button id="imageButton" class="button secondary">Bild einfügen</button><input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button id="resetButton" class="button secondary">Startcode laden</button></div>
       <p class="muted">Entwürfe werden auf diesem Gerät gespeichert. Sichere deinen Lernstand regelmäßig im Profil. HTML und CSS bleiben beim Reiterwechsel erhalten.</p>
     </div><div class="preview-area"><div class="preview-tools"><label class="check-row"><input id="livePreview" type="checkbox" checked> Live-Vorschau</label><button class="button secondary" id="largePreviewButton">Webseite groß ansehen</button><label for="previewWidth">Ansicht <select id="previewWidth"><option value="full">Verfügbare Breite</option><option value="360">Handy · 360 px</option></select></label></div><div class="preview-viewport"><iframe id="previewFrame" title="Isolierte Vorschau deiner Webseite" sandbox=""></iframe></div><p id="previewStatus" role="status"></p><details class="link-report" open><summary>Verweise zwischen deinen Seiten</summary><div id="linkReport" role="status"></div></details><p class="muted">HTML beschreibt Inhalte, CSS gestaltet sie. Externe Medien und Skripte sind hier blockiert. Die Vorschau zeigt die gewählte Seite; Klicks auf Links öffnen hier keine andere Seite. Ob Links, Bilder und Medien im Projektordner wirklich funktionieren, prüfst du nach dem Export im Browser.</p></div></div>
     <dialog id="largePreviewDialog" class="large-preview" aria-labelledby="largePreviewTitle"><div class="studio-header"><h3 id="largePreviewTitle">Deine Webseite im Browser</h3><button class="button secondary" id="closeLargePreview">Zurück zum Code</button></div><iframe id="largePreviewFrame" title="Große Browseransicht deiner Webseite" sandbox=""></iframe><p>Das ist dein aktueller HTML- und CSS-Code als Webseite. Relative Dateien und Links testest du nach dem Export im Projektordner.</p></dialog><div class="panel"><h3>Vom WebLab zum Informatik-Stick</h3><p>Hier übst du mit direkter Vorschau. Für die Klassenarbeit trainierst du auch mit <strong>Notepad++ 7.5.1 auf dem Informatik-Stick</strong>. Dort ist der Informatik-Stick das erlaubte Werkzeug; WebLab gehört nicht dazu.</p><div class="actions"><button class="button secondary" id="htmlExport">index.html speichern</button><button class="button secondary" id="cssExport">style.css</button><button class="button" id="zipExport">Projekt-ZIP herunterladen</button><button class="button secondary" id="codeImportButton">HTML / CSS vom Stick laden</button><input id="codeImportFile" type="file" accept=".html,.htm,.css" multiple hidden></div><p class="muted">Geladene Dateien ersetzen nach Bestätigung nur die ausgewählten Dateien im aktuellen Entwurf. Sie werden lokal verarbeitet. Wählst du mehrere HTML-Dateien, muss eine index.html heißen; die anderen werden Unterseiten. Das Projekt-ZIP enthält index.html, style.css und alle Unterseiten.</p>
-    <details><summary>Notepad++ üben: speichern → Browser → prüfen</summary><ol><li>Lade das Projekt-ZIP herunter und entpacke es in einen eigenen Projektordner auf deinem Stick. index.html, style.css und deine Unterseiten liegen im selben Ordner.</li><li>Starte Notepad++ vom Informatik-Stick. Öffne beide Dateien in Notepad++ und index.html zusätzlich im Browser.</li><li>Ändere deinen Code in Notepad++. Speichere die bearbeitete Datei mit <kbd>Strg</kbd> + <kbd>S</kbd>. Wechsle zum Browser und aktualisiere mit <kbd>F5</kbd>.</li><li>Prüfe Dateinamen und Endungen: index.html, nicht index.html.txt. Verwende UTF-8. Der HTML-Kopf verknüpft die Gestaltung mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li><li>Teste auch Links und Bilder im Projektordner. Über „HTML / CSS vom Stick laden“ kannst du deinen Code später wieder in dieser Einheit weiterbearbeiten.</li></ol><p><strong>Transfer-Auftrag:</strong> Ändere eine Überschrift und eine CSS-Farbe ausschließlich in Notepad++. Speichere beide Dateien, aktualisiere den Browser und erkläre, welche Datei welche Änderung bewirkt hat.</p></details>
+    <details><summary>Notepad++ üben: speichern → Browser → prüfen</summary><ol><li>Lade das Projekt-ZIP herunter und entpacke es in einen eigenen Projektordner auf deinem Stick. index.html, style.css und deine Unterseiten liegen im selben Ordner.</li><li>Starte Notepad++ vom Informatik-Stick. Öffne index.html, style.css und deine Unterseiten in Notepad++. Öffne index.html zusätzlich im Browser.</li><li>Ändere deinen Code in Notepad++. Speichere die bearbeitete Datei mit <kbd>Strg</kbd> + <kbd>S</kbd>. Wechsle zum Browser und aktualisiere mit <kbd>F5</kbd>.</li><li>Prüfe Dateinamen und Endungen: index.html, nicht index.html.txt. Verwende UTF-8. Der HTML-Kopf verknüpft die Gestaltung mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li><li>Teste auch Links und Bilder im Projektordner. Über „HTML / CSS vom Stick laden“ kannst du deinen Code später wieder in dieser Einheit weiterbearbeiten.</li></ol><p><strong>Transfer-Auftrag:</strong> Ändere eine Überschrift und eine CSS-Farbe ausschließlich in Notepad++. Speichere beide Dateien, aktualisiere den Browser und erkläre, welche Datei welche Änderung bewirkt hat.</p></details>
     </div></section>`;
 }
 function lessonJourney(l) {
@@ -5486,6 +5502,8 @@ function bindStudio(l) {
   };
   $("#imageButton").onclick = () => $("#imageFile").click();
   $("#imageFile").onchange = async (e) => {
+    const targetEditor = $("#htmlEditor"),
+      targetFile = htmlFile;
     const f = e.target.files[0];
     e.target.value = "";
     if (!f) return;
@@ -5498,9 +5516,11 @@ function bindStudio(l) {
     }
     const reader = new FileReader();
     reader.onload = () => {
+      // A file read can finish after navigation or a file-tab change.
+      if ($("#htmlEditor") !== targetEditor || htmlFile !== targetFile) return;
       const addition = `\n<img src="${reader.result}" alt="Beschreibe hier die Bildinformation" width="640" height="360">\n`;
       const html = $("#htmlEditor").value;
-      if (html.length + addition.length > 1500000) {
+      if (html.length + addition.length > HTML_MAX) {
         toast("Der Entwurf ist zu groß. Verwende ein kleineres Bild.");
         return;
       }
@@ -5936,8 +5956,8 @@ $("#importFile").onchange = async (e) => {
   $("#importSummary").textContent = file ? "Sicherung wird eingelesen …" : "";
   if (!file) return;
   try {
-    if (file.size > 32000000)
-      throw new Error("Diese Datei ist zu groß (maximal 32 MB).");
+    if (file.size > BACKUP_MAX_BYTES)
+      throw new Error("Diese Datei ist zu groß für eine WebLab-Sicherung.");
     const text = await file.text();
     if (read !== importRead || !$("#backupDialog").open) return;
     const raw = JSON.parse(text);

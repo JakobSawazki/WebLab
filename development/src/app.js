@@ -12,6 +12,7 @@ import { glossary } from "./glossary.js";
 import { guidance } from "./guidance.js";
 import {
   STORAGE_KEY,
+  BACKUP_MAX_BYTES,
   blank,
   load,
   validProfile,
@@ -25,7 +26,7 @@ import {
 import { checkLesson, preview } from "./checks.js";
 import { zipFiles } from "./export.js";
 import { bindCodeEditor, readCodeFiles } from "./editor.js";
-import { copyDraft, linkReport, MAX_PAGES, pageStarter, suggestPageName } from "./pages.js";
+import { copyDraft, linkReport, MAX_PAGES, HTML_MAX, CSS_MAX, pageStarter, suggestPageName } from "./pages.js";
 import { journey, startingDraft } from "./journey.js";
 import { nagoldRows } from "./nagold.js";
 import { bindProfilePanel } from "./profile.js";
@@ -316,13 +317,13 @@ function studio(id, free = false) {
     <div class="studio-header"><h3 id="studioTitle">${free ? "Freies HTML- & CSS-Labor" : "Deine Werkstatt"}</h3><div class="actions"><button class="button secondary" id="runButton">Vorschau aktualisieren</button>${free ? "" : '<button class="button" id="checkButton">Auftrag prüfen</button>'}</div></div>
     <div class="studio-grid"><div class="editors">
       <div class="file-bar"><div class="file-tabs" role="tablist" aria-label="Projektdatei auswählen" id="fileTabs">${fileTabs(d)}</div><div class="page-actions"><button type="button" class="button secondary" id="addPage">+ Unterseite</button><button type="button" class="button secondary" id="removePage" hidden>Seite entfernen</button></div></div>
-      ${["html", "css"].map((kind) => `<div id="${kind}Pane" role="tabpanel" aria-labelledby="${kind}Tab" ${kind === "css" ? "hidden" : ""}><label class="editor-label" for="${kind}Editor">${kind === "html" ? 'HTML · Inhalt und Struktur von <span id="htmlFileName">index.html</span>' : "CSS · Gestaltung für alle Seiten"}</label><div class="code-surface"><pre class="line-numbers" id="${kind}Lines" aria-hidden="true"></pre><textarea class="code" id="${kind}Editor" aria-describedby="editorHelp ${kind}Position" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" maxlength="${kind === "html" ? 1500000 : 40000}">${esc(d[kind])}</textarea></div><p class="editor-position" id="${kind}Position"></p></div>`).join("")}
+      ${["html", "css"].map((kind) => `<div id="${kind}Pane" role="tabpanel" aria-labelledby="${kind}Tab" ${kind === "css" ? "hidden" : ""}><label class="editor-label" for="${kind}Editor">${kind === "html" ? 'HTML · Inhalt und Struktur von <span id="htmlFileName">index.html</span>' : "CSS · Gestaltung für alle Seiten"}</label><div class="code-surface"><pre class="line-numbers" id="${kind}Lines" aria-hidden="true"></pre><textarea class="code" id="${kind}Editor" aria-describedby="editorHelp ${kind}Position" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" maxlength="${kind === "html" ? HTML_MAX : CSS_MAX}">${esc(d[kind])}</textarea></div><p class="editor-position" id="${kind}Position"></p></div>`).join("")}
       <p class="muted" id="editorHelp">Tab: zwei Leerzeichen einrücken · Umschalt+Tab: ausrücken · Escape, dann Tab: Editor verlassen. Schreibe den Code selbst – wie später in Notepad++.</p>
       <div class="actions"><button id="imageButton" class="button secondary">Bild einfügen</button><input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button id="resetButton" class="button secondary">Startcode laden</button></div>
       <p class="muted">Entwürfe werden auf diesem Gerät gespeichert. Sichere deinen Lernstand regelmäßig im Profil. HTML und CSS bleiben beim Reiterwechsel erhalten.</p>
     </div><div class="preview-area"><div class="preview-tools"><label class="check-row"><input id="livePreview" type="checkbox" checked> Live-Vorschau</label><button class="button secondary" id="largePreviewButton">Webseite groß ansehen</button><label for="previewWidth">Ansicht <select id="previewWidth"><option value="full">Verfügbare Breite</option><option value="360">Handy · 360 px</option></select></label></div><div class="preview-viewport"><iframe id="previewFrame" title="Isolierte Vorschau deiner Webseite" sandbox=""></iframe></div><p id="previewStatus" role="status"></p><details class="link-report" open><summary>Verweise zwischen deinen Seiten</summary><div id="linkReport" role="status"></div></details><p class="muted">HTML beschreibt Inhalte, CSS gestaltet sie. Externe Medien und Skripte sind hier blockiert. Die Vorschau zeigt die gewählte Seite; Klicks auf Links öffnen hier keine andere Seite. Ob Links, Bilder und Medien im Projektordner wirklich funktionieren, prüfst du nach dem Export im Browser.</p></div></div>
     <dialog id="largePreviewDialog" class="large-preview" aria-labelledby="largePreviewTitle"><div class="studio-header"><h3 id="largePreviewTitle">Deine Webseite im Browser</h3><button class="button secondary" id="closeLargePreview">Zurück zum Code</button></div><iframe id="largePreviewFrame" title="Große Browseransicht deiner Webseite" sandbox=""></iframe><p>Das ist dein aktueller HTML- und CSS-Code als Webseite. Relative Dateien und Links testest du nach dem Export im Projektordner.</p></dialog><div class="panel"><h3>Vom WebLab zum Informatik-Stick</h3><p>Hier übst du mit direkter Vorschau. Für die Klassenarbeit trainierst du auch mit <strong>Notepad++ 7.5.1 auf dem Informatik-Stick</strong>. Dort ist der Informatik-Stick das erlaubte Werkzeug; WebLab gehört nicht dazu.</p><div class="actions"><button class="button secondary" id="htmlExport">index.html speichern</button><button class="button secondary" id="cssExport">style.css</button><button class="button" id="zipExport">Projekt-ZIP herunterladen</button><button class="button secondary" id="codeImportButton">HTML / CSS vom Stick laden</button><input id="codeImportFile" type="file" accept=".html,.htm,.css" multiple hidden></div><p class="muted">Geladene Dateien ersetzen nach Bestätigung nur die ausgewählten Dateien im aktuellen Entwurf. Sie werden lokal verarbeitet. Wählst du mehrere HTML-Dateien, muss eine index.html heißen; die anderen werden Unterseiten. Das Projekt-ZIP enthält index.html, style.css und alle Unterseiten.</p>
-    <details><summary>Notepad++ üben: speichern → Browser → prüfen</summary><ol><li>Lade das Projekt-ZIP herunter und entpacke es in einen eigenen Projektordner auf deinem Stick. index.html, style.css und deine Unterseiten liegen im selben Ordner.</li><li>Starte Notepad++ vom Informatik-Stick. Öffne beide Dateien in Notepad++ und index.html zusätzlich im Browser.</li><li>Ändere deinen Code in Notepad++. Speichere die bearbeitete Datei mit <kbd>Strg</kbd> + <kbd>S</kbd>. Wechsle zum Browser und aktualisiere mit <kbd>F5</kbd>.</li><li>Prüfe Dateinamen und Endungen: index.html, nicht index.html.txt. Verwende UTF-8. Der HTML-Kopf verknüpft die Gestaltung mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li><li>Teste auch Links und Bilder im Projektordner. Über „HTML / CSS vom Stick laden“ kannst du deinen Code später wieder in dieser Einheit weiterbearbeiten.</li></ol><p><strong>Transfer-Auftrag:</strong> Ändere eine Überschrift und eine CSS-Farbe ausschließlich in Notepad++. Speichere beide Dateien, aktualisiere den Browser und erkläre, welche Datei welche Änderung bewirkt hat.</p></details>
+    <details><summary>Notepad++ üben: speichern → Browser → prüfen</summary><ol><li>Lade das Projekt-ZIP herunter und entpacke es in einen eigenen Projektordner auf deinem Stick. index.html, style.css und deine Unterseiten liegen im selben Ordner.</li><li>Starte Notepad++ vom Informatik-Stick. Öffne index.html, style.css und deine Unterseiten in Notepad++. Öffne index.html zusätzlich im Browser.</li><li>Ändere deinen Code in Notepad++. Speichere die bearbeitete Datei mit <kbd>Strg</kbd> + <kbd>S</kbd>. Wechsle zum Browser und aktualisiere mit <kbd>F5</kbd>.</li><li>Prüfe Dateinamen und Endungen: index.html, nicht index.html.txt. Verwende UTF-8. Der HTML-Kopf verknüpft die Gestaltung mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li><li>Teste auch Links und Bilder im Projektordner. Über „HTML / CSS vom Stick laden“ kannst du deinen Code später wieder in dieser Einheit weiterbearbeiten.</li></ol><p><strong>Transfer-Auftrag:</strong> Ändere eine Überschrift und eine CSS-Farbe ausschließlich in Notepad++. Speichere beide Dateien, aktualisiere den Browser und erkläre, welche Datei welche Änderung bewirkt hat.</p></details>
     </div></section>`;
 }
 function lessonJourney(l) {
@@ -698,6 +699,8 @@ function bindStudio(l) {
   };
   $("#imageButton").onclick = () => $("#imageFile").click();
   $("#imageFile").onchange = async (e) => {
+    const targetEditor = $("#htmlEditor"),
+      targetFile = htmlFile;
     const f = e.target.files[0];
     e.target.value = "";
     if (!f) return;
@@ -710,9 +713,11 @@ function bindStudio(l) {
     }
     const reader = new FileReader();
     reader.onload = () => {
+      // A file read can finish after navigation or a file-tab change.
+      if ($("#htmlEditor") !== targetEditor || htmlFile !== targetFile) return;
       const addition = `\n<img src="${reader.result}" alt="Beschreibe hier die Bildinformation" width="640" height="360">\n`;
       const html = $("#htmlEditor").value;
-      if (html.length + addition.length > 1500000) {
+      if (html.length + addition.length > HTML_MAX) {
         toast("Der Entwurf ist zu groß. Verwende ein kleineres Bild.");
         return;
       }
@@ -1148,8 +1153,8 @@ $("#importFile").onchange = async (e) => {
   $("#importSummary").textContent = file ? "Sicherung wird eingelesen …" : "";
   if (!file) return;
   try {
-    if (file.size > 32000000)
-      throw new Error("Diese Datei ist zu groß (maximal 32 MB).");
+    if (file.size > BACKUP_MAX_BYTES)
+      throw new Error("Diese Datei ist zu groß für eine WebLab-Sicherung.");
     const text = await file.text();
     if (read !== importRead || !$("#backupDialog").open) return;
     const raw = JSON.parse(text);

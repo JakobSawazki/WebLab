@@ -2,7 +2,7 @@
 
 Stand: **19. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.42.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.42.1** · Status: **lokal geprüft, Veröffentlichung vorbereitet**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.42.0 |
+| Bereich | Version 1.42.1 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
@@ -320,6 +320,16 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 19.10.2026 – Codex – Version 1.42.1: Vollständige Unterseiten und verständlicher Dateiablauf
+
+Jakob hat das Ziel um HTML/CSS schreiben, testen beziehungsweise ausführen, speichern und wieder laden ergänzt. Werkstatt und freies Labor bieten diese Funktionen bereits; in diesem Stand wurde der gesamte Ablauf mit echten Dateien geprüft und ein Datenverlust behoben: Unterseiten konnten im Editor und beim Bild-Einfügen bis 1.500.000 Zeichen enthalten, wurden beim Normalisieren beziehungsweise beim JSON-Export jedoch nach 300.000 Zeichen abgeschnitten. Alle HTML-Dateien verwenden jetzt die gemeinsame Grenze von 1.500.000 Zeichen; CSS behält 40.000. Bereits vollständig im Browserspeicher vorhandene größere Unterseiten werden erhalten. Früher bereits abgeschnittene Dateien können damit nicht nachträglich rekonstruiert werden.
+
+Der Textdateiimport unterscheidet UTF-8-Bytes von der Zeichengrenze des Editors und prüft nach der Normalisierung von Windows-Zeilenumbrüchen. Überlange Dateien werden vollständig zurückgewiesen. Die bisherige starre 32-MB-Vorprüfung für Lernstandsdateien wurde durch eine aus den unterstützten Entwürfen und maximalem JSON-Escaping abgeleitete Obergrenze ersetzt. Diese Vorprüfung ist keine Zusage über verfügbaren RAM oder Browserspeicher; der unveränderte Import erhält bei einem Speicherfehler den bisherigen Lernstand und bleibt wiederholbar. Ein später abgeschlossener Bildimport verändert nach einem Reiter-/Ansichtswechsel keine andere Seite.
+
+Die Anweisungen in 05/13/15/16 nennen jetzt vorhandene Unterseiten, „+ Unterseite“, die Werkstatt der aktuellen Einheit sowie den bereits vollständigen ZIP-Export. Der Sicherungsdialog erklärt Downloadordner → JSON auf Stick prüfen → am anderen Gerät laden und unterscheidet JSON-Lernstand vom Webseiten-ZIP. Texte wurden mit einem Codex-Unteragenten geprüft und überarbeitet; keine neue Claude-Arbeit behauptet. Lernziele, XP und Abschlussbedingungen bleiben gleich. Keine neuen Bilder erforderlich; vorhandene fotorealistische Markenbilder und Metallgestaltung werden weiterverwendet.
+
+Prüfung: 68 Node-Tests, Build und 248/248 Browserprüfungen bestanden. Neue Fälle sichern vollständige Unterseiten bis zur Editorgrenze, mehrbytehaltige UTF-8-Dateien, echte JSON-Sicherungen über 32 MB und ausbleibende Seiteneffekte nach verspätetem Bildlesen ab. Zusätzlich im echten Browser HTML/CSS geschrieben, gemeinsame Gestaltung in der Vorschau geprüft, eine Unterseite mit über 400.000 Zeichen angelegt, echte HTML-/CSS-/ZIP-/JSON-Dateien heruntergeladen, nach Neuladen und nach JSON-Import vollständig wiedergefunden und die exportierten Dateien wieder in WebLab geladen. Sicherungsdialog bei 1440/390 Pixeln in beiden Farbschemata visuell geprüft. Das entpackte ZIP enthält genau index.html, kontakt.html und style.css; beide Seiten, gemeinsame CSS-Farbe sowie Hin-/Rücklink über einen lokalen HTTP-Server geprüft. Der direkte file:-Aufruf war in der Browserautomatisierung gesperrt und ist daher in diesem Lauf kein neuer Nachweis für Doppelklickbetrieb. Eigene Testdaten im Browser anschließend zurückgesetzt. Separater lesender Diff-Review ohne konkrete neue Befunde; die rechnerische Sicherungsobergrenze wurde nicht als tatsächlich verfügbare Browserkapazität getestet.
 
 ### 19.10.2026 – Codex – Version 1.42.0: Eigene Lernsituation für die Schul-AG
 

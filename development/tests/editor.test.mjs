@@ -44,7 +44,7 @@ test("Code import rejects ambiguous, oversized, binary and invalid text files", 
     [],
     [file("a.html", ""), file("b.htm", "")],
     [file("a.zip", "")],
-    [{ ...file("a.css", ""), size: 40001 }],
+    [{ ...file("a.css", ""), size: 120004 }],
     [file("a.htm", "\u0000")],
     [file("a.html", "\uFFFD")],
   ])

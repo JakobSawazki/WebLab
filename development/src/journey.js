@@ -49,7 +49,7 @@ const stages = [
     [
       "Ergänze einen Link zu kontakt.html und einen HTTPS-Link mit verständlichem Text.",
       "Gib einer h2 die id ideen und ergänze davor den Link mit href #ideen.",
-      "Teste den Sprunglink in der Vorschau. Lege kontakt.html beim Arbeiten auf dem Stick separat an und teste dort den relativen Link.",
+      "Teste den Sprunglink in der Vorschau. kontakt.html kannst du mit „+ Unterseite“ oder nach dem Export in Notepad++ anlegen. Teste den relativen Link im entpackten Projekt.",
     ],
     "Ein Sprunglink führt zum passenden Abschnitt. Externe und relative Ziele prüfst du im exportierten Projekt im Browser.",
   ],
@@ -147,7 +147,7 @@ const stages = [
     "Du hast eine gestaltete Seite mit Quellenangaben.",
     "Du testest die echten Dateien systematisch außerhalb des Labors.",
     [
-      "Exportiere das Projekt und ergänze im Projektordner die Unterseite, Bilder und Medien an ihren relativen Pfaden.",
+      "Exportiere das Projekt-ZIP und entpacke es auf dem Stick. Vorhandene Unterseiten sind enthalten. Ergänze fehlende Seiten in Notepad++ sowie Bilder und Medien an ihren relativen Pfaden.",
       "Öffne index.html im Browser. Teste Links, Bilder und eine schmale Fensterbreite; bearbeite gefundene Fehler in Notepad++.",
       "Dokumentiere drei konkrete Testergebnisse als Liste auf deiner Seite. Lade korrigierte HTML-/CSS-Dateien bei Bedarf wieder hier hinein.",
     ],
@@ -157,9 +157,9 @@ const stages = [
     "Du hast alle Bausteine geübt und dein Projekt im Browser getestet.",
     "Du führst dein Projekt zu einer selbständig erklärbaren eigenen Webseite zusammen.",
     [
-      "Vergleiche dein Projekt mit dem Abschlussauftrag. Ergänze fehlende Inhalte passend zu deinem Thema.",
-      "Teste das Projekt-ZIP auf dem Stick, kontrolliere Unterseite, Quellen und Gestaltung und präsentiere deine Webseite.",
-      "Erkläre an deinem eigenen Code ein HTML-Element, eine CSS-Regel und einen relativen Pfad. Sichere Projekt und Lernstand.",
+      "Vergleiche dein Projekt in der Werkstatt dieser Einheit mit dem Abschlussauftrag. Ergänze fehlende Inhalte passend zu deinem Thema.",
+      "Entpacke das Projekt-ZIP auf dem Stick. Öffne index.html, teste Hin- und Rücklink und kontrolliere Quellen und Gestaltung. Präsentiere deine Webseite.",
+      "Erkläre an deinem eigenen Code ein HTML-Element, eine CSS-Regel und einen relativen Pfad. Sichere zusätzlich deinen Lernstand als JSON und prüfe, dass die Datei auf deinem Stick liegt.",
     ],
     "Deine eigene statische Webseite stellt ein klares Thema vor. Du kannst Aufbau und Gestaltung begründen und Änderungen selbst durchführen.",
   ],

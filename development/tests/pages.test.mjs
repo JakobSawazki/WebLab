@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { copyDraft, linkReport, MAX_PAGES, normalizePages, pageLinks, pageStarter, suggestPageName, validPageName } from "../src/pages.js";
+import { copyDraft, linkReport, MAX_PAGES, HTML_MAX, CSS_MAX, normalizePages, pageLinks, pageStarter, suggestPageName, validPageName } from "../src/pages.js";
 import { normalize, importBackup, exportBackup, blank } from "../src/state.js";
 import { startingDraft } from "../src/journey.js";
 import { readCodeFiles } from "../src/editor.js";
@@ -57,6 +57,30 @@ test("Übernommene Entwürfe teilen keine Unterseiten mit der Vorlage", () => {
   const copy = copyDraft(drafts.l15);
   assert.notEqual(copy.pages, drafts.l15.pages);
   assert.deepEqual(copyDraft({ html: "a", css: "" }), { html: "a", css: "" });
+});
+
+test("Große Unterseiten bleiben bis zur Editorgrenze beim Laden und Sichern vollständig", () => {
+  const state = blank();
+  const html = '<!--' + 'ä'.repeat(HTML_MAX - 27) + '--><p>Ende erhalten</p>';
+  assert.equal(html.length, HTML_MAX);
+  for (const id of ["lab", "l16"]) {
+    state.drafts[id] = { html: "<h1>Start</h1>", css: "", pages: [{ name: "kontakt.html", html }] };
+  }
+  assert.deepEqual(normalize(state), state);
+  assert.deepEqual(importBackup(JSON.parse(JSON.stringify(exportBackup(state)))), state);
+});
+
+test("Dateiimport zählt UTF-8-Text wie der Editor und lehnt Überschreitungen vollständig ab", async () => {
+  const html = "€".repeat(HTML_MAX), css = "ä".repeat(CSS_MAX);
+  const imported = await readCodeFiles([file("index.html", html), file("kontakt.html", html), file("style.css", css)]);
+  assert.equal(imported.html, html);
+  assert.equal(imported.pages["kontakt.html"], html);
+  assert.equal(imported.css, css);
+  for (const files of [
+    [file("index.html", html + "x")],
+    [file("index.html", "ok"), file("kontakt.html", html + "x")],
+    [file("style.css", css + "x")],
+  ]) await assert.rejects(readCodeFiles(files), /zu groß/);
 });
 
 test("Startgerüst einer Unterseite ist vollständig und verknüpft", () => {

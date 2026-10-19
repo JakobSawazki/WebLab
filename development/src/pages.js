@@ -2,7 +2,11 @@
 // index.html und style.css bleiben die festen Grunddateien; weitere Seiten
 // liegen als Liste im Entwurf: { html, css, pages: [{ name, html }] }.
 export const MAX_PAGES = 4;
-export const PAGE_MAX = 300000;
+// The editor and image insertion already allow this much HTML. All pages must
+// retain the same amount when saved, backed up, imported or copied forward.
+export const HTML_MAX = 1500000;
+export const CSS_MAX = 40000;
+export const PAGE_MAX = HTML_MAX;
 const record = (x) => x && typeof x === "object" && !Array.isArray(x);
 const clip = (x, n) => (typeof x === "string" ? x.slice(0, n) : "");
 

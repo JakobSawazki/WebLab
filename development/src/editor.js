@@ -1,4 +1,4 @@
-import { MAX_PAGES, PAGE_MAX, validPageName } from "./pages.js";
+import { MAX_PAGES, HTML_MAX, CSS_MAX, validPageName } from "./pages.js";
 // Small, dependency-free editing helpers. Student code remains plain text.
 export function indentEdit(value, start, end, backwards = false) {
   if (start === end && !backwards)
@@ -120,17 +120,23 @@ export async function readCodeFiles(files) {
   }
   if (cssFiles.length) targets.push([cssFiles[0], "css"]);
   for (const [file, kind] of targets) {
-    const max = kind === "css" ? 40000 : kind === "html" ? 1500000 : PAGE_MAX;
-    if (file.size > max)
+    const max = kind === "css" ? CSS_MAX : HTML_MAX;
+    // textarea/storage limits count UTF-16 units, not bytes. A unit can use up
+    // to three UTF-8 bytes (plus an optional BOM). Check text after decoding.
+    if (file.size > max * 3 + 3)
       throw new Error(
-        `Die Datei ${file.name} ist zu groß (maximal ${max / 1000} KB).`,
+        `Die Datei ${file.name} ist zu groß (höchstens ${max.toLocaleString("de-DE")} Zeichen).`,
       );
     const text = await file.text();
-    if (text.length > max || text.includes("\u0000") || text.includes("\uFFFD"))
+    if (text.includes("\u0000") || text.includes("\uFFFD"))
       throw new Error(
         "Bitte eine gültige Textdatei mit UTF-8-Kodierung auswählen.",
       );
     const clean = text.replace(/\r\n?/g, "\n");
+    if (clean.length > max)
+      throw new Error(
+        `Die Datei ${file.name} ist zu groß (höchstens ${max.toLocaleString("de-DE")} Zeichen).`,
+      );
     if (kind.startsWith("page:")) (result.pages ||= {})[kind.slice(5)] = clean;
     else result[kind] = clean;
   }

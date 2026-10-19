@@ -10,9 +10,11 @@ import {
   xp,
   nagold,
   load,
+  BACKUP_MAX_BYTES,
 } from "../src/state.js";
 import { lessons } from "../src/content.js";
 import { zipFiles } from "../src/export.js";
+import { HTML_MAX, MAX_PAGES } from "../src/pages.js";
 test("16 vollständige und eindeutige BPE2-Einheiten", () => {
   assert.equal(lessons.length, 16);
   assert.equal(new Set(lessons.map((l) => l.id)).size, 16);
@@ -85,6 +87,23 @@ test("Fremde App, unbekannte Version und defekter Stand werden abgelehnt", () =>
     { app: "WebLab", formatVersion: 3, state: null },
   ])
     assert.throws(() => importBackup(value));
+});
+
+test("Mehrseiten-Sicherungen über 32 MB bleiben innerhalb der Importgrenze und vollständig", () => {
+  const s = blank();
+  // A realistic image-heavy project at several lesson stages already exceeds
+  // the previous 32 MB gate. Check actual serialized bytes, not a size mock.
+  const html = "x".repeat(HTML_MAX - 9) + "ENDE-TEST";
+  for (const id of ["l12", "l13", "l14", "l15", "l16", "lab"]) {
+    s.drafts[id] = {
+      html, css: "",
+      pages: Array.from({ length: MAX_PAGES }, (_, i) => ({ name: `seite${i}.html`, html })),
+    };
+  }
+  const json = JSON.stringify(exportBackup(s), null, 2);
+  const bytes = Buffer.byteLength(json);
+  assert.ok(bytes > 32000000 && bytes <= BACKUP_MAX_BYTES);
+  assert.deepEqual(importBackup(JSON.parse(json)), s);
 });
 test("Import begrenzt Inhalte, entfernt unbekannte IDs und verdoppelte Punkte", () => {
   const s = normalize({

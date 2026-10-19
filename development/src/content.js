@@ -1,6 +1,6 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 import { extensions } from "./extensions.js";
-export const VERSION = "1.42.0";
+export const VERSION = "1.42.1";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -174,7 +174,7 @@ export const lessons = [
     'Ein a-Element wird mit href zu einem Link. kontakt.html ist ein relativer Pfad im gleichen Ordner, ../index.html geht einen Ordner nach oben. Eine vollständige Adresse wie https://example.org ist absolut. #ideen springt zu einem Element mit id="ideen". Linktexte sollen das Ziel benennen. Das download-Attribut bietet eigene Dateien zum Herunterladen an; bei fremden Domains gelten Browserbeschränkungen.',
     '<a href="kontakt.html">Kontakt</a>\n<a href="#ideen">Zu den Ideen</a>\n<h2 id="ideen">Ideen</h2>\n<a href="https://example.org">Beispielseite</a>',
     'Erstelle einen relativen Link zu kontakt.html, einen externen HTTPS-Link mit verständlichem Linktext und einen funktionierenden Sprunglink zu einer Überschrift mit id="ideen".',
-    'href="#ideen" verweist auf id="ideen". Die Schreibweise muss genau übereinstimmen.',
+    'href="#ideen" verweist auf id="ideen". Die Schreibweise muss genau übereinstimmen. Ein Link erzeugt keine Datei: kontakt.html kannst du über „+ Unterseite“ oder nach dem Export in Notepad++ anlegen.',
     "Welcher Pfad führt in den gleichen Ordner?",
     [
       "C:\\Schule\\kontakt.html",
@@ -419,8 +419,8 @@ export const lessons = [
     "Ich kann Zielgruppe und Seitenstruktur entwerfen.",
     "Beginne vor dem Gestalten mit Ziel und Zielgruppe. Welche Informationen braucht dein Publikum? Skizziere eine Startseite und mindestens eine Unterseite. Ordne Inhalte in header, nav, main und footer. Plane Bilder, Dateinamen und Links. Schreibe einen ersten Entwurf ohne aufwendige Gestaltung. Eine klare Informationsstruktur spart später Umbauten.",
     '<header><h1>Schulgarten</h1></header>\n<nav><a href="kontakt.html">Mitmachen</a></nav>\n<main><h2>Unsere Idee</h2><p>Ein Garten für alle.</p></main>\n<footer><p>Schulprojekt</p></footer>',
-    "Entwirf eine Startseite mit header, nav, main und footer. Schreibe in main einen Absatz mit mindestens 40 Zeichen zu Ziel und Zielgruppe. Verlinke eine geplante Unterseite kontakt.html. Halte die Seitenskizze in deinen Notizen fest.",
-    "Nutze sinnvolle Bereiche statt eine Tabelle als Layout. Die Unterseite erstellst du im Abschlussprojekt lokal.",
+    "Entwirf eine Startseite mit header, nav, main und footer. Schreibe in main einen Absatz mit mindestens 40 Zeichen zu Ziel und Zielgruppe. Verlinke deine vorhandene oder geplante Unterseite kontakt.html. Halte die Seitenskizze in deinen Notizen fest.",
+    "Nutze sinnvolle Bereiche statt eine Tabelle als Layout. Eine fehlende Unterseite kannst du über „+ Unterseite“ oder nach dem Export in Notepad++ anlegen. Vorhandene Unterseiten gehören bereits zum Projekt-ZIP.",
     "Was sollte vor der Farbwahl feststehen?",
     [
       "Ziel, Zielgruppe und Inhalte",
@@ -508,7 +508,7 @@ export const lessons = [
     "Ich entwickle selbständig eine vollständige Webseite.",
     "Verbinde die erlernten Bausteine zu einer eigenen Informationswebseite. Wähle ein überschaubares Thema: Verein, Schulprojekt, Hobby oder eine erfundene Initiative. Passend zum bisherigen Unterrichtsprojekt kannst du ein Thema aus BPE3 erklären, etwa Client-Server, WLAN oder Datenschutz. Dokumentiere dabei auch verwendete KI-Hilfen. Entwickle mindestens zwei verknüpfte Seiten mit gemeinsamer externer CSS-Datei. Nutze eine begründete Auswahl aus Bildern, Listen und Tabellen. Erkläre deine Entscheidungen und zeige, dass du den Code selbst verändern kannst.",
     "<!-- Plane → Entwickle → Teste → Verbessere → Präsentiere -->",
-    "Entwickle deine Startseite im Labor und exportiere sie mit style.css. Lege kontakt.html mit „+ Unterseite“ an oder erstelle sie in Notepad++. Ergänze auf beiden Seiten Navigation und Rücklink. Füge Bild, Liste, sinnvolle Tabelle und Quellenangaben hinzu. Teste alle Dateien gemeinsam und präsentiere sie auf der geschützten Unterrichtsplattform.",
+    "Arbeite in der Werkstatt dieser Einheit an deinem übernommenen Projekt weiter. Falls kontakt.html noch fehlt, lege sie mit „+ Unterseite“ oder nach dem Export in Notepad++ an. Ergänze auf beiden Seiten Navigation und Rücklink. Füge Bild, Liste, sinnvolle Tabelle und Quellenangaben hinzu. Exportiere das Projekt-ZIP mit allen Seiten und style.css. Entpacke es, teste alle Dateien gemeinsam und präsentiere sie auf der geschützten Unterrichtsplattform.",
     "Die automatische Prüfung kontrolliert nur Bausteine der Startseite. Eigenständigkeit, Qualität, Unterseite, Links und Veröffentlichung werden im Gespräch geprüft.",
     "Wann ist dein Projekt bereit zur Präsentation?",
     [

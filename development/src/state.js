@@ -1,7 +1,12 @@
 import { lessons, byId } from "./content.js";
 import { nagoldRows } from "./nagold.js";
-import { normalizePages } from "./pages.js";
+import { normalizePages, MAX_PAGES, HTML_MAX, CSS_MAX } from "./pages.js";
 export const STORAGE_KEY = "weblab-state-v3";
+// File preflight must cover every supported draft, even with JSON escapes
+// (up to six bytes per UTF-16 unit). Extra room covers notes, NAGOLD and metadata.
+// Browser storage quota remains separate and import is transactional on failure.
+export const BACKUP_MAX_BYTES =
+  (lessons.length + 1) * ((MAX_PAGES + 1) * HTML_MAX + CSS_MAX) * 6 + 4000000;
 export const blank = () => ({
   profile: { name: "", className: "" },
   drafts: {},
@@ -28,7 +33,7 @@ export function normalize(raw) {
   for (const l of lessons) {
     const d = raw.drafts?.[l.id];
     if (record(d)) {
-      s.drafts[l.id] = { html: clip(d.html, 1500000), css: clip(d.css, 40000) };
+      s.drafts[l.id] = { html: clip(d.html, HTML_MAX), css: clip(d.css, CSS_MAX) };
       const pages = normalizePages(d.pages);
       if (pages.length) s.drafts[l.id].pages = pages;
     }
@@ -45,8 +50,8 @@ export function normalize(raw) {
   }
   if (record(raw.drafts?.lab)) {
     s.drafts.lab = {
-      html: clip(raw.drafts.lab.html, 1500000),
-      css: clip(raw.drafts.lab.css, 40000),
+      html: clip(raw.drafts.lab.html, HTML_MAX),
+      css: clip(raw.drafts.lab.css, CSS_MAX),
     };
     const pages = normalizePages(raw.drafts.lab.pages);
     if (pages.length) s.drafts.lab.pages = pages;
@@ -120,7 +125,7 @@ export function migrateOld(raw) {
   };
   s.drafts.l1 = {
     html: clip(raw.html, 20000) || byId("l1").starter,
-    css: clip(raw.css, 40000),
+    css: clip(raw.css, CSS_MAX),
   };
   return normalize(s);
 }

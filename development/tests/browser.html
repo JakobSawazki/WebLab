@@ -6,7 +6,8 @@
   <script type="module">
     import { lessons } from "/content.js";
     import { checkLesson } from "/checks.js";
-    import { blank, STORAGE_KEY } from "/state.js";
+    import { blank, STORAGE_KEY, BACKUP_MAX_BYTES } from "/state.js";
+    import { HTML_MAX, CSS_MAX } from "/pages.js";
     // App frames trigger backup downloads (profile switch, NAGOLD, reset).
     // A test run must never open save dialogs or fill the Downloads folder:
     // every frame gets a click() that records blob downloads instead.
@@ -511,6 +512,39 @@
       doc.querySelectorAll("#fileTabs [role=tab]").length === 3,
       "Doppelter Seitenname legt keine zweite kontakt.html an",
     );
+    const largePage = '<!--' + 'x'.repeat(400000) + '--><p>Vollständiges Ende</p>';
+    input("htmlEditor", largePage);
+    assert(el("htmlEditor").maxLength === HTML_MAX && el("cssEditor").maxLength === CSS_MAX,
+      "Editor verwendet die gemeinsamen HTML- und CSS-Grenzen auch auf Unterseiten");
+    const createUrl = win.URL.createObjectURL;
+    let capturedBackup;
+    try {
+      win.URL.createObjectURL = blob => { capturedBackup = blob; return createUrl.call(win.URL, blob); };
+      el("exportButton").click();
+      const backedUp = JSON.parse(await capturedBackup.text());
+      assert(backedUp.state.drafts.lab.pages[0].html === largePage,
+        "Tatsächlicher JSON-Download erhält Unterseiten über der früheren 300000-Zeichen-Grenze");
+    } finally { win.URL.createObjectURL = createUrl; }
+
+    // Finish an image read after changing files: it must not modify the new file.
+    const RealReader = win.FileReader;
+    let delayedReader;
+    try {
+      win.FileReader = class { readAsDataURL() { delayedReader = this; } };
+      const imageTransfer = new win.DataTransfer();
+      imageTransfer.items.add(new win.File(["test"], "test.png", { type: "image/png" }));
+      el("imageFile").files = imageTransfer.files;
+      el("imageFile").dispatchEvent(new win.Event("change"));
+      el("htmlTab").click();
+      const untouchedIndex = el("htmlEditor").value;
+      delayedReader.result = "data:image/png;base64,dGVzdA==";
+      delayedReader.onload();
+      assert(el("htmlEditor").value === untouchedIndex,
+        "Später Bildimport verändert nach einem Dateireiterwechsel keine andere Seite");
+      el("pageTab0").click();
+      assert(el("htmlEditor").value === largePage,
+        "Große Unterseite bleibt beim Wechsel zur Startseite und zurück vollständig");
+    } finally { win.FileReader = RealReader; }
     input("htmlEditor", '<h1>Kontaktseite</h1>\n<a href="index.html">Start</a>');
     el("runButton").click();
     assert(
@@ -1132,6 +1166,15 @@
     incoming.profile = { name: "NEU.MAX", className: "TEST" };
     incoming.notes.l1 = "Importierte Notiz";
     pe("backupButton").click();
+    await pe("importFile").onchange({ target: { files: [new pw.File([
+      " ".repeat(32000001), JSON.stringify({ app: "WebLab", formatVersion: 3, state: incoming }),
+    ], "large-backup.json", { type: "application/json" })] } });
+    assert(!pe("confirmImport").hidden && pe("importSummary").textContent.includes("NEU.MAX"),
+      "Eine tatsächliche JSON-Datei über 32 MB wird vor der Übernahme vollständig eingelesen");
+    let oversizedRead = false;
+    await pe("importFile").onchange({ target: { files: [{ size: BACKUP_MAX_BYTES + 1, text: async () => { oversizedRead = true; return "{}"; } }] } });
+    assert(!oversizedRead && pe("confirmImport").hidden && pe("importSummary").textContent.includes("zu groß"),
+      "Übermäßig große Sicherungen werden vor dem Lesen abgewiesen und können keinen Stand ersetzen");
     await pe("importFile").onchange({ target: { files: [new pw.File([
       JSON.stringify({ app: "WebLab", formatVersion: 3, state: incoming, exercisesSolved: ["l2-1"] }),
     ], "test-backup.json", { type: "application/json" })] } });

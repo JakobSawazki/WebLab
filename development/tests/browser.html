@@ -1052,9 +1052,9 @@
     caseFrame.src = "/?case-check=1#lesson/l14";
     document.body.append(caseFrame); await caseLoaded;
     const caseDoc = caseFrame.contentDocument, caseWin = caseFrame.contentWindow;
-    for (const [id, number] of [["l14", 3], ["l15", 2]]) {
-      if (id === "l15") {
-        caseWin.location.hash = "#lesson/l15";
+    for (const [id, number] of [["l14", 3], ["l15", 2], ["l5", 3]]) {
+      if (caseWin.location.hash !== "#lesson/" + id) {
+        caseWin.location.hash = "#lesson/" + id;
         await new Promise(resolve => setTimeout(resolve, 200));
       }
       const guide = caseDoc.querySelector(".study-cases");
@@ -1062,7 +1062,12 @@
       assert(guide?.querySelectorAll(".study-case").length === number &&
         [...guide.querySelectorAll("details")].every(detail => !detail.open) &&
         [...guide.querySelectorAll("a")].every(link => link.protocol === "https:" && link.rel.includes("noopener")),
-        id + ": Fallfragen zeigen Antworten erst auf Wunsch und verlinken offizielle Quellen");
+        id + ": Fallfragen zeigen Antworten erst auf Wunsch; Quellenlinks sind sicher");
+      if (id === "l5") {
+        assert(guide.querySelector("pre code")?.textContent.includes('href="kontakt.html"') &&
+          guide.querySelectorAll("a").length === 0 && !guide.querySelector("pre a"),
+          "Eigene AG-Lernsituation zeigt Code als Text und braucht keine externen Quellenabrufe");
+      }
       guide.querySelectorAll("summary").forEach(summary => summary.click());
       for (const theme of ["dark", "light"]) {
         if (caseDoc.documentElement.dataset.theme !== theme) caseDoc.getElementById("themeButton").click();

@@ -2,6 +2,35 @@ import { esc } from "./html.js";
 
 // Independently written classroom cases; no grading or persistent state.
 export const caseStudies = {
+  l5: {
+    title: "Lernsituation: Zwei Seiten für die Schul-AG",
+    intro: "Die Robotik-AG möchte ihre Ideen vorstellen. Auf der Startseite stehen die Projekte; eine zweite Seite erklärt, wie man bei der AG mitmachen kann. Beide HTML-Dateien liegen im selben Ordner. Entscheide erst selbst und öffne danach die Erklärung. Die Lernsituation ist freiwillig und vergibt keine zusätzlichen Punkte.",
+    code: 'ag-webseite/\n  index.html\n  kontakt.html\n\n<!-- in index.html -->\n<a href="kontakt.html">Bei der AG mitmachen</a>\n\n<!-- in kontakt.html -->\n<a href="index.html">Zur Startseite</a>',
+    cases: [
+      {
+        title: "Ein Link legt noch keine Seite an",
+        background: "Auf index.html steht bereits der Link auf kontakt.html. Im Projekt gibt es aber bisher nur index.html. In der Verweisprüfung steht deshalb „Diese Seite fehlt noch“.",
+        question: "Reicht es, den Linktext zu ändern? Was fehlt im Projekt?",
+        answer: "Der Linktext beschreibt das Ziel. Er erzeugt die Zieldatei nicht. Lege über „+ Unterseite“ die Datei kontakt.html an und schreibe dort einen kurzen Text zum Mitmachen. Alternativ erstellst du die Datei nach dem Export in Notepad++. Der Dateiname muss zum Wert von href passen.",
+        sources: [],
+      },
+      {
+        title: "Auch der Rückweg gehört dazu",
+        background: "Die Kontaktseite lässt sich öffnen. Nun soll man von dort wieder zur Startseite gelangen. Die Startdatei heißt index.html und liegt neben kontakt.html.",
+        question: "Welches Ziel braucht der Rücklink: #index, index.html oder ein Pfad zu deinem privaten Windows-Ordner? Begründe deine Wahl.",
+        answer: "href=\"index.html\" verweist auf die Datei im selben Ordner. #index wäre ein Sprungziel innerhalb der aktuellen Seite. Ein Pfad wie C:\\Users\\... passt nur zu einem bestimmten Rechner. Gib dem Rücklink einen verständlichen Text, zum Beispiel „Zur Startseite“. Auch ./index.html ist hier richtig.",
+        sources: [],
+      },
+      {
+        title: "Zwei grüne Haken sind noch kein Klicktest",
+        background: "Die Verweisprüfung findet jetzt beide Zieldateien. Sie bestätigt damit, dass die Namen zu vorhandenen Projektdateien passen. Sie prüft noch nicht, ob die Kontaktseite die gewünschten Informationen enthält.",
+        question: "Wie prüfst du, dass Hin- und Rückweg wirklich funktionieren und die Seite zum Linktext passt?",
+        answer: "Lade das Projekt-ZIP herunter und entpacke es. Öffne index.html im normalen Browser, klicke auf „Bei der AG mitmachen“ und danach auf „Zur Startseite“. Lies dabei die Zielseite: Passt ihr Inhalt zum Linktext? Im WebLab wechselst du zum Bearbeiten mit den Dateireitern; Linkklicks in der isolierten Vorschau wechseln nicht zwischen den Projektdateien.",
+        sources: [],
+      },
+    ],
+    transfer: "Verwende dein eigenes Seitenthema: Lege eine passende Unterseite an, schreibe dort einen kurzen eigenen Text und ergänze Hin- und Rücklink. Kontrolliere die Verweisprüfung und teste beide Wege im entpackten Export. Notiere einen gefundenen Fehler oder einen erfolgreichen Test in deinen Notizen.",
+  },
   l14: {
     title: "Vor der Veröffentlichung: drei Entscheidungen",
     intro: "Begründe zuerst deine Entscheidung und öffne dann die Erklärung. Halte offene Fragen zu deiner eigenen Seite in den Notizen fest. Die Fälle vergeben keine zusätzlichen Punkte. Quellenstand: 16. Oktober 2026.",
@@ -69,5 +98,5 @@ export const caseStudies = {
 export function caseStudyPanel(lessonId) {
   const guide = caseStudies[lessonId];
   if (!guide) return "";
-  return `<section class="panel study-cases" aria-labelledby="caseStudyTitle"><h3 id="caseStudyTitle">${esc(guide.title)}</h3><p>${esc(guide.intro)}</p>${guide.cases.map((item, index) => `<article class="study-case"><h4>Fall ${index + 1}: ${esc(item.title)}</h4><p>${esc(item.background)}</p><p><strong>Deine Entscheidung:</strong> ${esc(item.question)}</p><details class="debug-challenge"><summary>Erklärung ansehen</summary><p>${esc(item.answer)}</p><p class="muted">Nachlesen: ${item.sources.map((source) => `<a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.label)}</a>`).join(" · ")}</p></details></article>`).join("")}<p><strong>Auf deine Webseite übertragen:</strong> ${esc(guide.transfer)}</p></section>`;
+  return `<section class="panel study-cases" aria-labelledby="caseStudyTitle"><h3 id="caseStudyTitle">${esc(guide.title)}</h3><p>${esc(guide.intro)}</p>${guide.code ? `<pre><code>${esc(guide.code)}</code></pre>` : ""}${guide.cases.map((item, index) => `<article class="study-case"><h4>Fall ${index + 1}: ${esc(item.title)}</h4><p>${esc(item.background)}</p><p><strong>Deine Entscheidung:</strong> ${esc(item.question)}</p><details class="debug-challenge"><summary>Erklärung ansehen</summary><p>${esc(item.answer)}</p>${item.sources.length ? `<p class="muted">Nachlesen: ${item.sources.map((source) => `<a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.label)}</a>`).join(" · ")}</p>` : ""}</details></article>`).join("")}<p><strong>Auf deine Webseite übertragen:</strong> ${esc(guide.transfer)}</p></section>`;
 }

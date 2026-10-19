@@ -2,7 +2,7 @@
 
 Stand: **19. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.41.1** · Status: **lokal geprüft; Veröffentlichung läuft** (bisher online: 1.40.3).
+Version: **1.42.0** · Status: **lokal geprüft; Veröffentlichung läuft** (bisher online: 1.41.1).
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.41.1 |
+| Bereich | Version 1.42.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
@@ -321,6 +321,12 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 
 ## 8. Gemeinsames Arbeitsprotokoll
 
+### 19.10.2026 – Codex – Version 1.42.0: Eigene Lernsituation für die Schul-AG
+
+Jakobs ergänzten Auftrag aufgegriffen: Materialien unter ressources/BPE2 dienen als fachlicher Hintergrund; neue Situationen und Aufgaben werden bevorzugt eigenständig formuliert. Einheit 05 erhält die freiwillige Lernsituation „Zwei Seiten für die Schul-AG“ mit Start-/Kontaktseite, Ordner- und Codebeispiel sowie drei Entscheidungen: Ein Link erzeugt keine Datei, ein Rücklink führt zur Startdatei, grüne Verweishaken ersetzen keinen Klicktest. Jede Erklärung bleibt zunächst geschlossen. Transfer auf das eigene Thema mit Datei anlegen, eigenem Text, Hin-/Rücklink und Test im entpackten Export. Beschrieben wird der tatsächliche Ablauf mit Dateireitern und isolierter Vorschau. Keine zusätzlichen Punkte oder Abschlussbedingungen, keine Fremdtexte oder neuen Netzabrufe. Metallgestaltung und vorhandene fotorealistische Markenbilder bleiben passend eingebunden. Quellenfreie eigene Situationen zeigen keine leere „Nachlesen“-Zeile.
+
+Prüfung: 65 Node-Tests, Build und 242/242 Browserprüfungen bestanden. Neue Tests sichern Vollständigkeit der Fälle, maskierte HTML-Beispiele, freiwilligen Charakter, sichtbare Antworten erst nach Öffnen, unveränderte Lernstände und Darstellung bei 360 Pixeln ab. Zusätzlich bei 1440/390 Pixeln in Dark/Light visuell geprüft. Veröffentlichung und Live-Prüfung folgen.
+
 ### 19.10.2026 – Codex – Version 1.41.1: Mehrseiten-Version übernehmen und Verweise zuverlässig prüfen
 
 Jakobs aktueller Auftrag autorisiert selbständige Weiterarbeit und Veröffentlichung geeigneter Stände. Damit ist die Veröffentlichung nicht mehr von der in tasks.md Nr. 6 erbetenen Einzelbestätigung abhängig. Claudes lokal committierte 1.41.0 erneut gelesen und mit Build, 60 Node-Tests und Browserlauf geprüft. Dabei ergab die weitere Prüfung einen Fehler im QA-Werkzeug: Bei einem bereits belegten Debug-Port konnte es ein älteres, erfolgreiches Prüffenster auswählen. Diese ersten Browserergebnisse sind daher kein alleiniger Nachweis des aktuellen Standes.
@@ -329,7 +335,7 @@ Die Verweisprüfung verwendet in der Anwendung jetzt den inerten HTML-Parser des
 
 QA-Werkzeug: standardmäßig zwei freie, getrennte Ports und eindeutige Kennung je Prüflauf; nur das Browserziel mit exakt dieser URL wird gelesen. Explizit angegebene belegte Ports führen zum Fehler. Skriptfehler der aktuellen Prüfseite werden über das DevTools-Ereignis erkannt. Fremde Browserfenster oder Prozesse werden nicht beendet. Unter Windows kann ein temporäres Browserprofil wegen noch offener Handles zurückbleiben; der Pfad wird gemeldet.
 
-Prüfung des korrigierten Standes: 63 Node-Tests, Build und 237/237 Browserprüfungen erfolgreich. Eine neue Syntaxprüfung kompiliert das eingebettete QA-Modul vor dem Browserstart; zwei neue Node-Tests sowie drei neue Browserprüfungen decken falsche Linktreffer, relative URL-Schreibweisen, unveränderten Schülercode und die Abgrenzung anderer Ordner ab. Negativtest mit selbst belegtem Port 4381: QA endet erwartungsgemäß mit Exitcode 1 und EADDRINUSE, ohne einen Browserlauf als bestanden zu verbuchen. Zusätzlich Mehrseiten-Werkstatt und Verweisbericht bei 1440/390 Pixeln in Dark/Light visuell geprüft. Echter Projekt-ZIP-Download enthält index.html, kontakt.html und style.css; CRC und Unterseiteninhalt unabhängig mit Python geprüft. Veröffentlichung und Live-Prüfung folgen.
+Prüfung des korrigierten Standes: 63 Node-Tests, Build und 237/237 Browserprüfungen erfolgreich. Eine neue Syntaxprüfung kompiliert das eingebettete QA-Modul vor dem Browserstart; zwei neue Node-Tests sowie drei neue Browserprüfungen decken falsche Linktreffer, relative URL-Schreibweisen, unveränderten Schülercode und die Abgrenzung anderer Ordner ab. Negativtest mit selbst belegtem Port 4381: QA endet erwartungsgemäß mit Exitcode 1 und EADDRINUSE, ohne einen Browserlauf als bestanden zu verbuchen. Zusätzlich Mehrseiten-Werkstatt und Verweisbericht bei 1440/390 Pixeln in Dark/Light visuell geprüft. Echter Projekt-ZIP-Download enthält index.html, kontakt.html und style.css; CRC und Unterseiteninhalt unabhängig mit Python geprüft. Veröffentlicht mit Commit `86a9cc1`; [Pages-Lauf 39286331478](https://github.com/JakobSawazki/WebLab/actions/runs/39286331478) erfolgreich: auch in CI 63 Node-Tests und 237 Browserprüfungen. Online neue Unterseite, Rücklink, relative URL mit Abfrage, ignorierten Kommentar und Versionskennung im echten Browser geprüft. Damit ist tasks.md Nr. 6 erledigt; Frage und Antwortplatzhalter wurden aus der lokalen Aufgabenliste entfernt.
 
 ### 17.10.2026 – Claude – Version 1.41.0: Unterseiten direkt in WebLab (tasks.md Nr. 2)
 

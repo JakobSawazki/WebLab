@@ -2,7 +2,7 @@
 
 Stand: **19. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.42.1** · Status: **lokal geprüft, Veröffentlichung vorbereitet**.
+Version: **1.42.1** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -330,6 +330,8 @@ Der Textdateiimport unterscheidet UTF-8-Bytes von der Zeichengrenze des Editors 
 Die Anweisungen in 05/13/15/16 nennen jetzt vorhandene Unterseiten, „+ Unterseite“, die Werkstatt der aktuellen Einheit sowie den bereits vollständigen ZIP-Export. Der Sicherungsdialog erklärt Downloadordner → JSON auf Stick prüfen → am anderen Gerät laden und unterscheidet JSON-Lernstand vom Webseiten-ZIP. Texte wurden mit einem Codex-Unteragenten geprüft und überarbeitet; keine neue Claude-Arbeit behauptet. Lernziele, XP und Abschlussbedingungen bleiben gleich. Keine neuen Bilder erforderlich; vorhandene fotorealistische Markenbilder und Metallgestaltung werden weiterverwendet.
 
 Prüfung: 68 Node-Tests, Build und 248/248 Browserprüfungen bestanden. Neue Fälle sichern vollständige Unterseiten bis zur Editorgrenze, mehrbytehaltige UTF-8-Dateien, echte JSON-Sicherungen über 32 MB und ausbleibende Seiteneffekte nach verspätetem Bildlesen ab. Zusätzlich im echten Browser HTML/CSS geschrieben, gemeinsame Gestaltung in der Vorschau geprüft, eine Unterseite mit über 400.000 Zeichen angelegt, echte HTML-/CSS-/ZIP-/JSON-Dateien heruntergeladen, nach Neuladen und nach JSON-Import vollständig wiedergefunden und die exportierten Dateien wieder in WebLab geladen. Sicherungsdialog bei 1440/390 Pixeln in beiden Farbschemata visuell geprüft. Das entpackte ZIP enthält genau index.html, kontakt.html und style.css; beide Seiten, gemeinsame CSS-Farbe sowie Hin-/Rücklink über einen lokalen HTTP-Server geprüft. Der direkte file:-Aufruf war in der Browserautomatisierung gesperrt und ist daher in diesem Lauf kein neuer Nachweis für Doppelklickbetrieb. Eigene Testdaten im Browser anschließend zurückgesetzt. Separater lesender Diff-Review ohne konkrete neue Befunde; die rechnerische Sicherungsobergrenze wurde nicht als tatsächlich verfügbare Browserkapazität getestet.
+
+Veröffentlicht mit Commit `1210091`; [Pages-Lauf 39306014473](https://github.com/JakobSawazki/WebLab/actions/runs/39306014473) erfolgreich, auch in CI 68 Node-Tests und 248 Browserprüfungen. Live-Version im Browser geprüft: tatsächliche JSON-Datei geladen, Unterseite mit 400.241 Zeichen und vollständigem Endtext, CSS-Farbe in der Vorschau und unveränderter Inhalt nach Neuladen bestätigt. Vorheriger Browserstand wiederhergestellt. Das Online-Bundle ist per SHA-256 byteidentisch mit dem geprüften lokalen Stand.
 
 ### 19.10.2026 – Codex – Version 1.42.0: Eigene Lernsituation für die Schul-AG
 

@@ -1,8 +1,8 @@
 # WebLab – gemeinsame Projektdokumentation
 
-Stand: **19. Oktober 2026, Europe/Berlin · Codex**
+Stand: **20. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.42.1** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.43.0** · Status: **lokal geprüft, Veröffentlichung in Vorbereitung**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -24,7 +24,7 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.42.1 |
+| Bereich | Version 1.43.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
@@ -41,6 +41,7 @@ Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
 | Nachschlagen | 110 Glossareinträge (84 aus WebLab 0.5.0, 26 ergänzt), Suche mit Trefferreihenfolge, Bereichsfilter, „Siehe auch“-Verweise |
 | Datenschutz | Lernstand auf dem Gerät; kein Tracking, keine externe KI, keine zentrale Schülerdatenbank |
+| Speicherrückmeldung | Dauerhafte Anzeige für Entwürfe, Profil und Lernpfad; bei Fehlern erneut speichern oder aktuellen Stand als JSON herunterladen; geschützte unlesbare Originaldaten separat sichern |
 
 **Grenze:** Die Selbstkontrolle ist eine eigene Erklärung der Lernenden. Sie ist keine authentifizierte Lehrkraftfreigabe. LocalStorage, Sicherungsdateien, XP und NAGOLD sind veränderbar. Sie dürfen nicht ungeprüft als Leistungsbewertung verwendet werden. Automatische Kriterien erkennen ausgewählte Bausteine, keine vollständige HTML-Konformität, Eigenständigkeit oder gestalterische Qualität.
 
@@ -177,7 +178,7 @@ WebLab/
                              guidance, glossary), Oberfläche (app, exercise-panel, profile),
                              Lernstand (state, nagold), Hilfsmodule (html, editor, checks, …)
     tools/                   Bundler, Build und lokaler Browserprüfserver
-    tests/                   25 Node-Tests und Browserprüfseite
+    tests/                   68 Node-Tests und Browserprüfseite
   documentation/documentation.md
   documentation/WebLab-1.11.0.png
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
@@ -200,7 +201,7 @@ npm run serve
 
 Vorschau: `http://127.0.0.1:4188/`. Browserprüfungen: `http://127.0.0.1:4188/__qa`. Nach Quelländerungen neu bauen und im Browser neu laden. Zum Lernen reicht seit 1.4.0 ein Doppelklick auf `index.html` im Projektordner. Der ganze Ordner mit `weblab.js`, `styles.css` und `assets/` muss zusammenbleiben. Node.js und Server sind dafür nicht erforderlich. `start.cmd` wurde beim anschließenden Aufräumen entfernt; der einzige Einstieg für Lernende ist `index.html`. Der Build fasst die weiterhin modular gepflegten Quellen in ein klassisches Skript zusammen; nach Quelländerungen immer neu bauen und `weblab.js` mit committen. Lokaler Dateistart, localhost und Online-Seite haben getrennte Lernstände; bei einem Wechsel JSON-Sicherung verwenden.
 
-Der Build schreibt ausschließlich sieben erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket, führt seit 1.22.1 die Browserprüfungen mit Chrome aus und veröffentlicht ausschließlich dist.
+Der Build schreibt ausschließlich sechs erlaubte Dateien nach `dist/`. Unerwartete Dateien oder symbolische Links lassen die Veröffentlichung scheitern. Die Browser-Testseite und die Dokumentation sind nicht Teil der ausgelieferten Lernseite. GitHub Actions führt die Node-Tests aus, baut das Paket, führt seit 1.22.1 die Browserprüfungen mit Chrome aus und veröffentlicht ausschließlich dist.
 
 ## 5. Lernstand, Migration und Sicherheit
 
@@ -214,8 +215,8 @@ Eine zentrale Funktion `lessonAccess()` in `development/src/state.js` steuert Ka
 - Der alte LocalStorage-Schlüssel wird bei der Migration nicht gelöscht. Ein Origin-Wechsel benötigt einen manuellen JSON-Transfer.
 - Ein Kürzelwechsel beginnt nach Sicherungsdownload und Bestätigung mit einem neuen Stand. Eine Klassenkorrektur bei gleichem Kürzel erhält den Fortschritt.
 - Laden und Zurücksetzen sichern den aktuellen Stand vorher als Datei. Der Browser kann einen Download blockieren; Nutzer müssen die Datei tatsächlich aufbewahren. Eine erfolgreich ausgelöste Downloadaktion beweist nicht, dass der Stick beschrieben wurde.
-- Defekter vorhandener Speicher wird nicht automatisch überschrieben. Bei Veränderungen durch einen anderen Tab wird weiteres Speichern bis zum Neuladen blockiert. Speicherfehler werden sichtbar gemeldet.
-- Sicherungen werden auf App/Version und erwartete Felder geprüft. Texte, Entwürfe und Eintragszahlen werden begrenzt; unbekannte IDs und doppelte Abschlüsse entfernt. Dateigrenze für den Import: 32 MB.
+- Defekter vorhandener Speicher wird nicht automatisch überschrieben. Bei Veränderungen oder Löschen des Lernstands durch einen anderen Tab wird weiteres Speichern bis zum Neuladen blockiert. Seit 1.43.0 bleiben Speicherprobleme als Statusleiste sichtbar. Aktuelle Entwürfe lassen sich auch nach einem Schreibfehler als JSON sichern; unlesbare ursprüngliche Daten werden unverändert separat angeboten. Wiederholen übergeht keine Sperre zum Schutz vorhandener Daten.
+- Sicherungen werden auf App/Version und erwartete Felder geprüft. Texte, Entwürfe und Eintragszahlen werden begrenzt; unbekannte IDs und doppelte Abschlüsse entfernt. Seit 1.42.1 ersetzt eine aus den erlaubten Feldern und JSON-Escaping berechnete Byte-Obergrenze die frühere starre 32-MB-Grenze. Alle HTML-Seiten erlauben bis zu 1.500.000 Zeichen, CSS bis zu 40.000. Verfügbarer RAM und Browserspeicher bleiben zusätzliche praktische Grenzen.
 - Die Vorschau verwendet ein iframe mit leerem sandbox-Attribut und CSP. Skripte, Formulare, entfernte Bilder, Fonts und Medien werden blockiert. Lokale Bilder bis 500 KB werden ohne Upload als Datenadresse eingebettet. Relative Dateien/Links werden im exportierten Projekt getestet.
 - Schülertext wird beim Anzeigen als HTML maskiert; CSV-Zellen werden gegen übliche Formelpräfixe geschützt. Der HTML-Projektexport enthält bewusst den eigenen Code der Lernenden und ist keine bereinigte Webveröffentlichung. Fremde Skripte gehören nicht in ein Unterrichtsprojekt.
 - Es werden keine Dienste zur KI-Codebewertung oder Analyse verwendet. Hilfe besteht aus lokalen Hinweisen.
@@ -251,7 +252,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (17.10.2026, Codex, Version 1.40.3):** 52 Node-Tests und 226 Browserprüfungen bestanden. Logo und Tab-Icon zeigen nachweislich dasselbe geladene Motiv. Zusätzlich zu den bisherigen Prüfungen werden genaue CSS-Eigenschaften, passende Selektoren, Kommentare/Zeichenfolgen, vollständige Werte und einfache Deklarationspriorität geprüft. Pages-Lauf 39002609189 erfolgreich; öffentliches weblab.js per SHA-256 bytegleich mit dem lokal geprüften Bundle. HTML-/CSS-Mini-Prüfungen bleiben ausdrücklich auf die beschriebenen einfachen Aufgabenformen begrenzt.
+**Aktueller Stand (20.10.2026, Codex, Version 1.43.0):** 68 Node-Tests, Build und 263 Browserprüfungen bestanden. Neu abgedeckt sind Schreibfehler, wiederholtes Speichern, JSON-Rettung ungespeicherter Entwürfe, unveränderte beschädigte Originaldaten und echte Speicherereignisse anderer Fenster. Veröffentlichungsnachweis siehe neuestes Arbeitsprotokoll. HTML-/CSS-Mini-Prüfungen bleiben ausdrücklich auf die beschriebenen einfachen Aufgabenformen begrenzt.
 
 **Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
@@ -274,6 +275,7 @@ Offene Erweiterungen, nach Priorität:
 5. **Projektwerkstatt:** Seit 1.41.0 bis zu vier Unterseiten neben index.html und style.css, mit Verweisprüfung, Mehrdatei-Import und ZIP-Export. Offen bleibt eine Medienverwaltung für echte Bild-/Mediendateien statt eingebetteter Datenadressen.
 6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser und optionale Offline-Kopie. Browserprüfungen laufen seit 1.22.1 in CI.
 7. **ThommyWeb:** K2/K6 im Detail, alle übrigen Kapitel seit 1.32.0 über Übersicht und Stichworte abgeglichen; Lücken (Zellen verbinden, b/i, Webfonts) eigenständig geschlossen. Detailtexte der übrigen Kapitel bei Bedarf noch prüfen.
+8. **Übungsmarkierungen bei Speicherfehlern:** Beim Review am 20.10.2026 wurde außerhalb der Haupt-Lernstandsanzeige ein konkreter Folgefehler gefunden: Die Mini-Übungen ignorieren einen fehlgeschlagenen Schreibversuch ihrer separat gespeicherten „gelöst“-Markierungen. Die Anzeige kann deshalb nach Navigation verschwinden; die bisherige JSON-Sicherung liest diese Markierungen wieder aus dem Browserspeicher. Nächster Korrekturschritt: ungespeicherte Markierungen im Arbeitsspeicher erhalten, sichern und sichtbar als ungespeichert kennzeichnen. Die Anzeige von 1.43.0 bezieht sich ausdrücklich auf Entwürfe, Profil und Lernpfad.
 
 ### Anforderungsabgleich am 17.10.2026
 
@@ -320,6 +322,16 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 20.10.2026 – Codex – Version 1.43.0: Speicherfehler sichtbar halten und Entwürfe retten
+
+Die bisherige kurze Fehlermeldung beim Speichern konnte durch nachfolgende Erfolgsmeldungen verdrängt werden. Eine dauerhafte Statusleiste zeigt nun, ob Entwürfe, Profil und Lernpfad auf diesem Gerät gespeichert sind. Nach einem fehlgeschlagenen Schreibversuch bleiben die aktuellen Änderungen im geöffneten Tab und können direkt als JSON heruntergeladen oder erneut gespeichert werden. Ein gestarteter Download gilt ausdrücklich nicht als bestätigte Dateiablage. Fehlgeschlagene Profil-, NAGOLD- oder Lernstandsimporte rollen ihre Änderung zurück; die Anzeige unterscheidet dies von bereits vorher ungespeicherten Entwürfen. Tabellenänderungen im noch offenen NAGOLD-Dialog werden ausdrücklich nicht als Bestandteil der JSON-Sicherung bezeichnet.
+
+Beschädigte vorhandene Daten lassen sich unverändert als Rohdaten herunterladen. Änderungen beziehungsweise ein Löschen des Lernstands durch andere Tabs blockieren weitere Schreibversuche; „Erneut speichern“ kann diese Schutzsperre nicht umgehen. Ereignisse aus sessionStorage lösen die Sperre nicht aus. Wiederholte identische Meldungen werden nicht bei jedem Tastendruck erneut vorgelesen. Die Leiste bleibt beim Scrollen sichtbar; ihr gemessener Platzbedarf wird bei Abschnittssprüngen berücksichtigt.
+
+Prüfung: 68 Node-Tests und 263/263 Browserprüfungen bestanden, Build erfolgreich. Das erzeugte Bundle stimmt mit den aktuellen Quellmodulen überein. 15 zusätzliche Browserprüfungen decken Speicherfehler mit tatsächlichen Eingaben, Unterseiten, Navigation, Rollbacks, JSON-Inhalt, Wiederholen und Neuladen sowie echte Speicherereignisse zwischen Fenstern ab. Die Schutzprüfungen erhalten den bestehenden Browserspeicher. Separater lesender Review des Diffs fand keine offensichtlichen unfertigen Bedienabläufe. Der dabei zusätzlich gefundene Fehler bei separaten Übungsmarkierungen ist oben als Folgearbeit dokumentiert.
+
+Zusätzlich 32 Abschnittssprünge im tatsächlichen Browser geprüft: vier Ziele je 1440/390 Pixel, Dark/Light und gespeichertem beziehungsweise absichtlich nicht speicherbarem Entwurf. Zielüberschriften bleiben sichtbar unter der Leiste; kein horizontaler Überlauf. Beim letzten Abschnitt wird die natürliche untere Scrollgrenze berücksichtigt. Schmale dunkle und breite helle Ansicht visuell kontrolliert; Wiederholen speichert nach aufgehobenem Testfehler erfolgreich. Testdaten anschließend wiederhergestellt. Bildschirmbilder liegen außerhalb des Projekts unter `C:/Users/Jakob/AppData/Local/Temp/weblab-1430-review`.
 
 ### 19.10.2026 – Codex – Version 1.42.1: Vollständige Unterseiten und verständlicher Dateiablauf
 

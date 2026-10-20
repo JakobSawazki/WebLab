@@ -142,6 +142,20 @@
             </button>
           </div>
         </header>
+        <section id="storageStatus" class="storage-status" data-state="ready" aria-label="Speicherstatus">
+          <div class="storage-copy">
+            <span id="storageSymbol" aria-hidden="true">○</span>
+            <div>
+              <p id="storageMessage" role="status" aria-live="polite" aria-atomic="true">Dein Lernstand wird beim Arbeiten automatisch gespeichert.</p>
+              <p id="storageDetail" class="muted" hidden></p>
+            </div>
+          </div>
+          <div id="storageActions" class="actions" hidden>
+            <button type="button" id="retrySave" class="button secondary">Erneut speichern</button>
+            <button type="button" id="storageBackup" class="button">Aktuellen Lernstand herunterladen</button>
+            <button type="button" id="storageRaw" class="button secondary" hidden>Vorhandene Rohdaten herunterladen</button>
+          </div>
+        </section>
         <main id="mainContent" tabindex="-1"></main>
         <footer class="portal-footer">
           Designed by

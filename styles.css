@@ -523,6 +523,37 @@ a.lesson-menu-item:hover,
   gap: 0.6rem;
   align-items: stretch;
 }
+.storage-status {
+  position: sticky;
+  top: 0;
+  z-index: 12;
+  padding: 0.6rem clamp(1rem, 2vw, 2rem);
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  font-size: 0.85rem;
+  max-height: 45vh;
+  overflow-y: auto;
+}
+html { scroll-padding-top: calc(var(--storage-offset, 0px) + 1rem); }
+.storage-copy {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+}
+.storage-copy > div { min-width: 0; }
+.storage-status p { margin: 0; }
+#storageMessage { font-weight: 600; }
+#storageDetail { margin-top: 0.35rem; }
+.storage-status[data-state="saved"] #storageSymbol { color: var(--green); }
+.storage-status[data-state="error"],
+.storage-status[data-state="blocked"] {
+  border-left: 4px solid var(--amber);
+  box-shadow: var(--shadow);
+}
+.storage-status[data-state="error"] #storageMessage,
+.storage-status[data-state="blocked"] #storageMessage { color: var(--amber); }
+.storage-status .actions { margin: 0.65rem 0 0; }
+.storage-status .button { font-size: 0.85rem; }
 .topbar-actions > .button,
 .topbar-actions > .icon-button {
   min-height: 56px;
@@ -2034,6 +2065,7 @@ dialog::backdrop {
   .topbar-actions,
   #menuButton,
   .portal-footer,
+  .storage-status,
   #toast,
   .skip-link,
   .actions,

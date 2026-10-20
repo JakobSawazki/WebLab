@@ -1252,6 +1252,177 @@
     slowCancelled.resolve(backupText("ALT.MAX", "l1-1")); await cancelledRead;
     assert(pe("confirmImport").hidden && pe("importSummary").textContent === "", "Import: Leere Dateiauswahl verwirft einen noch laufenden Lesevorgang");
     profileFrame.remove();
+    // Storage failures use isolated app windows. Keep the entire origin state,
+    // because a real cross-window clear() event has key === null.
+    {
+      const originBeforeStorageCheck = new Map(Object.keys(localStorage).map((key) => [key, localStorage.getItem(key)])),
+        sessionBeforeStorageCheck = sessionStorage.getItem(STORAGE_KEY);
+      let storageFrame, storageWin, storageDoc, restoreStorageWrite;
+      const storageElement = (id) => storageDoc.getElementById(id),
+        storageDownloads = [];
+      const openStorageFrame = async (raw, route = "lab") => {
+        restoreStorageWrite?.();
+        storageFrame?.remove();
+        localStorage.setItem(STORAGE_KEY, raw);
+        storageFrame = document.createElement("iframe");
+        storageFrame.title = "Speicherrueckmeldung";
+        storageFrame.style.cssText = "width:1000px;height:800px;border:0;display:block";
+        const loaded = new Promise((resolve) => (storageFrame.onload = resolve));
+        storageFrame.src = "/?storage-feedback-check#" + route;
+        document.body.append(storageFrame);
+        await loaded;
+        storageWin = storageFrame.contentWindow;
+        storageDoc = storageFrame.contentDocument;
+        storageWin.confirm = () => true;
+        const createObjectURL = storageWin.URL.createObjectURL;
+        storageWin.URL.createObjectURL = (blob) => {
+          storageDownloads.push(blob);
+          return createObjectURL.call(storageWin.URL, blob);
+        };
+        const originalStorageWrite = storageWin.Storage.prototype.setItem;
+        restoreStorageWrite = () => { storageWin.Storage.prototype.setItem = originalStorageWrite; };
+        return () => {
+          storageWin.Storage.prototype.setItem = function (key, value) {
+            if (key === STORAGE_KEY) throw new storageWin.DOMException("Test quota", "QuotaExceededError");
+            return originalStorageWrite.call(this, key, value);
+          };
+        };
+      };
+      const storageRoute = async (route) => {
+        const changed = new Promise((resolve) => storageWin.addEventListener("hashchange", resolve, { once: true }));
+        storageWin.location.hash = "#" + route;
+        await changed;
+      };
+      const storageEventFrom = (area, mutation) => new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          storageWin.removeEventListener("storage", listener);
+          reject(new Error("Erwartetes StorageEvent blieb aus"));
+        }, 5000);
+        const listener = (event) => {
+          if (event.storageArea !== area) return;
+          clearTimeout(timeout);
+          storageWin.removeEventListener("storage", listener);
+          resolve(event);
+        };
+        storageWin.addEventListener("storage", listener);
+        mutation();
+      });
+      try {
+        const initialStorageState = blank();
+        initialStorageState.profile = { name: "MUS.MAX", className: "EG-1" };
+        initialStorageState.drafts.lab = {
+          html: "<h1>Gespeicherter Entwurf</h1>", css: "h1 { color: navy; }",
+          pages: [{ name: "kontakt.html", html: "<h1>Kontakt bleibt erhalten</h1>" }],
+        };
+        const failStorageWrite = await openStorageFrame(JSON.stringify(initialStorageState));
+        assert(storageElement("storageStatus").dataset.state === "saved" && storageElement("storageMessage").getAttribute("role") === "status",
+          "Speicherrueckmeldung: Gespeicherter Lernstand hat einen zugaenglichen dauerhaften Status");
+        failStorageWrite();
+        storageElement("profileButton").click();
+        storageElement("studentClass").value = "EG-2";
+        storageElement("profileForm").requestSubmit();
+        assert(storageElement("profileDialog").open && storageElement("storageStatus").dataset.state === "error" &&
+          storageElement("storageStatus").dataset.unsaved === "false" && storageElement("retrySave").hidden &&
+          JSON.parse(localStorage.getItem(STORAGE_KEY)).profile.className === "EG-1",
+          "Speicherrueckmeldung: Fehlgeschlagenes Profil wird zurueckgenommen, sauberer Altstand bleibt sauber");
+        storageElement("profileDialog").close();
+        const replacementStorageState = blank();
+        replacementStorageState.profile = { name: "NEU.MAX", className: "TEST" };
+        const prepareStorageImport = async () => {
+          storageElement("backupButton").click();
+          await storageElement("importFile").onchange({ target: { files: [new storageWin.File([
+            JSON.stringify({ app: "WebLab", formatVersion: 3, state: replacementStorageState }),
+          ], "storage-check.json", { type: "application/json" })] } });
+          storageElement("confirmImport").click();
+        };
+        await prepareStorageImport();
+        assert(storageElement("backupDialog").open && storageElement("storageStatus").dataset.unsaved === "false" &&
+          storageElement("retrySave").hidden && storageElement("profileName").textContent === "MUS.MAX",
+          "Speicherrueckmeldung: Fehlgeschlagener Import zeigt nach Rollback keinen verworfenen Entwurf als ungespeichert");
+        storageElement("backupDialog").close();
+        storageElement("livePreview").checked = false;
+        const unsavedHtml = "<h1>Nur im geoeffneten Tab</h1>", unsavedCss = "h1 { color: teal; }";
+        storageElement("htmlEditor").value = unsavedHtml;
+        storageElement("htmlEditor").dispatchEvent(new storageWin.Event("input", { bubbles: true }));
+        storageElement("cssEditor").value = unsavedCss;
+        storageElement("cssEditor").dispatchEvent(new storageWin.Event("input", { bubbles: true }));
+        storageWin.prompt = () => "team";
+        storageElement("addPage").click();
+        assert(storageElement("storageStatus").dataset.state === "error" && storageElement("storageStatus").dataset.unsaved === "true" &&
+          !storageElement("retrySave").hidden && storageElement("toast").textContent.includes("team.html") &&
+          JSON.parse(localStorage.getItem(STORAGE_KEY)).drafts.lab.html !== unsavedHtml,
+          "Speicherrueckmeldung: Code und Unterseite bleiben ungespeichert sichtbar trotz nachfolgendem Erfolgstoast");
+        await storageRoute("notes");
+        assert(storageElement("storageStatus").dataset.state === "error" && storageElement("storageStatus").dataset.unsaved === "true",
+          "Speicherrueckmeldung: Navigation entfernt die Warnung vor ungespeicherter Arbeit nicht");
+        storageElement("profileButton").click();
+        storageElement("studentClass").value = "EG-2";
+        storageElement("profileForm").requestSubmit();
+        assert(storageElement("profileDialog").open && storageElement("storageStatus").dataset.unsaved === "true" && !storageElement("retrySave").hidden,
+          "Speicherrueckmeldung: Profil-Rollback erhaelt schon vorher ungespeicherte Arbeit");
+        storageElement("profileDialog").close();
+        await prepareStorageImport();
+        assert(storageElement("backupDialog").open && storageElement("storageStatus").dataset.unsaved === "true" && !storageElement("retrySave").hidden,
+          "Speicherrueckmeldung: Import-Rollback erhaelt schon vorher ungespeicherte Arbeit");
+        storageElement("backupDialog").close();
+        storageElement("storageBackup").click();
+        const rescuedStorageState = JSON.parse(await storageDownloads.at(-1).text()).state;
+        assert(rescuedStorageState.profile.className === "EG-1" && rescuedStorageState.drafts.lab.html === unsavedHtml &&
+          rescuedStorageState.drafts.lab.css === unsavedCss && rescuedStorageState.drafts.lab.pages.length === 2 &&
+          rescuedStorageState.drafts.lab.pages[0].html === initialStorageState.drafts.lab.pages[0].html &&
+          storageElement("storageStatus").dataset.unsaved === "true",
+          "Speicherrueckmeldung: JSON rettet aktuellen Code samt Unterseiten, ohne Speichern auf dem Geraet vorzutäuschen");
+        restoreStorageWrite();
+        storageElement("retrySave").click();
+        assert(storageElement("storageStatus").dataset.state === "saved" && storageElement("storageStatus").dataset.unsaved === "false" &&
+          storageElement("retrySave").hidden && storageDoc.activeElement === storageElement("storageMessage") &&
+          JSON.stringify(JSON.parse(localStorage.getItem(STORAGE_KEY)).drafts.lab) === JSON.stringify(rescuedStorageState.drafts.lab),
+          "Speicherrueckmeldung: Wiederholen speichert den vollstaendigen Entwurf und setzt den Fokus auf den Erfolg");
+        await openStorageFrame(localStorage.getItem(STORAGE_KEY));
+        assert(storageElement("htmlEditor").value === unsavedHtml && storageElement("cssEditor").value === unsavedCss &&
+          storageDoc.querySelectorAll("#fileTabs [data-file$='.html']").length === 3,
+          "Speicherrueckmeldung: Gesicherte Aenderungen und Unterseiten bleiben nach erneutem Laden erhalten");
+        await storageEventFrom(storageWin.sessionStorage, () => sessionStorage.setItem(STORAGE_KEY, "session-only-check-" + crypto.randomUUID()));
+        assert(storageElement("storageStatus").dataset.state === "saved",
+          "Speicherrueckmeldung: Echtes sessionStorage-Ereignis blockiert den lokalen Lernstand nicht");
+        const externalStorageState = JSON.stringify({ ...initialStorageState, notes: { l1: "Aenderung aus anderem Fenster" } });
+        await storageEventFrom(storageWin.localStorage, () => localStorage.setItem(STORAGE_KEY, externalStorageState));
+        storageElement("htmlEditor").value = "<h1>Eigenen Tab erhalten</h1>";
+        storageElement("htmlEditor").dispatchEvent(new storageWin.Event("input", { bubbles: true }));
+        storageElement("retrySave").click();
+        assert(storageElement("storageStatus").dataset.state === "blocked" && storageElement("storageStatus").dataset.unsaved === "true" &&
+          storageElement("retrySave").hidden && localStorage.getItem(STORAGE_KEY) === externalStorageState,
+          "Speicherrueckmeldung: Echtes Ereignis eines anderen Fensters sperrt Speichern auch bei weiteren Eingaben und Wiederholen");
+        await openStorageFrame(externalStorageState, "home");
+        const clearedStorageEvent = await storageEventFrom(storageWin.localStorage, () => localStorage.clear());
+        assert(clearedStorageEvent.key === null && storageElement("storageStatus").dataset.state === "blocked" && storageElement("retrySave").hidden,
+          "Speicherrueckmeldung: Echtes clear-Ereignis eines anderen Fensters haelt automatisches Speichern an");
+        const brokenStorageText = '  {"profile": "Unvollstaendige Originaldaten äöü"\n';
+        await openStorageFrame(brokenStorageText, "home");
+        storageElement("storageRaw").click();
+        assert(storageElement("storageStatus").dataset.state === "blocked" && !storageElement("storageRaw").hidden &&
+          await storageDownloads.at(-1).text() === brokenStorageText && localStorage.getItem(STORAGE_KEY) === brokenStorageText,
+          "Speicherrueckmeldung: Unlesbare Originaldaten werden unveraendert als Rohdaten angeboten");
+        await storageRoute("lab");
+        storageElement("htmlEditor").value = "<h1>Neuer Entwurf trotz Lesefehler</h1>";
+        storageElement("htmlEditor").dispatchEvent(new storageWin.Event("input", { bubbles: true }));
+        storageElement("storageBackup").click();
+        const fallbackStorageBackup = JSON.parse(await storageDownloads.at(-1).text());
+        assert(fallbackStorageBackup.state.drafts.lab.html.includes("trotz Lesefehler") &&
+          localStorage.getItem(STORAGE_KEY) === brokenStorageText && storageElement("storageStatus").dataset.state === "blocked" && storageElement("retrySave").hidden,
+          "Speicherrueckmeldung: JSON rettet neue Arbeit bei Lesefehler und laesst den geschuetzten Originalbestand unangetastet");
+      } catch (error) {
+        assert(false, "Speicherrueckmeldung: Unerwarteter Prueffehler: " + error.message);
+      } finally {
+        restoreStorageWrite?.();
+        storageFrame?.remove();
+        for (const key of Object.keys(localStorage))
+          if (!originBeforeStorageCheck.has(key)) localStorage.removeItem(key);
+        for (const [key, value] of originBeforeStorageCheck) localStorage.setItem(key, value);
+        if (sessionBeforeStorageCheck === null) sessionStorage.removeItem(STORAGE_KEY);
+        else sessionStorage.setItem(STORAGE_KEY, sessionBeforeStorageCheck);
+      }
+    }
     if (oldExercises === null) localStorage.removeItem(exerciseKey);
     else localStorage.setItem(exerciseKey, oldExercises);
     if (savedMenu === null) localStorage.removeItem("weblab-menu-v1");

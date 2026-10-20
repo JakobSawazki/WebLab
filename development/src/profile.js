@@ -88,7 +88,7 @@ export function bindProfilePanel({ getState, persistLedger, notify }) {
       const state = getState();
       if (!state.profile.name || !state.profile.className.trim()) throw new Error("Bitte zuerst dein Schülerkürzel und deine Klasse im Profil speichern.");
       const changes = ledgerChanges(state, draft);
-      if (!persistLedger(changes)) throw new Error("Speichern nicht möglich. Sichere deinen Lernstand und prüfe die Speichermeldung.");
+      if (!persistLedger(changes)) throw new Error("Speichern nicht möglich. Deine Tabellenänderungen stehen noch in diesem Dialog und sind noch nicht in der JSON-Sicherung enthalten. Lass den Dialog offen und versuche das Speichern erneut, wenn der Speicher verfügbar ist.");
       dirty = false; refresh(); dialog.close(); notify("NAGOLD-Tabelle gespeichert.");
     } catch (error) {
       $("#nagoldError").textContent = error.message;

@@ -252,7 +252,7 @@ return {extensions};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.42.1";
+const VERSION = "1.43.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -1584,7 +1584,7 @@ function bindProfilePanel({ getState, persistLedger, notify }) {
       const state = getState();
       if (!state.profile.name || !state.profile.className.trim()) throw new Error("Bitte zuerst dein Schülerkürzel und deine Klasse im Profil speichern.");
       const changes = ledgerChanges(state, draft);
-      if (!persistLedger(changes)) throw new Error("Speichern nicht möglich. Sichere deinen Lernstand und prüfe die Speichermeldung.");
+      if (!persistLedger(changes)) throw new Error("Speichern nicht möglich. Deine Tabellenänderungen stehen noch in diesem Dialog und sind noch nicht in der JSON-Sicherung enthalten. Lass den Dialog offen und versuche das Speichern erneut, wenn der Speicher verfügbar ist.");
       dirty = false; refresh(); dialog.close(); notify("NAGOLD-Tabelle gespeichert.");
     } catch (error) {
       $("#nagoldError").textContent = error.message;
@@ -4836,6 +4836,9 @@ const { bindProfilePanel } = require("profile.js");
 const $ = (s) => document.querySelector(s);
 let state,
   storageError = "",
+  unreadableStorage = null,
+  savedOnDevice = false,
+  saveFailed = false,
   pendingImport = null,
   pendingExercises = null,
   importRead = 0,
@@ -4845,12 +4848,15 @@ let state,
   toastTimer;
 try {
   state = load(localStorage);
+  savedOnDevice = Boolean(localStorage.getItem(STORAGE_KEY) || localStorage.getItem("weblab-state-v1"));
 } catch {
   state = blank();
+  try { unreadableStorage = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("weblab-state-v1"); } catch {}
   storageError =
     "Der vorhandene Lernstand konnte nicht gelesen werden. Er wurde nicht überschrieben. Lade eine Sicherung oder sichere den bisherigen Browserspeicher vor weiteren Änderungen.";
 }
 let preventSave = Boolean(storageError);
+let savedSnapshot = JSON.stringify(state);
 try {
   document.documentElement.dataset.theme =
     localStorage.getItem("weblab-theme-v1") === "light" ? "light" : "dark";
@@ -5011,19 +5017,71 @@ function toast(message) {
 }
 function save() {
   if (preventSave) {
-    toast(storageError);
+    updateStorageStatus();
     return false;
   }
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    const value = JSON.stringify(state);
+    localStorage.setItem(STORAGE_KEY, value);
+    savedSnapshot = value;
+    savedOnDevice = true;
+    saveFailed = false;
+    storageError = "";
+    unreadableStorage = null;
+    updateStorageStatus();
     return true;
   } catch {
-    toast(
-      "Der Browserspeicher ist voll oder gesperrt. Bitte sichere deinen Lernstand als Datei.",
-    );
+    saveFailed = true;
+    updateStorageStatus();
     return false;
   }
 }
+function updateStorageStatus() {
+  const blocked = preventSave,
+    problem = blocked || saveFailed,
+    dirty = problem && JSON.stringify(state) !== savedSnapshot,
+    mode = blocked ? "blocked" : saveFailed ? "error" : savedOnDevice ? "saved" : "ready",
+    message = blocked
+      ? "Automatisches Speichern angehalten."
+      : saveFailed
+        ? dirty ? "Änderungen noch nicht auf diesem Gerät gespeichert." : "Speichern gerade nicht möglich. Dein bisheriger Stand bleibt erhalten."
+        : savedOnDevice ? "Entwürfe, Profil und Lernpfad auf diesem Gerät gespeichert." : "Dein Lernstand wird beim Arbeiten automatisch gespeichert.",
+    detail = blocked ? storageError : saveFailed
+      ? dirty
+        ? "Deine Änderungen sind nur in diesem geöffneten Tab. Lade den aktuellen Lernstand als JSON herunter, bevor du die Seite neu lädst oder schließt. Du kannst das Speichern erneut versuchen."
+        : "Der Browserspeicher ist voll oder gesperrt. Eine abgebrochene Änderung musst du im jeweiligen Dialog oder Formular erneut speichern."
+      : "";
+  const box = $("#storageStatus"),
+    text = $("#storageMessage"),
+    description = $("#storageDetail");
+  box.dataset.state = mode;
+  box.dataset.unsaved = String(dirty);
+  // Do not repeat the same live announcement on every keystroke.
+  if (text.textContent !== message) text.textContent = message;
+  if (description.textContent !== detail) description.textContent = detail;
+  description.hidden = !detail;
+  $("#storageSymbol").textContent = problem ? "!" : savedOnDevice ? "✓" : "○";
+  $("#storageActions").hidden = !problem;
+  $("#retrySave").hidden = blocked || !dirty;
+  $("#storageRaw").hidden = !blocked || !unreadableStorage;
+}
+$("#retrySave").onclick = () => {
+  if (save()) $("#storageMessage").focus({ preventScroll: true });
+};
+$("#storageMessage").tabIndex = -1;
+$("#storageBackup").onclick = () => {
+  backup();
+  toast("JSON-Download gestartet. Prüfe die Datei im Downloadordner oder auf deinem Stick.");
+};
+$("#storageRaw").onclick = () => {
+  if (unreadableStorage)
+    download("WebLab-vorhandene-Rohdaten.txt", unreadableStorage);
+};
+// Anchor jumps and keyboard focus must stay below the sticky status, including
+// its taller warning state on a phone. No focus is moved when the state changes.
+new ResizeObserver(([entry]) => {
+  document.documentElement.style.setProperty("--storage-offset", `${Math.ceil(entry.target.getBoundingClientRect().height)}px`);
+}).observe($("#storageStatus"));
 function stats() {
   $("#profileName").textContent = state.profile.name || "Gast";
   $("#profileStats").textContent =
@@ -5575,6 +5633,7 @@ function bindAchievements() {
     state.nagoldEntries.push({ purpose, points, at: new Date().toISOString() });
     if (!save()) {
       state.nagoldEntries.pop();
+      updateStorageStatus();
       return;
     }
     render();
@@ -5858,7 +5917,7 @@ const profilePanel = bindProfilePanel({
     if (preventSave) { toast(storageError); return false; }
     const previous = { nagoldEntries: state.nagoldEntries, nagoldOverrides: state.nagoldOverrides };
     Object.assign(state, changes);
-    if (!save()) { Object.assign(state, previous); return false; }
+    if (!save()) { Object.assign(state, previous); updateStorageStatus(); return false; }
     render();
     return true;
   },
@@ -5902,8 +5961,9 @@ $("#profileForm").onsubmit = (e) => {
   state.profile = { name, className };
   if (!save()) {
     state = before;
+    updateStorageStatus();
     $("#profileError").textContent =
-      "Das Profil konnte nicht gespeichert werden. Lade zuerst deinen Lernstand herunter und lade die Seite neu.";
+      "Das Profil konnte nicht gespeichert werden. Dein bisheriger Lernstand bleibt erhalten. Deine Eingaben stehen weiter hier; versuche „Profil speichern“ erneut, wenn der Speicher verfügbar ist.";
     return;
   }
   $("#profileDialog").close();
@@ -5981,6 +6041,7 @@ $("#confirmImport").onclick = () => {
   if (!save()) {
     state = before;
     preventSave = wasPrevented;
+    updateStorageStatus();
     $("#importSummary").textContent =
       "Die Sicherung konnte nicht gespeichert werden. Dein bisheriger Lernstand und deine Übungsmarkierungen bleiben erhalten. Behalte die Sicherungsdatei und versuche den Import erneut, wenn der Browserspeicher verfügbar ist.";
     return;
@@ -6002,17 +6063,17 @@ window.addEventListener("hashchange", () => {
   window.scrollTo(0, 0);
 });
 window.addEventListener("storage", (e) => {
-  if (e.key === STORAGE_KEY) {
+  if (e.storageArea === localStorage && (e.key === STORAGE_KEY || e.key === null)) {
     preventSave = true;
     storageError =
       "Ein anderer Tab hat den Lernstand verändert. Sichere deinen Entwurf als Datei und lade die Seite neu, bevor du weiterarbeitest.";
-    toast(storageError);
+    updateStorageStatus();
   }
 });
 // The version is no longer printed; it stays available as a tooltip.
 $(".portal-footer").title = "WebLab " + VERSION;
 render();
-if (storageError) toast(storageError);
+updateStorageStatus();
 
 return {};
 },

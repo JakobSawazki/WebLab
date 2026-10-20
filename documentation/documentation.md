@@ -2,7 +2,7 @@
 
 Stand: **20. Oktober 2026, Europe/Berlin · Codex**
 
-Version: **1.43.0** · Status: **lokal geprüft, Veröffentlichung in Vorbereitung**.
+Version: **1.43.0** · Status: **lokal geprüft und veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -334,6 +334,8 @@ Prüfung: 68 Node-Tests und 263/263 Browserprüfungen bestanden, Build erfolgrei
 Zusätzlich 32 Abschnittssprünge im tatsächlichen Browser geprüft: vier Ziele je 1440/390 Pixel, Dark/Light und gespeichertem beziehungsweise absichtlich nicht speicherbarem Entwurf. Zielüberschriften bleiben sichtbar unter der Leiste; kein horizontaler Überlauf. Beim letzten Abschnitt wird die natürliche untere Scrollgrenze berücksichtigt. Schmale dunkle und breite helle Ansicht visuell kontrolliert; Wiederholen speichert nach aufgehobenem Testfehler erfolgreich. Testdaten anschließend wiederhergestellt. Bildschirmbilder liegen außerhalb des Projekts unter `C:/Users/Jakob/AppData/Local/Temp/weblab-1430-review`.
 
 Erster Veröffentlichungsversuch mit `9ec3d21`: Node-Tests und Build erfolgreich, Browserprüfung startete nicht, weil der Chrome-Debugging-Endpunkt nicht erreichbar wurde. [Lauf 39460629946](https://github.com/JakobSawazki/WebLab/actions/runs/39460629946) verwendete unter `ubuntu-latest` erstmals Ubuntu 26.04; der letzte erfolgreiche Lauf verwendete Ubuntu 24.04. Der Workflow legt deshalb nun ausdrücklich Ubuntu 24.04 als bisher geprüfte Umgebung fest. Keine Prüfung wird ausgelassen und keine Browser-Schutzfunktion abgeschaltet. Die Laufzeitdateien bleiben unverändert.
+
+Veröffentlicht mit Commit `3cc114b`; [Pages-Lauf 39461031415](https://github.com/JakobSawazki/WebLab/actions/runs/39461031415) erfolgreich: 68 Node-Tests, 263 Browserprüfungen und Deployment. Live-HTML und JavaScript stimmen per SHA-256 bytegenau mit dem geprüften Build überein; CSS ist nach Vereinheitlichung von Windows-/Unix-Zeilenenden identisch. Auf der Live-Seite HTML/CSS geschrieben, CSS-Farbe in der Vorschau geprüft und einen Schreibfehler simuliert: dauerhafte Warnung, tatsächlicher JSON-Download mit beiden ungespeicherten Texten, erfolgreiche Wiederholung nach Aufheben des Fehlers und vollständiger Code nach Neuladen bestätigt. Der Download allein entfernt die Warnung nicht. Vorheriger Browserstand anschließend wiederhergestellt.
 
 ### 19.10.2026 – Codex – Version 1.42.1: Vollständige Unterseiten und verständlicher Dateiablauf
 

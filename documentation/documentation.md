@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.56.4** · Status: **Veröffentlichung über GitHub Pages**.
+Version: **1.56.4** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -326,6 +326,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 ### 17.11.2026 – Codex – Version 1.56.4: Dezente Trennleiste
 
 - Ein drei Pixel breiter, gedämpfter Griff markiert die verstellbare Menübreite. Beim Ziehen wird er leicht deutlicher. Der Tastaturfokus umrandet nur den kleinen Griff. Die vollflächige farbige Umrandung entfällt.
+- GitHub bestätigt 69 Node-Tests und 364 Browserprüfungen. Die veröffentlichten Programmdateien entsprechen dem Build. Die bestehende Offline-Kopie ist auf 1.56.4 aktualisiert, alle 28 Dateien entsprechen dem Release. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44171982471) · [Offline-Release 1.56.4](https://github.com/JakobSawazki/WebLab/releases/tag/v1.56.4)
 
 ### 17.11.2026 – Codex – Version 1.56.3: Bedienelemente bleiben oben
 

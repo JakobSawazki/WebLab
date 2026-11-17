@@ -279,7 +279,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.51.0";
+const VERSION = "1.52.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -837,6 +837,7 @@ return {VERSION,groups,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.52.0", "Fortschrittsbalken pro Lerneinheit", "Unter der Kopfzeile steht der aktuelle Stand von Praxisauftrag, Verständnischeck und Selbstkontrolle. Nach dem Abschluss zeigt der Balken 100 %."],
     ["1.51.0", "Schnell zwischen Lerneinheiten wechseln", "Die Kopfzeile verlinkt den Lernpfad und die aktuelle Einheit. Zwei Pfeile führen zu freigeschalteten Nachbareinheiten."],
     ["1.50.0", "Flexible Seitenleiste und Entwickler-Modus", "Die Trennlinie lässt sich am Desktop ziehen. WebLab merkt sich die Breite; ein Doppelklick setzt sie zurück. Der Entwickler-Modus öffnet alle Einheiten zum Prüfen, ohne Abschlüsse oder Punkte zu vergeben."],
     ["1.49.3", "Projektdateien in Notepad++ bearbeiten", "Die Anleitungen verwenden Notepad++ und einen normalen Projektordner. Die Werkstatt verlinkt den kostenlosen offiziellen Download und erklärt die portable Ausgabe."],
@@ -5362,7 +5363,7 @@ $("#storageRaw").onclick = () => {
 // its taller warning state on a phone. No focus is moved when the state changes.
 new ResizeObserver(([entry]) => {
   document.documentElement.style.setProperty("--storage-offset", `${Math.ceil(entry.target.getBoundingClientRect().height)}px`);
-}).observe($("#storageStatus"));
+}).observe($("#workspaceFeedback"));
 function stats() {
   $("#profileName").textContent = state.profile.name || "Gast";
   $("#profileStats").textContent =
@@ -5581,7 +5582,16 @@ function check(l) {
 // Shows before the click what the completion still needs; mirrors complete().
 function updateCompletionStatus(l, results) {
   const list = $("#completionStatus");
-  if (!list) return;
+  const panel = $("#lessonProgressPanel"), bar = $("#lessonProgressBar"),
+    percent = $("#lessonProgressPercent"), detail = $("#lessonProgressDetail"),
+    completed = state.completed.includes(l.id);
+  panel.toggleAttribute("data-complete", completed);
+  if (completed) {
+    bar.value = 100;
+    percent.textContent = "100 %";
+    detail.textContent = "Einheit abgeschlossen";
+    return;
+  }
   if (!results) {
     const d = draft();
     results = checkLesson(l, d.html, d.css, (s) =>
@@ -5590,12 +5600,23 @@ function updateCompletionStatus(l, results) {
   }
   const passed = results.filter((r) => r.passed).length,
     checks = l.checks.filter((_, i) => state.checks[l.id]?.[i]).length,
+    quizPassed = Number(Boolean(state.quiz[l.id])),
+    done = passed + quizPassed + checks,
+    total = results.length + l.checks.length + 2,
+    profileReady = validProfile(state.profile.name) && Boolean(state.profile.className.trim()),
     items = [
       [passed === results.length, `Praxisauftrag: ${passed} von ${results.length} Kriterien erfüllt`],
-      [Boolean(state.quiz[l.id]), "Verständnischeck richtig beantwortet"],
+      [Boolean(quizPassed), "Verständnischeck richtig beantwortet"],
       [checks === l.checks.length, `Selbstkontrolle: ${checks} von ${l.checks.length} bestätigt`],
-      [validProfile(state.profile.name) && Boolean(state.profile.className.trim()), "Profil mit Kürzel und Klasse gespeichert"],
+      [profileReady, "Profil mit Kürzel und Klasse gespeichert"],
     ];
+  // The last step is the actual completion, independent of optional exercises.
+  bar.value = Math.floor(100 * done / total);
+  percent.textContent = `${bar.value} %`;
+  detail.textContent = `Praxisauftrag ${passed}/${results.length} · Verständnischeck ${quizPassed}/1 · Selbstkontrolle ${checks}/${l.checks.length}` +
+    (developerMode ? " · Abschluss pausiert" : done < total - 1 ? "" :
+      profileReady ? " · Bereit zum Abschließen" : " · Profil zum Abschließen speichern");
+  if (!list) return;
   list.innerHTML = items
     .map(([ok, text]) => `<li class="${ok ? "pass" : "open"}"><span aria-hidden="true">${ok ? "✓" : "○"}</span> ${esc(text)}<span class="sr-only">${ok ? ": erledigt" : ": noch offen"}</span></li>`)
     .join("");
@@ -5768,14 +5789,18 @@ function bindStudio(l) {
         ? "Vorschau wird aktualisiert …"
         : "Code geändert · Vorschau aktualisieren oder Live-Vorschau einschalten.";
       if ($("#livePreview").checked) timer = setTimeout(run, 500);
+      else if (activeId !== "lab")
+        timer = setTimeout(() => updateCompletionStatus(byId(activeId)), 500);
     });
   }
   $("#livePreview").onchange = () => {
     clearTimeout(timer);
     if ($("#livePreview").checked) run();
-    else
+    else {
       $("#previewStatus").textContent =
         "Live-Vorschau aus · Änderungen mit „Vorschau aktualisieren“ anzeigen.";
+      if (activeId !== "lab") updateCompletionStatus(byId(activeId));
+    }
   };
   $("#previewWidth").onchange = () => {
     const width = $("#previewWidth").value;
@@ -5828,9 +5853,11 @@ function bindStudio(l) {
       refreshTabs("html" in incoming || incoming.pages ? htmlFile : "style.css");
       if (!("html" in incoming) && !incoming.pages) selectFile("css");
       if ($("#livePreview").checked) run();
-      else
+      else {
         $("#previewStatus").textContent =
           "Dateien geladen · Vorschau aktualisieren, um den neuen Code zu sehen.";
+        if (activeId !== "lab") updateCompletionStatus(byId(activeId));
+      }
       toast(
         "Dateien lokal geladen. Prüfe die Vorschau und deine CSS-Verknüpfung.",
       );
@@ -6092,6 +6119,7 @@ function render() {
   }
   $("#viewTitle").textContent = title;
   updateLessonHeading(l);
+  $("#lessonProgressPanel").hidden = !l;
   document.title = `${title} · WebLab`;
   $("#mainContent").innerHTML = html;
   decorateIcons();
@@ -6147,7 +6175,6 @@ function render() {
         result.className = selected === exercise.answer ? "pass" : "muted";
       };
     });
-    updateCompletionStatus(l);
     $("#lessonBackup").onclick = () => {
       capture();
       backup();

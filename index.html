@@ -172,6 +172,7 @@
             </button>
           </div>
         </header>
+        <div id="workspaceFeedback" class="workspace-feedback">
         <section id="storageStatus" class="storage-status" data-state="ready" aria-label="Speicherstatus">
           <div class="storage-copy">
             <span id="storageSymbol" aria-hidden="true">○</span>
@@ -186,6 +187,15 @@
             <button type="button" id="storageRaw" class="button secondary" hidden>Vorhandene Rohdaten herunterladen</button>
           </div>
         </section>
+        <section id="lessonProgressPanel" class="lesson-progress-panel" aria-label="Fortschritt in dieser Einheit" hidden>
+          <div class="lesson-progress-heading">
+            <label for="lessonProgressBar">Fortschritt in dieser Einheit</label>
+            <span id="lessonProgressPercent" aria-hidden="true"></span>
+          </div>
+          <progress id="lessonProgressBar" max="100" value="0" aria-describedby="lessonProgressDetail"></progress>
+          <p id="lessonProgressDetail"></p>
+        </section>
+        </div>
         <p id="developerModeNotice" class="developer-mode-notice" role="status" hidden>
           Entwicklermodus aktiv · Alle Einheiten sind geöffnet. Abschlüsse und Punkte bleiben deaktiviert.
         </p>

@@ -970,16 +970,38 @@
       link.click();
     });
     await followLessonLink(gateDoc.querySelector(".lesson-breadcrumb > a"));
-    assert(gateWin.location.hash === "#path" && gateDoc.getElementById("lessonHeading").hidden,
+    assert(gateWin.location.hash === "#path" && gateDoc.getElementById("lessonHeading").hidden &&
+      gateDoc.getElementById("lessonProgressPanel").hidden,
       "Kopfnavigation: Klick auf Lernpfad führt zur Übersicht");
     await gateGo("#lesson/l1");
-    gateDoc.querySelector("#htmlEditor").value = samples[0];
-    gateDoc
-      .querySelector("#htmlEditor")
-      .dispatchEvent(new gateWin.Event("input", { bubbles: true }));
+    const progressBar = gateDoc.getElementById("lessonProgressBar"),
+      progressDetail = gateDoc.getElementById("lessonProgressDetail"),
+      progressPanel = gateDoc.getElementById("lessonProgressPanel"),
+      gateEditor = gateDoc.getElementById("htmlEditor");
+    const changeGateCode = (source) => {
+      gateEditor.value = source;
+      gateEditor.dispatchEvent(new gateWin.Event("input", { bubbles: true }));
+    };
+    assert(!progressPanel.hidden && progressBar.value < 100 && progressDetail.textContent.includes("Verständnischeck 0/1"),
+      "Einheitsfortschritt ist sichtbar und beginnt ohne erledigten Verständnischeck");
+    const initialProgress = progressBar.value;
+    gateDoc.getElementById("livePreview").click();
+    changeGateCode(samples[0]);
+    await new Promise(resolve => setTimeout(resolve, 650));
+    assert(progressBar.value > initialProgress && progressDetail.textContent.includes("Praxisauftrag 3/3"),
+      "Kriterien erhöhen den Einheitsfortschritt nach Codeänderung auch ohne Live-Vorschau");
+    changeGateCode("<h1>Nur eine Überschrift</h1>");
+    await new Promise(resolve => setTimeout(resolve, 650));
+    assert(!progressDetail.textContent.includes("Praxisauftrag 3/3"), "Zurückgenommener Code aktualisiert den Fortschritt nach unten");
+    changeGateCode(samples[0]);
     gateDoc.querySelector('[data-answer="' + lessons[0].answer + '"]').click();
     gateDoc.querySelectorAll("[data-check]").forEach((box) => box.click());
+    assert(progressBar.value < 100 && progressDetail.textContent.includes("Verständnischeck 1/1") &&
+      progressDetail.textContent.includes("Bereit zum Abschließen"),
+      "Quiz und Selbstkontrolle zählen sofort; 100 % bleiben dem formalen Abschluss vorbehalten");
     gateDoc.querySelector("#completeButton").click();
+    assert(progressBar.value === 100 && progressDetail.textContent === "Einheit abgeschlossen",
+      "Erfolgreicher Abschluss zeigt 100 % und wird als abgeschlossen beschriftet");
     const earnedState = JSON.parse(localStorage.getItem(STORAGE_KEY));
     assert(
       earnedState.completed.includes("l1") &&
@@ -993,11 +1015,13 @@
     );
     await followLessonLink(gateDoc.querySelector('#lessonPager a[href="#lesson/l2"]'));
     assert(currentLessonLink.textContent === "02 " + lessons[1].title &&
+      progressBar.value < 100 && !progressPanel.hasAttribute("data-complete") &&
       gateDoc.querySelector('#lessonPager a[href="#lesson/l1"]') &&
       gateDoc.querySelector('#lessonPager button[aria-label^="Nächste Einheit noch gesperrt"]'),
       "Kopfnavigation: Vorwärtspfeil öffnet freigeschaltete Einheit 02 und zeigt Rückpfeil");
     await followLessonLink(gateDoc.querySelector('#lessonPager a[href="#lesson/l1"]'));
-    assert(gateWin.location.hash === "#lesson/l1" && gateDoc.querySelector('#lessonPager button[aria-label="Keine vorherige Einheit"]'),
+    assert(gateWin.location.hash === "#lesson/l1" && progressBar.value === 100 &&
+      gateDoc.querySelector('#lessonPager button[aria-label="Keine vorherige Einheit"]'),
       "Kopfnavigation: Rückpfeil führt zur ersten Einheit, dort ist links Schluss");
     const reloaded = new Promise((resolve) => (gateFrame.onload = resolve));
     gateFrame.src = "/?gate-reload=1#lesson/l2";

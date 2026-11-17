@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.47.0** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
+Version: **1.47.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -327,7 +327,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 
 Die Versionsnummer in der Seitenleiste verwendet denselben Wert wie der Build. Der Dialog zeigt die wichtigsten Änderungen vom aktuellen Stand bis zum ersten Release 1.0.0: Datum, Version und Kurzbeschreibung, neueste zuerst. Zusammengehörige Korrekturen stehen bei Bedarf in einem gemeinsamen Eintrag. Das Fenster arbeitet offline. Schließen bringt den Tastaturfokus zurück; erneutes Öffnen beginnt oben.
 
-Bei neuen Releases den öffentlichen Kurzeintrag oben in `development/src/version-history.js` ergänzen. Ausführliche Nachweise bleiben hier; interne Unterlagen und persönliche Lernstände erscheinen im Verlauf nicht. Browserprüfungen decken Sortierung, scrollbare Liste, Fokus, unveränderten Lernstand und die Versionsanzeige im kompakten Desktopmenü ab.
+Bei neuen Releases den öffentlichen Kurzeintrag oben in `development/src/version-history.js` ergänzen. Ausführliche Nachweise bleiben hier; interne Unterlagen und persönliche Lernstände erscheinen im Verlauf nicht. Browserprüfungen decken Sortierung, scrollbare Liste, Fokus, unveränderten Lernstand und die Versionsanzeige im kompakten Desktopmenü ab. [Pages-Lauf 44068423598](https://github.com/JakobSawazki/WebLab/actions/runs/44068423598) erfolgreich: 68 Node-Tests und 295 Browserprüfungen. Ausgelieferte Startseite, Skript und CSS mit dem Build abgeglichen; den geöffneten Dialog aus dem entpackten Paket in Edge visuell geprüft. [Offline-ZIP](https://github.com/JakobSawazki/WebLab/releases/download/v1.47.0/WebLab-1.47.0-offline.zip) veröffentlicht.
 
 ### 17.11.2026 – Codex – Version 1.46.1: Kürzerer Untertitel am Logo
 

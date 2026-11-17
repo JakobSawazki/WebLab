@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.52.0** · Status: **lokal geprüft, Veröffentlichung über GitHub Pages**.
+Version: **1.52.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -326,7 +326,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 ### 17.11.2026 – Codex – Version 1.52.0: Fortschritt pro Lerneinheit
 
 - In jeder freigeschalteten Lerneinheit bleibt der Fortschrittsbalken beim Scrollen oben sichtbar. Die Anzeige zählt erfüllte Kriterien im Praxisauftrag, den bestandenen Verständnischeck und die abgehakten Punkte der Selbstkontrolle. Der formale Abschluss ist der letzte Schritt für 100 %. Außerhalb freigeschalteter Einheiten bleibt der Balken ausgeblendet.
-- Die Anzeige wird aus dem bestehenden Lernstand berechnet und reagiert auch bei ausgeschalteter Live-Vorschau auf Codeänderungen. Lokale Prüfung mit 68 Node-Tests und 329 Browserprüfungen. Die Darstellung wurde in der entpackten Offline-Version in Edge geprüft.
+- Die Anzeige wird aus dem bestehenden Lernstand berechnet und reagiert auch bei ausgeschalteter Live-Vorschau auf Codeänderungen. Lokale Prüfung mit 68 Node-Tests und 329 Browserprüfungen. Die Darstellung wurde in der entpackten Offline-Version in Edge geprüft. Die GitHub-Prüfung bestätigte alle 68 Node-Tests und 329 Browserprüfungen. Das veröffentlichte HTML, CSS und JavaScript stimmten mit dem geprüften Build überein. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44118160245) · [Offline-Release 1.52.0](https://github.com/JakobSawazki/WebLab/releases/tag/v1.52.0)
 
 ### 17.11.2026 – Codex – Version 1.51.0: Schnelle Navigation in der Lerneinheit
 

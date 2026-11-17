@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.57.0** · Status: **lokal geprüft, Veröffentlichung über GitHub Pages**.
+Version: **1.57.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -321,6 +321,8 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 - Auf Jakobs Wunsch werden keine neuen lokalen Versionssicherungen oder zusätzlichen Offline-Projektordner angelegt. Der Sicherungsordner unter C:\Users\PC\WebLab-Sicherungen enthielt 51.742 Dateien mit rund 5,51 GiB, darunter alte Fassungen und Browser-Prüfprofile. Die automatische Prüfung lehnte die endgültige rekursive Löschung ab. Der Ordner wurde stattdessen erfolgreich über den Windows-Papierkorb entfernt.
 - Verbindlicher Programmverlauf ist GitHub. Die lokalen Unterrichtsoriginale unter ressources sowie tasks.md werden weiterhin nicht veröffentlicht.
 - Prüfung direkt auf G: 73 Node-Tests und 380 Browserprüfungen bestanden. Der Dateistart in Edge lädt Version 1.57.0 und alle 16 Lernmotive. Logo-Sprung zum Seitenanfang, fixierte Kopfzeile, Menüschalter und ausgeblendete normale Speichermeldung wurden am tatsächlichen file:-Start geprüft.
+- GitHub bestätigt 73 Node-Tests und 380 Browserprüfungen. Alle 27 veröffentlichten Programm- und Mediendateien entsprechen dem geprüften Build. Die vorübergehende Git-Zwischenablage und die zusätzliche Arbeitskopie auf C: sind aufgeräumt. Übrig ist die Arbeitskopie auf G:.
+- Im aktiven Projekt liegen keine zusätzlichen Offline-Versionen, Sicherungs-ZIPs oder Browser-Prüfprofile. Die erzeugten Ordner dist und .tmp sowie alte Playwright-Ausgaben wurden über den Papierkorb entfernt. Der direkte Start verwendet index.html, styles.css, weblab.js und assets im Projektstamm. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44175165204) · [Release 1.57.0](https://github.com/JakobSawazki/WebLab/releases/tag/v1.57.0)
 
 ### 17.11.2026 – Codex – Version 1.56.6: Menüschalter neben dem Logo
 

@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.53.0** · Status: **Veröffentlichung über GitHub Pages**.
+Version: **1.53.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -327,6 +327,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 
 - In freigeschalteten Lerneinheiten bleiben Lernpfad, Kapiteltitel, Pfeile, Bedienelemente und Fortschritt zusammen oben sichtbar. Die automatische Speicherbestätigung ist dort ausgeblendet. Speicherfehler und die zugehörigen Aktionen bleiben sichtbar.
 - Auf schmalen Bildschirmen ist die Kopfzeile kompakter. Sprungziele berücksichtigen ihre aktuelle Höhe.
+- Lokal und auf GitHub bestanden 68 Node-Tests und 334 Browserprüfungen. Die Offline-Fassung wurde in Edge geöffnet. HTML, CSS und JavaScript auf GitHub Pages stimmen mit dem geprüften Build überein. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44119735218) · [Offline-Release 1.53.0](https://github.com/JakobSawazki/WebLab/releases/tag/v1.53.0)
 
 ### 17.11.2026 – Codex – Version 1.52.0: Fortschritt pro Lerneinheit
 

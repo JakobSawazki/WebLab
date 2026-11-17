@@ -497,6 +497,19 @@
             doc.activeElement.id === "catalog-phase-3" && frame.contentWindow.location.hash === "#home",
             width + ": Etappenauswahl fokussiert die richtige Überschrift auf der Startseite",
           );
+          doc.querySelector(".brand").click();
+          assert(win.location.hash === "#home" && win.scrollY === 0 && doc.activeElement.id === "mainContent",
+            width + ": Logo führt auch auf der bereits geöffneten Startseite ganz nach oben");
+          const changed = new Promise(resolve => win.addEventListener("hashchange", resolve, { once: true }));
+          win.location.hash = "#lesson/l1";
+          await changed;
+          win.scrollTo({ top: 850, behavior: "instant" });
+          const home = new Promise(resolve => win.addEventListener("hashchange", resolve, { once: true }));
+          doc.querySelector(".brand").click();
+          await home;
+          assert(win.location.hash === "#home" && win.scrollY === 0 && doc.querySelector(".hero"),
+            width + ": Logo führt aus einer heruntergescrollten Einheit zur Startseite nach oben");
+
         }
         frame.remove();
       }

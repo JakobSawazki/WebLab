@@ -283,7 +283,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.56.4";
+const VERSION = "1.56.5";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -845,6 +845,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.56.5", "Mit dem Logo zum Seitenanfang", "Ein Klick auf das WebLab-Logo führt zur Startseite und scrollt ganz nach oben, auch wenn die Startseite bereits geöffnet ist."],
     ["1.56.4", "Dezente verschiebbare Trennleiste", "Ein schmaler, zurückhaltender Griff kennzeichnet die verstellbare Menübreite. Der Tastaturfokus hebt nur den Griff hervor."],
     ["1.56.3", "Bedienelemente beim Scrollen erreichbar", "Die Kopfzeile mit Hell-Dunkel-Schalter, Sicherung, Laden, Optionen und Profil bleibt auf allen Seiten sichtbar."],
     ["1.56.2", "Automatisch speichern ohne Hinweisleiste", "WebLab speichert den Lernstand im Hintergrund. Die Leiste erscheint nur bei Speicherproblemen und bietet dort Hilfe."],
@@ -6534,6 +6535,14 @@ function applyPendingImport() {
     : "Lernstand übernommen, aber die Übungsmarkierungen konnten nicht gespeichert werden. Behalte die Sicherungsdatei und lade sie erneut, wenn der Browserspeicher verfügbar ist.");
 }
 retryImport.onclick = applyPendingImport;
+$(".brand").addEventListener("click", (event) => {
+  if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  if (location.hash === "#home") {
+    event.preventDefault();
+    $("#mainContent").focus({ preventScroll: true });
+  }
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+});
 window.addEventListener("hashchange", () => {
   // render() returns true when it already placed focus on a target.
   if (render()) return;

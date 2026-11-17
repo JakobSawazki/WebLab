@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-17", [
+    ["1.56.5", "Mit dem Logo zum Seitenanfang", "Ein Klick auf das WebLab-Logo führt zur Startseite und scrollt ganz nach oben, auch wenn die Startseite bereits geöffnet ist."],
     ["1.56.4", "Dezente verschiebbare Trennleiste", "Ein schmaler, zurückhaltender Griff kennzeichnet die verstellbare Menübreite. Der Tastaturfokus hebt nur den Griff hervor."],
     ["1.56.3", "Bedienelemente beim Scrollen erreichbar", "Die Kopfzeile mit Hell-Dunkel-Schalter, Sicherung, Laden, Optionen und Profil bleibt auf allen Seiten sichtbar."],
     ["1.56.2", "Automatisch speichern ohne Hinweisleiste", "WebLab speichert den Lernstand im Hintergrund. Die Leiste erscheint nur bei Speicherproblemen und bietet dort Hilfe."],

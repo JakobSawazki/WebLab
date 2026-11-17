@@ -1413,6 +1413,14 @@ function applyPendingImport() {
     : "Lernstand übernommen, aber die Übungsmarkierungen konnten nicht gespeichert werden. Behalte die Sicherungsdatei und lade sie erneut, wenn der Browserspeicher verfügbar ist.");
 }
 retryImport.onclick = applyPendingImport;
+$(".brand").addEventListener("click", (event) => {
+  if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+  if (location.hash === "#home") {
+    event.preventDefault();
+    $("#mainContent").focus({ preventScroll: true });
+  }
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+});
 window.addEventListener("hashchange", () => {
   // render() returns true when it already placed focus on a target.
   if (render()) return;

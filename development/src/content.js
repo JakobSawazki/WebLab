@@ -1,6 +1,6 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 import { extensions } from "./extensions.js";
-export const VERSION = "1.53.0";
+export const VERSION = "1.54.0";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -9,6 +9,8 @@ export const groups = [
 ];
 const page = (body) =>
   `<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>Mein Webprojekt</title>\n</head>\n<body>\n${body}\n</body>\n</html>`;
+const firstHtml = "<h1>Mein Webprojekt</h1>\n<p>Hier entsteht meine Seite.</p>";
+export const labStarter = page(firstHtml);
 const lesson = (
   id,
   group,
@@ -23,7 +25,7 @@ const lesson = (
   answer,
   checks,
   criteria,
-  starter = page("<h1>Mein Webprojekt</h1>\n<p>Hier entsteht meine Seite.</p>"),
+  starter = labStarter,
 ) => ({
   id,
   group,
@@ -46,21 +48,21 @@ export const lessons = [
     "l1",
     0,
     "Deine erste Webseite",
-    "Ich kann Inhalt mit HTML auszeichnen.",
-    "Eine Webseite ist zunächst eine Textdatei. Der Browser liest HTML und stellt es dar. Tags geben Inhalten Bedeutung: h1 ist die wichtigste Überschrift, p ein Absatz. HTML ist eine Auszeichnungssprache. Ein Element besteht meist aus Start-Tag, Inhalt und End-Tag. Verschachtele Elemente wie Klammern: Was innen geöffnet wird, wird zuerst geschlossen.",
+    "Ich kann eine Überschrift und einen Absatz für meine erste Webseite schreiben.",
+    "Der Browser ist das Programm, in dem du Webseiten ansiehst. Er liest deinen HTML-Code und zeigt zum Beispiel eine Überschrift an. HTML beschreibt, welche Aufgabe ein Text hat.",
     "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>gemeinsam</strong>.</p>",
-    "Ersetze die Startüberschrift durch einen eigenen Projektnamen. Schreibe einen Absatz mit mindestens 25 Zeichen und betone darin ein wichtiges Wort mit strong.",
+    "Schreibe zuerst deine Überschrift, dann einen Satz zu deinem Thema. Markiere zuletzt ein wichtiges Wort im Satz. Die Anleitung unten zeigt dir jeden Schritt einzeln.",
     "Der Absatz steht zwischen <p> und </p>. Setze <strong> und </strong> um ein Wort innerhalb des Absatzes.",
     "Welche Aufgabe hat HTML?",
     [
-      "Inhalte strukturieren und auszeichnen",
+      "Festlegen, welcher Text eine Überschrift oder ein Absatz ist",
       "Dateien automatisch hochladen",
       "Alle Farben einer Seite festlegen",
     ],
     0,
     [
-      "Ich unterscheide Tag und Element.",
-      "Ich kann die Verschachtelung an meinem Code erklären.",
+      "Ich kann im Code zeigen, welcher Text meine Überschrift und welcher mein Absatz ist.",
+      "Ich kann zeigen, wie ich ein wichtiges Wort im Absatz markiert habe.",
     ],
     [
       {
@@ -77,14 +79,15 @@ export const lessons = [
       },
       { selector: "p strong", text: 2, label: "Wichtiges Wort im Absatz" },
     ],
+    firstHtml,
   ),
   lesson(
     "l2",
     0,
     "Grundgerüst und Dateinamen",
     "Ich kann eine vollständige HTML-Datei anlegen.",
-    "Der Doctype kündigt HTML an. html umschließt das Dokument. Im head stehen Angaben für den Browser; title erscheint im Browser-Tab. Sichtbare Inhalte gehören in body. Speichere als index.html in UTF-8. Verwende kurze Dateinamen in Kleinbuchstaben mit Bindestrichen, ohne Leerzeichen und Umlaute. Auf vielen Servern sind Foto.jpg und foto.jpg unterschiedliche Dateien.",
-    '<!doctype html>\n<html lang="de">\n<head><meta charset="utf-8"><title>Schulgarten</title></head>\n<body><h1>Schulgarten</h1></body>\n</html>',
+    "Deine Überschrift und dein Absatz aus Einheit 01 sind der sichtbare Inhalt. Sie gehören zwischen <body> und </body>.\n\nDarüber steht der <head>. Dort steht zwischen <title> und </title> der Name, den der Browser im Tab anzeigt. UTF-8 sorgt dafür, dass der Browser auch Zeichen wie ä und ß richtig liest. Die Zeile <!doctype html> und der Rahmen <html lang=\"de\"> gehören zum Grundgerüst.\n\nindex.html ist der übliche Dateiname für die Startseite. Für weitere Seiten kannst du kurze Namen wie mitmachen.html verwenden.",
+    '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Unser Schulgarten</title>\n</head>\n<body>\n  <h1>Schulgarten</h1>\n</body>\n</html>',
     "Baue im Editor das vollständige Grundgerüst. Vergib einen eigenen Seitentitel und eine sichtbare Hauptüberschrift. Exportiere die Datei als index.html und öffne sie im Browser.",
     "title steht im head. h1 gehört in body. Ein Dateiname wie mein-projekt.html ist gut übertragbar.",
     "Wo steht der Titel für den Browser-Tab?",
@@ -113,7 +116,7 @@ export const lessons = [
     0,
     "Texte sinnvoll gliedern",
     "Ich kann eine nachvollziehbare Textstruktur erstellen.",
-    "h1 bis h6 kennzeichnen Überschriftenebenen. Nutze eine h1 für das Seitenthema und h2 für Unterthemen. Die Ebene richtet sich nach der Gliederung, nicht nach der gewünschten Schriftgröße. p trennt Absätze. strong betont Wichtigkeit, em eine sprachliche Betonung. Ein br erzwingt einen Zeilenumbruch, zum Beispiel in einer Adresse; es ersetzt keine Absätze.",
+    "Deine h1 nennt das Thema der ganzen Seite. Eine h2 nennt ein Unterthema. Den Text dazu schreibst du als Absatz mit p direkt unter die h2.\n\nWenn du ein Wort beim Vorlesen besonders betonen würdest, kannst du es mit <em> und </em> markieren. Für einen Zeilenumbruch mitten in einem zusammengehörenden Text, etwa einer Adresse, kannst du <br> benutzen.",
     "<h1>Unser Garten</h1>\n<h2>Die Idee</h2>\n<p>Wir bauen Gemüse an.</p>\n<h2>Mitmachen</h2>\n<p>Jeden Mittwoch nach der Schule.</p>",
     "Gliedere dein Thema mit einer h1, zwei h2 und zwei aussagekräftigen Absätzen. Betone eine Stelle mit em.",
     "Überlege zuerst zwei Unterthemen. Setze die jeweilige h2 vor den zugehörigen Absatz.",
@@ -298,9 +301,9 @@ export const lessons = [
     "l9",
     2,
     "Inhalt und Gestaltung trennen",
-    "Ich kann CSS auf drei Ebenen einbinden.",
-    'CSS beschreibt das Aussehen. Eine Regel hat einen Selektor und Deklarationen: p { color: navy; }. CSS kann im style-Attribut eines Tags, im style-Element des head oder in einer externen Datei stehen. Eine externe Datei wird mit link rel="stylesheet" eingebunden und kann viele Seiten gemeinsam gestalten. Das CSS-Feld im Labor wird für die Vorschau als style im head eingefügt; beim Projektexport entsteht eine echte style.css.',
-    '<!-- im head -->\n<link rel="stylesheet" href="style.css">\n\n/* in style.css */\np { color: navy; }',
+    "Ich kann mit meiner ersten CSS-Regel eine Überschrift einfärben und eine CSS-Datei mit meiner Seite verbinden.",
+    "HTML hat deiner Seite Inhalt gegeben. CSS verändert, wie dieser Inhalt aussieht. Fange mit einer Regel an: h1 { color: navy; } färbt die Hauptüberschrift dunkelblau.\n\nLies die Regel von links nach rechts: h1 wählt aus, was du änderst. Zwischen den geschweiften Klammern steht color für die Schriftfarbe und navy für den Farbwert. Der Doppelpunkt verbindet Eigenschaft und Wert. Das Semikolon beendet die Angabe.\n\nDein CSS kommt in die Datei style.css. Die link-Zeile im HTML-Kopf verbindet die Seite damit. CSS kann auch direkt im HTML stehen, im style-Attribut eines Tags oder in einem style-Element im Kopf. Für dieses Projekt verwendest du die gemeinsame Datei.",
+    '<!-- im head -->\n<link rel="stylesheet" href="style.css">\n\n/* in style.css */\nh1 { color: navy; }',
     "Verknüpfe im head style.css. Schreibe im CSS-Feld eine body-Regel mit font-family und eine h1-Regel mit color. Exportiere HTML und CSS einzeln oder als Projekt-ZIP und öffne beide aus demselben Ordner.",
     "CSS steht ohne HTML-Tags im CSS-Feld. Beispiel: body { font-family: Arial, sans-serif; }",
     "Welche Einbindung kann mehrere Seiten gemeinsam gestalten?",

@@ -279,7 +279,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.53.0";
+const VERSION = "1.54.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -288,6 +288,8 @@ const groups = [
 ];
 const page = (body) =>
   `<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>Mein Webprojekt</title>\n</head>\n<body>\n${body}\n</body>\n</html>`;
+const firstHtml = "<h1>Mein Webprojekt</h1>\n<p>Hier entsteht meine Seite.</p>";
+const labStarter = page(firstHtml);
 const lesson = (
   id,
   group,
@@ -302,7 +304,7 @@ const lesson = (
   answer,
   checks,
   criteria,
-  starter = page("<h1>Mein Webprojekt</h1>\n<p>Hier entsteht meine Seite.</p>"),
+  starter = labStarter,
 ) => ({
   id,
   group,
@@ -325,21 +327,21 @@ const lessons = [
     "l1",
     0,
     "Deine erste Webseite",
-    "Ich kann Inhalt mit HTML auszeichnen.",
-    "Eine Webseite ist zunächst eine Textdatei. Der Browser liest HTML und stellt es dar. Tags geben Inhalten Bedeutung: h1 ist die wichtigste Überschrift, p ein Absatz. HTML ist eine Auszeichnungssprache. Ein Element besteht meist aus Start-Tag, Inhalt und End-Tag. Verschachtele Elemente wie Klammern: Was innen geöffnet wird, wird zuerst geschlossen.",
+    "Ich kann eine Überschrift und einen Absatz für meine erste Webseite schreiben.",
+    "Der Browser ist das Programm, in dem du Webseiten ansiehst. Er liest deinen HTML-Code und zeigt zum Beispiel eine Überschrift an. HTML beschreibt, welche Aufgabe ein Text hat.",
     "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>gemeinsam</strong>.</p>",
-    "Ersetze die Startüberschrift durch einen eigenen Projektnamen. Schreibe einen Absatz mit mindestens 25 Zeichen und betone darin ein wichtiges Wort mit strong.",
+    "Schreibe zuerst deine Überschrift, dann einen Satz zu deinem Thema. Markiere zuletzt ein wichtiges Wort im Satz. Die Anleitung unten zeigt dir jeden Schritt einzeln.",
     "Der Absatz steht zwischen <p> und </p>. Setze <strong> und </strong> um ein Wort innerhalb des Absatzes.",
     "Welche Aufgabe hat HTML?",
     [
-      "Inhalte strukturieren und auszeichnen",
+      "Festlegen, welcher Text eine Überschrift oder ein Absatz ist",
       "Dateien automatisch hochladen",
       "Alle Farben einer Seite festlegen",
     ],
     0,
     [
-      "Ich unterscheide Tag und Element.",
-      "Ich kann die Verschachtelung an meinem Code erklären.",
+      "Ich kann im Code zeigen, welcher Text meine Überschrift und welcher mein Absatz ist.",
+      "Ich kann zeigen, wie ich ein wichtiges Wort im Absatz markiert habe.",
     ],
     [
       {
@@ -356,14 +358,15 @@ const lessons = [
       },
       { selector: "p strong", text: 2, label: "Wichtiges Wort im Absatz" },
     ],
+    firstHtml,
   ),
   lesson(
     "l2",
     0,
     "Grundgerüst und Dateinamen",
     "Ich kann eine vollständige HTML-Datei anlegen.",
-    "Der Doctype kündigt HTML an. html umschließt das Dokument. Im head stehen Angaben für den Browser; title erscheint im Browser-Tab. Sichtbare Inhalte gehören in body. Speichere als index.html in UTF-8. Verwende kurze Dateinamen in Kleinbuchstaben mit Bindestrichen, ohne Leerzeichen und Umlaute. Auf vielen Servern sind Foto.jpg und foto.jpg unterschiedliche Dateien.",
-    '<!doctype html>\n<html lang="de">\n<head><meta charset="utf-8"><title>Schulgarten</title></head>\n<body><h1>Schulgarten</h1></body>\n</html>',
+    "Deine Überschrift und dein Absatz aus Einheit 01 sind der sichtbare Inhalt. Sie gehören zwischen <body> und </body>.\n\nDarüber steht der <head>. Dort steht zwischen <title> und </title> der Name, den der Browser im Tab anzeigt. UTF-8 sorgt dafür, dass der Browser auch Zeichen wie ä und ß richtig liest. Die Zeile <!doctype html> und der Rahmen <html lang=\"de\"> gehören zum Grundgerüst.\n\nindex.html ist der übliche Dateiname für die Startseite. Für weitere Seiten kannst du kurze Namen wie mitmachen.html verwenden.",
+    '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Unser Schulgarten</title>\n</head>\n<body>\n  <h1>Schulgarten</h1>\n</body>\n</html>',
     "Baue im Editor das vollständige Grundgerüst. Vergib einen eigenen Seitentitel und eine sichtbare Hauptüberschrift. Exportiere die Datei als index.html und öffne sie im Browser.",
     "title steht im head. h1 gehört in body. Ein Dateiname wie mein-projekt.html ist gut übertragbar.",
     "Wo steht der Titel für den Browser-Tab?",
@@ -392,7 +395,7 @@ const lessons = [
     0,
     "Texte sinnvoll gliedern",
     "Ich kann eine nachvollziehbare Textstruktur erstellen.",
-    "h1 bis h6 kennzeichnen Überschriftenebenen. Nutze eine h1 für das Seitenthema und h2 für Unterthemen. Die Ebene richtet sich nach der Gliederung, nicht nach der gewünschten Schriftgröße. p trennt Absätze. strong betont Wichtigkeit, em eine sprachliche Betonung. Ein br erzwingt einen Zeilenumbruch, zum Beispiel in einer Adresse; es ersetzt keine Absätze.",
+    "Deine h1 nennt das Thema der ganzen Seite. Eine h2 nennt ein Unterthema. Den Text dazu schreibst du als Absatz mit p direkt unter die h2.\n\nWenn du ein Wort beim Vorlesen besonders betonen würdest, kannst du es mit <em> und </em> markieren. Für einen Zeilenumbruch mitten in einem zusammengehörenden Text, etwa einer Adresse, kannst du <br> benutzen.",
     "<h1>Unser Garten</h1>\n<h2>Die Idee</h2>\n<p>Wir bauen Gemüse an.</p>\n<h2>Mitmachen</h2>\n<p>Jeden Mittwoch nach der Schule.</p>",
     "Gliedere dein Thema mit einer h1, zwei h2 und zwei aussagekräftigen Absätzen. Betone eine Stelle mit em.",
     "Überlege zuerst zwei Unterthemen. Setze die jeweilige h2 vor den zugehörigen Absatz.",
@@ -577,9 +580,9 @@ const lessons = [
     "l9",
     2,
     "Inhalt und Gestaltung trennen",
-    "Ich kann CSS auf drei Ebenen einbinden.",
-    'CSS beschreibt das Aussehen. Eine Regel hat einen Selektor und Deklarationen: p { color: navy; }. CSS kann im style-Attribut eines Tags, im style-Element des head oder in einer externen Datei stehen. Eine externe Datei wird mit link rel="stylesheet" eingebunden und kann viele Seiten gemeinsam gestalten. Das CSS-Feld im Labor wird für die Vorschau als style im head eingefügt; beim Projektexport entsteht eine echte style.css.',
-    '<!-- im head -->\n<link rel="stylesheet" href="style.css">\n\n/* in style.css */\np { color: navy; }',
+    "Ich kann mit meiner ersten CSS-Regel eine Überschrift einfärben und eine CSS-Datei mit meiner Seite verbinden.",
+    "HTML hat deiner Seite Inhalt gegeben. CSS verändert, wie dieser Inhalt aussieht. Fange mit einer Regel an: h1 { color: navy; } färbt die Hauptüberschrift dunkelblau.\n\nLies die Regel von links nach rechts: h1 wählt aus, was du änderst. Zwischen den geschweiften Klammern steht color für die Schriftfarbe und navy für den Farbwert. Der Doppelpunkt verbindet Eigenschaft und Wert. Das Semikolon beendet die Angabe.\n\nDein CSS kommt in die Datei style.css. Die link-Zeile im HTML-Kopf verbindet die Seite damit. CSS kann auch direkt im HTML stehen, im style-Attribut eines Tags oder in einem style-Element im Kopf. Für dieses Projekt verwendest du die gemeinsame Datei.",
+    '<!-- im head -->\n<link rel="stylesheet" href="style.css">\n\n/* in style.css */\nh1 { color: navy; }',
     "Verknüpfe im head style.css. Schreibe im CSS-Feld eine body-Regel mit font-family und eine h1-Regel mit color. Exportiere HTML und CSS einzeln oder als Projekt-ZIP und öffne beide aus demselben Ordner.",
     "CSS steht ohne HTML-Tags im CSS-Feld. Beispiel: body { font-family: Arial, sans-serif; }",
     "Welche Einbindung kann mehrere Seiten gemeinsam gestalten?",
@@ -830,13 +833,14 @@ const lessons = [
 const byId = (id) => lessons.find((l) => l.id === id);
 for (const l of lessons) l.extension = extensions[l.id];
 
-return {VERSION,groups,lessons,byId};
+return {VERSION,groups,labStarter,lessons,byId};
 },
 "version-history.js": function(require) {
 // Public summaries only. Full development notes stay in documentation.md.
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.54.0", "HTML und CSS von Grund auf lernen", "Die erste Webseite beginnt mit zwei Codezeilen. Schritt für Schritt änderst du Überschrift und Absatz und siehst das Ergebnis im Browser. Das HTML-Grundgerüst und der CSS-Einstieg bauen darauf auf."],
     ["1.53.0", "Lerneinheit beim Scrollen im Blick", "Lernpfad, Kapitelnavigation, Bedienelemente und Fortschrittsbalken bleiben oben sichtbar. In Lerneinheiten erscheinen Speichermeldungen bei Problemen."],
     ["1.52.0", "Fortschrittsbalken pro Lerneinheit", "Unter der Kopfzeile steht der aktuelle Stand von Praxisauftrag, Verständnischeck und Selbstkontrolle. Nach dem Abschluss zeigt der Balken 100 %."],
     ["1.51.0", "Schnell zwischen Lerneinheiten wechseln", "Die Kopfzeile verlinkt den Lernpfad und die aktuelle Einheit. Zwei Pfeile führen zu freigeschalteten Nachbareinheiten."],
@@ -3364,9 +3368,9 @@ const stages = [
     "Du brauchst noch keine HTML-Kenntnisse. Wähle ein Thema, das du auf deiner eigenen Webseite vorstellen möchtest.",
     "Du gibst deiner Webseite einen Namen und schreibst ihren ersten Inhalt.",
     [
-      "Lies das Beispiel: Welche Wörter stehen zwischen den Tags?",
-      "Ersetze im HTML-Reiter die Überschrift und den Absatz durch eigene Texte. Betone ein wichtiges Wort mit strong.",
-      "Ändere ein Wort erneut und beobachte rechts, welche Stelle sich verändert.",
+      "Suche im HTML-Editor die Zeile mit <h1>. Ersetze nur den Text „Mein Webprojekt“ durch dein Thema. Lass <h1> und </h1> stehen. Schau in die Vorschau: Dort steht jetzt deine Überschrift.",
+      "Suche danach die Zeile mit <p>. Ersetze „Hier entsteht meine Seite.“ durch einen ganzen Satz zu deinem Thema. Schreibe mindestens 25 Zeichen. In der Vorschau steht der Satz unter der Überschrift.",
+      "Wähle ein wichtiges Wort in deinem Satz. Tippe <strong> direkt davor und </strong> direkt dahinter. Schau nach, ob das Wort jetzt fett erscheint. Klicke dann auf „Auftrag prüfen“.",
     ],
     "Du siehst deine eigene Überschrift, einen Absatz und ein fett hervorgehobenes Wort. Die Tags selbst erscheinen nicht auf der Seite.",
   ],
@@ -3374,8 +3378,8 @@ const stages = [
     "Du kannst bereits eine Überschrift und einen Absatz schreiben.",
     "Du ordnest deinen bisherigen Inhalt in das HTML-Grundgerüst ein.",
     [
-      "Suche head und body im HTML-Code. Fehlt das Grundgerüst, baue es um deinen bisherigen Inhalt herum.",
-      "Trage im title den Namen deiner Webseite ein und kontrolliere Doctype, lang und UTF-8.",
+      "Sieh im HTML-Editor nach, ob dein Code mit <!doctype html> beginnt. Fehlt das Grundgerüst, tippe es aus dem Beispiel ab. Setze deine vorhandene Überschrift und deinen Absatz an die Stelle der Beispielüberschrift zwischen <body> und </body>.",
+      "Vergib zwischen <title> und </title> einen eigenen Tab-Titel. Zum Vergleichen darf er etwas anders lauten als deine sichtbare Überschrift.",
       "Exportiere index.html und öffne sie im Browser. Vergleiche den Browser-Tab mit der sichtbaren Überschrift.",
     ],
     "Der title steht im Browser-Tab; die h1 steht auf der Seite. Eine Änderung im head erzeugt keinen neuen Absatz im body.",
@@ -3444,9 +3448,9 @@ const stages = [
     "Deine HTML-Seite enthält inzwischen mehrere Inhaltsbausteine.",
     "Du trennst zum ersten Mal Inhalt und Gestaltung in zwei Dateien.",
     [
-      "Ergänze im head die Verknüpfung zu style.css. Der bisherige body bleibt erhalten.",
-      "Wechsle zum CSS-Reiter. Lege eine Schriftfamilie für body und eine Farbe für h1 fest.",
-      "Ändere die Farbe im CSS und beobachte die Vorschau. Exportiere anschließend beide Dateien in denselben Ordner.",
+      "Öffne in der Werkstatt den Reiter style.css. Tippe als erste Regel h1 { color: navy; } ein. Schau, ob sich die Farbe der Hauptüberschrift ändert.",
+      "Ersetze navy durch darkgreen und beobachte die Änderung. Schreibe dann in einer neuen Zeile die zweite Regel: body { font-family: Arial, sans-serif; }.",
+      "Wechsle zu index.html und ergänze die link-Zeile aus dem Beispiel im head. Lade das Projekt-ZIP herunter, entpacke es und öffne index.html im Browser. Prüfe, ob die Überschrift dort dieselbe Farbe hat.",
     ],
     "Der Inhalt bleibt gleich, seine Darstellung verändert sich. Die externe CSS-Verknüpfung prüfst du zusätzlich im exportierten Projekt.",
   ],
@@ -5086,7 +5090,7 @@ const { esc } = require("html.js");
 const { reviewPanel, bindReview } = require("review.js");
 const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
-const { VERSION, groups, lessons, byId } = require("content.js");
+const { VERSION, groups, lessons, byId, labStarter } = require("content.js");
 const { versionHistory } = require("version-history.js");
 const { bindDisplayOptions } = require("display.js");
 const { bindSidebarDivider } = require("sidebar.js");
@@ -5499,7 +5503,7 @@ function lessonJourney(l) {
 }
 function lessonPractice(l) {
   const step = journey[l.id];
-  return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3><ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor" data-editor-jump>Jetzt direkt im Code ausprobieren</a></section>`;
+  return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3>${l.id === "l1" ? '<p>Im Editor tippst du den Code. Die Live-Vorschau zeigt dir beim Tippen, was der Browser daraus macht.</p>' : ""}<ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor" data-editor-jump>Jetzt direkt im Code ausprobieren</a>${l.id === "l1" ? `<details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>` : ""}</section>`;
 }
 function lessonExtension(l) {
   const extra = l.extension;
@@ -5511,9 +5515,29 @@ function debugChallenge(l) {
   if (!exercise) return "";
   return `<details class="debug-challenge"><summary>Fehler finden: eine kurze Denkaufgabe</summary><p class="muted">Finde die Ursache, bevor du deinen eigenen Code weiterentwickelst. Diese Übung verändert deinen Entwurf nicht und vergibt keine Zusatzpunkte.</p><pre><code>${esc(exercise.code)}</code></pre><p id="debugQuestion">${esc(exercise.question)}</p><div class="quiz-options" role="group" aria-labelledby="debugQuestion">${exercise.options.map((option, i) => `<button type="button" class="button secondary quiz-option" data-debug-answer="${i}">${esc(option)}</button>`).join("")}</div><p id="debugResult" role="status" aria-atomic="true"></p></details>`;
 }
+function lessonPitfalls(l) {
+  return `<details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>`;
+}
+function firstLessonIntro(l) {
+  return `<section class="panel" id="understand" aria-labelledby="first-html-title">
+    <h3 id="first-html-title">Deine erste Zeile HTML</h3>
+    <p>${esc(l.explanation)}</p>
+    <div class="beginner-example">
+      <div><h4>Das steht im Code</h4><pre><code>&lt;h1&gt;Unser Schulgarten&lt;/h1&gt;</code></pre></div>
+      <div><h4>Das siehst du im Browser</h4><div class="beginner-browser"><strong>Unser Schulgarten</strong></div></div>
+    </div>
+    <p><code>&lt;h1&gt;</code> ist der Start-Tag für die Hauptüberschrift. <code>&lt;/h1&gt;</code> ist der End-Tag. Der Text dazwischen ist deine Überschrift. Das Ganze heißt HTML-Element.</p>
+  </section>`;
+}
+function lessonUnderstanding(l) {
+  if (l.id === "l1") return firstLessonIntro(l);
+  return `<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3>${l.explanation.split("\n\n").map((part) => `<p>${esc(part)}</p>`).join("")}<h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${lessonPitfalls(l)}${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>`;
+}
 function lessonView(l) {
-  const done = state.completed.includes(l.id);
-  return `<section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  const done = state.completed.includes(l.id),
+    first = l.id === "l1",
+    extras = `${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}`;
+  return `<section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${first ? "" : lessonJourney(l)}${lessonUnderstanding(l)}${lessonPractice(l)}${first ? "" : extras}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>${first ? lessonJourney(l) + `<section class="panel"><h3>Freiwillig weiterüben</h3>${debugChallenge(l)}${lessonPitfalls(l)}</section>` + extras : ""}<div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 // Reiter für index.html, alle Unterseiten und style.css.
 function fileTabs(d) {
@@ -5543,7 +5567,7 @@ function showLinkReport(d) {
 }
 function draftFor(id) {
   return state.drafts[id] || (id === "lab"
-    ? { html: byId("l1").starter, css: "" }
+    ? { html: labStarter, css: "" }
     : startingDraft(state.drafts, id));
 }
 function draft() {
@@ -5883,7 +5907,7 @@ function bindStudio(l) {
     )
       return;
     backup();
-    state.drafts[activeId] = { html: l.starter, css: "" };
+    state.drafts[activeId] = { html: activeId === "lab" ? labStarter : l.starter, css: "" };
     htmlFile = "index.html";
     save();
     render();

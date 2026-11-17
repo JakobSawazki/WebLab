@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.53.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.54.0** · Status: **Veröffentlichung über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -322,6 +322,12 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.54.0: Einstieg ohne HTML- und CSS-Vorkenntnisse
+
+- Einheit 01 vergleicht eine HTML-Zeile und ihre Browserdarstellung. Neue Entwürfe starten mit einer Überschrift und einem Absatz. Im selben Live-Editor folgen drei einzelne Änderungen mit je einer Beobachtung. Freiwillige Vertiefung steht nach dem Kernauftrag.
+- Einheit 02 baut das Grundgerüst um den bisherigen Inhalt auf und lässt Dateiname, Tab-Titel und sichtbare Überschrift vergleichen. Einheit 03 führt Unterüberschriften vor weiteren Formatierungen ein. Einheit 09 beginnt mit einer einzelnen Farbregel, dann folgen Schrift und externe Datei.
+- Bestehende Entwürfe bleiben erhalten. Das freie Labor behält den vollständigen Startcode. Reihenfolge, Checks und Freischaltung verwenden die bisherigen IDs und Regeln.
 
 ### 17.11.2026 – Codex – Version 1.53.0: Kopfzeile beim Scrollen
 

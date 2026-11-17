@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-17", [
+    ["1.54.0", "HTML und CSS von Grund auf lernen", "Die erste Webseite beginnt mit zwei Codezeilen. Schritt für Schritt änderst du Überschrift und Absatz und siehst das Ergebnis im Browser. Das HTML-Grundgerüst und der CSS-Einstieg bauen darauf auf."],
     ["1.53.0", "Lerneinheit beim Scrollen im Blick", "Lernpfad, Kapitelnavigation, Bedienelemente und Fortschrittsbalken bleiben oben sichtbar. In Lerneinheiten erscheinen Speichermeldungen bei Problemen."],
     ["1.52.0", "Fortschrittsbalken pro Lerneinheit", "Unter der Kopfzeile steht der aktuelle Stand von Praxisauftrag, Verständnischeck und Selbstkontrolle. Nach dem Abschluss zeigt der Balken 100 %."],
     ["1.51.0", "Schnell zwischen Lerneinheiten wechseln", "Die Kopfzeile verlinkt den Lernpfad und die aktuelle Einheit. Zwei Pfeile führen zu freigeschalteten Nachbareinheiten."],

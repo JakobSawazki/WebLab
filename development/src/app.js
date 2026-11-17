@@ -8,7 +8,7 @@ import { esc } from "./html.js";
 import { reviewPanel, bindReview } from "./review.js";
 import { debugging } from "./debugging.js";
 import { decorateIcons, icon } from "./icons.js";
-import { VERSION, groups, lessons, byId } from "./content.js";
+import { VERSION, groups, lessons, byId, labStarter } from "./content.js";
 import { versionHistory } from "./version-history.js";
 import { bindDisplayOptions } from "./display.js";
 import { bindSidebarDivider } from "./sidebar.js";
@@ -421,7 +421,7 @@ function lessonJourney(l) {
 }
 function lessonPractice(l) {
   const step = journey[l.id];
-  return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3><ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor" data-editor-jump>Jetzt direkt im Code ausprobieren</a></section>`;
+  return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>So gehst du im Editor vor</h3>${l.id === "l1" ? '<p>Im Editor tippst du den Code. Die Live-Vorschau zeigt dir beim Tippen, was der Browser daraus macht.</p>' : ""}<ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol><p><strong>Das beobachtest du in deiner Webseite:</strong> ${esc(step.observe)}</p><a class="button secondary" href="#studioTitle" id="jumpEditor" data-editor-jump>Jetzt direkt im Code ausprobieren</a>${l.id === "l1" ? `<details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>` : ""}</section>`;
 }
 function lessonExtension(l) {
   const extra = l.extension;
@@ -433,9 +433,29 @@ function debugChallenge(l) {
   if (!exercise) return "";
   return `<details class="debug-challenge"><summary>Fehler finden: eine kurze Denkaufgabe</summary><p class="muted">Finde die Ursache, bevor du deinen eigenen Code weiterentwickelst. Diese Übung verändert deinen Entwurf nicht und vergibt keine Zusatzpunkte.</p><pre><code>${esc(exercise.code)}</code></pre><p id="debugQuestion">${esc(exercise.question)}</p><div class="quiz-options" role="group" aria-labelledby="debugQuestion">${exercise.options.map((option, i) => `<button type="button" class="button secondary quiz-option" data-debug-answer="${i}">${esc(option)}</button>`).join("")}</div><p id="debugResult" role="status" aria-atomic="true"></p></details>`;
 }
+function lessonPitfalls(l) {
+  return `<details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>`;
+}
+function firstLessonIntro(l) {
+  return `<section class="panel" id="understand" aria-labelledby="first-html-title">
+    <h3 id="first-html-title">Deine erste Zeile HTML</h3>
+    <p>${esc(l.explanation)}</p>
+    <div class="beginner-example">
+      <div><h4>Das steht im Code</h4><pre><code>&lt;h1&gt;Unser Schulgarten&lt;/h1&gt;</code></pre></div>
+      <div><h4>Das siehst du im Browser</h4><div class="beginner-browser"><strong>Unser Schulgarten</strong></div></div>
+    </div>
+    <p><code>&lt;h1&gt;</code> ist der Start-Tag für die Hauptüberschrift. <code>&lt;/h1&gt;</code> ist der End-Tag. Der Text dazwischen ist deine Überschrift. Das Ganze heißt HTML-Element.</p>
+  </section>`;
+}
+function lessonUnderstanding(l) {
+  if (l.id === "l1") return firstLessonIntro(l);
+  return `<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3>${l.explanation.split("\n\n").map((part) => `<p>${esc(part)}</p>`).join("")}<h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${lessonPitfalls(l)}${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>`;
+}
 function lessonView(l) {
-  const done = state.completed.includes(l.id);
-  return `<section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  const done = state.completed.includes(l.id),
+    first = l.id === "l1",
+    extras = `${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}`;
+  return `<section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${first ? "" : lessonJourney(l)}${lessonUnderstanding(l)}${lessonPractice(l)}${first ? "" : extras}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>${first ? lessonJourney(l) + `<section class="panel"><h3>Freiwillig weiterüben</h3>${debugChallenge(l)}${lessonPitfalls(l)}</section>` + extras : ""}<div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 // Reiter für index.html, alle Unterseiten und style.css.
 function fileTabs(d) {
@@ -465,7 +485,7 @@ function showLinkReport(d) {
 }
 function draftFor(id) {
   return state.drafts[id] || (id === "lab"
-    ? { html: byId("l1").starter, css: "" }
+    ? { html: labStarter, css: "" }
     : startingDraft(state.drafts, id));
 }
 function draft() {
@@ -805,7 +825,7 @@ function bindStudio(l) {
     )
       return;
     backup();
-    state.drafts[activeId] = { html: l.starter, css: "" };
+    state.drafts[activeId] = { html: activeId === "lab" ? labStarter : l.starter, css: "" };
     htmlFile = "index.html";
     save();
     render();

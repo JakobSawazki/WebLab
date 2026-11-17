@@ -21,8 +21,8 @@
   --metal-bottom: #091424;
   --metal-rim: #4a668e;
   --metal-glint: #cfe2ff33;
-  --grain-light: #cfe0ff0b;
-  --grain-dark: #00081826;
+  --grain-light: #cfe0ff05;
+  --grain-dark: #00081810;
   --sheen: #bcd6ff0f;
   --bevel-dark: #00040c8c;
   --panel-shadow: 0 10px 28px #0008;
@@ -51,8 +51,8 @@
   --metal-bottom: #cbd4de;
   --metal-rim: #a1afbd;
   --metal-glint: #ffffffd9;
-  --grain-light: #ffffff38;
-  --grain-dark: #42566c12;
+  --grain-light: #ffffff1c;
+  --grain-dark: #42566c09;
   --sheen: #ffffff73;
   --bevel-dark: #5b6f861f;
   --panel-shadow: 0 10px 26px #213b5b1c;
@@ -1199,17 +1199,77 @@ textarea#cssEditor {
       var(--panel)
     );
 }
-.phase-card {
-  position: relative;
+.phase-art {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--metal-rim);
+  border-radius: 12px;
+  background: #111d30;
+}
+.phase-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.phase-card .phase-art {
+  width: 100%;
+}
+.phase-card .eyebrow,
+.chapter-copy .eyebrow {
+  color: var(--brand);
+}
+.path-phase {
+  margin-block: 1.75rem;
+}
+.chapter-plate {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(0.9rem, 3vw, 2.2rem);
+  border-color: var(--metal-rim);
+  background: var(--brushed), linear-gradient(127deg, var(--panel-strong), var(--panel));
+}
+.chapter-copy h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 2.5vw, 2.4rem);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.chapter-copy p:not(.eyebrow) {
+  margin-block: 0.55rem 0.85rem;
+  color: var(--muted);
+}
+.chapter-copy small {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.chapter-plate .phase-art {
+  width: 100%;
+  max-width: 26rem;
+  justify-self: end;
+}
+.lesson-cover {
+  margin-block-start: 0.8rem;
+}
+@media (max-width: 670px) {
+  .chapter-plate {
+    grid-template-columns: 1fr;
+  }
+  .chapter-plate .phase-art {
+    max-width: none;
+  }
+  .chapter-plate .phase-art img {
+    aspect-ratio: 2 / 1;
+  }
 }
 .phase-card h3 {
   font-size: 1.2rem;
 }
 .phase-card p {
   color: var(--muted);
-}
-.module-number {
-  font-variant-numeric: tabular-nums;
 }
 .stat strong,
 .card-num {
@@ -1237,16 +1297,6 @@ textarea#cssEditor {
   width: 100%;
   height: 0.65rem;
   accent-color: var(--green);
-}
-.module-number {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius);
-  background: var(--brand);
-  color: var(--bg);
-  font-weight: 850;
 }
 .card.is-next {
   border-color: var(--brand);
@@ -2049,6 +2099,12 @@ dialog::backdrop {
 /* Printing (e.g. "Meine Notizen" with the collected rules): plain black on
    white, without navigation, controls and previews. */
 @media print {
+  .phase-art {
+    display: none;
+  }
+  .chapter-plate {
+    grid-template-columns: 1fr;
+  }
   :root,
   :root[data-theme="light"] {
     --text: #000;

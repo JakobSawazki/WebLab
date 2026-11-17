@@ -1,8 +1,8 @@
 # WebLab – gemeinsame Projektdokumentation
 
-Stand: **20. Oktober 2026, Europe/Berlin · Codex**
+Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.43.0** · Status: **lokal geprüft und veröffentlicht**.
+Version: **1.44.0** · Status: **lokal geprüft; Veröffentlichung läuft über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -322,6 +322,22 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.44.0: Bildsprache für den Lernpfad
+
+Vier fotorealistische Etappenmotive für die Übersicht, die Abschnitte im Lernpfad und die Köpfe aller 16 Lerneinheiten. Das jeweilige Thema steht mit Lernziel oder Fortschritt auf der Textseite; das Bild liegt in einem separat gerahmten Bereich. Auf schmalen Ansichten steht die Schrift vor dem Bild. Die Metallkörnung des Portals ist in beiden Farbschemata zurückgenommen, die Kanten und Lichtreflexe bleiben erhalten. Druckansichten lassen die Schmuckbilder weg. Die Motive sind ergänzend; für Bildschirmleser steht alle relevante Information im normalen Text.
+
+**Bildentstehung:** integriertes Imagegen, vier eigenständige Generierungen im Stil ruhiger Produktfotografie. Gemeinsame Vorgaben: real wirkende Objekte aus gebürstetem Aluminium und Glas, leicht erhöhter Dreiviertelblick, tintenblauer Studiohintergrund, kühles Blau und warme Champagnerreflexe, breites Format mit Rand für responsive Ausschnitte, ohne Personen, Logos, Beschriftungen oder Neon.
+
+| Datei unter assets/ | Motivvorgabe |
+| --- | --- |
+| html-struktur.webp | Drei überlappende Aluminiumplatten als Browserfenster; Glasfront und physisch abgesetzte Inhaltsblöcke. |
+| inhalte-verknuepfen.webp | Kontaktbogen mit Landschaftsaufnahmen, zwei ineinandergreifende Metallglieder und ein Glasraster für Links und Tabellen. |
+| css-gestaltung.webp | Blaues und champagnerfarbenes Glas in konzentrischen Aluminiumrahmen mit sichtbaren Abständen als Anspielung auf das Box-Modell. |
+| webprojekt.webp | Statische Beispielseite zu Alpenpflanzen auf einem Laptop, daneben kompakter Server und Ethernetkabel. |
+
+WebP-Dateien mit 960 × 540 Pixeln, zusammen 178.102 Byte. Keine externen Bildaufrufe. Build nimmt die vier Dateien gezielt in die öffentliche Positivliste auf. 68 Node-Tests und 281 Browserprüfungen lokal bestanden; neue Prüfungen laden jedes Motiv im Lernpfad, in der Übersicht und in allen 16 Einheiten bei 360 oder 1200 Pixeln und prüfen Layout ohne horizontalen Überlauf. Sichtprüfung mit Edge über den lokalen Dateistart, unter anderem Lernpfad bei 1440 Pixeln und Einheit 01 bei 500 Pixeln. Prüfstand vor Veröffentlichung; Live-Nachweis folgt.
+
 
 ### 20.10.2026 – Codex – Version 1.43.0: Speicherfehler sichtbar halten und Entwürfe retten
 

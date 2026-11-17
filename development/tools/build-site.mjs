@@ -49,7 +49,11 @@ for (const f of ["index.html", "styles.css"]) {
   fs.writeFileSync(path.join(out, f), source);
 }
 fs.mkdirSync(path.join(out, "assets"), { recursive: true });
-for (const f of ["weblab-logo.png", "weblab-hero.png"])
+const publicImages = [
+  "weblab-logo.png", "weblab-hero.png",
+  "html-struktur.webp", "inhalte-verknuepfen.webp", "css-gestaltung.webp", "webprojekt.webp",
+];
+for (const f of publicImages)
   fs.copyFileSync(path.join(root, "assets", f), path.join(out, "assets", f));
 fs.writeFileSync(path.join(out, ".nojekyll"), "");
 const allowed = new Set([
@@ -57,8 +61,7 @@ const allowed = new Set([
   "index.html",
   "styles.css",
   ".nojekyll",
-  "assets/weblab-logo.png",
-  "assets/weblab-hero.png",
+  ...publicImages.map((file) => "assets/" + file),
 ]);
 function verify(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {

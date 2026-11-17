@@ -255,6 +255,49 @@
     }
     if (savedMenu === null) localStorage.removeItem("weblab-menu-v1");
     else localStorage.setItem("weblab-menu-v1", savedMenu);
+    const artworkFiles = [
+      "html-struktur.webp", "inhalte-verknuepfen.webp",
+      "css-gestaltung.webp", "webprojekt.webp",
+    ];
+    const savedArtworkState = localStorage.getItem(STORAGE_KEY);
+    const artworkState = blank();
+    artworkState.completed = lessons.slice(0, -1).map((lesson) => lesson.id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(artworkState));
+    try {
+      for (const [width, route, selector, expected] of [
+        [1200, "#home", ".phase-card img", artworkFiles],
+        [360, "#path", ".path-phase img", artworkFiles],
+        ...lessons.map((lesson, i) => [
+          i % 2 ? 1200 : 360, "#lesson/" + lesson.id,
+          ".lesson-cover img", [artworkFiles[lesson.group]],
+        ]),
+      ]) {
+        const frame = document.createElement("iframe");
+        frame.style.cssText = "display:block;border:0;width:" + width + "px;height:800px";
+        frame.title = "Motivprüfung " + route;
+        const loaded = new Promise(resolve => frame.onload = resolve);
+        frame.src = "/" + route;
+        document.body.append(frame);
+        await loaded;
+        const doc = frame.contentDocument;
+        const photos = [...doc.querySelectorAll(selector)];
+        for (const photo of photos) photo.loading = "eager";
+        const decoded = await Promise.allSettled(photos.map(photo => photo.decode()));
+        assert(
+          photos.length === expected.length && photos.every((photo, i) =>
+            decoded[i].status === "fulfilled" && photo.naturalWidth === 960 &&
+            photo.naturalHeight === 540 && photo.getAttribute("alt") === "" &&
+            photo.getBoundingClientRect().width > 0 &&
+            new URL(photo.src).pathname === "/assets/" + expected[i]
+          ) && doc.documentElement.scrollWidth <= width,
+          route + " " + width + ": passende lokale Fotos geladen, kein Überlauf",
+        );
+        frame.remove();
+      }
+    } finally {
+      if (savedArtworkState === null) localStorage.removeItem(STORAGE_KEY);
+      else localStorage.setItem(STORAGE_KEY, savedArtworkState);
+    }
     const luminance = (hex) => {
       const values = hex.trim().replace("#", "");
       const full =

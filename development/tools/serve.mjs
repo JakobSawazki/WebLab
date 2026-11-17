@@ -9,6 +9,7 @@ const types = {
   ".css": "text/css; charset=utf-8",
   ".svg": "image/svg+xml",
   ".png": "image/png",
+  ".webp": "image/webp",
 };
 // Nur der lokale Prüfserver bietet die Browser-Testseite an; nie im Build.
 const qa = path.resolve(import.meta.dirname, "..", "tests", "browser.html");

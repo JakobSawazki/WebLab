@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.44.0** · Status: **lokal geprüft; Veröffentlichung läuft über GitHub Pages**.
+Version: **1.44.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -336,7 +336,7 @@ Vier fotorealistische Etappenmotive für die Übersicht, die Abschnitte im Lernp
 | css-gestaltung.webp | Blaues und champagnerfarbenes Glas in konzentrischen Aluminiumrahmen mit sichtbaren Abständen als Anspielung auf das Box-Modell. |
 | webprojekt.webp | Statische Beispielseite zu Alpenpflanzen auf einem Laptop, daneben kompakter Server und Ethernetkabel. |
 
-WebP-Dateien mit 960 × 540 Pixeln, zusammen 178.102 Byte. Keine externen Bildaufrufe. Build nimmt die vier Dateien gezielt in die öffentliche Positivliste auf. 68 Node-Tests und 281 Browserprüfungen lokal bestanden; neue Prüfungen laden jedes Motiv im Lernpfad, in der Übersicht und in allen 16 Einheiten bei 360 oder 1200 Pixeln und prüfen Layout ohne horizontalen Überlauf. Sichtprüfung mit Edge über den lokalen Dateistart, unter anderem Lernpfad bei 1440 Pixeln und Einheit 01 bei 500 Pixeln. Prüfstand vor Veröffentlichung; Live-Nachweis folgt.
+WebP-Dateien mit 960 × 540 Pixeln, zusammen 178.102 Byte. Keine externen Bildaufrufe. Build nimmt die vier Dateien gezielt in die öffentliche Positivliste auf. 68 Node-Tests und 281 Browserprüfungen lokal bestanden; neue Prüfungen laden jedes Motiv im Lernpfad, in der Übersicht und in allen 16 Einheiten bei 360 oder 1200 Pixeln und prüfen Layout ohne horizontalen Überlauf. Sichtprüfung mit Edge über den lokalen Dateistart, unter anderem Lernpfad bei 1440 Pixeln und Einheit 01 bei 500 Pixeln. Veröffentlicht mit Commit `2de173b`; [Pages-Lauf 44054848556](https://github.com/JakobSawazki/WebLab/actions/runs/44054848556) mit 68 Node-Tests und 281 Browserprüfungen erfolgreich. Öffentliche WebP-Dateien und weblab.js per SHA-256 bytegleich, HTML und CSS abgesehen von Windows-Zeilenenden textgleich. Der Arbeitsordner im Drive enthielt separate, uncommittete Änderungen zum Übungsstand. Design und Veröffentlichung wurden in einem eigenen Git-Worktree auf dem zuletzt veröffentlichten Stand erarbeitet; Änderungen am Übungsstand wurden weder verändert noch mit veröffentlicht.
 
 
 ### 20.10.2026 – Codex – Version 1.43.0: Speicherfehler sichtbar halten und Entwürfe retten

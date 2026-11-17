@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.45.0** · Status: lokal in Prüfung.
+Version: **1.45.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -339,7 +339,7 @@ Die Übersicht und der Lernpfad behalten die vier Etappenmotive als Orientierung
 | 11 | two tactile studio letterpress type blocks embossed with exactly 'Aa' on one block and 'Aa' on the other, each pair at a clearly different visual size, alongside a simple navy and ivory sample card, suggesting type scale and contrast; no other marks or lettering |
 | 14 | a landscape photographic print on archival paper placed beside an understated metal embossing seal and a simple cream card with a large blank signature area, on a matte dark navy desk; no written text, symbols, or logos |
 
-960 × 540 Pixel als WebP, insgesamt 219.852 Byte. Die Oberfläche und die öffentliche Build-Liste verwenden dieselbe statische Bildzuordnung. Ein Offline-ZIP mit ausschließlich den 15 Dateien des öffentlichen Builds ist für den Dateistart ohne Node.js vorgesehen. Prüf- und Veröffentlichungsnachweis folgt.
+960 × 540 Pixel als WebP, insgesamt 219.852 Byte. Die Oberfläche und die öffentliche Build-Liste verwenden dieselbe statische Bildzuordnung. Ein Offline-ZIP mit ausschließlich den 15 Dateien des öffentlichen Builds ist für den Dateistart ohne Node.js vorgesehen. 68 Node-Tests und 281 Browserprüfungen lokal und im [Pages-Lauf 44055949828](https://github.com/JakobSawazki/WebLab/actions/runs/44055949828) bestanden. Browserprüfungen öffnen Übersicht, Lernpfad und alle 16 Einheiten und prüfen dekodierte Bilder, Zuordnung, lokale Pfade und Layout. Edge-Sichtprüfung aus dem entpackten Paket: normaler Dateistart in Einheit 01, zusätzlich Einheiten 06, 11 und 14 mit synthetischem Lernstand in hellem und dunklem Design bei 500 und 1440 Pixeln. Die neun öffentlichen WebP-Dateien und weblab.js stimmen per SHA-256 mit dem lokalen Build überein, index.html und styles.css abgesehen von Zeilenenden textgleich. Implementierungscommit 1582fa4; [Offline-ZIP im Release v1.45.0](https://github.com/JakobSawazki/WebLab/releases/tag/v1.45.0), geprüft per ZIP-Integritätsprüfung, Testentpackung und Dateistart. Lernstände und Unterrichtsoriginale sind im Paket nicht enthalten. Die bestehenden Änderungen im Drive-Arbeitsordner bleiben erhalten; veröffentlichter Stand und Offline-Paket sind davon unabhängig.
 
 
 ### 17.11.2026 – Codex – Version 1.44.0: Bildsprache für den Lernpfad

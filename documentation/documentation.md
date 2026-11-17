@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.56.6** · Status: **Veröffentlichung über GitHub Pages**.
+Version: **1.56.6** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -326,6 +326,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 ### 17.11.2026 – Codex – Version 1.56.6: Menüschalter neben dem Logo
 
 - Auf breiten Bildschirmen steht der Menüschalter neben dem Logo im Kopf der Seitenleiste. Im eingeklappten Menü steht er unter dem Logo. Auf schmalen Bildschirmen bleibt derselbe Schalter in der Kopfzeile erreichbar, wenn die Seitenleiste ausgeblendet wird.
+- Darstellung im lokalen Edge geprüft. Lokal und auf GitHub bestanden 368 Browserprüfungen, GitHub bestätigt außerdem 69 Node-Tests. Die veröffentlichten Programmdateien stimmen mit dem Build überein, die bestehende Offline-Kopie mit allen 28 Release-Dateien. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44173145175) · [Offline-Release 1.56.6](https://github.com/JakobSawazki/WebLab/releases/tag/v1.56.6)
 
 ### 17.11.2026 – Codex – Version 1.56.5: Logo öffnet den Anfang der Startseite
 

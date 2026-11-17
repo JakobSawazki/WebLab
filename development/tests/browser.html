@@ -1755,8 +1755,8 @@
         };
         initialStorageState.drafts.l1 = { html: "<h1>Mein Projekt</h1>", css: "" };
         const failStorageWrite = await openStorageFrame(JSON.stringify(initialStorageState));
-        assert(storageElement("storageStatus").dataset.state === "saved" && storageElement("storageMessage").getAttribute("role") === "status",
-          "Speicherrueckmeldung: Gespeicherter Lernstand hat einen zugaenglichen dauerhaften Status");
+        assert(storageElement("storageStatus").hidden && storageElement("storageStatus").dataset.state === "ready" && storageElement("storageMessage").getAttribute("role") === "status",
+          "Speicherrueckmeldung: Erfolgreiches automatisches Speichern blendet den Status aus");
         failStorageWrite();
         storageElement("profileButton").click();
         storageElement("studentClass").value = "EG-2";
@@ -1816,16 +1816,16 @@
           "Speicherrueckmeldung: JSON rettet aktuellen Code samt Unterseiten, ohne Speichern auf dem Geraet vorzutäuschen");
         restoreStorageWrite();
         storageElement("retrySave").click();
-        assert(storageElement("storageStatus").dataset.state === "saved" && storageElement("storageStatus").dataset.unsaved === "false" &&
-          storageElement("retrySave").hidden && storageDoc.activeElement === storageElement("storageMessage") &&
+        assert(storageElement("storageStatus").hidden && storageElement("storageStatus").dataset.state === "ready" && storageElement("storageStatus").dataset.unsaved === "false" &&
+          storageElement("retrySave").hidden && storageDoc.activeElement === storageElement("backupButton") &&
           JSON.stringify(JSON.parse(localStorage.getItem(STORAGE_KEY)).drafts.lab) === JSON.stringify(rescuedStorageState.drafts.lab),
-          "Speicherrueckmeldung: Wiederholen speichert den vollstaendigen Entwurf und setzt den Fokus auf den Erfolg");
+          "Speicherrueckmeldung: Wiederholen speichert den Entwurf und fokussiert das Sicherungssymbol, wenn die Warnung verschwindet");
         await openStorageFrame(localStorage.getItem(STORAGE_KEY));
         assert(storageElement("htmlEditor").value === unsavedHtml && storageElement("cssEditor").value === unsavedCss &&
           storageDoc.querySelectorAll("#fileTabs [data-file$='.html']").length === 3,
           "Speicherrueckmeldung: Gesicherte Aenderungen und Unterseiten bleiben nach erneutem Laden erhalten");
         await storageEventFrom(storageWin.sessionStorage, () => sessionStorage.setItem(STORAGE_KEY, "session-only-check-" + crypto.randomUUID()));
-        assert(storageElement("storageStatus").dataset.state === "saved",
+        assert(storageElement("storageStatus").hidden && storageElement("storageStatus").dataset.state === "ready",
           "Speicherrueckmeldung: Echtes sessionStorage-Ereignis blockiert den lokalen Lernstand nicht");
         const externalStorageState = JSON.stringify({ ...initialStorageState, notes: { l1: "Aenderung aus anderem Fenster" } });
         await storageEventFrom(storageWin.localStorage, () => localStorage.setItem(STORAGE_KEY, externalStorageState));
@@ -1836,6 +1836,8 @@
           storageElement("retrySave").hidden && localStorage.getItem(STORAGE_KEY) === externalStorageState,
           "Speicherrueckmeldung: Echtes Ereignis eines anderen Fensters sperrt Speichern auch bei weiteren Eingaben und Wiederholen");
         await openStorageFrame(externalStorageState, "home");
+        assert(!storageElement("storageStatus").getClientRects().length,
+          "Uebersicht: Auch bei vorhandenem Lernstand erscheint keine Speicherleiste");
         const clearedStorageEvent = await storageEventFrom(storageWin.localStorage, () => localStorage.clear());
         assert(clearedStorageEvent.key === null && storageElement("storageStatus").dataset.state === "blocked" && storageElement("retrySave").hidden,
           "Speicherrueckmeldung: Echtes clear-Ereignis eines anderen Fensters haelt automatisches Speichern an");

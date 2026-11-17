@@ -283,7 +283,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.56.1";
+const VERSION = "1.56.2";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -845,6 +845,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.56.2", "Automatisch speichern ohne Hinweisleiste", "WebLab speichert den Lernstand im Hintergrund. Die Leiste erscheint nur bei Speicherproblemen und bietet dort Hilfe."],
     ["1.56.1", "Testprotokoll auf schmalen Bildschirmen", "Der Code und die neuen Bausteine der Einheit 15 passen auch bei 360 Pixel Breite."],
     ["1.56.0", "Ein neues Motiv und neue Bausteine pro Einheit", "Jede Einheit hat ihr eigenes fotorealistisches Motiv. Über dem Arbeitsauftrag steht, welche HTML- oder CSS-Bausteine, Arbeitsschritte oder Prüfungen dazukommen."],
     ["1.55.0", "Gemeinsames Schulgarten-Projekt", "Die Klasse baut in Einheit 01 bis 15 dieselbe Webseite und bespricht nach jedem Schritt die Ergebnisse. Einheit 16 beginnt das eigene Abschlussprojekt."],
@@ -5156,7 +5157,6 @@ const $ = (s) => document.querySelector(s);
 let state,
   storageError = "",
   unreadableStorage = null,
-  savedOnDevice = false,
   saveFailed = false,
   pendingImport = null,
   importRead = 0,
@@ -5166,7 +5166,6 @@ let state,
   toastTimer;
 try {
   state = load(localStorage);
-  savedOnDevice = Boolean(localStorage.getItem(STORAGE_KEY) || localStorage.getItem("weblab-state-v1"));
 } catch {
   state = blank();
   try { unreadableStorage = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("weblab-state-v1"); } catch {}
@@ -5347,7 +5346,6 @@ function save() {
     const value = JSON.stringify(state);
     localStorage.setItem(STORAGE_KEY, value);
     savedSnapshot = value;
-    savedOnDevice = true;
     saveFailed = false;
     storageError = "";
     unreadableStorage = null;
@@ -5363,12 +5361,12 @@ function updateStorageStatus() {
   const blocked = preventSave,
     problem = blocked || saveFailed,
     dirty = problem && JSON.stringify(state) !== savedSnapshot,
-    mode = blocked ? "blocked" : saveFailed ? "error" : savedOnDevice ? "saved" : "ready",
+    mode = blocked ? "blocked" : saveFailed ? "error" : "ready",
     message = blocked
       ? "Automatisches Speichern angehalten."
       : saveFailed
         ? dirty ? "Änderungen noch nicht auf diesem Gerät gespeichert." : "Speichern gerade nicht möglich. Dein bisheriger Stand bleibt erhalten."
-        : savedOnDevice ? "Entwürfe, Profil und Lernpfad auf diesem Gerät gespeichert." : "Dein Lernstand wird beim Arbeiten automatisch gespeichert.",
+        : "",
     detail = blocked ? storageError : saveFailed
       ? dirty
         ? "Deine Änderungen sind nur in diesem geöffneten Tab. Lade den aktuellen Lernstand als JSON herunter, bevor du die Seite neu lädst oder schließt. Du kannst das Speichern erneut versuchen."
@@ -5377,23 +5375,20 @@ function updateStorageStatus() {
   const box = $("#storageStatus"),
     text = $("#storageMessage"),
     description = $("#storageDetail");
+  box.hidden = !problem;
   box.dataset.state = mode;
   box.dataset.unsaved = String(dirty);
   // Do not repeat the same live announcement on every keystroke.
   if (text.textContent !== message) text.textContent = message;
   if (description.textContent !== detail) description.textContent = detail;
   description.hidden = !detail;
-  $("#storageSymbol").textContent = problem ? "!" : savedOnDevice ? "✓" : "○";
   $("#storageActions").hidden = !problem;
   $("#retrySave").hidden = blocked || !dirty;
   $("#storageRaw").hidden = !blocked || !unreadableStorage;
 }
 $("#retrySave").onclick = () => {
-  if (!save()) return;
-  const message = $("#storageMessage");
-  (message.getClientRects().length ? message : $("#backupButton")).focus({ preventScroll: true });
+  if (save()) $("#backupButton").focus({ preventScroll: true });
 };
-$("#storageMessage").tabIndex = -1;
 $("#storageBackup").onclick = () => {
   backup();
   toast("JSON-Download gestartet. Prüfe die Datei im Downloadordner.");

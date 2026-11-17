@@ -675,9 +675,6 @@ a.lesson-menu-item:hover,
 .workspace-header[data-lesson] .topbar {
   padding-block: 0.65rem;
 }
-.workspace-header[data-lesson] .storage-status:is([data-state="ready"], [data-state="saved"]) {
-  display: none;
-}
 .workspace-header[data-lesson] .storage-status {
   max-height: 20vh;
 }
@@ -751,7 +748,6 @@ html:has(.workspace-header[data-lesson]) {
 }
 #storageMessage { font-weight: 600; }
 #storageDetail { margin-top: 0.35rem; }
-.storage-status[data-state="saved"] #storageSymbol { color: var(--green); }
 .storage-status[data-state="error"],
 .storage-status[data-state="blocked"] {
   border-left: 4px solid var(--amber);

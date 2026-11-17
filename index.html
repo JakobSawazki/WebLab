@@ -181,11 +181,11 @@
             <progress id="lessonProgressBar" max="100" value="0" aria-describedby="lessonProgressDetail"></progress>
             <p id="lessonProgressDetail"></p>
           </section>
-          <section id="storageStatus" class="storage-status" data-state="ready" aria-label="Speicherstatus">
+          <section id="storageStatus" class="storage-status" data-state="ready" aria-label="Speicherstatus" hidden>
             <div class="storage-copy">
-              <span id="storageSymbol" aria-hidden="true">○</span>
+              <span aria-hidden="true">!</span>
               <div>
-                <p id="storageMessage" role="status" aria-live="polite" aria-atomic="true">Dein Lernstand wird beim Arbeiten automatisch gespeichert.</p>
+                <p id="storageMessage" role="status" aria-live="polite" aria-atomic="true"></p>
                 <p id="storageDetail" class="muted" hidden></p>
               </div>
             </div>

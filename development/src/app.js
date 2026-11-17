@@ -38,7 +38,6 @@ const $ = (s) => document.querySelector(s);
 let state,
   storageError = "",
   unreadableStorage = null,
-  savedOnDevice = false,
   saveFailed = false,
   pendingImport = null,
   importRead = 0,
@@ -48,7 +47,6 @@ let state,
   toastTimer;
 try {
   state = load(localStorage);
-  savedOnDevice = Boolean(localStorage.getItem(STORAGE_KEY) || localStorage.getItem("weblab-state-v1"));
 } catch {
   state = blank();
   try { unreadableStorage = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("weblab-state-v1"); } catch {}
@@ -229,7 +227,6 @@ function save() {
     const value = JSON.stringify(state);
     localStorage.setItem(STORAGE_KEY, value);
     savedSnapshot = value;
-    savedOnDevice = true;
     saveFailed = false;
     storageError = "";
     unreadableStorage = null;
@@ -245,12 +242,12 @@ function updateStorageStatus() {
   const blocked = preventSave,
     problem = blocked || saveFailed,
     dirty = problem && JSON.stringify(state) !== savedSnapshot,
-    mode = blocked ? "blocked" : saveFailed ? "error" : savedOnDevice ? "saved" : "ready",
+    mode = blocked ? "blocked" : saveFailed ? "error" : "ready",
     message = blocked
       ? "Automatisches Speichern angehalten."
       : saveFailed
         ? dirty ? "Änderungen noch nicht auf diesem Gerät gespeichert." : "Speichern gerade nicht möglich. Dein bisheriger Stand bleibt erhalten."
-        : savedOnDevice ? "Entwürfe, Profil und Lernpfad auf diesem Gerät gespeichert." : "Dein Lernstand wird beim Arbeiten automatisch gespeichert.",
+        : "",
     detail = blocked ? storageError : saveFailed
       ? dirty
         ? "Deine Änderungen sind nur in diesem geöffneten Tab. Lade den aktuellen Lernstand als JSON herunter, bevor du die Seite neu lädst oder schließt. Du kannst das Speichern erneut versuchen."
@@ -259,23 +256,20 @@ function updateStorageStatus() {
   const box = $("#storageStatus"),
     text = $("#storageMessage"),
     description = $("#storageDetail");
+  box.hidden = !problem;
   box.dataset.state = mode;
   box.dataset.unsaved = String(dirty);
   // Do not repeat the same live announcement on every keystroke.
   if (text.textContent !== message) text.textContent = message;
   if (description.textContent !== detail) description.textContent = detail;
   description.hidden = !detail;
-  $("#storageSymbol").textContent = problem ? "!" : savedOnDevice ? "✓" : "○";
   $("#storageActions").hidden = !problem;
   $("#retrySave").hidden = blocked || !dirty;
   $("#storageRaw").hidden = !blocked || !unreadableStorage;
 }
 $("#retrySave").onclick = () => {
-  if (!save()) return;
-  const message = $("#storageMessage");
-  (message.getClientRects().length ? message : $("#backupButton")).focus({ preventScroll: true });
+  if (save()) $("#backupButton").focus({ preventScroll: true });
 };
-$("#storageMessage").tabIndex = -1;
 $("#storageBackup").onclick = () => {
   backup();
   toast("JSON-Download gestartet. Prüfe die Datei im Downloadordner.");

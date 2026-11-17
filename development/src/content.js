@@ -1,6 +1,6 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 import { extensions } from "./extensions.js";
-export const VERSION = "1.56.0";
+export const VERSION = "1.56.1";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -481,7 +481,7 @@ export const lessons = [
     "Lokal testen und geschützt übertragen",
     "Ich kann eine Seite auf einer nicht öffentlichen Plattform testen.",
     "Lege index.html, style.css und deine Medien in einem gemeinsamen Projektordner ab. Teste Links, Groß- und Kleinschreibung, schmale Ansichten und fehlende Bilder. Übertrage die vollständige Ordnerstruktur auf das von der Lehrkraft vorgegebene, nicht öffentliche Ziel, zum Beispiel einen lokalen Webserver. Bei einer FTP-Übung werden Adresse und Zugang von der Lehrkraft vorgegeben; trage Kennwörter nie in HTML ein. Verwende im echten Betrieb eine geschützte Übertragung wie SFTP, sofern bereitgestellt.\n\nDein Testprotokoll kann einklappbar sein. <details> umschließt den gesamten Bereich. <summary> ist die Schaltfläche, über die du den Inhalt auf- und zuklappst.",
-    "<details>\n  <summary>Testprotokoll</summary>\n  <ol>\n    <li>Kontaktseite und Rücklink öffnen sich.</li>\n  </ol>\n</details>",
+    "<details>\n  <summary>Testprotokoll</summary>\n  <ol>\n    <li>Kontaktlink geprüft.</li>\n  </ol>\n</details>",
     "Schreibe einen Testbericht als ol mit mindestens drei konkreten Tests. Exportiere dein Projekt, teste lokal und übertrage die Dateien mit der Lehrkraft auf die geschützte Unterrichtsplattform. Ein öffentlicher GitHub-Pages-Upload ist für diese Schüleraufgabe kein Ersatz.",
     "Notiere zu jedem Test: Was wurde geprüft, was war das Ergebnis? Die echte Übertragung bestätigt die Lehrkraft.",
     "Was muss beim Übertragen erhalten bleiben?",

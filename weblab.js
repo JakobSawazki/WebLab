@@ -283,7 +283,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.56.0";
+const VERSION = "1.56.1";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -764,7 +764,7 @@ const lessons = [
     "Lokal testen und geschützt übertragen",
     "Ich kann eine Seite auf einer nicht öffentlichen Plattform testen.",
     "Lege index.html, style.css und deine Medien in einem gemeinsamen Projektordner ab. Teste Links, Groß- und Kleinschreibung, schmale Ansichten und fehlende Bilder. Übertrage die vollständige Ordnerstruktur auf das von der Lehrkraft vorgegebene, nicht öffentliche Ziel, zum Beispiel einen lokalen Webserver. Bei einer FTP-Übung werden Adresse und Zugang von der Lehrkraft vorgegeben; trage Kennwörter nie in HTML ein. Verwende im echten Betrieb eine geschützte Übertragung wie SFTP, sofern bereitgestellt.\n\nDein Testprotokoll kann einklappbar sein. <details> umschließt den gesamten Bereich. <summary> ist die Schaltfläche, über die du den Inhalt auf- und zuklappst.",
-    "<details>\n  <summary>Testprotokoll</summary>\n  <ol>\n    <li>Kontaktseite und Rücklink öffnen sich.</li>\n  </ol>\n</details>",
+    "<details>\n  <summary>Testprotokoll</summary>\n  <ol>\n    <li>Kontaktlink geprüft.</li>\n  </ol>\n</details>",
     "Schreibe einen Testbericht als ol mit mindestens drei konkreten Tests. Exportiere dein Projekt, teste lokal und übertrage die Dateien mit der Lehrkraft auf die geschützte Unterrichtsplattform. Ein öffentlicher GitHub-Pages-Upload ist für diese Schüleraufgabe kein Ersatz.",
     "Notiere zu jedem Test: Was wurde geprüft, was war das Ergebnis? Die echte Übertragung bestätigt die Lehrkraft.",
     "Was muss beim Übertragen erhalten bleiben?",
@@ -845,6 +845,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.56.1", "Testprotokoll auf schmalen Bildschirmen", "Der Code und die neuen Bausteine der Einheit 15 passen auch bei 360 Pixel Breite."],
     ["1.56.0", "Ein neues Motiv und neue Bausteine pro Einheit", "Jede Einheit hat ihr eigenes fotorealistisches Motiv. Über dem Arbeitsauftrag steht, welche HTML- oder CSS-Bausteine, Arbeitsschritte oder Prüfungen dazukommen."],
     ["1.55.0", "Gemeinsames Schulgarten-Projekt", "Die Klasse baut in Einheit 01 bis 15 dieselbe Webseite und bespricht nach jedem Schritt die Ergebnisse. Einheit 16 beginnt das eigene Abschlussprojekt."],
     ["1.54.0", "HTML und CSS von Grund auf lernen", "Die erste Webseite beginnt mit zwei Codezeilen. Schritt für Schritt änderst du Überschrift und Absatz und siehst das Ergebnis im Browser. Das HTML-Grundgerüst und der CSS-Einstieg bauen darauf auf."],

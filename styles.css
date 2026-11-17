@@ -1719,6 +1719,9 @@ textarea#cssEditor {
 .practice-blocks strong {
   margin-inline-end: 0.25rem;
 }
+.practice-blocks code {
+  overflow-wrap: anywhere;
+}
 .practice-steps li {
   margin-bottom: 0.7rem;
 }
@@ -2142,7 +2145,7 @@ dialog::backdrop {
     border-bottom: 1px solid var(--line);
   }
   .lesson-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .topbar .secondary {
     font-size: 0.75rem;

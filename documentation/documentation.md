@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.56.3** · Status: **Veröffentlichung über GitHub Pages**.
+Version: **1.56.3** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -326,6 +326,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 ### 17.11.2026 – Codex – Version 1.56.3: Bedienelemente bleiben oben
 
 - Auf allen Seiten bleibt die Kopfzeile beim Scrollen oben. In Lerneinheiten bleiben die Kapitelnavigation und der Fortschritt Teil dieser Kopfzeile. Sprungziele berücksichtigen die aktuelle Höhe der Kopfzeile, einschließlich einer eventuell eingeblendeten Speicherwarnung.
+- Veröffentlichung und Offline-Kopie erneut geprüft. GitHub bestätigt 69 Node-Tests und 364 Browserprüfungen. Die öffentlichen Programmdateien entsprechen dem Build. Alle 28 Dateien der bestehenden Offline-Kopie entsprechen dem Release 1.56.3. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44139956927) · [Offline-Release 1.56.3](https://github.com/JakobSawazki/WebLab/releases/tag/v1.56.3)
 
 ### 17.11.2026 – Codex – Version 1.56.2: Automatisch speichern ohne Hinweisleiste
 

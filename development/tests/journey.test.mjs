@@ -9,6 +9,7 @@ test("All 16 learning steps form one complete chain with actionable preview task
     assert.equal(step.previous, lessons[i - 1]?.id || null);
     assert.equal(step.next, lessons[i + 1]?.id || null);
     assert.equal(step.steps.length, 3);
+    assert.ok(step.blocks.length >= 2 && new Set(step.blocks).size === step.blocks.length);
     for (const text of [
       step.recall,
       step.addition,

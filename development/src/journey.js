@@ -138,10 +138,10 @@ const stages = [
     "Wir dokumentieren die Herkunft des gemeinsamen Materials.",
     [
       "Ergänze im footer die h2 „Quellen und Rechte“.",
-      "Schreibe darunter „Beetplan und Aussaat-Clip: WebLab-Unterrichtsmaterial. Texte: gemeinsamer Unterrichtsentwurf.“.",
+      "Schreibe darunter „Beetplan und Aussaat-Clip: WebLab-Unterrichtsmaterial. Texte: gemeinsamer Unterrichtsentwurf.“. Setze <cite> und </cite> jeweils um die Titel „Beetplan“ und „Aussaat-Clip“.",
       "Besprecht mit der Lehrkraft, welche Angaben für Material aus fremden Quellen und eine Veröffentlichung nötig wären."
     ],
-    "Vergleicht die Quellenzeile. Welche zusätzlichen Informationen bräuchtet ihr für ein fremdes Foto? Wo würdet ihr eine passende Erlaubnis nachschlagen?"
+    "Vergleicht die Quellenzeile. Zeigt die beiden Werktitel zwischen <cite> und </cite>. Welche zusätzlichen Informationen bräuchtet ihr für ein fremdes Foto? Wo würdet ihr eine passende Erlaubnis nachschlagen?"
   ],
   [
     "Die gestaltete Schulgartenseite ist fertig und hat Quellenangaben.",
@@ -149,20 +149,39 @@ const stages = [
     [
       "Entpacke das Projekt-ZIP. Lege den Aussaat-Clip wieder unter medien/aussaat.webm ab. Öffne index.html im Browser.",
       "Prüfe nacheinander den Hin- und Rücklink, den Aussaat-Clip und die Karte bei schmaler Fensterbreite. Behebe Fehler in Notepad++.",
-      "Schreibe ins Testprotokoll auf der Startseite eine ol mit drei Einträgen. Nenne darin je Test und tatsächliches Ergebnis. Nutze für die Übertragung das von der Lehrkraft vorgegebene geschützte Ziel."
+      "Schreibe auf der Startseite ein Testprotokoll. Setze <summary>Testprotokoll</summary> und eine ol mit den drei Testergebnissen in <details>. Klappe das Protokoll in der Vorschau auf. Nutze für die Übertragung das von der Lehrkraft vorgegebene geschützte Ziel."
     ],
-    "Vergleicht die Ergebnisse der gleichen drei Tests. Haltet einen typischen Fehler und seinen Lösungsweg fest. Welche Fragen sind vor dem eigenen Projekt offen?"
+    "Öffnet das Testprotokoll und vergleicht die Ergebnisse der gleichen drei Tests. Haltet einen typischen Fehler und seinen Lösungsweg fest. Welche Fragen sind vor dem eigenen Projekt offen?"
   ],
   [
     "Du hast am Schulgarten eine vollständige Website aufgebaut und gemeinsam geprüft.",
     "Jetzt planst, baust und präsentierst du eine Webseite zu deinem eigenen Thema.",
     [
-      "Wähle ein Thema und notiere Zielgruppe, Ziel und zwei Seiten. Starte im neuen Entwurf dieser Einheit mit deinem eigenen Inhalt.",
+      "Wähle ein Thema und notiere Zielgruppe, Ziel und zwei Seiten. Lege für die eigene Webseite einen separaten Projektordner an und starte mit dem Grundgerüst dieser Einheit.",
       "Entwickle index.html und kontakt.html mit Hin- und Rücklink und gemeinsamer style.css. Nutze den Abschlussauftrag als Checkliste.",
       "Entpacke das Projekt-ZIP, teste Links und Darstellung, dokumentiere die Quellen und präsentiere deine Webseite. Erkläre ein HTML-Element, eine CSS-Regel und einen relativen Pfad."
     ],
     "Du kannst erklären, für wen deine Seite gedacht ist, wie sie aufgebaut ist und wie du geprüft hast, dass sie funktioniert."
   ],
+];
+
+const buildingBlocks = [
+  ["<h1>", "<p>", "<strong>"],
+  ["<!doctype html>", "<html>", "<head>", "<meta charset>", "<title>", "<body>"],
+  ["<h2>", "<em>"],
+  ["<ul>", "<ol>", "<li>"],
+  ["<a>", "href", "id", "relative Pfade"],
+  ["<img>", "src", "alt", "width", "height"],
+  ["<table>", "<caption>", "<tr>", "<th scope>", "<td>"],
+  ["<video controls>", "<source>", "Textfassung"],
+  ["style.css", "color", "font-family", "<link>"],
+  ["class", ".hinweis", "#start", "text-align"],
+  ["background-color", "font-size", "line-height"],
+  ["<section>", "padding", "border", "margin", "max-width", "box-sizing"],
+  ["<header>", "<nav>", "<main>", "<footer>"],
+  ["<cite>", "Quellen im Footer", "Bildrechte"],
+  ["<details>", "<summary>", "Dateien im Browser testen"],
+  ["Zwei verknüpfte Seiten", "Gemeinsame style.css", "Eigener Projektordner"],
 ];
 
 const materials = {
@@ -177,6 +196,7 @@ export const journey = Object.fromEntries(
       previous: lessons[index - 1]?.id || null,
       shared: index < lessons.length - 1,
       material: materials[lesson.id],
+      blocks: buildingBlocks[index],
       next: lessons[index + 1]?.id || null,
       recall: stages[index][0],
       addition: stages[index][1],

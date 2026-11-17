@@ -258,20 +258,24 @@ const phaseArtwork = [
   "webprojekt.webp",
 ];
 
+
 const lessonArtwork = {
-  l2: "html-grundgeruest.webp",
-  l3: "textstruktur.webp",
-  l4: "listen.webp",
-  l5: "links-und-pfade.webp",
-  l6: "bilder-und-alt-text.webp",
-  l7: "tabellen.webp",
-  l8: "audio-und-video.webp",
-  l9: "inhalt-und-gestaltung.webp",
-  l10: "selektoren.webp",
-  l11: "farben-und-typografie.webp",
-  l13: "seitenplanung.webp",
-  l14: "quellen-und-rechte.webp",
-  l15: "geschuetzte-uebertragung.webp",
+  l1: "lerneinheit-01-schulgarten.webp",
+  l2: "lerneinheit-02-grundgeruest.webp",
+  l3: "lerneinheit-03-abschnitte.webp",
+  l4: "lerneinheit-04-listen.webp",
+  l5: "lerneinheit-05-wege.webp",
+  l6: "lerneinheit-06-foto.webp",
+  l7: "lerneinheit-07-tabellen.webp",
+  l8: "lerneinheit-08-film.webp",
+  l9: "lerneinheit-09-css.webp",
+  l10: "lerneinheit-10-markierungen.webp",
+  l11: "lerneinheit-11-farben.webp",
+  l12: "lerneinheit-12-boxmodell.webp",
+  l13: "lerneinheit-13-planung.webp",
+  l14: "lerneinheit-14-quellen.webp",
+  l15: "lerneinheit-15-testen.webp",
+  l16: "lerneinheit-16-abschlussprojekt.webp",
 };
 
 return {phaseArtwork,lessonArtwork};
@@ -279,7 +283,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.55.0";
+const VERSION = "1.56.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -730,8 +734,8 @@ const lessons = [
     3,
     "Rechte und Quellen prüfen",
     "Ich kann die Veröffentlichung vorbereiten.",
-    "Nutze eigene Inhalte oder Material mit einer passenden Nutzungserlaubnis. Notiere bei fremden Werken Titel, Urheber, Quelle, Lizenz und Änderungen. Creative Commons bietet verschiedene Bedingungen; BY verlangt Namensnennung, SA eine entsprechende Weitergabe bearbeiteter Werke. Ein Disclaimer ersetzt keine Rechteprüfung. Welche Anbieterinformationen erforderlich sind, hängt vom Angebot ab. Kläre die schulische Veröffentlichung mit der Lehrkraft und veröffentliche keine privaten Schülerdaten.",
-    "<footer>\n <h2>Quellen und Rechte</h2>\n <p>Foto: eigene Aufnahme, keine fremden Personen sichtbar.</p>\n</footer>",
+    "Nutze eigene Inhalte oder Material mit einer passenden Nutzungserlaubnis. Notiere bei fremden Werken Titel, Urheber, Quelle, Lizenz und Änderungen.\n\nMit <cite> und </cite> zeichnest du einen Werktitel aus, etwa den Titel eines Bilds oder Videos. Angaben wie Urheber und Lizenz schreibst du daneben.\n\nCreative Commons bietet verschiedene Bedingungen; BY verlangt Namensnennung, SA eine entsprechende Weitergabe bearbeiteter Werke. Ein Disclaimer ersetzt keine Rechteprüfung. Welche Anbieterinformationen erforderlich sind, hängt vom Angebot ab. Kläre die schulische Veröffentlichung mit der Lehrkraft und veröffentliche keine privaten Schülerdaten.",
+    "<footer>\n <h2>Quellen und Rechte</h2>\n <p><cite>Beetplan</cite> und <cite>Aussaat-Clip</cite>: WebLab-Unterrichtsmaterial.</p>\n</footer>",
     "Erstelle in footer eine Überschrift „Quellen und Rechte“ und eine ehrliche Dokumentation deiner verwendeten Inhalte mit mindestens 40 Zeichen. Prüfe die offiziellen Quellen unter dem Aufgabentext. Besprich erforderliche Anbieterinformationen mit der Lehrkraft.",
     "Bei eigenem Material dokumentierst du die eigene Urheberschaft. Erfinde keine Lizenz für fremde Bilder.",
     "Darfst du jedes Bild aus einer Suchmaschine übernehmen?",
@@ -759,8 +763,8 @@ const lessons = [
     3,
     "Lokal testen und geschützt übertragen",
     "Ich kann eine Seite auf einer nicht öffentlichen Plattform testen.",
-    "Lege index.html, style.css und deine Medien in einem gemeinsamen Projektordner ab. Teste Links, Groß- und Kleinschreibung, schmale Ansichten und fehlende Bilder. Übertrage die vollständige Ordnerstruktur auf das von der Lehrkraft vorgegebene, nicht öffentliche Ziel, zum Beispiel einen lokalen Webserver. Bei einer FTP-Übung werden Adresse und Zugang von der Lehrkraft vorgegeben; trage Kennwörter nie in HTML ein. Verwende im echten Betrieb eine geschützte Übertragung wie SFTP, sofern bereitgestellt.",
-    "mein-projekt/\n  index.html\n  kontakt.html\n  style.css\n  bilder/\n    beet.jpg",
+    "Lege index.html, style.css und deine Medien in einem gemeinsamen Projektordner ab. Teste Links, Groß- und Kleinschreibung, schmale Ansichten und fehlende Bilder. Übertrage die vollständige Ordnerstruktur auf das von der Lehrkraft vorgegebene, nicht öffentliche Ziel, zum Beispiel einen lokalen Webserver. Bei einer FTP-Übung werden Adresse und Zugang von der Lehrkraft vorgegeben; trage Kennwörter nie in HTML ein. Verwende im echten Betrieb eine geschützte Übertragung wie SFTP, sofern bereitgestellt.\n\nDein Testprotokoll kann einklappbar sein. <details> umschließt den gesamten Bereich. <summary> ist die Schaltfläche, über die du den Inhalt auf- und zuklappst.",
+    "<details>\n  <summary>Testprotokoll</summary>\n  <ol>\n    <li>Kontaktseite und Rücklink öffnen sich.</li>\n  </ol>\n</details>",
     "Schreibe einen Testbericht als ol mit mindestens drei konkreten Tests. Exportiere dein Projekt, teste lokal und übertrage die Dateien mit der Lehrkraft auf die geschützte Unterrichtsplattform. Ein öffentlicher GitHub-Pages-Upload ist für diese Schüleraufgabe kein Ersatz.",
     "Notiere zu jedem Test: Was wurde geprüft, was war das Ergebnis? Die echte Übertragung bestätigt die Lehrkraft.",
     "Was muss beim Übertragen erhalten bleiben?",
@@ -841,6 +845,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.56.0", "Ein neues Motiv und neue Bausteine pro Einheit", "Jede Einheit hat ihr eigenes fotorealistisches Motiv. Über dem Arbeitsauftrag steht, welche HTML- oder CSS-Bausteine, Arbeitsschritte oder Prüfungen dazukommen."],
     ["1.55.0", "Gemeinsames Schulgarten-Projekt", "Die Klasse baut in Einheit 01 bis 15 dieselbe Webseite und bespricht nach jedem Schritt die Ergebnisse. Einheit 16 beginnt das eigene Abschlussprojekt."],
     ["1.54.0", "HTML und CSS von Grund auf lernen", "Die erste Webseite beginnt mit zwei Codezeilen. Schritt für Schritt änderst du Überschrift und Absatz und siehst das Ergebnis im Browser. Das HTML-Grundgerüst und der CSS-Einstieg bauen darauf auf."],
     ["1.53.0", "Lerneinheit beim Scrollen im Blick", "Lernpfad, Kapitelnavigation, Bedienelemente und Fortschrittsbalken bleiben oben sichtbar. In Lerneinheiten erscheinen Speichermeldungen bei Problemen."],
@@ -3501,10 +3506,10 @@ const stages = [
     "Wir dokumentieren die Herkunft des gemeinsamen Materials.",
     [
       "Ergänze im footer die h2 „Quellen und Rechte“.",
-      "Schreibe darunter „Beetplan und Aussaat-Clip: WebLab-Unterrichtsmaterial. Texte: gemeinsamer Unterrichtsentwurf.“.",
+      "Schreibe darunter „Beetplan und Aussaat-Clip: WebLab-Unterrichtsmaterial. Texte: gemeinsamer Unterrichtsentwurf.“. Setze <cite> und </cite> jeweils um die Titel „Beetplan“ und „Aussaat-Clip“.",
       "Besprecht mit der Lehrkraft, welche Angaben für Material aus fremden Quellen und eine Veröffentlichung nötig wären."
     ],
-    "Vergleicht die Quellenzeile. Welche zusätzlichen Informationen bräuchtet ihr für ein fremdes Foto? Wo würdet ihr eine passende Erlaubnis nachschlagen?"
+    "Vergleicht die Quellenzeile. Zeigt die beiden Werktitel zwischen <cite> und </cite>. Welche zusätzlichen Informationen bräuchtet ihr für ein fremdes Foto? Wo würdet ihr eine passende Erlaubnis nachschlagen?"
   ],
   [
     "Die gestaltete Schulgartenseite ist fertig und hat Quellenangaben.",
@@ -3512,20 +3517,39 @@ const stages = [
     [
       "Entpacke das Projekt-ZIP. Lege den Aussaat-Clip wieder unter medien/aussaat.webm ab. Öffne index.html im Browser.",
       "Prüfe nacheinander den Hin- und Rücklink, den Aussaat-Clip und die Karte bei schmaler Fensterbreite. Behebe Fehler in Notepad++.",
-      "Schreibe ins Testprotokoll auf der Startseite eine ol mit drei Einträgen. Nenne darin je Test und tatsächliches Ergebnis. Nutze für die Übertragung das von der Lehrkraft vorgegebene geschützte Ziel."
+      "Schreibe auf der Startseite ein Testprotokoll. Setze <summary>Testprotokoll</summary> und eine ol mit den drei Testergebnissen in <details>. Klappe das Protokoll in der Vorschau auf. Nutze für die Übertragung das von der Lehrkraft vorgegebene geschützte Ziel."
     ],
-    "Vergleicht die Ergebnisse der gleichen drei Tests. Haltet einen typischen Fehler und seinen Lösungsweg fest. Welche Fragen sind vor dem eigenen Projekt offen?"
+    "Öffnet das Testprotokoll und vergleicht die Ergebnisse der gleichen drei Tests. Haltet einen typischen Fehler und seinen Lösungsweg fest. Welche Fragen sind vor dem eigenen Projekt offen?"
   ],
   [
     "Du hast am Schulgarten eine vollständige Website aufgebaut und gemeinsam geprüft.",
     "Jetzt planst, baust und präsentierst du eine Webseite zu deinem eigenen Thema.",
     [
-      "Wähle ein Thema und notiere Zielgruppe, Ziel und zwei Seiten. Starte im neuen Entwurf dieser Einheit mit deinem eigenen Inhalt.",
+      "Wähle ein Thema und notiere Zielgruppe, Ziel und zwei Seiten. Lege für die eigene Webseite einen separaten Projektordner an und starte mit dem Grundgerüst dieser Einheit.",
       "Entwickle index.html und kontakt.html mit Hin- und Rücklink und gemeinsamer style.css. Nutze den Abschlussauftrag als Checkliste.",
       "Entpacke das Projekt-ZIP, teste Links und Darstellung, dokumentiere die Quellen und präsentiere deine Webseite. Erkläre ein HTML-Element, eine CSS-Regel und einen relativen Pfad."
     ],
     "Du kannst erklären, für wen deine Seite gedacht ist, wie sie aufgebaut ist und wie du geprüft hast, dass sie funktioniert."
   ],
+];
+
+const buildingBlocks = [
+  ["<h1>", "<p>", "<strong>"],
+  ["<!doctype html>", "<html>", "<head>", "<meta charset>", "<title>", "<body>"],
+  ["<h2>", "<em>"],
+  ["<ul>", "<ol>", "<li>"],
+  ["<a>", "href", "id", "relative Pfade"],
+  ["<img>", "src", "alt", "width", "height"],
+  ["<table>", "<caption>", "<tr>", "<th scope>", "<td>"],
+  ["<video controls>", "<source>", "Textfassung"],
+  ["style.css", "color", "font-family", "<link>"],
+  ["class", ".hinweis", "#start", "text-align"],
+  ["background-color", "font-size", "line-height"],
+  ["<section>", "padding", "border", "margin", "max-width", "box-sizing"],
+  ["<header>", "<nav>", "<main>", "<footer>"],
+  ["<cite>", "Quellen im Footer", "Bildrechte"],
+  ["<details>", "<summary>", "Dateien im Browser testen"],
+  ["Zwei verknüpfte Seiten", "Gemeinsame style.css", "Eigener Projektordner"],
 ];
 
 const materials = {
@@ -3540,6 +3564,7 @@ const journey = Object.fromEntries(
       previous: lessons[index - 1]?.id || null,
       shared: index < lessons.length - 1,
       material: materials[lesson.id],
+      blocks: buildingBlocks[index],
       next: lessons[index + 1]?.id || null,
       recall: stages[index][0],
       addition: stages[index][1],
@@ -5454,7 +5479,7 @@ function lessonCatalogCard(l) {
   const action = access.unlocked
     ? `<a class="button ${isNext ? "" : "secondary"}" href="#lesson/${l.id}" aria-label="${done ? "Wiederholen" : "Einheit öffnen"}: Einheit ${number} – ${esc(l.title)}">${done ? "Wiederholen" : "Einheit öffnen"}</a>`
     : `<p class="catalog-lock">${icon("lock")} Ab ${access.requiredXP} Lernpfad-XP</p>`;
-  return `<article class="catalog-card ${isNext ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}">${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group])}<div class="catalog-copy"><div class="catalog-meta"><span class="catalog-number">Einheit ${number}</span><span class="badge ${done ? "done" : ""}">${status}</span></div><h4>${esc(l.title)}</h4><p class="catalog-goal">${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 EP</small>${action}</div></article>`;
+  return `<article class="catalog-card ${isNext ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}">${artworkImage(lessonArtwork[l.id])}<div class="catalog-copy"><div class="catalog-meta"><span class="catalog-number">Einheit ${number}</span><span class="badge ${done ? "done" : ""}">${status}</span></div><h4>${esc(l.title)}</h4><p class="catalog-goal">${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 EP</small>${action}</div></article>`;
 }
 function lessonCatalog() {
   return `<section class="lesson-catalog" aria-labelledby="catalogTitle"><div class="section-heading"><div><p class="eyebrow">BPE2 · 4 Etappen · ${lessons.length} Lerneinheiten</p><h2 id="catalogTitle" tabindex="-1">Alle Lerneinheiten</h2></div><a href="#path">Zum Lernpfad →</a></div><p class="lead">Hier siehst du, was dich erwartet. Schließe eine Einheit ab, um die nächste freizuschalten.</p><nav class="catalog-nav" aria-label="Etappen der Kartenübersicht">${groups.map((group, i) => `<button class="button secondary" type="button" data-catalog-jump="catalog-phase-${i + 1}">${esc(group)}</button>`).join("")}</nav>${groups.map((group, index) => {
@@ -5513,7 +5538,9 @@ function lessonJourney(l) {
 }
 function lessonPractice(l) {
   const step = journey[l.id];
-  return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>${step.shared ? "Gemeinsamer Arbeitsauftrag" : "So gehst du im Editor vor"}</h3>${l.id === "l1" ? '<p>Im Editor tippst du den Code. Die Live-Vorschau zeigt dir beim Tippen, was der Browser daraus macht.</p>' : ""}<ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol>${step.material ? `<p><a href="${step.material[0]}" download>${step.material[1]}</a></p>` : ""}${step.shared ? "" : `<p>${esc(step.observe)}</p>`}<a class="button secondary" href="#studioTitle" id="jumpEditor" data-editor-jump>Jetzt direkt im Code ausprobieren</a>${l.id === "l1" ? `<details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>` : ""}</section>`;
+  return `<section class="panel practice-steps" id="practice"><p class="eyebrow">Verstehen → schreiben → ansehen → erklären</p><h3>${step.shared ? "Gemeinsamer Arbeitsauftrag" : "So gehst du im Editor vor"}</h3>
+    <p class="practice-blocks"><strong>${step.shared ? "Neu in dieser Einheit" : "Das setzt du selbständig ein"}</strong> ${step.blocks.map((block) => `<code>${esc(block)}</code>`).join(" ")}</p>
+    ${l.id === "l1" ? '<p>Im Editor tippst du den Code. Die Live-Vorschau zeigt dir beim Tippen, was der Browser daraus macht.</p>' : ""}<ol>${step.steps.map((text) => `<li>${esc(text)}</li>`).join("")}</ol>${step.material ? `<p><a href="${step.material[0]}" download>${step.material[1]}</a></p>` : ""}${step.shared ? "" : `<p>${esc(step.observe)}</p>`}<a class="button secondary" href="#studioTitle" id="jumpEditor" data-editor-jump>Jetzt direkt im Code ausprobieren</a>${l.id === "l1" ? `<details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>` : ""}</section>`;
 }
 function lessonExtension(l) {
   const extra = l.extension;
@@ -5548,7 +5575,7 @@ function lessonView(l) {
   const done = state.completed.includes(l.id),
     first = l.id === "l1",
     extras = `${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}`;
-  return `<section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${first ? "" : lessonJourney(l)}${lessonUnderstanding(l)}${lessonPractice(l)}${first ? "" : extras}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div>${journey[l.id].shared ? `<details class="class-review"><summary>Ergebnissicherung in der Klasse</summary><p>${esc(journey[l.id].observe)}</p><p>Notiere unten bei „Meine Notizen“ euer Ergebnis und eine Frage, die noch offen ist.</p></details>` : ""}</section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>${first ? lessonJourney(l) + `<section class="panel"><h3>Freiwillig weiterüben</h3>${debugChallenge(l)}${lessonPitfalls(l)}</section>` + extras : ""}<div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id], true)}</section>${lessonWorkflow()}${first ? "" : lessonJourney(l)}${lessonUnderstanding(l)}${lessonPractice(l)}${first ? "" : extras}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div>${journey[l.id].shared ? `<details class="class-review"><summary>Ergebnissicherung in der Klasse</summary><p>${esc(journey[l.id].observe)}</p><p>Notiere unten bei „Meine Notizen“ euer Ergebnis und eine Frage, die noch offen ist.</p></details>` : ""}</section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>${first ? lessonJourney(l) + `<section class="panel"><h3>Freiwillig weiterüben</h3>${debugChallenge(l)}${lessonPitfalls(l)}</section>` + extras : ""}<div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 // Reiter für index.html, alle Unterseiten und style.css.
 function fileTabs(d) {

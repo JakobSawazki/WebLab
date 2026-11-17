@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.55.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.56.0** · Status: **Veröffentlichung über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -322,6 +322,37 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.56.0: Schulgarten-Motive und aufeinander aufbauende Bausteine
+
+- Über jedem Auftrag stehen die neuen HTML- und CSS-Bausteine. Die Schritte 01 bis 15 erweitern denselben Schulgarten-Entwurf. In 14 markieren die Lernenden Werktitel mit cite, in 15 legen sie das Testprotokoll einklappbar mit details und summary an. Die bestehende technische Prüfung akzeptiert weiterhin frühere Entwürfe. In 16 übertragen die Schüler ihre Kenntnisse auf eine neue Seite zu einem eigenen Thema.
+- Jede Einheit hat eine eigene mit dem integrierten ImageGen-Werkzeug erzeugte fotorealistische Grafik. Dieselbe Grafik erscheint in der jeweiligen Kurskarte und im Kopf der Einheit. Die vier Etappen behalten ihre eigenen Motive. Die 16 neuen WebP-Dateien liegen direkt unter assets und sind 960 × 540 Pixel groß.
+
+<details>
+<summary>ImageGen-Prompts und Bilddateien</summary>
+
+Gemeinsamer Bildauftrag
+
+> Photorealistic editorial photograph for an educational website about building a school garden website. Small authentic German secondary school garden, timber raised beds and simple tools, fresh spring greens, natural daylight, no visible faces, no brands, signs with legible text, graphic overlays, borders or watermarks. One single wide landscape image, subject fully inside the central 70% for a 16:9 crop. Real materials, warm human touches, understated premium magazine photography.
+
+- 01 First HTML heading and paragraph: at the edge of a newly planted school garden, a laptop with a spare white page and one heading-shaped dark line and one short paragraph-shaped line, an open notebook and a pencil nearby. Golden morning light. (`assets/lerneinheit-01-schulgarten.webp`)
+- 02 HTML document skeleton: low-angle view past the square timber structure of an empty new raised bed, hands fastening a single corner with a screwdriver, seedlings just beyond. The structure of the box is the focus, no laptop. (`assets/lerneinheit-02-grundgeruest.webp`)
+- 03 Heading hierarchy: elevated diagonal view of a whole school garden neatly divided into different planting areas, two clearly distinct beds connected by a compact path, organized rows of greens. (`assets/lerneinheit-03-abschnitte.webp`)
+- 04 Lists and ordered steps: overhead realistic flat lay on a timber garden workbench with three clearly distinct materials, loose potting soil, a small unmarked packet of seeds, a green watering can, and three adjacent stages of sowing visible in small pot trays. (`assets/lerneinheit-04-listen.webp`)
+- 05 Links and paths: garden path branches at a clear fork between two timber beds, an inviting open gate at one end and a compact potting shed at the other. A clear, readable visual metaphor for destinations. (`assets/lerneinheit-05-wege.webp`)
+- 06 Images and alt text: close shot of a hand photographing two distinct vegetable beds with a small digital camera, reddish radishes front left and young bean plants with stakes on the right, enough detail to describe the photograph from what is visible. (`assets/lerneinheit-06-foto.webp`)
+- 07 Tables: macro editorial flat lay of two orderly rows of healthy radishes and dried beans beside a ruled analogue gardening notebook with unmarked grid, emphasizing aligned rows and columns. (`assets/lerneinheit-07-tabellen.webp`)
+- 08 Audio/video: a small camera on a stable tripod filming hands sowing seeds in a raised bed, camera screen showing the hands, slightly over the shoulder, crisp photographic moment. (`assets/lerneinheit-08-film.webp`)
+- 09 First CSS rule: late afternoon at the gardening workbench, one laptop showing a restrained white webpage with an abstract single dark green headline stripe and muted grey paragraph lines; focus on that single color and the relation to the fresh green seedlings. (`assets/lerneinheit-09-css.webp`)
+- 10 CSS classes and IDs: two similar rows of bright young plants tagged by matching small unlettered green markers, and a single raised-bed reference marker in ochre in the foreground, clean near-ground composition. (`assets/lerneinheit-10-markierungen.webp`)
+- 11 Typography and color: warm magazine-style flat lay of a blank ivory plant label, a deep blue-green pencil and a sage color swatch beside fresh leaves on a garden table; quiet, crisp visual contrast and a different composition from previous images. (`assets/lerneinheit-11-farben.webp`)
+- 12 CSS box model: directly overhead on ONE raised garden bed with clearly visible central planted rectangle, calm empty soil margin around its contents, broad distinct wooden border, and gravel path outside. Simple nearly symmetrical composition. (`assets/lerneinheit-12-boxmodell.webp`)
+- 13 Page planning: overhead on a student workbench near the garden, hands arranging simple paper page-layout cards with unlettered boxes, a couple of leaves and a pencil, clean top-down composition showing header, nav, body and footer as blocks. (`assets/lerneinheit-13-planung.webp`)
+- 14 Sources and image permissions: detail shot of a camera, contact print of the same kind of planted school garden and open paper notebook for source notes, a hand recording the attribution without any readable writing, neutral soft light. (`assets/lerneinheit-14-quellen.webp`)
+- 15 Testing and publishing: workbench with a notebook, a laptop and a phone showing the same simple school garden webpage at two widths (abstract marks only). Natural outdoor classroom setting, plausible devices and scale. (`assets/lerneinheit-15-testen.webp`)
+- 16 Independent final project: student hands presenting their own distinct bicycle-workshop website on a laptop to a classmate at a school garden bench, soft greens behind, small repair tool and bike wheel making the new topic apparent, warm light and calm sense of completion. (`assets/lerneinheit-16-abschlussprojekt.webp`)
+
+</details>
 
 ### 17.11.2026 – Codex – Version 1.55.0: Gemeinsame Lernsituation Schulgarten
 

@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-17", [
+    ["1.56.0", "Ein neues Motiv und neue Bausteine pro Einheit", "Jede Einheit hat ihr eigenes fotorealistisches Motiv. Über dem Arbeitsauftrag steht, welche HTML- oder CSS-Bausteine, Arbeitsschritte oder Prüfungen dazukommen."],
     ["1.55.0", "Gemeinsames Schulgarten-Projekt", "Die Klasse baut in Einheit 01 bis 15 dieselbe Webseite und bespricht nach jedem Schritt die Ergebnisse. Einheit 16 beginnt das eigene Abschlussprojekt."],
     ["1.54.0", "HTML und CSS von Grund auf lernen", "Die erste Webseite beginnt mit zwei Codezeilen. Schritt für Schritt änderst du Überschrift und Absatz und siehst das Ergebnis im Browser. Das HTML-Grundgerüst und der CSS-Einstieg bauen darauf auf."],
     ["1.53.0", "Lerneinheit beim Scrollen im Blick", "Lernpfad, Kapitelnavigation, Bedienelemente und Fortschrittsbalken bleiben oben sichtbar. In Lerneinheiten erscheinen Speichermeldungen bei Problemen."],

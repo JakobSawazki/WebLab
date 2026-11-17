@@ -1,6 +1,6 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 import { extensions } from "./extensions.js";
-export const VERSION = "1.55.0";
+export const VERSION = "1.56.0";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -451,8 +451,8 @@ export const lessons = [
     3,
     "Rechte und Quellen prüfen",
     "Ich kann die Veröffentlichung vorbereiten.",
-    "Nutze eigene Inhalte oder Material mit einer passenden Nutzungserlaubnis. Notiere bei fremden Werken Titel, Urheber, Quelle, Lizenz und Änderungen. Creative Commons bietet verschiedene Bedingungen; BY verlangt Namensnennung, SA eine entsprechende Weitergabe bearbeiteter Werke. Ein Disclaimer ersetzt keine Rechteprüfung. Welche Anbieterinformationen erforderlich sind, hängt vom Angebot ab. Kläre die schulische Veröffentlichung mit der Lehrkraft und veröffentliche keine privaten Schülerdaten.",
-    "<footer>\n <h2>Quellen und Rechte</h2>\n <p>Foto: eigene Aufnahme, keine fremden Personen sichtbar.</p>\n</footer>",
+    "Nutze eigene Inhalte oder Material mit einer passenden Nutzungserlaubnis. Notiere bei fremden Werken Titel, Urheber, Quelle, Lizenz und Änderungen.\n\nMit <cite> und </cite> zeichnest du einen Werktitel aus, etwa den Titel eines Bilds oder Videos. Angaben wie Urheber und Lizenz schreibst du daneben.\n\nCreative Commons bietet verschiedene Bedingungen; BY verlangt Namensnennung, SA eine entsprechende Weitergabe bearbeiteter Werke. Ein Disclaimer ersetzt keine Rechteprüfung. Welche Anbieterinformationen erforderlich sind, hängt vom Angebot ab. Kläre die schulische Veröffentlichung mit der Lehrkraft und veröffentliche keine privaten Schülerdaten.",
+    "<footer>\n <h2>Quellen und Rechte</h2>\n <p><cite>Beetplan</cite> und <cite>Aussaat-Clip</cite>: WebLab-Unterrichtsmaterial.</p>\n</footer>",
     "Erstelle in footer eine Überschrift „Quellen und Rechte“ und eine ehrliche Dokumentation deiner verwendeten Inhalte mit mindestens 40 Zeichen. Prüfe die offiziellen Quellen unter dem Aufgabentext. Besprich erforderliche Anbieterinformationen mit der Lehrkraft.",
     "Bei eigenem Material dokumentierst du die eigene Urheberschaft. Erfinde keine Lizenz für fremde Bilder.",
     "Darfst du jedes Bild aus einer Suchmaschine übernehmen?",
@@ -480,8 +480,8 @@ export const lessons = [
     3,
     "Lokal testen und geschützt übertragen",
     "Ich kann eine Seite auf einer nicht öffentlichen Plattform testen.",
-    "Lege index.html, style.css und deine Medien in einem gemeinsamen Projektordner ab. Teste Links, Groß- und Kleinschreibung, schmale Ansichten und fehlende Bilder. Übertrage die vollständige Ordnerstruktur auf das von der Lehrkraft vorgegebene, nicht öffentliche Ziel, zum Beispiel einen lokalen Webserver. Bei einer FTP-Übung werden Adresse und Zugang von der Lehrkraft vorgegeben; trage Kennwörter nie in HTML ein. Verwende im echten Betrieb eine geschützte Übertragung wie SFTP, sofern bereitgestellt.",
-    "mein-projekt/\n  index.html\n  kontakt.html\n  style.css\n  bilder/\n    beet.jpg",
+    "Lege index.html, style.css und deine Medien in einem gemeinsamen Projektordner ab. Teste Links, Groß- und Kleinschreibung, schmale Ansichten und fehlende Bilder. Übertrage die vollständige Ordnerstruktur auf das von der Lehrkraft vorgegebene, nicht öffentliche Ziel, zum Beispiel einen lokalen Webserver. Bei einer FTP-Übung werden Adresse und Zugang von der Lehrkraft vorgegeben; trage Kennwörter nie in HTML ein. Verwende im echten Betrieb eine geschützte Übertragung wie SFTP, sofern bereitgestellt.\n\nDein Testprotokoll kann einklappbar sein. <details> umschließt den gesamten Bereich. <summary> ist die Schaltfläche, über die du den Inhalt auf- und zuklappst.",
+    "<details>\n  <summary>Testprotokoll</summary>\n  <ol>\n    <li>Kontaktseite und Rücklink öffnen sich.</li>\n  </ol>\n</details>",
     "Schreibe einen Testbericht als ol mit mindestens drei konkreten Tests. Exportiere dein Projekt, teste lokal und übertrage die Dateien mit der Lehrkraft auf die geschützte Unterrichtsplattform. Ein öffentlicher GitHub-Pages-Upload ist für diese Schüleraufgabe kein Ersatz.",
     "Notiere zu jedem Test: Was wurde geprüft, was war das Ergebnis? Die echte Übertragung bestätigt die Lehrkraft.",
     "Was muss beim Übertragen erhalten bleiben?",

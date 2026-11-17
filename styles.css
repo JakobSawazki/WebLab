@@ -1710,6 +1710,15 @@ textarea#cssEditor {
 .class-review p:last-child {
   margin-bottom: 0;
 }
+.practice-blocks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.55rem;
+}
+.practice-blocks strong {
+  margin-inline-end: 0.25rem;
+}
 .practice-steps li {
   margin-bottom: 0.7rem;
 }

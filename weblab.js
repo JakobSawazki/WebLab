@@ -279,7 +279,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.52.0";
+const VERSION = "1.53.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -837,6 +837,7 @@ return {VERSION,groups,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.53.0", "Lerneinheit beim Scrollen im Blick", "Lernpfad, Kapitelnavigation, Bedienelemente und Fortschrittsbalken bleiben oben sichtbar. In Lerneinheiten erscheinen Speichermeldungen bei Problemen."],
     ["1.52.0", "Fortschrittsbalken pro Lerneinheit", "Unter der Kopfzeile steht der aktuelle Stand von Praxisauftrag, Verständnischeck und Selbstkontrolle. Nach dem Abschluss zeigt der Balken 100 %."],
     ["1.51.0", "Schnell zwischen Lerneinheiten wechseln", "Die Kopfzeile verlinkt den Lernpfad und die aktuelle Einheit. Zwei Pfeile führen zu freigeschalteten Nachbareinheiten."],
     ["1.50.0", "Flexible Seitenleiste und Entwickler-Modus", "Die Trennlinie lässt sich am Desktop ziehen. WebLab merkt sich die Breite; ein Doppelklick setzt sie zurück. Der Entwickler-Modus öffnet alle Einheiten zum Prüfen, ohne Abschlüsse oder Punkte zu vergeben."],
@@ -5348,7 +5349,9 @@ function updateStorageStatus() {
   $("#storageRaw").hidden = !blocked || !unreadableStorage;
 }
 $("#retrySave").onclick = () => {
-  if (save()) $("#storageMessage").focus({ preventScroll: true });
+  if (!save()) return;
+  const message = $("#storageMessage");
+  (message.getClientRects().length ? message : $("#backupButton")).focus({ preventScroll: true });
 };
 $("#storageMessage").tabIndex = -1;
 $("#storageBackup").onclick = () => {
@@ -5359,11 +5362,17 @@ $("#storageRaw").onclick = () => {
   if (unreadableStorage)
     download("WebLab-vorhandene-Rohdaten.txt", unreadableStorage);
 };
-// Anchor jumps and keyboard focus must stay below the sticky status, including
-// its taller warning state on a phone. No focus is moved when the state changes.
-new ResizeObserver(([entry]) => {
-  document.documentElement.style.setProperty("--storage-offset", `${Math.ceil(entry.target.getBoundingClientRect().height)}px`);
-}).observe($("#workspaceFeedback"));
+// Keep anchor jumps and keyboard focus below whichever header is sticky.
+function updateHeaderOffset(target) {
+  const property = target.id === "workspaceHeader" ? "--lesson-header-offset" : "--storage-offset";
+  const height = Math.ceil(target.getBoundingClientRect().height);
+  document.documentElement.style.setProperty(property, height + "px");
+}
+const headerOffsetObserver = new ResizeObserver((entries) => {
+  for (const { target } of entries) updateHeaderOffset(target);
+});
+headerOffsetObserver.observe($("#workspaceHeader"));
+headerOffsetObserver.observe($("#storageStatus"));
 function stats() {
   $("#profileName").textContent = state.profile.name || "Gast";
   $("#profileStats").textContent =
@@ -6120,6 +6129,7 @@ function render() {
   $("#viewTitle").textContent = title;
   updateLessonHeading(l);
   $("#lessonProgressPanel").hidden = !l;
+  $("#workspaceHeader").toggleAttribute("data-lesson", Boolean(l));
   document.title = `${title} · WebLab`;
   $("#mainContent").innerHTML = html;
   decorateIcons();
@@ -6149,6 +6159,7 @@ function render() {
     const target = document.querySelector(`.exercise[data-exercise="${Number(route.split("/")[2]) - 1}"]`);
     if (target) {
       target.open = true;
+      updateHeaderOffset($("#workspaceHeader"));
       target.scrollIntoView({ block: "start" });
       target.querySelector("textarea").focus({ preventScroll: true });
       focusedTarget = true;

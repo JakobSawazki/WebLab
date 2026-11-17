@@ -663,10 +663,23 @@ a.lesson-menu-item:hover,
   align-items: stretch;
   flex-wrap: wrap;
 }
-.workspace-feedback {
+.workspace-header:not([data-lesson]) {
+  display: contents;
+}
+.workspace-header[data-lesson],
+.workspace-header:not([data-lesson]) .storage-status {
   position: sticky;
   top: 0;
   z-index: 12;
+}
+.workspace-header[data-lesson] .topbar {
+  padding-block: 0.65rem;
+}
+.workspace-header[data-lesson] .storage-status:is([data-state="ready"], [data-state="saved"]) {
+  display: none;
+}
+.workspace-header[data-lesson] .storage-status {
+  max-height: 20vh;
 }
 .storage-status {
   padding: 0.6rem clamp(1rem, 2vw, 2rem);
@@ -714,6 +727,9 @@ a.lesson-menu-item:hover,
   line-height: 1.35;
 }
 html { scroll-padding-top: calc(var(--storage-offset, 0px) + 1rem); }
+html:has(.workspace-header[data-lesson]) {
+  scroll-padding-top: calc(var(--lesson-header-offset, 0px) + 1rem);
+}
 .storage-copy {
   display: flex;
   align-items: baseline;
@@ -2153,6 +2169,22 @@ dialog::backdrop {
   .topbar h1 {
     font-size: 1.2rem;
   }
+  .workspace-header[data-lesson] .topbar {
+    gap: 0.45rem;
+  }
+  .workspace-header[data-lesson] .eyebrow {
+    display: none;
+  }
+  .workspace-header[data-lesson] .topbar .icon-button {
+    width: 44px;
+    min-height: 44px;
+    flex-basis: 44px;
+  }
+  .workspace-header[data-lesson] .profile-trigger {
+    min-width: 0;
+    min-height: 44px;
+    padding-block: 0.25rem;
+  }
   .topbar-actions {
     flex-wrap: wrap;
   }
@@ -2594,6 +2626,7 @@ dialog::backdrop {
   .app-shell {
     display: block;
   }
+  .workspace-header[data-lesson] { position: static; }
   .topbar,
   .panel,
   .card,

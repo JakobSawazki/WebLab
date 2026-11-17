@@ -984,6 +984,27 @@
     };
     assert(!progressPanel.hidden && progressBar.value < 100 && progressDetail.textContent.includes("Verständnischeck 0/1"),
       "Einheitsfortschritt ist sichtbar und beginnt ohne erledigten Verständnischeck");
+    for (const width of [360, 1280]) {
+      gateFrame.style.width = width + "px";
+      await new Promise(resolve => gateWin.requestAnimationFrame(() => gateWin.requestAnimationFrame(resolve)));
+      gateWin.scrollTo({ top: 900, behavior: "instant" });
+      const workspaceHeader = gateDoc.getElementById("workspaceHeader").getBoundingClientRect();
+      const visibleInHeader = (element) => {
+        const bounds = element.getBoundingClientRect();
+        return bounds.height > 0 && bounds.top >= 0 && bounds.bottom <= workspaceHeader.bottom;
+      };
+      assert(gateWin.scrollY > 500 && workspaceHeader.top === 0 && workspaceHeader.bottom < gateWin.innerHeight / 2 &&
+        [currentLessonLink, gateDoc.getElementById("lessonPager"), gateDoc.getElementById("optionsButton"),
+          gateDoc.getElementById("profileButton"), progressPanel].every(visibleInHeader) &&
+        !gateDoc.getElementById("storageStatus").getClientRects().length,
+        width + ": Lernpfad, Pfeile, Aktionen und Fortschritt bleiben ohne normale Speichermeldung oben");
+      const studioTitle = gateDoc.getElementById("studioTitle");
+      studioTitle.scrollIntoView({ block: "start", behavior: "instant" });
+      assert(studioTitle.getBoundingClientRect().top >= workspaceHeader.bottom,
+        width + ": Sprungziele bleiben unter der fixierten Kopfzeile lesbar");
+    }
+    gateFrame.style.width = "360px";
+    gateWin.scrollTo({ top: 0, behavior: "instant" });
     const initialProgress = progressBar.value;
     gateDoc.getElementById("livePreview").click();
     changeGateCode(samples[0]);
@@ -1675,6 +1696,7 @@
           html: "<h1>Gespeicherter Entwurf</h1>", css: "h1 { color: navy; }",
           pages: [{ name: "kontakt.html", html: "<h1>Kontakt bleibt erhalten</h1>" }],
         };
+        initialStorageState.drafts.l1 = { html: "<h1>Mein Projekt</h1>", css: "" };
         const failStorageWrite = await openStorageFrame(JSON.stringify(initialStorageState));
         assert(storageElement("storageStatus").dataset.state === "saved" && storageElement("storageMessage").getAttribute("role") === "status",
           "Speicherrueckmeldung: Gespeicherter Lernstand hat einen zugaenglichen dauerhaften Status");
@@ -1687,6 +1709,10 @@
           JSON.parse(localStorage.getItem(STORAGE_KEY)).profile.className === "EG-1",
           "Speicherrueckmeldung: Fehlgeschlagenes Profil wird zurueckgenommen, sauberer Altstand bleibt sauber");
         storageElement("profileDialog").close();
+        await storageRoute("lesson/l1");
+        assert(storageElement("storageStatus").getClientRects().length && !storageElement("storageActions").hidden,
+          "Lerneinheit: Speicherfehler und Wiederherstellungsaktionen bleiben sichtbar");
+        await storageRoute("lab");
         const replacementStorageState = blank();
         replacementStorageState.profile = { name: "NEU.MAX", className: "TEST" };
         const prepareStorageImport = async () => {

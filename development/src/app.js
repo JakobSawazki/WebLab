@@ -271,7 +271,9 @@ function updateStorageStatus() {
   $("#storageRaw").hidden = !blocked || !unreadableStorage;
 }
 $("#retrySave").onclick = () => {
-  if (save()) $("#storageMessage").focus({ preventScroll: true });
+  if (!save()) return;
+  const message = $("#storageMessage");
+  (message.getClientRects().length ? message : $("#backupButton")).focus({ preventScroll: true });
 };
 $("#storageMessage").tabIndex = -1;
 $("#storageBackup").onclick = () => {
@@ -282,11 +284,17 @@ $("#storageRaw").onclick = () => {
   if (unreadableStorage)
     download("WebLab-vorhandene-Rohdaten.txt", unreadableStorage);
 };
-// Anchor jumps and keyboard focus must stay below the sticky status, including
-// its taller warning state on a phone. No focus is moved when the state changes.
-new ResizeObserver(([entry]) => {
-  document.documentElement.style.setProperty("--storage-offset", `${Math.ceil(entry.target.getBoundingClientRect().height)}px`);
-}).observe($("#workspaceFeedback"));
+// Keep anchor jumps and keyboard focus below whichever header is sticky.
+function updateHeaderOffset(target) {
+  const property = target.id === "workspaceHeader" ? "--lesson-header-offset" : "--storage-offset";
+  const height = Math.ceil(target.getBoundingClientRect().height);
+  document.documentElement.style.setProperty(property, height + "px");
+}
+const headerOffsetObserver = new ResizeObserver((entries) => {
+  for (const { target } of entries) updateHeaderOffset(target);
+});
+headerOffsetObserver.observe($("#workspaceHeader"));
+headerOffsetObserver.observe($("#storageStatus"));
 function stats() {
   $("#profileName").textContent = state.profile.name || "Gast";
   $("#profileStats").textContent =
@@ -1043,6 +1051,7 @@ function render() {
   $("#viewTitle").textContent = title;
   updateLessonHeading(l);
   $("#lessonProgressPanel").hidden = !l;
+  $("#workspaceHeader").toggleAttribute("data-lesson", Boolean(l));
   document.title = `${title} · WebLab`;
   $("#mainContent").innerHTML = html;
   decorateIcons();
@@ -1072,6 +1081,7 @@ function render() {
     const target = document.querySelector(`.exercise[data-exercise="${Number(route.split("/")[2]) - 1}"]`);
     if (target) {
       target.open = true;
+      updateHeaderOffset($("#workspaceHeader"));
       target.scrollIntoView({ block: "start" });
       target.querySelector("textarea").focus({ preventScroll: true });
       focusedTarget = true;

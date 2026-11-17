@@ -105,7 +105,7 @@ export const extensions = {
     title: "Ausprobieren: Untertitel als WebVTT-Datei",
     explanation:
       "Untertitel stehen in einer eigenen Textdatei im Format WebVTT. Jede Zeitangabe nennt Beginn und Ende im Format Stunden:Minuten:Sekunden.Millisekunden, darunter folgt der Text. Das track-Element verbindet die Datei mit dem Video. Wichtig: Beim Öffnen per Doppelklick blockieren Edge und Chrome die Untertiteldatei aus Sicherheitsgründen. Untertitel testest du deshalb über einen Webserver, etwa die Unterrichtsplattform der Lehrkraft.",
-    code: 'WEBVTT\n\n00:00:00.500 --> 00:00:04.000\nWir bereiten das Hochbeet vor.\n\n00:00:04.500 --> 00:00:08.000\nJetzt säen wir die Radieschen.\n\n<video controls width="480">\n  <source src="medien/garten.mp4" type="video/mp4">\n  <track src="medien/untertitel.vtt" kind="subtitles" srclang="de" label="Deutsch" default>\n</video>',
+    code: 'WEBVTT\n\n00:00:00.000 --> 00:00:01.700\nBeet vorbereiten.\n\n00:00:01.800 --> 00:00:03.500\nSamen aussäen.\n\n00:00:03.600 --> 00:00:05.200\nBeet gießen.\n\n<video controls width="480">\n  <source src="medien/aussaat.webm" type="video/webm">\n  <track src="medien/untertitel.vtt" kind="subtitles" srclang="de" label="Deutsch" default>\n</video>',
     steps: [
       "Schreibe zu deinem geplanten Video zwei bis drei kurze Untertitel mit Zeitangaben auf. Jeder Untertitel steht höchstens wenige Sekunden.",
       "Lege in Notepad++ eine Datei untertitel.vtt im Ordner medien an. Die erste Zeile lautet WEBVTT; speichere die Datei als UTF-8.",

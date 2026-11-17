@@ -39,8 +39,8 @@
       "<h1>Robotik</h1>",
       '<section class="karte"><h2>Robotik AG</h2><p>Wir bauen Roboter.</p></section>',
       '<header><h1>Robotik</h1></header><nav><a href="kontakt.html">Kontakt</a></nav><main><p>Unsere Seite richtet sich an neue Mitglieder der Robotik AG und stellt unsere Projekte vor.</p></main><footer>Schulprojekt</footer>',
-      "<footer><h2>Quellen und Rechte</h2><p>Die verwendeten Fotos sind eigene Aufnahmen unserer Roboter ohne abgebildete Personen.</p></footer>",
-      "<ol><li>Alle Links geprüft: beide Unterseiten erreichbar.</li><li>Schmale Ansicht geprüft: kein horizontaler Überlauf.</li><li>Bilder geprüft: alle eigenen Dateien werden angezeigt.</li></ol>",
+      "<footer><h2>Quellen und Rechte</h2><p><cite>Beetplan</cite> und <cite>Aussaat-Clip</cite> sind WebLab-Unterrichtsmaterialien. Texte entstanden gemeinsam im Unterricht.</p></footer>",
+      "<details><summary>Testprotokoll</summary><ol><li>Alle Links geprüft: beide Unterseiten erreichbar.</li><li>Schmale Ansicht geprüft: kein horizontaler Überlauf.</li><li>Bilder geprüft: alle eigenen Dateien werden angezeigt.</li></ol></details>",
       '<html><head><link rel="stylesheet" href="style.css"></head><body><header><h1>Robotik AG</h1></header><nav><a href="kontakt.html">Kontakt</a></nav><main><p>Wir stellen die Robotik AG vor und laden alle Schülerinnen und Schüler zum Mitmachen ein.</p><img src="data:image/png;base64,AA==" alt="Roboter mit zwei Rädern"><ul><li>Motor</li><li>Kabel</li><li>Akku</li></ul><table><tr><th>Name</th><th>Jahr</th></tr><tr><td>Rover</td><td>2025</td></tr><tr><td>Arm</td><td>2026</td></tr></table></main><footer><p>Alle Texte und Fotos wurden von uns selbst für dieses Schulprojekt angefertigt.</p></footer></body></html>',
     ];
     const css = {
@@ -389,6 +389,12 @@
       if (displayTheme === null) localStorage.removeItem("weblab-theme-v1");
       else localStorage.setItem("weblab-theme-v1", displayTheme);
     }
+    const rightsWithoutTitles = samples[13].replace(/<\/?cite>/g, "");
+    assert(checkLesson(lessons[13], rightsWithoutTitles, "", parse).some(result => !result.passed),
+      "Quellenauftrag braucht die beiden neu gelernten cite-Elemente");
+    const oldWorkList = "<ol><li>Beet vorbereiten und Erde lockern.</li><li>Samen vorsichtig in Reihen aussäen.</li><li>Das Beet gleichmäßig gießen.</li></ol>";
+    assert(!checkLesson(lessons[14], oldWorkList, "", parse).every(result => result.passed),
+      "Die Arbeitsliste aus Einheit 04 ersetzt das neue aufklappbare Testprotokoll nicht");
     const artworkFiles = [
       "html-struktur.webp", "inhalte-verknuepfen.webp",
       "css-gestaltung.webp", "webprojekt.webp",

@@ -30,7 +30,7 @@ export const guidance = {
       "Die erste Zeile lautet <!doctype html>. Davor steht nichts, auch kein Kommentar.",
       'Das Start-Tag des Dokuments lautet <html lang="de">.',
       'Ergänze im head <meta charset="utf-8">.',
-      "Schreibe im head einen eigenen Titel zwischen <title> und </title>.",
+      "Schreibe im head den Titel Garten-AG unserer Schule zwischen <title> und </title>.",
       "Die sichtbare h1 gehört zwischen <body> und </body>.",
     ],
     pitfalls: [
@@ -131,8 +131,8 @@ export const guidance = {
       "Die Textfassung ist selbst HTML, meist ein Absatz unter dem Video.",
     ],
     tips: [
-      'Schreibe <video controls> und darin <source src="…" type="video/mp4">.',
-      "Ergänze einen Absatz, der den Inhalt des Videos in eigenen Worten zusammenfasst (mindestens 25 Zeichen).",
+      'Schreibe <video controls> und darin <source src="medien/aussaat.webm" type="video/webm">.',
+      "Schreibe unter das Video die Textfassung mit den drei Schritten Beet vorbereiten, Samen aussäen und Beet gießen.",
     ],
     pitfalls: [
       "controls vergessen: Ohne Bedienleiste lässt sich das Video nicht starten.",
@@ -242,6 +242,7 @@ export const guidance = {
     tips: [
       "Schreibe im footer eine h2, zum Beispiel „Quellen und Rechte“.",
       "Ergänze im footer einen Absatz mit mindestens 40 Zeichen: Wer hat Texte und Bilder erstellt, unter welcher Lizenz?",
+      "Setze <cite> und </cite> im Quellenabsatz jeweils um Beetplan und Aussaat-Clip. Die Herkunft schreibst du daneben.",
     ],
     pitfalls: [
       "„Bild von Google“ ist keine Quelle: Nenne Urheber, Fundort und Lizenz.",
@@ -256,7 +257,8 @@ export const guidance = {
       "Richtig: Relative Pfade funktionieren nur, wenn Dateinamen und Ordner gleich bleiben.",
     ],
     tips: [
-      "Schreibe drei Tests als <li> in einer <ol>, jeder mit mindestens 15 Zeichen, zum Beispiel „Link zu kontakt.html öffnet die Unterseite“.",
+      "Setze die ol mit drei tatsächlichen Testergebnissen innerhalb von details. Jede li nennt Test und Ergebnis mit mindestens 15 Zeichen.",
+      "Setze direkt in details ein summary-Element mit dem Text Testprotokoll. Klicke es zum Prüfen der Klappfunktion an.",
     ],
     pitfalls: [
       "Nur einzelne Dateien statt des ganzen Projektordners übertragen.",

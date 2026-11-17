@@ -2,9 +2,9 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.57.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.58.0** · Status: **lokal geprüft; Veröffentlichung wird abschließend abgeglichen**.
 
-Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
+Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Einziger aktueller Projektordner ist `G:\Meine Ablage\Codex\WebLab`; der direkte Einstieg ist dessen `index.html`. Die früheren lokalen Sicherungsordner wurden auf Jakobs Wunsch entfernt. Historische Archivpfade weiter unten beschreiben den damaligen Zustand und sind keine aktuellen Ablageorte. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
 ### Offene Rückfragen und Aufgaben
 
@@ -24,24 +24,24 @@ Live-Adresse der aktuellen Version: https://jakobsawazki.github.io/WebLab/
 
 Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein zweites Repository mit abweichendem Verlauf angelegt. Die frühere Sites-Adresse `https://weblab-sawazki.jakob-sawazki.chatgpt.site` ist ein Altstand; sie wird in diesem Arbeitsblock nicht aktualisiert oder abgeschaltet. Für 1.0.0 ist GitHub Pages die Veröffentlichungsplattform wie bei WorkbenchLab. Ein Wechsel der Domain übernimmt Browserdaten nicht automatisch: Auf der alten Seite JSON sichern, auf der neuen Seite laden.
 
-| Bereich | Version 1.43.0 |
+| Bereich | Version 1.58.0 |
 | --- | --- |
 | Lerneinheiten | 16 vollständige Einstiegsfassungen in vier Etappen; Einheit 01 frei, weitere Einheiten nacheinander durch Abschluss-XP freigeschaltet |
-| Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
-| Roter Faden | Nächster offener Lernschritt, 16 Schritte mit aktueller Position, Vorwissen, drei konkrete Arbeitsschritte und Beobachtungsauftrag; eigene Webseite wächst durch Kopien des vorherigen Entwurfs |
+| Ablauf je Einheit | Ziel, kleinschrittige Erklärung, Beispiel, gemeinsamer Praxisauftrag, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle und Notizen; freiwillige Übungen, Fehlersuche und Vertiefung folgen nach dem Kernauftrag |
+| Roter Faden | Einheiten 01–15 erweitern dieselbe Informationsseite „Unser Schulgarten“ durch Kopien des vorherigen Entwurfs; Einheit 16 startet ein unabhängiges eigenes Abschlussprojekt. Jede Einheit benennt neue Bausteine, Vorwissen und drei konkrete Arbeitsschritte |
 | Orientierung | Vier Etappen mit Fortschritt auf der Startseite; direkte Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern in den Einheiten |
 | Schülerprofil | Kürzel/Klasse, XP-Level und Fortschrittsbalken, direkte EP-Tabelle; kein Serverkonto |
 | XP | 100 je abgeschlossenem Auftrag, einmalig; frühere K1-Missions-XP bleiben zusätzlich erhalten |
 | Erfahrungspunkte (EP) | Zunächst 5 je Abschluss; bearbeitbare Tabelle mit Datum/Uhrzeit, Anlass, −10 bis +5 ohne 0, Ergänzen und Löschen |
 | Abschluss | Technische Kriterien erfüllt, Quiz richtig, alle Selbstkontrollen bestätigt, Profil vollständig |
-| Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich |
+| Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich; 16 lokale Lösungsordner unter `ressources/Lösungen`, jeweils Word-Dokument, HTML und CSS, ab Einheit 05 mit Kontaktseite und ab 08 mit Videodatei |
 | Übungen | Übungswerkstatt in den Einheiten: kurze Aufgaben (Reparieren, Ergänzen, Selbst schreiben, Profi-Aufgabe je Etappe) mit Mini-Editor, Live-Vorschau, Sofortprüfung, Tipp nach Fehlversuch und Merksatz; ohne Punkte; gesammelte Merksätze und Wiederholungsrunde unter „Meine Notizen“ |
 | Labor | HTML-/CSS-Dateireiter, seit 1.41.0 bis zu vier Unterseiten wie kontakt.html mit Verweisprüfung, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
 | Notepad++ | HTML-/CSS-Import und Export einschließlich Unterseiten, Transferauftrag mit Strg+S/F5 und Dateiverknüpfung; offizieller Download für zu Hause |
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
 | Nachschlagen | 110 Glossareinträge (84 aus WebLab 0.5.0, 26 ergänzt), Suche mit Trefferreihenfolge, Bereichsfilter, „Siehe auch“-Verweise |
 | Datenschutz | Lernstand auf dem Gerät; kein Tracking, keine externe KI, keine zentrale Schülerdatenbank |
-| Speicherrückmeldung | Dauerhafte Anzeige für Entwürfe, Profil und Lernpfad; bei Fehlern erneut speichern oder aktuellen Stand als JSON herunterladen; geschützte unlesbare Originaldaten separat sichern |
+| Speicherrückmeldung | Automatisch im Hintergrund; Hinweisleiste nur bei Speicherproblemen mit erneutem Speichern und JSON-Download; geschützte unlesbare Originaldaten separat sichern |
 
 **Grenze:** Die Selbstkontrolle ist eine eigene Erklärung der Lernenden. Sie ist keine authentifizierte Lehrkraftfreigabe. LocalStorage, Sicherungsdateien, XP und NAGOLD sind veränderbar. Sie dürfen nicht ungeprüft als Leistungsbewertung verwendet werden. Automatische Kriterien erkennen ausgewählte Bausteine, keine vollständige HTML-Konformität, Eigenständigkeit oder gestalterische Qualität.
 
@@ -63,7 +63,7 @@ Grundlage ist der von Jakob benannte Bildungsplan Informatik, berufliches Gymnas
 | 10 | Tag-, Klassen- und ID-Selektoren | BPE 2.2 |
 | 11 | Farben, Schriftfamilie/-größe, Zeilenhöhe und Ausrichtung | BPE 2.2 |
 | 12 | Box-Modell, Innen-/Außenabstand, Rahmen, Bereiche | BPE 2.2 |
-| 13 | Zielgruppe, Seitenplan, semantische Bereiche | Anwendung 2.1/2.2 |
+| 13 | Seitenbereiche und Zielgruppe, Seitenplan, semantische Bereiche | Anwendung 2.1/2.2 |
 | 14 | Urheberrecht, CC-Lizenzen, Quellen, Anbieterinformationen/Disclaimer | BPE 2.3 |
 | 15 | Lokaler Test, vollständige Ordnerstruktur, geschützte Unterrichtsplattform, FTP-Übung mit Lehrkraft | BPE 2.3 |
 | 16 | Eigene statische Webseite, Präsentation und Codeerklärung | Anwendung 2.1–2.3 |
@@ -312,6 +312,18 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.58.0: Durchgängige Lernsituation und Lehrkraftlösungen
+
+Einheiten 01–15 führen durch dieselbe Webseite „Unser Schulgarten“. Erklärungen und Beispiele nennen jetzt dieselben Texte, Dateinamen und Arbeitsschritte wie der gemeinsame Auftrag. HTML-Begriffe werden bei ihrem ersten Auftreten erklärt. Die Kontaktseite bleibt ab 05 erhalten, der Beetplan ab 06 und der tatsächlich mitgelieferte Aussaat-Clip ab 08. CSS beginnt in 09; 12 ergänzt skalierende Bilder und Videos für die schmale Ansicht. Einheit 13 ordnet die vorhandenen Inhalte in semantische Seitenbereiche ein. Die freiwilligen Übungen, Fehlersuche und Fallaufgaben folgen nach Editor, Prüfung und Ergebnissicherung. Die Startseite benennt die Garten-AG ausdrücklich. Einheit 16 startet weiterhin unabhängig mit einem eigenen Thema.
+
+Die Prüfung verlangt in 14 nun die zwei neu eingeführten cite-Elemente und in 15 ein echtes details/summary-Testprotokoll mit drei Ergebnissen. Die frühere Arbeitsliste aus Einheit 04 reicht dafür nicht. Bereits gespeicherte Abschlüsse und Punkte bleiben erhalten; unfertige Aufträge werden nach den aktuellen Kriterien geprüft.
+
+Unter `ressources/Lösungen/` liegen 16 nummerierte Ordner mit jeweils `Loesung-NN.docx`, `index.html` und `style.css`. Ab Einheit 05 kommt `kontakt.html` hinzu, ab 08 die erforderliche Datei `medien/aussaat.webm`. Jeder Kapitelordner lässt sich eigenständig öffnen; die Kapitel sind bewusst verschiedene Unterrichtsergebnisse und keine alten Projektbackups. Die Word-Dateien enthalten Ziel, neue Bausteine, Arbeitsauftrag, erwartetes Ergebnis, Impulse zur Ergebnissicherung, Quizantwort, Codeausschnitt, Prüfkriterien und typische Fehler. Vor CSS-Einführung enthält style.css nur einen erklärenden Kommentar. Als unverbindliches Beispiel für die eigenständige Abschlussarbeit wurde eine schulische Radwerkstatt mit zwei verknüpften Seiten gewählt. Lösungen und Unterrichtsoriginale bleiben lokal und werden weder ins öffentliche Repository noch in den Pages-Build aufgenommen.
+
+Prüfung: 73 Node-Tests und 382 Browserprüfungen bestanden, darunter neue Negativfälle zu cite und Testprotokoll sowie das Laden aller 16 unterschiedlichen fotorealistischen Lernmotive. Alle Motive zusätzlich als Übersicht visuell kontrolliert. Sämtliche Lehrkraftlösungen wurden in einem isolierten Edge-Profil über die normale WebLab-Oberfläche nacheinander eingegeben, geprüft und zu 100 % abgeschlossen; Entwurfsübernahme und unabhängiger Start von 16 bestätigt. Alle 16 HTML-Dateien direkt über file:// geöffnet; Kontaktseiten, Bilddecodierung und Videometadaten geprüft. Die Lösungen ab 12 passen bei 360 Pixeln ohne horizontalen Überlauf; 12 und 16 visuell kontrolliert. Alle 16 Word-Dateien mit Microsoft Word gerendert: jeweils zwei Seiten, alle 32 Seiten visuell auf Lesbarkeit, Umbruch und Beschnitt kontrolliert. Der standardmäßige LibreOffice-Renderer war auf diesem Windows-System nicht verfügbar, deshalb erfolgte die Ausgabe mit Word. Keine zusätzlichen Softwarepakete installiert.
+
+Der einzige aktuelle Projektordner bleibt `G:\Meine Ablage\Codex\WebLab`. Zusätzliche lokale Versionsarchive und Offline-ZIPs werden nicht angelegt. Temporäre Prüf- und Buildausgaben werden nach dem Veröffentlichungsabgleich entfernt. Noch offene Rückmeldungen in tasks.md bleiben unverändert.
 
 ### 17.11.2026 – Codex – Version 1.57.0: Ein gemeinsamer Projektordner
 

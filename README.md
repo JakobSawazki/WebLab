@@ -5,7 +5,7 @@ Statische Lernumgebung zu **BPE2: Entwicklung von Internetseiten**, im Aufbau un
 - [WebLab öffnen](https://jakobsawazki.github.io/WebLab/)
 - [Zentrale Dokumentation für Jakob, Codex und Claude](documentation/documentation.md)
 
-16 aufeinander aufbauende Lerneinheiten führen von der ersten HTML-Datei zur eigenen statischen Webseite. Dazu gehören ein HTML-/CSS-Editor mit Live-Vorschau, Übungen, Nachschlagewerk, lokale Schülerprofile, XP und Erfahrungspunkte (EP) sowie Lernstandsicherung und Projektexport. Transferaufträge zeigen, wie du deine Dateien in Notepad++ bearbeitest und im Browser prüfst. Für zu Hause gibt es die aktuelle Version auf der [offiziellen Downloadseite](https://notepad-plus-plus.org/downloads/).
+16 aufeinander aufbauende Lerneinheiten führen von der ersten HTML-Datei zur eigenen statischen Webseite. In den Einheiten 01 bis 15 entwickelt die Klasse gemeinsam „Unser Schulgarten“; Einheit 16 beginnt das eigene Abschlussprojekt. Dazu gehören ein HTML-/CSS-Editor mit Live-Vorschau, Übungen, Nachschlagewerk, lokale Schülerprofile, XP und Erfahrungspunkte (EP) sowie Lernstandsicherung und Projektexport. Transferaufträge zeigen, wie du deine Dateien in Notepad++ bearbeitest und im Browser prüfst. Für zu Hause gibt es die aktuelle Version auf der [offiziellen Downloadseite](https://notepad-plus-plus.org/downloads/).
 
 ## Lokal starten
 
@@ -28,4 +28,4 @@ npm run serve
 
 Der Build erzeugt `weblab.js` und das Veröffentlichungspaket unter `dist/`. GitHub Actions prüft den Stand vor der Veröffentlichung auf GitHub Pages.
 
-Unterrichtsoriginale unter `ressources/BPE2/` und persönliche Lernstände bleiben privat. Profile sind lokale Lernstände, keine Serverkonten oder manipulationssicheren Leistungsnachweise.
+Unterrichtsoriginale unter `ressources/BPE2/`, die 16 Lehrkraftlösungen mit Word, HTML und CSS unter `ressources/Lösungen/` und persönliche Lernstände bleiben privat. Profile sind lokale Lernstände, keine Serverkonten oder manipulationssicheren Leistungsnachweise.

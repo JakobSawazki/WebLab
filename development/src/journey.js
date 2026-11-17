@@ -118,7 +118,7 @@ const stages = [
     "Wir fassen die Ideen in einem Bereich mit Rahmen zusammen.",
     [
       "Umschließe den Bereich „Unsere Ideen“ samt zugehörigem Inhalt bis vor „Mitmachen“ mit <section class=\"karte\"> und </section>.",
-      "Gib .karte die Werte padding: 1rem; border: 1px solid darkgreen; margin: 1rem auto; max-width: 40rem; und box-sizing: border-box;.",
+      "Gib .karte die Werte padding: 1rem; border: 1px solid darkgreen; margin: 1rem auto; max-width: 40rem; und box-sizing: border-box;. Ergänze danach für img, video die Regel aus dem Beispiel.",
       "Ändere probeweise nur padding. Stelle danach 1rem wieder her und prüfe die Karte in der Handyansicht."
     ],
     "Vergleicht Text, Rahmen und Abstand. Zeigt an derselben Karte, wo padding und wo margin sichtbar wird."
@@ -177,7 +177,7 @@ const buildingBlocks = [
   ["style.css", "color", "font-family", "<link>"],
   ["class", ".hinweis", "#start", "text-align"],
   ["background-color", "font-size", "line-height"],
-  ["<section>", "padding", "border", "margin", "max-width", "box-sizing"],
+  ["<section>", "padding", "border", "margin", "max-width", "height", "box-sizing"],
   ["<header>", "<nav>", "<main>", "<footer>"],
   ["<cite>", "Quellen im Footer", "Bildrechte"],
   ["<details>", "<summary>", "Dateien im Browser testen"],

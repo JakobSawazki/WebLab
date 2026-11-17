@@ -110,7 +110,7 @@ const extensions = {
     title: "Ausprobieren: Untertitel als WebVTT-Datei",
     explanation:
       "Untertitel stehen in einer eigenen Textdatei im Format WebVTT. Jede Zeitangabe nennt Beginn und Ende im Format Stunden:Minuten:Sekunden.Millisekunden, darunter folgt der Text. Das track-Element verbindet die Datei mit dem Video. Wichtig: Beim Öffnen per Doppelklick blockieren Edge und Chrome die Untertiteldatei aus Sicherheitsgründen. Untertitel testest du deshalb über einen Webserver, etwa die Unterrichtsplattform der Lehrkraft.",
-    code: 'WEBVTT\n\n00:00:00.500 --> 00:00:04.000\nWir bereiten das Hochbeet vor.\n\n00:00:04.500 --> 00:00:08.000\nJetzt säen wir die Radieschen.\n\n<video controls width="480">\n  <source src="medien/garten.mp4" type="video/mp4">\n  <track src="medien/untertitel.vtt" kind="subtitles" srclang="de" label="Deutsch" default>\n</video>',
+    code: 'WEBVTT\n\n00:00:00.000 --> 00:00:01.700\nBeet vorbereiten.\n\n00:00:01.800 --> 00:00:03.500\nSamen aussäen.\n\n00:00:03.600 --> 00:00:05.200\nBeet gießen.\n\n<video controls width="480">\n  <source src="medien/aussaat.webm" type="video/webm">\n  <track src="medien/untertitel.vtt" kind="subtitles" srclang="de" label="Deutsch" default>\n</video>',
     steps: [
       "Schreibe zu deinem geplanten Video zwei bis drei kurze Untertitel mit Zeitangaben auf. Jeder Untertitel steht höchstens wenige Sekunden.",
       "Lege in Notepad++ eine Datei untertitel.vtt im Ordner medien an. Die erste Zeile lautet WEBVTT; speichere die Datei als UTF-8.",
@@ -283,7 +283,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.57.0";
+const VERSION = "1.58.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -332,8 +332,8 @@ const lessons = [
     0,
     "Deine erste Webseite",
     "Ich kann eine Überschrift und einen Absatz für meine erste Webseite schreiben.",
-    "Der Browser ist das Programm, in dem du Webseiten ansiehst. Er liest deinen HTML-Code und zeigt zum Beispiel eine Überschrift an. HTML beschreibt, welche Aufgabe ein Text hat.",
-    "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>gemeinsam</strong>.</p>",
+    "Der Browser ist das Programm, in dem du Webseiten ansiehst. Er liest deinen HTML-Code und stellt ihn als Webseite dar. HTML beschreibt, welche Aufgabe ein Text hat.\n\nEine Hauptüberschrift steht zwischen <h1> und </h1>. Ein Absatz steht zwischen <p> und </p>. Den Text zwischen den beiden Tags kannst du ändern. Der Schrägstrich / kennzeichnet den schließenden Tag.\n\nMit <strong> und </strong> markierst du ein wichtiges Wort. Setze beide Tags innerhalb des Absatzes um dieses Wort. So entsteht zum Beispiel <p>Wir pflanzen <strong>gemeinsam</strong> Gemüse.</p>.",
+    "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>gemeinsam</strong> Gemüse.</p>",
     "Schreibe „Unser Schulgarten“ als Überschrift. Ergänze „Wir pflanzen gemeinsam Gemüse.“ und hebe „gemeinsam“ hervor.",
     "Der Absatz steht zwischen <p> und </p>. Setze <strong> und </strong> um ein Wort innerhalb des Absatzes.",
     "Welche Aufgabe hat HTML?",
@@ -369,9 +369,9 @@ const lessons = [
     0,
     "Grundgerüst und Dateinamen",
     "Ich kann eine vollständige HTML-Datei anlegen.",
-    "Deine Überschrift und dein Absatz aus Einheit 01 sind der sichtbare Inhalt. Sie gehören zwischen <body> und </body>.\n\nDarüber steht der <head>. Dort steht zwischen <title> und </title> der Name, den der Browser im Tab anzeigt. UTF-8 sorgt dafür, dass der Browser auch Zeichen wie ä und ß richtig liest. Die Zeile <!doctype html> und der Rahmen <html lang=\"de\"> gehören zum Grundgerüst.\n\nindex.html ist der übliche Dateiname für die Startseite. Für weitere Seiten kannst du kurze Namen wie mitmachen.html verwenden.",
-    '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Unser Schulgarten</title>\n</head>\n<body>\n  <h1>Schulgarten</h1>\n</body>\n</html>',
-    "Baue im Editor das vollständige Grundgerüst. Vergib einen eigenen Seitentitel und eine sichtbare Hauptüberschrift. Exportiere die Datei als index.html und öffne sie im Browser.",
+    "In Einheit 01 hast du die sichtbaren Texte geschrieben. Jetzt bekommt die Datei einen vollständigen Aufbau. <!doctype html> kündigt HTML an. <html lang=\"de\"> umschließt die Seite und nennt Deutsch als Sprache.\n\nIm <head> stehen Angaben für den Browser. <meta charset=\"utf-8\"> sorgt dafür, dass er ä, ö, ü und ß richtig lesen kann. Der Text im <title> erscheint oben im Browser-Tab.\n\nIn den <body> kommen deine Überschrift und dein Absatz aus Einheit 01. Füge sie beim Abtippen des Beispiels wieder ein. Das head-Element und das body-Element stehen beide innerhalb von html.\n\nSpeichere die Startseite als index.html. Die Endung .html sagt, um welche Art Datei es sich handelt. Prüfe nach dem Speichern den Namen, damit daraus kein index.html.txt wird.",
+    "<!doctype html>\n<html lang=\"de\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>Garten-AG unserer Schule</title>\n</head>\n<body>\n  <h1>Unser Schulgarten</h1>\n  <p>Wir pflanzen <strong>gemeinsam</strong> Gemüse.</p>\n</body>\n</html>",
+    "Ordne die Texte der Garten-AG in das Grundgerüst ein. Verwende „Garten-AG unserer Schule“ als Tab-Titel und „Unser Schulgarten“ als Hauptüberschrift. Öffne die gespeicherte index.html im Browser.",
     "title steht im head. h1 gehört in body. Ein Dateiname wie mein-projekt.html ist gut übertragbar.",
     "Wo steht der Titel für den Browser-Tab?",
     ["Im body", "Im head im title-Element", "Im Dateinamen allein"],
@@ -399,9 +399,9 @@ const lessons = [
     0,
     "Texte sinnvoll gliedern",
     "Ich kann eine nachvollziehbare Textstruktur erstellen.",
-    "Deine h1 nennt das Thema der ganzen Seite. Eine h2 nennt ein Unterthema. Den Text dazu schreibst du als Absatz mit p direkt unter die h2.\n\nWenn du ein Wort beim Vorlesen besonders betonen würdest, kannst du es mit <em> und </em> markieren. Für einen Zeilenumbruch mitten in einem zusammengehörenden Text, etwa einer Adresse, kannst du <br> benutzen.",
-    "<h1>Unser Garten</h1>\n<h2>Die Idee</h2>\n<p>Wir bauen Gemüse an.</p>\n<h2>Mitmachen</h2>\n<p>Jeden Mittwoch nach der Schule.</p>",
-    "Gliedere dein Thema mit einer h1, zwei h2 und zwei aussagekräftigen Absätzen. Betone eine Stelle mit em.",
+    "Unsere h1 nennt das Thema der ganzen Seite. Eine h2 benennt einen Abschnitt darunter. Für den Schulgarten heißen diese Abschnitte „Unsere Ideen“ und „Mitmachen“. Du ergänzt sie innerhalb des body unter dem ersten Absatz.\n\nNach jeder h2 folgt ein Absatz mit p. So gehören Überschrift und Text erkennbar zusammen. HTML kennt die Ebenen h1 bis h6. Die Zahl beschreibt die Gliederung der Inhalte.\n\nMit <em> und </em> betonst du eine Stelle so, wie du sie beim Vorlesen hervorheben würdest. Der Browser zeigt sie meistens kursiv. In unserem Mitmachtext betonst du „Mittwoch“.\n\nEin neuer Gedanke bekommt einen eigenen Absatz. <br> erzeugt einen Zeilenumbruch innerhalb eines Textes, etwa einer Adresse. Für unsere zwei Abschnitte brauchst du jeweils ein p.",
+    "<h2>Unsere Ideen</h2>\n<p>Wir bauen Gemüse und Kräuter an.</p>\n<h2>Mitmachen</h2>\n<p>Jeden <em>Mittwoch</em> treffen wir uns im Garten.</p>",
+    "Ergänze die zwei Schulgarten-Abschnitte mit je einer h2 und einem Absatz. Behalte die Hauptüberschrift bei und betone „Mittwoch“ mit em.",
     "Überlege zuerst zwei Unterthemen. Setze die jeweilige h2 vor den zugehörigen Absatz.",
     "Wofür wählst du eine h2?",
     [
@@ -426,8 +426,8 @@ const lessons = [
     1,
     "Listen und Aufzählungen",
     "Ich kann passende Listen auswählen.",
-    "Eine ul ist eine Liste ohne feste Reihenfolge, eine ol zählt Schritte in einer Reihenfolge auf. Jeder Eintrag steht in einem li. li gehört direkt in ul oder ol. Schreibe Aufzählungszeichen und Nummern nicht selbst in den Text: Der Browser übernimmt die Darstellung.",
-    "<ul>\n  <li>Erde</li>\n  <li>Samen</li>\n</ul>\n<ol>\n  <li>Beet vorbereiten</li>\n  <li>Aussäen</li>\n</ol>",
+    "Unsere Garten-AG braucht Material und einen Arbeitsablauf. Für Material verwendest du eine ungeordnete Liste mit <ul>. Für die Arbeitsschritte verwendest du eine geordnete Liste mit <ol>. Der Browser setzt Aufzählungspunkte beziehungsweise Zahlen selbst.\n\nJeder Eintrag steht zwischen <li> und </li>. Erst öffnest du ul oder ol, dann schreibst du die Einträge hinein und schließt zuletzt die Liste. Alle Listen bleiben innerhalb des body.\n\nSetze die Materialliste im Abschnitt „Unsere Ideen“ unter den Absatz. Der Ablauf gehört in „Mitmachen“. Für den Ablauf ist die Reihenfolge entscheidend.",
+    "<ul>\n  <li>Erde</li>\n  <li>Samen</li>\n  <li>Gießkanne</li>\n</ul>\n<ol>\n  <li>Beet vorbereiten</li>\n  <li>Samen aussäen</li>\n  <li>Beet gießen</li>\n</ol>",
     "Ergänze eine Materialliste als ul mit drei Einträgen und einen Ablauf als ol mit drei Schritten.",
     "Öffne ul oder ol, füge li-Elemente ein und schließe die Liste danach.",
     "Welche Liste passt zu einer Schrittfolge?",
@@ -457,8 +457,8 @@ const lessons = [
     1,
     "Links und Pfade",
     "Ich kann Seiten und Abschnitte verknüpfen.",
-    'Ein a-Element wird mit href zu einem Link. kontakt.html ist ein relativer Pfad im gleichen Ordner, ../index.html geht einen Ordner nach oben. Eine vollständige Adresse wie https://example.org ist absolut. #ideen springt zu einem Element mit id="ideen". Linktexte sollen das Ziel benennen. Das download-Attribut bietet eigene Dateien zum Herunterladen an; bei fremden Domains gelten Browserbeschränkungen.',
-    '<a href="kontakt.html">Kontakt</a>\n<a href="#ideen">Zu den Ideen</a>\n<h2 id="ideen">Ideen</h2>\n<a href="https://example.org">Beispielseite</a>',
+    "Ein Link besteht aus <a>, einem Linktext und </a>. Im Start-Tag legt href das Ziel fest. Solche zusätzlichen Angaben im Start-Tag heißen Attribute. Ein Attribut besteht hier aus Name, Gleichheitszeichen und einem Wert in Anführungszeichen.\n\nhref=\"kontakt.html\" öffnet eine Datei im selben Ordner. Das ist ein relativer Pfad. Du legst die Datei in der Werkstatt mit „+ Unterseite“ an. Eine vollständige Adresse wie https://example.org/ führt zu einer Internetseite.\n\nhref=\"#ideen\" verweist auf die Stelle mit id=\"ideen\" auf derselben Seite. Gib die ID nur einmal an, an der h2 „Unsere Ideen“. Der Link steht vor diesem Ziel.\n\nDie isolierte Laborvorschau dient zum Betrachten. Teste die Links nach dem Export in index.html im Browser. Dort kannst du auch zur Kontaktseite und über ihren Rücklink wieder zurückgehen. Das Attribut download an einem Link bietet eine eigene Datei zum Herunterladen an.",
+    "<a href=\"#ideen\">Zu unseren Ideen</a>\n<a href=\"kontakt.html\">Kontakt</a>\n<a href=\"https://example.org/\">Beispielseite im Internet</a>\n\n<h2 id=\"ideen\">Unsere Ideen</h2>\n\n<!-- In kontakt.html innerhalb von body -->\n<h1>Kontakt zur Garten-AG</h1>\n<a href=\"index.html\">Zur Startseite</a>",
     'Erstelle einen relativen Link zu kontakt.html, einen externen HTTPS-Link mit verständlichem Linktext und einen funktionierenden Sprunglink zu einer Überschrift mit id="ideen".',
     'href="#ideen" verweist auf id="ideen". Die Schreibweise muss genau übereinstimmen. Ein Link erzeugt keine Datei: kontakt.html kannst du über „+ Unterseite“ oder nach dem Export in Notepad++ anlegen.',
     "Welcher Pfad führt in den gleichen Ordner?",
@@ -470,7 +470,7 @@ const lessons = [
     1,
     [
       "Ich unterscheide relative und absolute Pfade.",
-      "Ich habe den Sprunglink in der Vorschau ausprobiert.",
+      "Ich habe Sprunglink, Kontaktseite und Rücklink im exportierten Projekt ausprobiert.",
     ],
     [
       { selector: 'a[href="kontakt.html"]', text: 3, label: "Relativer Link" },
@@ -488,8 +488,8 @@ const lessons = [
     1,
     "Bilder zugänglich einbinden",
     "Ich kann ein Bild und seinen Zweck beschreiben.",
-    'img ist ein leeres Element. src gibt die Datei an, alt beschreibt die relevante Bildinformation für Menschen, die das Bild nicht sehen. Bei rein dekorativen Bildern ist alt="" passend. width und height legen die Ausgangsgröße fest. Bewahre eigene Bilder im Unterordner bilder auf. In diesem Labor kannst du ein lokales Bild laden: Es wird als Datenadresse in den Entwurf eingebettet, ohne Upload.',
-    '<img src="bilder/beet.jpg" alt="Drei frisch bepflanzte Hochbeete" width="640" height="360">',
+    "Ein Bild fügst du mit img ein. Die Angabe src nennt seine Quelle. Anders als p hat img keinen Inhalt zwischen zwei Tags und kein </img>.\n\nLade den Beetplan aus dieser Einheit herunter und wähle ihn über „Bild einfügen“. WebLab setzt dafür ein img mit einer langen Datenadresse in src ein. Diese Adresse enthält das Bild bereits. Du brauchst sie beim Einfügen nicht abzutippen.\n\nalt ist die Textalternative für Menschen, die das Bild nicht sehen. Ersetze den Platzhalter durch „Zwei Beete: Radieschen links, Bohnen rechts.“. Die Angaben width und height beschreiben die Ausgangsgröße.\n\nVerschiebe das eingefügte img bei Bedarf vor die h2 „Mitmachen“. Außerhalb des Labors könntest du die Bilddatei im Ordner bilder ablegen. Das Beispiel zeigt dafür einen relativen Pfad. Für das eingebettete Bild behältst du die lange Datenadresse.",
+    "<!-- Beispiel für eine Bilddatei im Unterordner bilder -->\n<img src=\"bilder/beetplan.png\"\n     alt=\"Zwei Beete: Radieschen links, Bohnen rechts.\"\n     width=\"640\" height=\"360\">",
     "Lade über „Bild einfügen“ den gemeinsamen Beetplan und ergänze einen passenden Alternativtext. Gib width und height an. Erkläre bei der Selbstkontrolle, welcher relative Dateipfad außerhalb des Labors sinnvoll wäre.",
     "Beschreibe die Information, nicht nur „Bild“. Der Bildknopf fügt ein img mit Datenadresse ein.",
     "Was beschreibt alt bei einem informativen Bild?",
@@ -517,8 +517,8 @@ const lessons = [
     1,
     "Daten in Tabellen",
     "Ich kann tabellarische Daten auszeichnen.",
-    'Tabellen sind für Daten mit Zeilen und Spalten gedacht. table enthält die Tabelle, tr eine Zeile, th eine Kopfzelle und td eine Datenzelle. caption benennt die Tabelle. scope="col" ordnet eine Kopfzelle ihrer Spalte zu. Nutze Tabellen nicht zum Layout einer gesamten Webseite.',
-    '<table>\n <caption>Pflanzzeiten</caption>\n <tr><th scope="col">Pflanze</th><th scope="col">Monat</th></tr>\n <tr><td>Radieschen</td><td>April</td></tr>\n</table>',
+    "Mit einer Tabelle stellst du zusammengehörige Daten in Zeilen und Spalten dar. Unser Beispiel vergleicht Pflanzen und Monate. <table> und </table> umschließen die ganze Tabelle. Die Beschriftung steht im caption-Element.\n\nJede Zeile beginnt mit <tr> und endet mit </tr>. In der ersten Zeile stehen die Spaltenüberschriften in th-Elementen. scope=\"col\" sagt, dass die Überschrift für die jeweilige Spalte gilt.\n\nDie normalen Datenzellen stehen in td-Elementen. Für zwei Spalten brauchst du auch in jeder Datenzeile zwei Zellen. Ergänze die Tabelle vor dem Abschnitt „Mitmachen“.\n\nEine Tabelle zeigt Datenbeziehungen. Für die Gliederung der ganzen Webseite lernst du später Seitenbereiche kennen.",
+    "<table>\n  <caption>Pflanzzeiten</caption>\n  <tr>\n    <th scope=\"col\">Pflanze</th>\n    <th scope=\"col\">Monat</th>\n  </tr>\n  <tr><td>Radieschen</td><td>April</td></tr>\n  <tr><td>Bohnen</td><td>Mai</td></tr>\n</table>",
     'Erstelle eine Tabelle mit caption, zwei Spaltenüberschriften mit scope="col" und zwei Datenzeilen mit insgesamt vier td-Zellen.',
     "Jede Zeile ist ein tr. Halte die Zahl der Zellen pro Zeile gleich.",
     "Wofür ist eine Tabelle geeignet?",
@@ -529,7 +529,7 @@ const lessons = [
     ],
     0,
     [
-      "Meine Zellen bilden durchgehend zwei Spalten.",
+      "Meine Tabelle zeigt Radieschen und Bohnen in durchgehend zwei Spalten.",
       "Ich kann Kopfzellen und Datenzellen unterscheiden.",
     ],
     [
@@ -553,8 +553,8 @@ const lessons = [
     1,
     "Audio und Video",
     "Ich kann Medien mit einer Bedienung einbinden.",
-    "audio und video binden Mediendateien ein. controls zeigt eine Bedienleiste. source benennt eine Quelle mit ihrem Medientyp. Für gesprochene Inhalte brauchst du eine zugängliche Textalternative; Videos können Untertitel über track erhalten. Automatisches Abspielen stört häufig. Die Laborvorschau lädt aus Datenschutzgründen keine entfernten Medien. Teste deine eigenen Dateien nach dem Export lokal.",
-    '<video controls width="480">\n <source src="medien/aussaat.webm" type="video/webm">\n Dein Browser unterstützt dieses Video nicht.\n</video>\n<p>Textfassung: Wir zeigen die Aussaat.</p>',
+    "Ein video-Element bindet einen Film ein. controls zeigt die Schaltflächen zum Abspielen und Anhalten. width legt die Ausgangsbreite fest. Im source-Element stehen der Dateipfad src und der Medientyp type. Für unseren Clip lautet dieser video/webm.\n\nLege beim entpackten Projekt einen Ordner medien neben index.html an. Darin speicherst du den heruntergeladenen Clip als aussaat.webm. So passt der relative Pfad medien/aussaat.webm zur Datei.\n\nIm Labor kannst du die Bedienleiste sehen. Relative Mediendateien werden dort nicht abgespielt. Öffne deine exportierte index.html im Browser, um den Clip tatsächlich zu testen.\n\nDie Textfassung unter dem Film gibt die Arbeitsschritte als Text wieder. Sie macht den Inhalt auch ohne den Film zugänglich. Für reine Tondateien gibt es das Element audio. Gesprochene Inhalte brauchen ebenfalls eine Textalternative.",
+    "<video controls width=\"480\">\n  <source src=\"medien/aussaat.webm\" type=\"video/webm\">\n  Dein Browser unterstützt dieses Video nicht.\n</video>\n<p>Textfassung: Beet vorbereiten, Samen aussäen, Beet gießen.</p>",
     "Binde ein video mit controls und source ein. Ergänze eine sichtbare Textfassung als Absatz mit mindestens 25 Zeichen. Nutze den gemeinsamen Aussaat-Clip und teste den Pfad nach dem Export.",
     "controls ist ein boolesches Attribut. Schreibe eine echte Inhaltszusammenfassung, nicht nur „Video“.",
     "Warum ergänzt du eine Textfassung?",
@@ -585,8 +585,8 @@ const lessons = [
     2,
     "Inhalt und Gestaltung trennen",
     "Ich kann mit meiner ersten CSS-Regel eine Überschrift einfärben und eine CSS-Datei mit meiner Seite verbinden.",
-    "HTML hat deiner Seite Inhalt gegeben. CSS verändert, wie dieser Inhalt aussieht. Fange mit einer Regel an: h1 { color: navy; } färbt die Hauptüberschrift dunkelblau.\n\nLies die Regel von links nach rechts: h1 wählt aus, was du änderst. Zwischen den geschweiften Klammern steht color für die Schriftfarbe und navy für den Farbwert. Der Doppelpunkt verbindet Eigenschaft und Wert. Das Semikolon beendet die Angabe.\n\nDein CSS kommt in die Datei style.css. Die link-Zeile im HTML-Kopf verbindet die Seite damit. CSS kann auch direkt im HTML stehen, im style-Attribut eines Tags oder in einem style-Element im Kopf. Für dieses Projekt verwendest du die gemeinsame Datei.",
-    '<!-- im head -->\n<link rel="stylesheet" href="style.css">\n\n/* in style.css */\nh1 { color: navy; }',
+    "Deine HTML-Seite hat jetzt Texte, Listen, Links, ein Bild, eine Tabelle und ein Video. CSS verändert ihr Aussehen. Öffne dafür den Reiter style.css. Du schreibst den CSS-Code in diese Datei.\n\nBeginne mit h1 { color: navy; }. h1 wählt die Hauptüberschrift aus und heißt Selektor. Zwischen den geschweiften Klammern steht die Eigenschaft color mit dem Wert navy. Der Doppelpunkt verbindet Eigenschaft und Wert. Das Semikolon beendet die Angabe.\n\nÄndere nur navy zu darkgreen. So kannst du die Wirkung einer einzigen Änderung in der Vorschau beobachten. Ergänze danach die Schriftfamilie für body. Arial, sans-serif bedeutet, dass der Browser Arial oder eine passende serifenlose Ersatzschrift verwendet.\n\nDie link-Zeile im head verbindet index.html mit style.css. WebLab setzt dein CSS für die Vorschau automatisch ein. Ob die externe Datei richtig verbunden ist, prüfst du im entpackten Projekt. CSS kann auch in einem style-Element im head oder in einem style-Attribut stehen. Wir nutzen im Projekt die gemeinsame Datei.",
+    "/* In style.css */\nh1 {\n  color: darkgreen;\n}\nbody {\n  font-family: Arial, sans-serif;\n}\n\n<!-- In index.html innerhalb von head -->\n<link rel=\"stylesheet\" href=\"style.css\">",
     "Verknüpfe im head style.css. Schreibe im CSS-Feld eine body-Regel mit font-family und eine h1-Regel mit color. Exportiere HTML und CSS einzeln oder als Projekt-ZIP und öffne beide aus demselben Ordner.",
     "CSS steht ohne HTML-Tags im CSS-Feld. Beispiel: body { font-family: Arial, sans-serif; }",
     "Welche Einbindung kann mehrere Seiten gemeinsam gestalten?",
@@ -614,8 +614,8 @@ const lessons = [
     2,
     "Tags, Klassen und IDs",
     "Ich kann Elemente gezielt formatieren.",
-    'Ein Tagselektor wie p trifft alle Absätze. .hinweis trifft alle Elemente mit class="hinweis". #start trifft das Element mit id="start". Eine Klasse ist wiederverwendbar; jede ID darf im Dokument nur einmal vorkommen. Wenn Regeln konkurrieren, zählen unter anderem Herkunft, Wichtigkeit, Spezifität und Reihenfolge. Halte deine Regeln zunächst einfach und nutze Klassen für wiederkehrende Gestaltung.',
-    '<p class="hinweis">Bitte Handschuhe mitbringen.</p>\n<h1 id="start">Schulgarten</h1>\n\n.hinweis { color: darkgreen; }\n#start { text-align: center; }',
+    "Bisher hat h1 alle Hauptüberschriften ausgewählt. Für unsere beiden Hinweisabsätze soll eine gemeinsame Regel gelten. Ergänze dafür im Start-Tag jedes Absatzes class=\"hinweis\". Eine Klasse kann mehreren Elementen zugewiesen werden.\n\nIm CSS wählt .hinweis alle Elemente mit dieser Klasse aus. Der Punkt gehört zum CSS-Selektor. In class=\"hinweis\" steht der Name ohne Punkt.\n\nFür die eine Hauptüberschrift ergänzt du id=\"start\". Im CSS wählt #start genau dieses Element aus. Jede ID darf auf einer Seite nur einmal vorkommen. Unsere vorhandene ID ideen bleibt an ihrer h2.\n\ntext-align: center richtet die Überschrift mittig aus. Vergleiche zuerst die Wirkung der Klassenregel auf zwei Absätze und danach die Wirkung der ID-Regel auf die Überschrift. Mehrere Regeln können ein Element treffen. Später kannst du in der freiwilligen Vertiefung untersuchen, welche Regel Vorrang hat.",
+    "<!-- In index.html -->\n<h1 id=\"start\">Unser Schulgarten</h1>\n<p class=\"hinweis\">Wir bauen Gemüse und Kräuter an.</p>\n<p class=\"hinweis\">Jeden <em>Mittwoch</em> treffen wir uns im Garten.</p>\n\n/* In style.css */\n.hinweis { color: darkgreen; }\n#start { text-align: center; }",
     'Erstelle zwei Absätze mit class="hinweis" und eine h1 mit id="start". Formatiere .hinweis mit color und #start mit text-align.',
     "In HTML heißt das Attribut class, im CSS beginnt der Klassenselektor mit einem Punkt.",
     "Wie oft darf dieselbe ID im Dokument vorkommen?",
@@ -642,8 +642,8 @@ const lessons = [
     2,
     "Farben und Typografie",
     "Ich kann lesbare Webseiten gestalten.",
-    "color färbt Schrift, background-color den Hintergrund. Farben können als Name, Hexwert oder rgb angegeben werden. font-family nennt eine Schriftfamilie samt Ersatzschrift, font-size die Größe und line-height die Zeilenhöhe. text-align richtet Text aus. Achte auf ausreichenden Kontrast und lesbare Größen. Nutze nicht nur Farbe, um wichtige Informationen zu vermitteln.",
-    "body {\n color: #182c35;\n background-color: #f4f7f6;\n font-family: Arial, sans-serif;\n font-size: 1rem;\n line-height: 1.6;\n}\nh1 { text-align: center; }",
+    "Die Eigenschaft color bestimmt die Schriftfarbe und background-color die Hintergrundfarbe. Ein Farbwert kann ein Name wie darkgreen oder eine Hexzahl wie #182c35 sein. Du legst die gemeinsamen Werte in der vorhandenen body-Regel fest.\n\nfont-family bestimmt die Schriftfamilie. font-size bestimmt die Schriftgröße. 1rem verwendet die Grundschriftgröße des Browsers. line-height: 1.6 gibt den Zeilen mehr Abstand und hilft beim Lesen längerer Texte.\n\nÄndere immer nur einen Wert und schau danach in die Vorschau. Die Klassenregel .hinweis wirkt weiterhin auf die beiden Hinweisabsätze. Sie können dadurch eine andere Farbe als der restliche Text haben.\n\nText und Hintergrund sollen klar unterscheidbar sein. Prüfe dieselbe Seite in normaler Breite und in der Handyansicht. Wichtige Informationen müssen auch über ihren Text verständlich bleiben.",
+    "body {\n  color: #182c35;\n  background-color: #f4f7f6;\n  font-family: Arial, sans-serif;\n  font-size: 1rem;\n  line-height: 1.6;\n}\nh1 { text-align: center; }",
     "Gib body eine Schriftfarbe, Hintergrundfarbe, Schriftfamilie, Schriftgröße und Zeilenhöhe. Richte h1 aus. Prüfe die Lesbarkeit deiner eigenen Farbkombination in der Vorschau.",
     "Jede Deklaration besteht aus Eigenschaft, Doppelpunkt und Wert. Schließe sie mit Semikolon ab.",
     "Welche Eigenschaft steuert den Abstand der Textzeilen?",
@@ -672,8 +672,8 @@ const lessons = [
     2,
     "Das Box-Modell",
     "Ich kann Innen- und Außenabstand unterscheiden.",
-    "Jedes Element belegt eine Box: Inhalt, padding als Innenabstand, border als Rahmen und margin als Außenabstand. Bei box-sizing: border-box sind padding und border in der angegebenen Breite enthalten. max-width begrenzt die Breite, ohne schmale Ansichten zum Überlaufen zu zwingen. Semantische Elemente wie main und section beschreiben Bereiche; div gruppiert ohne eigene Bedeutung.",
-    ".karte {\n box-sizing: border-box;\n max-width: 40rem;\n padding: 1.5rem;\n border: 1px solid navy;\n margin: 1rem auto;\n}",
+    "Ein HTML-Element belegt einen rechteckigen Bereich. Zum Inhalt kommen padding als Innenabstand, border als Rahmen und margin als Außenabstand. Diese Teile heißen zusammen Box-Modell.\n\nUmschließe den Abschnitt „Unsere Ideen“ bis vor „Mitmachen“ mit section und gib ihm class=\"karte\". Das Wort section bezeichnet einen zusammengehörenden Themenbereich. Deine bestehende h2 bleibt darin stehen.\n\nDie CSS-Regel .karte gestaltet diesen Bereich. padding: 1rem schafft Platz zwischen Inhalt und Rahmen. margin: 1rem auto schafft außen Abstand und verteilt den freien Platz links und rechts gleichmäßig.\n\nmax-width: 40rem begrenzt die Breite auf großen Bildschirmen. box-sizing: border-box rechnet Innenabstand und Rahmen in eine gesetzte Breite ein. Mit img, video { max-width: 100%; height: auto; } dürfen Bild und Video höchstens so breit wie ihr Bereich sein. Die Höhe passt sich im gleichen Verhältnis an. Prüfe die Karte in der Handyansicht.",
+    ".karte {\n  padding: 1rem;\n  border: 1px solid darkgreen;\n  margin: 1rem auto;\n  max-width: 40rem;\n  box-sizing: border-box;\n}\nimg, video {\n  max-width: 100%;\n  height: auto;\n}",
     'Erstelle einen Bereich mit class="karte" und eigenem Text. Gib ihm padding, border, margin, max-width und box-sizing. Verändere padding und margin einzeln und beobachte den Unterschied.',
     "padding liegt innerhalb des Rahmens, margin außerhalb. Verwende die Klasse .karte im CSS.",
     "Wo liegt padding?",
@@ -701,10 +701,10 @@ const lessons = [
   lesson(
     "l13",
     3,
-    "Eine Webseite planen",
+    "Seitenbereiche und Zielgruppe",
     "Ich kann Zielgruppe und Seitenstruktur entwerfen.",
-    "Beginne vor dem Gestalten mit Ziel und Zielgruppe. Welche Informationen braucht dein Publikum? Skizziere eine Startseite und mindestens eine Unterseite. Ordne Inhalte in header, nav, main und footer. Plane Bilder, Dateinamen und Links. Schreibe einen ersten Entwurf ohne aufwendige Gestaltung. Eine klare Informationsstruktur spart später Umbauten.",
-    '<header><h1>Schulgarten</h1></header>\n<nav><a href="kontakt.html">Mitmachen</a></nav>\n<main><h2>Unsere Idee</h2><p>Ein Garten für alle.</p></main>\n<footer><p>Schulprojekt</p></footer>',
+    "Die Schulgartenseite richtet sich an neue Schülerinnen und Schüler. Sie sollen erfahren, was die Garten-AG macht und wie sie mitmachen können. Skizziere zuerst, welche Informationen sie auf der Startseite und auf der Kontaktseite finden.\n\nOrdne dann den vorhandenen Inhalt in vier Bereiche. header enthält die Hauptüberschrift. nav enthält die Links zur Orientierung. main enthält den eigentlichen Inhalt. footer enthält die abschließenden Angaben.\n\nDu verschiebst die bestehenden Elemente in diese Bereiche. Achte auf die zugehörigen End-Tags. Erhalte dabei die IDs und den Klassennamen karte. So bleiben Links und Gestaltung mit dem bisherigen Code verbunden.\n\nHTML-Bereiche beschreiben die Aufgabe des Inhalts. Die Anordnung und die Farben regelst du mit CSS. Die Kontaktseite bleibt als zweite Datei im Projektordner erhalten.",
+    "<header><h1 id=\"start\">Unser Schulgarten</h1></header>\n<nav>\n  <a href=\"#ideen\">Zu unseren Ideen</a>\n  <a href=\"kontakt.html\">Kontakt</a>\n</nav>\n<main>\n  <!-- Hier stehen die bisherigen Inhalte. -->\n</main>\n<footer><p>Schulprojekt Garten-AG</p></footer>",
     "Entwirf eine Startseite mit header, nav, main und footer. Schreibe in main einen Absatz mit mindestens 40 Zeichen zu Ziel und Zielgruppe. Verlinke deine vorhandene oder geplante Unterseite kontakt.html. Halte die Seitenskizze in deinen Notizen fest.",
     "Nutze sinnvolle Bereiche statt eine Tabelle als Layout. Eine fehlende Unterseite kannst du über „+ Unterseite“ oder nach dem Export in Notepad++ anlegen. Vorhandene Unterseiten gehören bereits zum Projekt-ZIP.",
     "Was sollte vor der Farbwahl feststehen?",
@@ -736,8 +736,8 @@ const lessons = [
     "Ich kann die Veröffentlichung vorbereiten.",
     "Nutze eigene Inhalte oder Material mit einer passenden Nutzungserlaubnis. Notiere bei fremden Werken Titel, Urheber, Quelle, Lizenz und Änderungen.\n\nMit <cite> und </cite> zeichnest du einen Werktitel aus, etwa den Titel eines Bilds oder Videos. Angaben wie Urheber und Lizenz schreibst du daneben.\n\nCreative Commons bietet verschiedene Bedingungen; BY verlangt Namensnennung, SA eine entsprechende Weitergabe bearbeiteter Werke. Ein Disclaimer ersetzt keine Rechteprüfung. Welche Anbieterinformationen erforderlich sind, hängt vom Angebot ab. Kläre die schulische Veröffentlichung mit der Lehrkraft und veröffentliche keine privaten Schülerdaten.",
     "<footer>\n <h2>Quellen und Rechte</h2>\n <p><cite>Beetplan</cite> und <cite>Aussaat-Clip</cite>: WebLab-Unterrichtsmaterial.</p>\n</footer>",
-    "Erstelle in footer eine Überschrift „Quellen und Rechte“ und eine ehrliche Dokumentation deiner verwendeten Inhalte mit mindestens 40 Zeichen. Prüfe die offiziellen Quellen unter dem Aufgabentext. Besprich erforderliche Anbieterinformationen mit der Lehrkraft.",
-    "Bei eigenem Material dokumentierst du die eigene Urheberschaft. Erfinde keine Lizenz für fremde Bilder.",
+    "Ergänze die Quellenzeile für Beetplan, Aussaat-Clip und gemeinsame Texte im footer. Markiere beide Werktitel mit cite. Besprich die Herkunft von Material und die Veröffentlichung mit der Lehrkraft.",
+    "Schreibe zwei cite-Elemente innerhalb des Quellenabsatzes. Die Angaben zur Herkunft stehen daneben als normaler Text.",
     "Darfst du jedes Bild aus einer Suchmaschine übernehmen?",
     [
       "Ja, wenn du es verkleinerst",
@@ -756,6 +756,7 @@ const lessons = [
         text: 40,
         label: "Nachvollziehbare Rechteangabe",
       },
+      { selector: "footer p cite", count: 2, text: 2, label: "Zwei gekennzeichnete Werktitel" },
     ],
   ),
   lesson(
@@ -765,8 +766,8 @@ const lessons = [
     "Ich kann eine Seite auf einer nicht öffentlichen Plattform testen.",
     "Lege index.html, style.css und deine Medien in einem gemeinsamen Projektordner ab. Teste Links, Groß- und Kleinschreibung, schmale Ansichten und fehlende Bilder. Übertrage die vollständige Ordnerstruktur auf das von der Lehrkraft vorgegebene, nicht öffentliche Ziel, zum Beispiel einen lokalen Webserver. Bei einer FTP-Übung werden Adresse und Zugang von der Lehrkraft vorgegeben; trage Kennwörter nie in HTML ein. Verwende im echten Betrieb eine geschützte Übertragung wie SFTP, sofern bereitgestellt.\n\nDein Testprotokoll kann einklappbar sein. <details> umschließt den gesamten Bereich. <summary> ist die Schaltfläche, über die du den Inhalt auf- und zuklappst.",
     "<details>\n  <summary>Testprotokoll</summary>\n  <ol>\n    <li>Kontaktlink geprüft.</li>\n  </ol>\n</details>",
-    "Schreibe einen Testbericht als ol mit mindestens drei konkreten Tests. Exportiere dein Projekt, teste lokal und übertrage die Dateien mit der Lehrkraft auf die geschützte Unterrichtsplattform. Ein öffentlicher GitHub-Pages-Upload ist für diese Schüleraufgabe kein Ersatz.",
-    "Notiere zu jedem Test: Was wurde geprüft, was war das Ergebnis? Die echte Übertragung bestätigt die Lehrkraft.",
+    "Erstelle ein aufklappbares Testprotokoll mit details und summary. Schreibe darin drei konkrete Tests mit tatsächlichem Ergebnis. Teste im entpackten Projekt und führe die Übertragung mit der Lehrkraft durch.",
+    "summary benennt das Protokoll. Die ol mit den drei Testergebnissen steht innerhalb von details unter summary.",
     "Was muss beim Übertragen erhalten bleiben?",
     [
       "Nur die Farben",
@@ -780,11 +781,12 @@ const lessons = [
     ],
     [
       {
-        selector: "ol > li",
+        selector: "details ol > li",
         count: 3,
         text: 15,
-        label: "Drei konkrete Testeinträge",
+        label: "Drei Testergebnisse im aufklappbaren Protokoll",
       },
+      { selector: "details > summary", text: 4, label: "Beschriftung zum Auf- und Zuklappen" },
     ],
   ),
   lesson(
@@ -792,7 +794,7 @@ const lessons = [
     3,
     "Deine eigene statische Webseite",
     "Ich entwickle selbständig eine vollständige Webseite.",
-    "Verbinde die erlernten Bausteine zu einer eigenen Informationswebseite. Wähle ein überschaubares Thema: Verein, Schulprojekt, Hobby oder eine erfundene Initiative. Passend zum bisherigen Unterrichtsprojekt kannst du ein Thema aus BPE3 erklären, etwa Client-Server, WLAN oder Datenschutz. Dokumentiere dabei auch verwendete KI-Hilfen. Entwickle mindestens zwei verknüpfte Seiten mit gemeinsamer externer CSS-Datei. Nutze eine begründete Auswahl aus Bildern, Listen und Tabellen. Erkläre deine Entscheidungen und zeige, dass du den Code selbst verändern kannst.",
+    "Du hast die gemeinsame Schulgartenseite Schritt für Schritt aufgebaut. Jetzt entscheidest du selbst über Thema, Zielgruppe und Inhalt. Wähle ein überschaubares Thema wie einen Verein, ein Hobby oder eine erfundene Initiative. Notiere zuerst, für wen deine Seite gedacht ist und was Besucher dort erfahren sollen.\n\nSkizziere eine Startseite und eine Kontaktseite. Entwickle beide im neuen Entwurf dieser Einheit. Die Startseite heißt index.html, die zweite Seite kontakt.html. Beide verwenden dieselbe style.css. Verlinke sie in beide Richtungen.\n\nNutze die gelernten Bausteine passend zu deinem Thema. Der Abschlussauftrag verlangt ein Bild mit Textalternative, eine Liste, eine sinnvolle Tabelle und Quellenangaben. Dokumentiere auch verwendete KI-Hilfen.\n\nArbeite in der Reihenfolge Planen, Inhalt schreiben, Gestalten, Testen und Präsentieren. Öffne die entpackten Dateien im Browser und prüfe auch eine schmale Fensterbreite. Zeige der Lehrkraft, dass du ein HTML-Element und eine CSS-Regel erklären und selbst ändern kannst.",
     "<!-- Plane → Entwickle → Teste → Verbessere → Präsentiere -->",
     "Beginne mit dem Grundgerüst in dieser Werkstatt und gib der Seite dein eigenes Thema. Lege kontakt.html mit „+ Unterseite“ oder nach dem Export in Notepad++ an. Ergänze auf beiden Seiten Navigation und Rücklink. Füge Bild, Liste, sinnvolle Tabelle und Quellenangaben hinzu. Exportiere das Projekt-ZIP mit allen Seiten und style.css. Entpacke es, teste alle Dateien gemeinsam und präsentiere sie auf der geschützten Unterrichtsplattform.",
     "Die automatische Prüfung kontrolliert nur Bausteine der Startseite. Eigenständigkeit, Qualität, Unterseite, Links und Veröffentlichung werden im Gespräch geprüft.",
@@ -845,6 +847,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.58.0", "Schritt für Schritt durch den Schulgarten", "Erklärungen und Beispiele folgen dem gemeinsamen Projekt. Der Editor steht vor der freiwilligen Vertiefung. Quellenangaben und das Testprotokoll werden gezielt geprüft."],
     ["1.57.0", "Ein gemeinsamer Projektordner", "Die aktuelle Fassung startet direkt über index.html im gemeinsamen Projektordner. Übungsmarkierungen bleiben bei einem Speicherfehler im geöffneten Tab verfügbar und lassen sich erneut speichern."],
     ["1.56.6", "Menüschalter neben dem Logo", "Am Desktop sitzt der Schalter zum Ein- und Ausklappen neben dem WebLab-Logo in der Menüleiste. Auf schmalen Bildschirmen bleibt er in der Kopfzeile erreichbar."],
     ["1.56.5", "Mit dem Logo zum Seitenanfang", "Ein Klick auf das WebLab-Logo führt zur Startseite und scrollt ganz nach oben, auch wenn die Startseite bereits geöffnet ist."],
@@ -1131,7 +1134,7 @@ const guidance = {
       "Die erste Zeile lautet <!doctype html>. Davor steht nichts, auch kein Kommentar.",
       'Das Start-Tag des Dokuments lautet <html lang="de">.',
       'Ergänze im head <meta charset="utf-8">.',
-      "Schreibe im head einen eigenen Titel zwischen <title> und </title>.",
+      "Schreibe im head den Titel Garten-AG unserer Schule zwischen <title> und </title>.",
       "Die sichtbare h1 gehört zwischen <body> und </body>.",
     ],
     pitfalls: [
@@ -1232,8 +1235,8 @@ const guidance = {
       "Die Textfassung ist selbst HTML, meist ein Absatz unter dem Video.",
     ],
     tips: [
-      'Schreibe <video controls> und darin <source src="…" type="video/mp4">.',
-      "Ergänze einen Absatz, der den Inhalt des Videos in eigenen Worten zusammenfasst (mindestens 25 Zeichen).",
+      'Schreibe <video controls> und darin <source src="medien/aussaat.webm" type="video/webm">.',
+      "Schreibe unter das Video die Textfassung mit den drei Schritten Beet vorbereiten, Samen aussäen und Beet gießen.",
     ],
     pitfalls: [
       "controls vergessen: Ohne Bedienleiste lässt sich das Video nicht starten.",
@@ -1343,6 +1346,7 @@ const guidance = {
     tips: [
       "Schreibe im footer eine h2, zum Beispiel „Quellen und Rechte“.",
       "Ergänze im footer einen Absatz mit mindestens 40 Zeichen: Wer hat Texte und Bilder erstellt, unter welcher Lizenz?",
+      "Setze <cite> und </cite> im Quellenabsatz jeweils um Beetplan und Aussaat-Clip. Die Herkunft schreibst du daneben.",
     ],
     pitfalls: [
       "„Bild von Google“ ist keine Quelle: Nenne Urheber, Fundort und Lizenz.",
@@ -1357,7 +1361,8 @@ const guidance = {
       "Richtig: Relative Pfade funktionieren nur, wenn Dateinamen und Ordner gleich bleiben.",
     ],
     tips: [
-      "Schreibe drei Tests als <li> in einer <ol>, jeder mit mindestens 15 Zeichen, zum Beispiel „Link zu kontakt.html öffnet die Unterseite“.",
+      "Setze die ol mit drei tatsächlichen Testergebnissen innerhalb von details. Jede li nennt Test und Ergebnis mit mindestens 15 Zeichen.",
+      "Setze direkt in details ein summary-Element mit dem Text Testprotokoll. Klicke es zum Prüfen der Klappfunktion an.",
     ],
     pitfalls: [
       "Nur einzelne Dateien statt des ganzen Projektordners übertragen.",
@@ -3493,7 +3498,7 @@ const stages = [
     "Wir fassen die Ideen in einem Bereich mit Rahmen zusammen.",
     [
       "Umschließe den Bereich „Unsere Ideen“ samt zugehörigem Inhalt bis vor „Mitmachen“ mit <section class=\"karte\"> und </section>.",
-      "Gib .karte die Werte padding: 1rem; border: 1px solid darkgreen; margin: 1rem auto; max-width: 40rem; und box-sizing: border-box;.",
+      "Gib .karte die Werte padding: 1rem; border: 1px solid darkgreen; margin: 1rem auto; max-width: 40rem; und box-sizing: border-box;. Ergänze danach für img, video die Regel aus dem Beispiel.",
       "Ändere probeweise nur padding. Stelle danach 1rem wieder her und prüfe die Karte in der Handyansicht."
     ],
     "Vergleicht Text, Rahmen und Abstand. Zeigt an derselben Karte, wo padding und wo margin sichtbar wird."
@@ -3552,7 +3557,7 @@ const buildingBlocks = [
   ["style.css", "color", "font-family", "<link>"],
   ["class", ".hinweis", "#start", "text-align"],
   ["background-color", "font-size", "line-height"],
-  ["<section>", "padding", "border", "margin", "max-width", "box-sizing"],
+  ["<section>", "padding", "border", "margin", "max-width", "height", "box-sizing"],
   ["<header>", "<nav>", "<main>", "<footer>"],
   ["<cite>", "Quellen im Footer", "Bildrechte"],
   ["<details>", "<summary>", "Dateien im Browser testen"],
@@ -5515,7 +5520,7 @@ function card(l) {
 function overview() {
   const next =
     lessons.find((l) => !state.completed.includes(l.id)) || lessons[0];
-  return `<section class="hero"><div class="hero-copy"><p class="eyebrow">BPE2 · Gemeinsames Projekt und eigene Webseite</p><h2>Aus deinen Ideen<br>wird eine Webseite.</h2><p>Baue mit deiner Klasse die Webseite „Unser Schulgarten“ Schritt für Schritt auf. Danach entwickelst du eine eigene statische Webseite zu deinem Thema.</p><div class="actions"><a class="button" href="#lesson/${next.id}">${state.completed.length ? "Weiterlernen" : "Jetzt starten"} </a><button class="button secondary" type="button" data-catalog-jump="catalogTitle">Alle Einheiten ansehen</button><a class="hero-lab-link" href="#lab">Freies Labor</a></div></div><div class="hero-art"><span>&lt;idee&gt; → &lt;webseite&gt;</span></div></section>
+  return `<section class="hero"><div class="hero-copy"><p class="eyebrow">BPE2 · Gemeinsames Projekt und eigene Webseite</p><h2>Eine Webseite<br>für die Garten-AG</h2><p>Baue mit deiner Klasse die Webseite „Unser Schulgarten“ Schritt für Schritt auf. Danach entwickelst du eine eigene statische Webseite zu deinem Thema.</p><div class="actions"><a class="button" href="#lesson/${next.id}">${state.completed.length ? "Weiterlernen" : "Jetzt starten"} </a><button class="button secondary" type="button" data-catalog-jump="catalogTitle">Alle Einheiten ansehen</button><a class="hero-lab-link" href="#lab">Freies Labor</a></div></div><div class="hero-art"><span>&lt;idee&gt; → &lt;webseite&gt;</span></div></section>
  <div class="stats"><div class="stat"><strong>${state.completed.length} / ${lessons.length}</strong><small>Lerneinheiten abgeschlossen</small></div><div class="stat"><strong>${xp(state)}</strong><small>XP gesammelt</small></div><div class="stat"><strong>${nagold(state)}</strong><small>Erfahrungspunkte (EP)</small></div><div class="stat"><strong>Dein Projekt</strong><small>Eine eigene statische Webseite</small></div></div>
  ${lessonCatalog()}${resumePanel()}${practiceSuggestion(state)}`;
 }
@@ -5617,23 +5622,23 @@ function firstLessonIntro(l) {
   return `<section class="panel" id="understand" aria-labelledby="first-html-title">
     <h3 id="first-html-title">Deine erste Zeile HTML</h3>
     <p>${esc(journey[l.id].recall)}</p>
-    <p>${esc(l.explanation)}</p>
+    ${l.explanation.split("\n\n").map(part => `<p>${esc(part)}</p>`).join("")}
     <div class="beginner-example">
       <div><h4>Das steht im Code</h4><pre><code>&lt;h1&gt;Unser Schulgarten&lt;/h1&gt;</code></pre></div>
       <div><h4>Das siehst du im Browser</h4><div class="beginner-browser"><strong>Unser Schulgarten</strong></div></div>
     </div>
-    <p><code>&lt;h1&gt;</code> ist der Start-Tag für die Hauptüberschrift. <code>&lt;/h1&gt;</code> ist der End-Tag. Der Text dazwischen ist deine Überschrift. Das Ganze heißt HTML-Element.</p>
+    <p>Start-Tag, Inhalt und End-Tag bilden zusammen ein HTML-Element. Im Editor beginnst du mit den zwei vorhandenen Zeilen.</p>
   </section>`;
 }
 function lessonUnderstanding(l) {
   if (l.id === "l1") return firstLessonIntro(l);
-  return `<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3>${l.explanation.split("\n\n").map((part) => `<p>${esc(part)}</p>`).join("")}<h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(journey[l.id].shared ? journey[l.id].addition : l.task)}</p>${journey[l.id].shared ? '<p><a href="#practice" data-lesson-anchor="practice">Zum gemeinsamen Arbeitsauftrag</a></p>' : ""}<details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${lessonPitfalls(l)}${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>`;
+  return `<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3>${l.explanation.split("\n\n").map((part) => `<p>${esc(part)}</p>`).join("")}<h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(journey[l.id].shared ? journey[l.id].addition : l.task)}</p>${journey[l.id].shared ? '<p><a href="#practice" data-lesson-anchor="practice">Zum gemeinsamen Arbeitsauftrag</a></p>' : ""}<details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details>${lessonPitfalls(l)}${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>`;
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id),
     first = l.id === "l1",
     extras = `${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}`;
-  return `<section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id], true)}</section>${lessonWorkflow()}${first ? "" : lessonJourney(l)}${lessonUnderstanding(l)}${lessonPractice(l)}${first ? "" : extras}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div>${journey[l.id].shared ? `<details class="class-review"><summary>Ergebnissicherung in der Klasse</summary><p>${esc(journey[l.id].observe)}</p><p>Notiere unten bei „Meine Notizen“ euer Ergebnis und eine Frage, die noch offen ist.</p></details>` : ""}</section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>${first ? lessonJourney(l) + `<section class="panel"><h3>Freiwillig weiterüben</h3>${debugChallenge(l)}${lessonPitfalls(l)}</section>` + extras : ""}<div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id], true)}</section>${lessonWorkflow()}${first ? "" : lessonJourney(l)}${lessonUnderstanding(l)}${lessonPractice(l)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div>${journey[l.id].shared ? `<details class="class-review"><summary>Ergebnissicherung in der Klasse</summary><p>${esc(journey[l.id].observe)}</p><p>Notiere unten bei „Meine Notizen“ euer Ergebnis und eine Frage, die noch offen ist.</p></details>` : ""}</section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section>${first ? lessonJourney(l) : ""}<section class="panel optional-practice"><h3>Freiwillig weiterüben</h3><p>Wenn du den gemeinsamen Auftrag verstanden und besprochen hast, kannst du hier weiterüben.</p>${debugChallenge(l)}${first ? lessonPitfalls(l) : ""}</section>${extras}<div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 // Reiter für index.html, alle Unterseiten und style.css.
 function fileTabs(d) {

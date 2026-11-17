@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.48.0** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
+Version: **1.48.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -327,7 +327,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 
 Das Zahnrad öffnet Schriftgröße (90, 100, 112 oder 125 %), Schriftfarbe (Standard, Neutralgrau, warm oder kühl) und Hintergrund (Standard, Graphit, Petrol oder Sand). Änderungen werden direkt angewendet und in diesem Browser getrennt vom Lernstand gespeichert. Die Farben passen zum hellen oder dunklen Farbschema. Reset stellt 100 %, die Standardfarben und den dunklen Standardmodus wieder her. HTML- und CSS-Code sowie die Schülerwebseite in der isolierten Vorschau bleiben unverändert.
 
-68 Node-Tests und 301 Browserprüfungen lokal bestanden. Der Kontrasttest prüft alle Kombinationen aus Schrift- und Hintergrundvorgaben in beiden Farbschemata. Der Dialog wurde im entpackten Offline-Paket in Edge visuell geprüft; die Browserabläufe prüfen sofortige Darstellung, Neuladen, Reset, unveränderten Lernstand, Fokus und schmale Darstellung bei 125 %.
+68 Node-Tests und 301 Browserprüfungen lokal bestanden. Der Kontrasttest prüft alle Kombinationen aus Schrift- und Hintergrundvorgaben in beiden Farbschemata. Der Dialog wurde im entpackten Offline-Paket in Edge visuell geprüft; die Browserabläufe prüfen sofortige Darstellung, Neuladen, Reset, unveränderten Lernstand, Fokus und schmale Darstellung bei 125 %. [Pages-Lauf 44069435231](https://github.com/JakobSawazki/WebLab/actions/runs/44069435231) mit 68 Node-Tests und 301 Browserprüfungen erfolgreich. Startseite, Skript und Stylesheet online mit dem Build abgeglichen. [Offline-ZIP](https://github.com/JakobSawazki/WebLab/releases/download/v1.48.0/WebLab-1.48.0-offline.zip) veröffentlicht.
 
 ### 17.11.2026 – Codex – Version 1.47.0: Versionsverlauf unten links
 

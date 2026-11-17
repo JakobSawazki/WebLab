@@ -478,6 +478,20 @@
             }),
             width + ": alle Karten in Lernreihenfolge, korrekte Ziele, Links und Sperren",
           );
+          const win = frame.contentWindow;
+          const header = doc.getElementById("workspaceHeader");
+          win.scrollTo({ top: 850, behavior: "instant" });
+          const bounds = header.getBoundingClientRect();
+          assert(win.scrollY >= 800 && bounds.top === 0 &&
+            [...doc.querySelectorAll(".topbar-actions > button")].every((button) => {
+              const rect = button.getBoundingClientRect();
+              return rect.height > 0 && rect.top >= 0 && rect.bottom <= bounds.bottom;
+            }),
+            width + ": Aktionen in der Übersicht bleiben beim Scrollen oben");
+          const phase = doc.getElementById("catalog-phase-3");
+          phase.scrollIntoView({ block: "start", behavior: "instant" });
+          assert(phase.getBoundingClientRect().top >= bounds.bottom,
+            width + ": Etappenüberschrift bleibt unter der fixierten Kopfzeile sichtbar");
           doc.querySelector('[data-catalog-jump="catalog-phase-3"]').click();
           assert(
             doc.activeElement.id === "catalog-phase-3" && frame.contentWindow.location.hash === "#home",

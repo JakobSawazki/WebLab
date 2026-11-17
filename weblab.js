@@ -283,7 +283,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.56.2";
+const VERSION = "1.56.3";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -845,6 +845,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.56.3", "Bedienelemente beim Scrollen erreichbar", "Die Kopfzeile mit Hell-Dunkel-Schalter, Sicherung, Laden, Optionen und Profil bleibt auf allen Seiten sichtbar."],
     ["1.56.2", "Automatisch speichern ohne Hinweisleiste", "WebLab speichert den Lernstand im Hintergrund. Die Leiste erscheint nur bei Speicherproblemen und bietet dort Hilfe."],
     ["1.56.1", "Testprotokoll auf schmalen Bildschirmen", "Der Code und die neuen Bausteine der Einheit 15 passen auch bei 360 Pixel Breite."],
     ["1.56.0", "Ein neues Motiv und neue Bausteine pro Einheit", "Jede Einheit hat ihr eigenes fotorealistisches Motiv. Über dem Arbeitsauftrag steht, welche HTML- oder CSS-Bausteine, Arbeitsschritte oder Prüfungen dazukommen."],
@@ -5397,17 +5398,13 @@ $("#storageRaw").onclick = () => {
   if (unreadableStorage)
     download("WebLab-vorhandene-Rohdaten.txt", unreadableStorage);
 };
-// Keep anchor jumps and keyboard focus below whichever header is sticky.
-function updateHeaderOffset(target) {
-  const property = target.id === "workspaceHeader" ? "--lesson-header-offset" : "--storage-offset";
-  const height = Math.ceil(target.getBoundingClientRect().height);
-  document.documentElement.style.setProperty(property, height + "px");
+// Keep anchor jumps and keyboard focus below the sticky header.
+const workspaceHeader = $("#workspaceHeader");
+function updateHeaderOffset() {
+  const height = Math.ceil(workspaceHeader.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--workspace-header-offset", height + "px");
 }
-const headerOffsetObserver = new ResizeObserver((entries) => {
-  for (const { target } of entries) updateHeaderOffset(target);
-});
-headerOffsetObserver.observe($("#workspaceHeader"));
-headerOffsetObserver.observe($("#storageStatus"));
+new ResizeObserver(updateHeaderOffset).observe(workspaceHeader);
 function stats() {
   $("#profileName").textContent = state.profile.name || "Gast";
   $("#profileStats").textContent =
@@ -6187,7 +6184,7 @@ function render() {
   $("#viewTitle").textContent = title;
   updateLessonHeading(l);
   $("#lessonProgressPanel").hidden = !l;
-  $("#workspaceHeader").toggleAttribute("data-lesson", Boolean(l));
+  workspaceHeader.toggleAttribute("data-lesson", Boolean(l));
   document.title = `${title} · WebLab`;
   $("#mainContent").innerHTML = html;
   decorateIcons();
@@ -6217,7 +6214,7 @@ function render() {
     const target = document.querySelector(`.exercise[data-exercise="${Number(route.split("/")[2]) - 1}"]`);
     if (target) {
       target.open = true;
-      updateHeaderOffset($("#workspaceHeader"));
+      updateHeaderOffset();
       target.scrollIntoView({ block: "start" });
       target.querySelector("textarea").focus({ preventScroll: true });
       focusedTarget = true;

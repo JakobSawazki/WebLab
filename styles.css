@@ -663,14 +663,13 @@ a.lesson-menu-item:hover,
   align-items: stretch;
   flex-wrap: wrap;
 }
-.workspace-header:not([data-lesson]) {
-  display: contents;
-}
-.workspace-header[data-lesson],
-.workspace-header:not([data-lesson]) .storage-status {
+.workspace-header {
   position: sticky;
   top: 0;
   z-index: 12;
+}
+.sidebar:has(.lesson-menu:not([hidden])) {
+  z-index: 13;
 }
 .workspace-header[data-lesson] .topbar {
   padding-block: 0.65rem;
@@ -723,10 +722,7 @@ a.lesson-menu-item:hover,
   font-size: 0.76rem;
   line-height: 1.35;
 }
-html { scroll-padding-top: calc(var(--storage-offset, 0px) + 1rem); }
-html:has(.workspace-header[data-lesson]) {
-  scroll-padding-top: calc(var(--lesson-header-offset, 0px) + 1rem);
-}
+html { scroll-padding-top: calc(var(--workspace-header-offset, 0px) + 1rem); }
 .storage-copy {
   display: flex;
   align-items: baseline;
@@ -2663,7 +2659,7 @@ dialog::backdrop {
   .app-shell {
     display: block;
   }
-  .workspace-header[data-lesson] { position: static; }
+  .workspace-header { position: static; }
   .topbar,
   .panel,
   .card,

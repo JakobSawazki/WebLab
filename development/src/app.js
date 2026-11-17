@@ -278,17 +278,13 @@ $("#storageRaw").onclick = () => {
   if (unreadableStorage)
     download("WebLab-vorhandene-Rohdaten.txt", unreadableStorage);
 };
-// Keep anchor jumps and keyboard focus below whichever header is sticky.
-function updateHeaderOffset(target) {
-  const property = target.id === "workspaceHeader" ? "--lesson-header-offset" : "--storage-offset";
-  const height = Math.ceil(target.getBoundingClientRect().height);
-  document.documentElement.style.setProperty(property, height + "px");
+// Keep anchor jumps and keyboard focus below the sticky header.
+const workspaceHeader = $("#workspaceHeader");
+function updateHeaderOffset() {
+  const height = Math.ceil(workspaceHeader.getBoundingClientRect().height);
+  document.documentElement.style.setProperty("--workspace-header-offset", height + "px");
 }
-const headerOffsetObserver = new ResizeObserver((entries) => {
-  for (const { target } of entries) updateHeaderOffset(target);
-});
-headerOffsetObserver.observe($("#workspaceHeader"));
-headerOffsetObserver.observe($("#storageStatus"));
+new ResizeObserver(updateHeaderOffset).observe(workspaceHeader);
 function stats() {
   $("#profileName").textContent = state.profile.name || "Gast";
   $("#profileStats").textContent =
@@ -1068,7 +1064,7 @@ function render() {
   $("#viewTitle").textContent = title;
   updateLessonHeading(l);
   $("#lessonProgressPanel").hidden = !l;
-  $("#workspaceHeader").toggleAttribute("data-lesson", Boolean(l));
+  workspaceHeader.toggleAttribute("data-lesson", Boolean(l));
   document.title = `${title} · WebLab`;
   $("#mainContent").innerHTML = html;
   decorateIcons();
@@ -1098,7 +1094,7 @@ function render() {
     const target = document.querySelector(`.exercise[data-exercise="${Number(route.split("/")[2]) - 1}"]`);
     if (target) {
       target.open = true;
-      updateHeaderOffset($("#workspaceHeader"));
+      updateHeaderOffset();
       target.scrollIntoView({ block: "start" });
       target.querySelector("textarea").focus({ preventScroll: true });
       focusedTarget = true;

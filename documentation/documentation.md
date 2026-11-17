@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.49.3** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
+Version: **1.49.3** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -325,7 +325,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 
 ### 17.11.2026 – Codex – Version 1.49.3: Mit Notepad++ weiterarbeiten
 
-Jakobs aktuelle Vorgabe ersetzt die alte Anleitung mit konkreter Notepad++-Version und Informatik-Stick. Die Werkstatt erklärt die vorhandene Schulinstallation, verweist für zu Hause auf die [offiziellen Notepad++-Downloads](https://notepad-plus-plus.org/downloads/) und beschreibt die portable ZIP-Ausgabe als freiwillige Option. Der Projekttransfer nutzt einen eigenen Ordner; Import, Export, Dateiendungen, UTF-8, Strg+S und F5 bleiben unverändert. Unterrichtsmaterial und Programmdateien der Schule wurden nicht verändert. Portable Ausgabe anhand des [offiziellen Handbuchs](https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/getting-started.md) eingeordnet.
+Jakobs aktuelle Vorgabe ersetzt die alte Anleitung mit konkreter Notepad++-Version und Informatik-Stick. Die Werkstatt erklärt die vorhandene Schulinstallation, verweist für zu Hause auf die [offiziellen Notepad++-Downloads](https://notepad-plus-plus.org/downloads/) und beschreibt die portable ZIP-Ausgabe als freiwillige Option. Der Projekttransfer nutzt einen eigenen Ordner; Import, Export, Dateiendungen, UTF-8, Strg+S und F5 bleiben unverändert. Unterrichtsmaterial und Programmdateien der Schule wurden nicht verändert. Portable Ausgabe anhand des [offiziellen Handbuchs](https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/getting-started.md) eingeordnet. Die offizielle Downloadseite antwortete mit HTTP 200. [Pages-Lauf 44072706073](https://github.com/JakobSawazki/WebLab/actions/runs/44072706073) mit 68 Tests und 305 Browserprüfungen erfolgreich; veröffentlichte Startseite und Skript geprüft. [Offline-ZIP](https://github.com/JakobSawazki/WebLab/releases/download/v1.49.3/WebLab-1.49.3-offline.zip) verfügbar.
 
 ### 17.11.2026 – Codex – Version 1.49.2: Erfahrungspunkte (EP)
 

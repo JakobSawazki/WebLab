@@ -1526,11 +1526,11 @@
         if (caseDoc.documentElement.dataset.theme !== theme) caseDoc.getElementById("themeButton").click();
         const scrollWidth = caseDoc.documentElement.scrollWidth;
         const overflow = scrollWidth > 360
-          ? [...caseDoc.querySelectorAll("body *")].filter(el => el.getBoundingClientRect().right > 360)
+          ? [...caseDoc.querySelectorAll("body *")].filter(el => el.getBoundingClientRect().right > 360 || (el.clientWidth && el.scrollWidth > el.clientWidth + 3 && !["auto", "scroll", "hidden"].includes(caseWin.getComputedStyle(el).overflowX)))
             .slice(0, 18).map(el => [el.tagName, el.id, el.getAttribute("class"), Math.round(el.getBoundingClientRect().right)]).map(parts => parts.join("/")).join(", ")
           : "";
         assert([...guide.querySelectorAll("details")].every(detail => detail.open) && scrollWidth <= 360,
-          id + ": Alle Erklaerungen passen bei 360 Pixeln im Schema " + theme + (overflow ? " (" + scrollWidth + "px: " + overflow + ")" : ""));
+          id + ": Alle Erklaerungen passen bei 360 Pixeln im Schema " + theme + (scrollWidth > 360 ? " (" + scrollWidth + "px: " + overflow + ")" : ""));
       }
       assert(localStorage.getItem(STORAGE_KEY) === beforeCases && caseDoc.getElementById("completeButton"),
         id + ": Lesen der Fallaufgaben erhaelt Lernstand, Punkte und Abschlussbedienung");

@@ -1723,6 +1723,7 @@ textarea#cssEditor {
   overflow-wrap: anywhere;
 }
 .practice-steps li {
+  overflow-wrap: anywhere;
   margin-bottom: 0.7rem;
 }
 .large-preview {

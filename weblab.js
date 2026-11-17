@@ -3518,7 +3518,7 @@ const stages = [
     [
       "Entpacke das Projekt-ZIP. Lege den Aussaat-Clip wieder unter medien/aussaat.webm ab. Öffne index.html im Browser.",
       "Prüfe nacheinander den Hin- und Rücklink, den Aussaat-Clip und die Karte bei schmaler Fensterbreite. Behebe Fehler in Notepad++.",
-      "Schreibe auf der Startseite ein Testprotokoll. Setze <summary>Testprotokoll</summary> und eine ol mit den drei Testergebnissen in <details>. Klappe das Protokoll in der Vorschau auf. Nutze für die Übertragung das von der Lehrkraft vorgegebene geschützte Ziel."
+      "Schreibe auf der Startseite ein Testprotokoll. Öffne den Bereich mit <details>. Schreibe „Testprotokoll“ zwischen <summary> und </summary>. Ergänze darunter eine ol mit den drei Ergebnissen und schließe mit </details>. Klappe das Protokoll in der Vorschau auf. Nutze für die Übertragung das von der Lehrkraft vorgegebene geschützte Ziel."
     ],
     "Öffnet das Testprotokoll und vergleicht die Ergebnisse der gleichen drei Tests. Haltet einen typischen Fehler und seinen Lösungsweg fest. Welche Fragen sind vor dem eigenen Projekt offen?"
   ],

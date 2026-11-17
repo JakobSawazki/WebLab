@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.50.0** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
+Version: **1.50.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -329,7 +329,7 @@ Die Trennlinie zwischen Seitenmenü und Inhalt lässt sich am Desktop ziehen. Mi
 
 AltGr+S blendet im Lernprofil den Schalter „Entwickler-Modus“ ein und aus. Der Klick schaltet vorübergehenden Zugriff auf alle 16 Einheiten ein oder aus; die normale Freischaltkette bleibt unverändert. Der Modus ist im Seitenbereich sichtbar und pausiert formale Einheitenabschlüsse, sodass darüber keine XP oder EP vergeben werden. Der Schalter lässt sich ausblenden, ohne den Zugriff zu ändern. Beim Neuladen sind Schalter und Modus zurückgesetzt. Der Modus wird nicht im Profil gespeichert und ist kein Lehrkraft-Zugangsschutz.
 
-68 Node-Tests und 319 Browserprüfungen lokal bestanden. Geprüft sind Größenänderung, Obergrenze, Speicherung und Reset, AltGr im Profil, Zugriff auf alle 16 Einheiten und das Wiedersperren ohne Änderung des gespeicherten Lernstands. Zusätzlich im entpackten Offline-Paket in Edge Ziehen mit Pointer Capture, gespeicherte Breite und AltGr+S geprüft.
+68 Node-Tests und 319 Browserprüfungen lokal bestanden. Geprüft sind Größenänderung, Obergrenze, Speicherung und Reset, AltGr im Profil, Zugriff auf alle 16 Einheiten und das Wiedersperren ohne Änderung des gespeicherten Lernstands. Zusätzlich im entpackten Offline-Paket in Edge Ziehen mit Pointer Capture, gespeicherte Breite und AltGr+S geprüft. [Pages-Lauf 44115861846](https://github.com/JakobSawazki/WebLab/actions/runs/44115861846) mit 68 Node-Tests und 319 Browserprüfungen erfolgreich. Ausgeliefertes HTML, Skript und CSS mit dem geprüften Build abgeglichen. [Offline-ZIP](https://github.com/JakobSawazki/WebLab/releases/download/v1.50.0/WebLab-1.50.0-offline.zip) veröffentlicht.
 
 ### 17.11.2026 – Codex – Version 1.49.3: Mit Notepad++ weiterarbeiten
 

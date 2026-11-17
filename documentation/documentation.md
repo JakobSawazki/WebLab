@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.56.1** · Status: **Veröffentlichung über GitHub Pages**.
+Version: **1.56.1** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -325,7 +325,8 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 
 ### 17.11.2026 – Codex – Version 1.56.1: Schmale Ansicht in Einheit 15
 
-- Bei der GitHub-Prüfung der ersten Fassung entstand in Chromium bei 360 Pixeln ein horizontaler Überlauf in Einheit 15. Die Inhaltsspalte kann nun auf die Bildschirmbreite schrumpfen, Codebegriffe umbrechen bei Bedarf und das Codebeispiel hat eine kürzere Textzeile.
+- Bei der GitHub-Prüfung der ersten Fassung entstand in Chromium bei 360 Pixeln ein horizontaler Überlauf in Einheit 15. Die Anleitung trennt die öffnenden und schließenden Tags. Lange Codefolgen im Arbeitsauftrag dürfen umbrechen, und die Inhaltsspalte schrumpft bei Bedarf.
+- GitHub bestätigt 69 Node-Tests und 359 Browserprüfungen einschließlich der Ansichten bei 360 Pixeln. HTML, CSS, JavaScript und alle 16 neuen WebP-Dateien auf GitHub Pages stimmen mit dem geprüften Build überein. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44128509592) · [Offline-Release 1.56.1](https://github.com/JakobSawazki/WebLab/releases/tag/v1.56.1)
 
 ### 17.11.2026 – Codex – Version 1.56.0: Schulgarten-Motive und aufeinander aufbauende Bausteine
 

@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.49.1** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
+Version: **1.49.1** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -327,7 +327,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 
 Alt+S lädt eine JSON-Sicherung herunter. Alt+O öffnet direkt die Dateiauswahl. Beide Kürzel stehen in den Tooltips der Symbole und sind über deren zugängliche Tastenkürzel hinterlegt. Die Tasten funktionieren bei Fokus im WebLab-Editor, lösen in offenen Dialogen nichts aus und starten beim Gedrückthalten keinen zweiten Vorgang.
 
-68 Node-Tests und 305 Browserprüfungen lokal bestanden. In Edge mit dem entpackten Offline-Paket beide Kürzel aus dem Editor geprüft: tatsächlicher JSON-Download und native Dateiauswahl mit anschließender Übernahme einer Testsicherung.
+68 Node-Tests und 305 Browserprüfungen lokal bestanden. In Edge mit dem entpackten Offline-Paket beide Kürzel aus dem Editor geprüft: tatsächlicher JSON-Download und native Dateiauswahl mit anschließender Übernahme einer Testsicherung. [Pages-Lauf 44071387805](https://github.com/JakobSawazki/WebLab/actions/runs/44071387805) mit 68 Node-Tests und 305 Browserprüfungen erfolgreich. Ausgelieferte Startseite und Skript mit dem Build abgeglichen. [Offline-ZIP](https://github.com/JakobSawazki/WebLab/releases/download/v1.49.1/WebLab-1.49.1-offline.zip) veröffentlicht.
 
 ### 17.11.2026 – Codex – Version 1.49.0: Direkt sichern und laden
 

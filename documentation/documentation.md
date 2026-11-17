@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.55.0** · Status: **Veröffentlichung über GitHub Pages**.
+Version: **1.55.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -328,6 +328,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 - Einheit 01 bis 15 baut die gemeinsame Informationsseite „Unser Schulgarten“ für neue Schülerinnen und Schüler auf. Die Pflichtaufträge geben vergleichbare Texte, Dateinamen, Daten, CSS-Werte und Tests vor. „Ergebnissicherung in der Klasse“ steht nach der Rückmeldung zum Auftrag und enthält einen Vergleich und eine Gesprächsfrage. Die Lernenden halten gemeinsame Ergebnisse und offene Fragen in ihren Notizen fest.
 - Die beiden eigens für WebLab erstellten Unterrichtsdateien beetplan.png und aussaat.webm sind online und offline verfügbar. Der Beetplan wird im Editor eingebettet. Der tonlose Aussaat-Clip wird beim Dateitest in medien/aussaat.webm abgelegt. Die Medienprüfung akzeptiert weiterhin vorhandene MP4-Lösungen.
 - Die eigene Themenwahl beginnt in Einheit 16 mit einem neutralen HTML-Grundgerüst und separatem Entwurf. Vorhandene Entwürfe und Abschlüsse bleiben erhalten. Die automatische Prüfung kontrolliert die HTML- und CSS-Bausteine. Der Vergleich der gemeinsam vorgegebenen Inhalte erfolgt im Unterricht.
+- Lokal und auf GitHub bestanden 69 Node-Tests und 342 Browserprüfungen. Die Offline-Fassung wurde in Edge geöffnet. Die veröffentlichten Dateien und die beiden Unterrichtsmedien entsprechen dem geprüften Build. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44124537642) · [Offline-Release 1.55.0](https://github.com/JakobSawazki/WebLab/releases/tag/v1.55.0)
 
 ### 17.11.2026 – Codex – Version 1.54.0: Einstieg ohne HTML- und CSS-Vorkenntnisse
 

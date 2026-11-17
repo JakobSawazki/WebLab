@@ -259,6 +259,13 @@
       "html-struktur.webp", "inhalte-verknuepfen.webp",
       "css-gestaltung.webp", "webprojekt.webp",
     ];
+    const lessonPhotos = {
+      l5: "links-und-pfade.webp",
+      l6: "bilder-und-alt-text.webp",
+      l8: "audio-und-video.webp",
+      l11: "farben-und-typografie.webp",
+      l14: "quellen-und-rechte.webp",
+    };
     const savedArtworkState = localStorage.getItem(STORAGE_KEY);
     const artworkState = blank();
     artworkState.completed = lessons.slice(0, -1).map((lesson) => lesson.id);
@@ -269,7 +276,7 @@
         [360, "#path", ".path-phase img", artworkFiles],
         ...lessons.map((lesson, i) => [
           i % 2 ? 1200 : 360, "#lesson/" + lesson.id,
-          ".lesson-cover img", [artworkFiles[lesson.group]],
+          ".lesson-cover img", [lessonPhotos[lesson.id] ?? artworkFiles[lesson.group]],
         ]),
       ]) {
         const frame = document.createElement("iframe");
@@ -283,13 +290,16 @@
         const photos = [...doc.querySelectorAll(selector)];
         for (const photo of photos) photo.loading = "eager";
         const decoded = await Promise.allSettled(photos.map(photo => photo.decode()));
+        const photoBounds = photos[0]?.getBoundingClientRect();
+        const mobileCover = width === 360 && route.startsWith("#lesson/");
         assert(
           photos.length === expected.length && photos.every((photo, i) =>
             decoded[i].status === "fulfilled" && photo.naturalWidth === 960 &&
             photo.naturalHeight === 540 && photo.getAttribute("alt") === "" &&
             photo.getBoundingClientRect().width > 0 &&
             new URL(photo.src).pathname === "/assets/" + expected[i]
-          ) && doc.documentElement.scrollWidth <= width,
+          ) && doc.documentElement.scrollWidth <= width &&
+            (!mobileCover || photoBounds?.height < photoBounds?.width / 2),
           route + " " + width + ": passende lokale Fotos geladen, kein Überlauf",
         );
         frame.remove();

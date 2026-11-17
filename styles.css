@@ -1264,6 +1264,9 @@ textarea#cssEditor {
   .chapter-plate .phase-art img {
     aspect-ratio: 2 / 1;
   }
+  .lesson-cover .phase-art img {
+    aspect-ratio: 2.4 / 1;
+  }
 }
 .phase-card h3 {
   font-size: 1.2rem;

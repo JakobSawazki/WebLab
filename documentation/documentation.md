@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.44.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.45.0** · Status: lokal in Prüfung.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -322,6 +322,25 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.45.0: Eigene Motive für ausgewählte Lerneinheiten
+
+Die Übersicht und der Lernpfad behalten die vier Etappenmotive als Orientierung. In den Einheiten 05, 06, 08, 11 und 14 erscheinen eigene Bilder zum jeweiligen Lerngegenstand. Die übrigen Einheiten behalten das passende Etappenmotiv. Auf schmalen Bildschirmen sind die Bilder im Einheitskopf flacher; dadurch bleibt mehr Platz für den Weg zu Erklärung und Code. Lernziele, Sperren, Texte und Bedienelemente bleiben unabhängig vom Bild verständlich.
+
+**Integriertes Imagegen:** Gemeinsamer Prompttext für alle fünf eigenständig generierten Motive. Darauf folgt jeweils der Abschnitt `Subject:` aus der Tabelle. Dateien: `assets/links-und-pfade.webp`, `assets/bilder-und-alt-text.webp`, `assets/audio-und-video.webp`, `assets/farben-und-typografie.webp`, `assets/quellen-und-rechte.webp`.
+
+> Use case: product-mockup. Landscape editorial studio photograph for a compact lesson header in WebLab. Premium macro product photography of tangible objects on ink-navy matte surfaces. Fine brushed-aluminium texture, precise silver edges, cool blue shadows, small warm champagne highlights, natural directional light. Clear centered subject, slightly elevated three-quarter angle, breathing room on all edges, composed for 16:9. Calm, contemporary German technical design. No people, no watermarks, no generic floating holograms, no gratuitous neon.
+
+| Einheit | Subject |
+| --- | --- |
+| 05 | three slim aluminium plates representing different browser pages, connected by delicate physical steel links in a branching arrangement over a dark slate tabletop; a miniature navy file folder marks the start of the path; no written labels |
+| 06 | one crisp photographic print of a single fern frond on a matte black museum mount with a slim empty brushed-aluminum caption plate beneath it and a dark glass image frame; close enough to see fern texture; the empty caption plate contains no text |
+| 08 | a real compact brushed aluminium studio microphone beside a small widescreen reference monitor showing silent waves breaking on a rocky coast; the monitor and microphone have no logos, interface or captions |
+| 11 | two tactile studio letterpress type blocks embossed with exactly 'Aa' on one block and 'Aa' on the other, each pair at a clearly different visual size, alongside a simple navy and ivory sample card, suggesting type scale and contrast; no other marks or lettering |
+| 14 | a landscape photographic print on archival paper placed beside an understated metal embossing seal and a simple cream card with a large blank signature area, on a matte dark navy desk; no written text, symbols, or logos |
+
+960 × 540 Pixel als WebP, insgesamt 219.852 Byte. Die Oberfläche und die öffentliche Build-Liste verwenden dieselbe statische Bildzuordnung. Ein Offline-ZIP mit ausschließlich den 15 Dateien des öffentlichen Builds ist für den Dateistart ohne Node.js vorgesehen. Prüf- und Veröffentlichungsnachweis folgt.
+
 
 ### 17.11.2026 – Codex – Version 1.44.0: Bildsprache für den Lernpfad
 

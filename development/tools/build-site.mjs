@@ -1,12 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import { VERSION } from "../src/content.js";
+import { phaseArtwork, lessonArtwork } from "../src/artwork.js";
 import { bundleModules } from "./bundle.mjs";
 const root = path.resolve(import.meta.dirname, "../.."),
   out = path.join(root, "dist");
 fs.mkdirSync(out, { recursive: true });
 const modules = [
   "extensions.js",
+  "artwork.js",
   "content.js",
   "guidance.js",
   "state.js",
@@ -51,7 +53,7 @@ for (const f of ["index.html", "styles.css"]) {
 fs.mkdirSync(path.join(out, "assets"), { recursive: true });
 const publicImages = [
   "weblab-logo.png", "weblab-hero.png",
-  "html-struktur.webp", "inhalte-verknuepfen.webp", "css-gestaltung.webp", "webprojekt.webp",
+  ...phaseArtwork, ...Object.values(lessonArtwork),
 ];
 for (const f of publicImages)
   fs.copyFileSync(path.join(root, "assets", f), path.join(out, "assets", f));

@@ -9,6 +9,7 @@ import { reviewPanel, bindReview } from "./review.js";
 import { debugging } from "./debugging.js";
 import { decorateIcons, icon } from "./icons.js";
 import { VERSION, groups, lessons, byId } from "./content.js";
+import { versionHistory } from "./version-history.js";
 import { glossary } from "./glossary.js";
 import { guidance } from "./guidance.js";
 import {
@@ -1287,7 +1288,24 @@ window.addEventListener("storage", (e) => {
     updateStorageStatus();
   }
 });
-// The version is no longer printed; it stays available as a tooltip.
-$(".portal-footer").title = "WebLab " + VERSION;
+const versionButton = $("#versionButton"),
+  versionDialog = $("#versionDialog"),
+  versionList = $("#versionHistory");
+versionButton.textContent = "v" + VERSION;
+versionButton.setAttribute("aria-label", "WebLab Version " + VERSION + " – Versionsverlauf öffnen");
+versionButton.title = "Versionsverlauf öffnen";
+versionButton.hidden = false;
+versionButton.onclick = () => {
+  if (!versionList.hasChildNodes()) {
+    versionList.innerHTML = versionHistory.map(([date, entries]) => {
+      const [year, month, day] = date.split("-");
+      return `<section class="version-day" aria-labelledby="version-day-${esc(date)}"><h3 id="version-day-${esc(date)}"><time datetime="${esc(date)}">${esc(day + "." + month + "." + year)}</time></h3><ol class="version-entries">${entries.map(([release, title, summary]) =>
+        `<li class="version-entry" data-release="${esc(release)}"><div class="version-entry-label"><span class="badge">${esc(release)}</span>${release === VERSION ? '<span class="version-current">Aktuelle Version</span>' : ""}</div><div><h4>${esc(title)}</h4><p>${esc(summary)}</p></div></li>`
+      ).join("")}</ol></section>`;
+    }).join("");
+  }
+  versionDialog.showModal();
+  versionList.scrollTop = 0;
+};
 render();
 updateStorageStatus();

@@ -220,6 +220,20 @@ small,
   padding: 1.05rem;
   z-index: 10;
 }
+.sidebar-release {
+  margin-top: auto;
+  padding-top: 1rem;
+}
+.sidebar-release .version-button {
+  min-height: 44px;
+  padding: 0.4rem 0.55rem;
+  font: 700 0.82rem var(--mono);
+  color: var(--muted);
+}
+.version-button:hover,
+.version-button:focus-visible {
+  color: var(--text);
+}
 .brand {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr);
@@ -1618,6 +1632,89 @@ dialog {
 dialog::backdrop {
   background: #020917b3;
   backdrop-filter: blur(3px);
+}
+#versionDialog[open] {
+  display: flex;
+  flex-direction: column;
+  max-width: 760px;
+  max-height: min(84vh, 48rem);
+  overflow: hidden;
+  padding: clamp(0.9rem, 3vw, 1.65rem);
+}
+.version-heading {
+  flex: none;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--line);
+}
+.version-heading .icon-button {
+  flex: 0 0 46px;
+}
+.version-scroll {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  padding: 0.15rem 0.45rem 0.25rem 0.15rem;
+}
+.version-scroll:focus-visible {
+  outline-offset: -2px;
+}
+.version-day h3 {
+  margin: 1rem 0 0.45rem;
+  color: var(--brand);
+  font-size: 0.83rem;
+  font-variant-numeric: tabular-nums;
+}
+.version-entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.version-entry {
+  display: grid;
+  grid-template-columns: minmax(7rem, auto) minmax(0, 1fr);
+  gap: 0.8rem;
+  padding: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+}
+.version-entry + .version-entry {
+  margin-top: 0.4rem;
+}
+.version-entry-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+.version-entry-label .badge {
+  font-family: var(--mono);
+}
+.version-current {
+  color: var(--green);
+  font-size: 0.74rem;
+  font-weight: 700;
+}
+.version-entry h4,
+.version-entry p {
+  margin: 0;
+}
+.version-entry p {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+@media (max-width: 500px) {
+  .version-entry {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+  .version-entry-label {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 }
 .profile-fields { display:grid;grid-template-columns:1fr 1fr;gap:1rem; }
 .profile-fields > div { min-width:0; }

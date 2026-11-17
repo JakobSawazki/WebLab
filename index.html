@@ -97,6 +97,10 @@
             ><span class="nav-label">Meine Notizen</span></a
           >
         </nav>
+        <div class="sidebar-release">
+          <button class="button secondary version-button" id="versionButton" type="button"
+            aria-haspopup="dialog" aria-controls="versionDialog" hidden></button>
+        </div>
       </aside>
       <div class="page-column">
         <header class="topbar">
@@ -168,6 +172,16 @@
         </footer>
       </div>
     </div>
+    <dialog id="versionDialog" aria-labelledby="versionTitle">
+      <div class="dialog-heading version-heading">
+        <div>
+          <p class="eyebrow">WebLab · Änderungen im Überblick</p>
+          <h2 id="versionTitle">Versionsverlauf</h2>
+        </div>
+        <button class="icon-button" type="button" data-close autofocus aria-label="Versionsverlauf schließen">×</button>
+      </div>
+      <div class="version-scroll" id="versionHistory" role="region" aria-label="Änderungen, neueste zuerst" tabindex="0"></div>
+    </dialog>
     <dialog id="profileDialog" aria-labelledby="profileTitle">
       <form id="profileForm">
         <div class="dialog-heading">

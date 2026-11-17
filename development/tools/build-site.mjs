@@ -10,6 +10,7 @@ const modules = [
   "extensions.js",
   "artwork.js",
   "content.js",
+  "version-history.js",
   "guidance.js",
   "state.js",
   "nagold.js",

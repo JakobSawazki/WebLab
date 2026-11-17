@@ -153,6 +153,40 @@
           width + " " + theme + ": sechs einheitliche Icons mit Metallrahmen",
         );
       }
+      const versionButton = menuDoc.querySelector("#versionButton"),
+        versionDialog = menuDoc.querySelector("#versionDialog"),
+        versionScroll = menuDoc.querySelector("#versionHistory"),
+        closeVersion = versionDialog.querySelector("[data-close]"),
+        versionState = localStorage.getItem(STORAGE_KEY);
+      versionButton.focus();
+      versionButton.click();
+      const versions = [...versionScroll.querySelectorAll("[data-release]")],
+        dates = [...versionScroll.querySelectorAll("time")].map(time => time.dateTime),
+        releaseOrder = versions.map(node => node.dataset.release.split("–").at(-1)
+          .split(".").reduce((number, part) => number * 1000 + Number(part), 0));
+      assert(
+        versionDialog.matches(":modal") && menuDoc.activeElement === closeVersion &&
+          versions[0]?.dataset.release === versionButton.textContent.slice(1) &&
+          versions.length > 30 && versions.at(-1)?.dataset.release === "1.0.0" &&
+          releaseOrder.every((release, index) => index === 0 || release < releaseOrder[index - 1]) &&
+          dates.every((date, index) => index === 0 || date < dates[index - 1]),
+        width + ": Versionsdialog zeigt den aktuellen Stand zuerst und die Historie bis 1.0.0",
+      );
+      versionScroll.scrollTop = versionScroll.scrollHeight;
+      assert(
+        versionScroll.scrollTop > 0 && versionScroll.scrollWidth <= versionScroll.clientWidth &&
+          closeVersion.getBoundingClientRect().bottom <= versionScroll.getBoundingClientRect().top,
+        width + ": Versionsliste scrollt ohne Überlauf, Schließen bleibt sichtbar",
+      );
+      closeVersion.click();
+      assert(
+        !versionDialog.open && menuDoc.activeElement === versionButton &&
+          localStorage.getItem(STORAGE_KEY) === versionState,
+        width + ": Schließen bringt den Fokus zurück und ändert keinen Lernstand",
+      );
+      versionButton.click();
+      assert(versionScroll.scrollTop === 0, width + ": erneutes Öffnen beginnt beim neuesten Eintrag");
+      closeVersion.click();
       menuDoc.querySelector("#menuButton").click();
       const side = menuDoc.querySelector("#sidebar");
       assert(
@@ -167,6 +201,11 @@
         menuDoc.documentElement.scrollWidth <= width,
         width + ": eingeklappt ohne horizontalen Ueberlauf",
       );
+      if (width === 1200) {
+        const bounds = versionButton.getBoundingClientRect(), rail = side.getBoundingClientRect();
+        assert(bounds.width > 0 && bounds.left >= rail.left && bounds.right <= rail.right,
+          "Versionsnummer bleibt im eingeklappten Desktopmenü sichtbar");
+      }
       menuLoaded = new Promise((resolve) => (menuFrame.onload = resolve));
       menuFrame.src = "/?menu-reload=" + width + "#home";
       await menuLoaded;

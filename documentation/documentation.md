@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.46.1** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.47.0** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -297,7 +297,7 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 | GitHub-Repository und Veröffentlichung | Repository JakobSawazki/WebLab; Version 1.40.3, Pages-Lauf 39002609189 mit 52 Node-/226 Browserprüfungen; Bundle und Logo live per SHA-256 identisch | Umgesetzt |
 | Edle Buttons, gebürstetes Metall, passende Schrift und Icons | styles.css, icons.js; dokumentierte Sichtprüfungen, aktuelle Kontrast-/Layoutprüfungen und sechs gerenderte Metallrahmen bei 1200/360 Pixeln in Dark/Light | Umgesetzt |
 | Neues fotorealistisches Logo auch als Tab-Icon | Eine gemeinsame Referenz auf assets/weblab-logo.png in index.html; Browserregression prüft identische URLs und geladenes 256-Pixel-Motiv | Abweichendes altes Tab-Icon in 1.40.3 korrigiert; lokal und veröffentlicht geprüft |
-| Versions-/Gerätehinweis unten links entfernen | Sidebar endet direkt nach der Navigation; Seitenfuß enthält nur Designed by, Versionsnummer lediglich als Tooltip | Umgesetzt |
+| Versionsnummer unten links mit Änderungsübersicht | Klick auf die Versionsnummer öffnet den eingebauten Verlauf; kein Gerätehinweis in der Seitenleiste | Umgesetzt in 1.47.0 |
 | Menü ein- und ausklappen | menuButton mit aria-expanded, desktop Iconleiste und mobilem Einblenden; acht Browserprüfungen für Zustand/Neuladen/Layout | Umgesetzt |
 | Elemente oben rechts gleich hoch | topbar-actions mit gemeinsamer Streckung; aktuelle Browserprüfung misst alle drei Höhen bei 1200/360 Pixeln in Dark/Light, jeweils mindestens 56 px und unter 1 px Abweichung | Umgesetzt |
 | OneNote-Materialien lokal sichern | Sechs Seitenauszüge, Bildungsplan und alle 81 Originalanhänge aus Teil 1/2 mit SHA-256 und Integritätsprüfung lokal vorhanden | Sicherung erledigt; sämtliche 56 DOCX-Texte und drei PDF-Anlagen abgeglichen, ZIP-Strukturen geprüft; Grenzen der Bild-/Medienprüfung im Quellenabschnitt |
@@ -322,6 +322,12 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.47.0: Versionsverlauf unten links
+
+Die Versionsnummer in der Seitenleiste verwendet denselben Wert wie der Build. Der Dialog zeigt die wichtigsten Änderungen vom aktuellen Stand bis zum ersten Release 1.0.0: Datum, Version und Kurzbeschreibung, neueste zuerst. Zusammengehörige Korrekturen stehen bei Bedarf in einem gemeinsamen Eintrag. Das Fenster arbeitet offline. Schließen bringt den Tastaturfokus zurück; erneutes Öffnen beginnt oben.
+
+Bei neuen Releases den öffentlichen Kurzeintrag oben in `development/src/version-history.js` ergänzen. Ausführliche Nachweise bleiben hier; interne Unterlagen und persönliche Lernstände erscheinen im Verlauf nicht. Browserprüfungen decken Sortierung, scrollbare Liste, Fokus, unveränderten Lernstand und die Versionsanzeige im kompakten Desktopmenü ab.
 
 ### 17.11.2026 – Codex – Version 1.46.1: Kürzerer Untertitel am Logo
 

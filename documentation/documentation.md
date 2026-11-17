@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.46.0** · Status: **lokal geprüft; Veröffentlichung läuft**.
+Version: **1.46.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -344,7 +344,7 @@ Für 8 Einheiten wurden bestehende passende Bilder verwendet; 8 neue Motive ents
 
 Die Karten verwenden denselben zentralen Lernstand wie der Lernpfad.
 
-68 Node-Tests und 286 Browserprüfungen lokal bestanden; geprüft sind alle Bildzuordnungen, die Lesereihenfolge, Status und Ziele für Gast und Lernende mit Fortschritt, Tastaturfokus beim Etappensprung und Layout bei 360/1200 Pixeln. Sichtproben in Edge bei 500/1440 Pixeln, hell und dunkel. Offline-ZIP aus den 23 öffentlichen Build-Dateien vollständig entpackt; Start per index.html geprüft. Veröffentlichung wird geprüft.
+68 Node-Tests und 286 Browserprüfungen lokal bestanden; geprüft sind alle Bildzuordnungen, die Lesereihenfolge, Status und Ziele für Gast und Lernende mit Fortschritt, Tastaturfokus beim Etappensprung und Layout bei 360/1200 Pixeln. Sichtproben in Edge bei 500/1440 Pixeln, hell und dunkel. Offline-ZIP aus den 23 öffentlichen Build-Dateien vollständig entpackt; Start per index.html geprüft. [Pages-Lauf 44067139594](https://github.com/JakobSawazki/WebLab/actions/runs/44067139594) für c97e159 erfolgreich (68/286). Alle 22 öffentlichen Laufzeitdateien gegen den Build geprüft (HTML und CSS mit normalisierten Zeilenenden). [Offline-ZIP](https://github.com/JakobSawazki/WebLab/releases/download/v1.46.0/WebLab-1.46.0-offline.zip) veröffentlicht, GitHub-SHA-256 stimmt mit dem lokalen ZIP überein. Bestehende Änderungen im Drive-Arbeitsordner blieben erhalten.
 
 
 ### 17.11.2026 – Codex – Version 1.45.0: Eigene Motive für ausgewählte Lerneinheiten

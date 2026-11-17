@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.50.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.51.0** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -322,6 +322,12 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.51.0: Schnelle Navigation in der Lerneinheit
+
+Kopfzeile mit anklickbarem Lernpfad, SVG-Trenner und verlinkter aktueller Einheit mit zweistelliger Nummer. Der Einheitslink führt zum Anfang der Einheit; rechts davon führen Pfeile zur vorherigen und nächsten erreichbaren Einheit. Ein fehlendes oder gesperrtes Ziel erscheint als deaktivierter Pfeil. Die Kopfnavigation folgt genau den bestehenden Freischaltungen einschließlich des vorübergehenden Entwicklermodus.
+
+68 Node-Tests und 324 Browserprüfungen lokal bestanden. Geprüft sind Lernpfadlink, erste und letzte Einheit, gesperrtes nächstes Ziel, sofortiges Freischalten, Sprünge in beide Richtungen und das schmale Layout. Der Kopf der ersten Einheit wurde im entpackten Offline-Paket in Edge visuell geprüft.
 
 ### 17.11.2026 – Codex – Version 1.50.0: Verschiebbare Seitenleiste und Entwickler-Modus
 

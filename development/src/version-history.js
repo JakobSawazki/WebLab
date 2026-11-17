@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-17", [
+    ["1.51.0", "Schnell zwischen Lerneinheiten wechseln", "Die Kopfzeile verlinkt den Lernpfad und die aktuelle Einheit. Zwei Pfeile führen zu freigeschalteten Nachbareinheiten."],
     ["1.50.0", "Flexible Seitenleiste und Entwickler-Modus", "Die Trennlinie lässt sich am Desktop ziehen. WebLab merkt sich die Breite; ein Doppelklick setzt sie zurück. Der Entwickler-Modus öffnet alle Einheiten zum Prüfen, ohne Abschlüsse oder Punkte zu vergeben."],
     ["1.49.3", "Projektdateien in Notepad++ bearbeiten", "Die Anleitungen verwenden Notepad++ und einen normalen Projektordner. Die Werkstatt verlinkt den kostenlosen offiziellen Download und erklärt die portable Ausgabe."],
     ["1.49.2", "EP für Erfahrungspunkte", "Profil, Lernpfad und Punkteübersicht verwenden die Bezeichnung EP. Vorhandene Einträge und die separate XP-Anzeige bleiben erhalten."],

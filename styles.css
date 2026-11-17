@@ -1698,10 +1698,53 @@ iframe {
 .pitfalls li + li {
   margin-top: 0.35rem;
 }
-.breadcrumbs {
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
+.topbar:has(.lesson-heading:not([hidden])) {
+  flex-wrap: wrap;
+}
+.lesson-heading {
+  min-width: 0;
+}
+.lesson-heading-line,
+.lesson-breadcrumb,
+.lesson-pager {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.lesson-heading-line {
+  flex-wrap: wrap;
+  column-gap: 0.85rem;
+}
+.lesson-breadcrumb {
+  min-width: 0;
+}
+.lesson-breadcrumb > a {
+  flex: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+.lesson-breadcrumb > span {
+  display: flex;
   color: var(--muted);
+}
+.lesson-breadcrumb h1 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+#currentLessonLink {
+  color: var(--text);
+}
+.lesson-pager .icon-button {
+  flex: none;
+  border-radius: 10px;
+}
+.lesson-pager a:hover {
+  text-decoration: none;
+}
+@media (min-width: 761px) {
+  .topbar:has(.lesson-heading:not([hidden])) .topbar-actions {
+    margin-inline-start: auto;
+  }
 }
 .progress {
   height: 6px;

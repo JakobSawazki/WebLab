@@ -119,9 +119,20 @@
             >
               <span data-icon="menu" aria-hidden="true"></span>
             </button>
-            <div>
+            <div id="standardHeading">
               <p class="eyebrow">Deine Webwerkstatt</p>
               <h1 id="viewTitle">Übersicht</h1>
+            </div>
+            <div id="lessonHeading" class="lesson-heading" hidden>
+              <p class="eyebrow">Deine Webwerkstatt</p>
+              <div class="lesson-heading-line">
+                <nav class="lesson-breadcrumb" aria-label="Aktuelle Position im Lernpfad">
+                  <a href="#path">Lernpfad</a>
+                  <span data-icon="chevron-right" aria-hidden="true"></span>
+                  <h1><a id="currentLessonLink" aria-current="page"></a></h1>
+                </nav>
+                <nav id="lessonPager" class="lesson-pager" aria-label="Benachbarte Lerneinheiten"></nav>
+              </div>
             </div>
           </div>
           <div class="topbar-actions">

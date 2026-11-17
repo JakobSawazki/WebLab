@@ -279,7 +279,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.50.0";
+const VERSION = "1.51.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -837,6 +837,7 @@ return {VERSION,groups,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.51.0", "Schnell zwischen Lerneinheiten wechseln", "Die Kopfzeile verlinkt den Lernpfad und die aktuelle Einheit. Zwei Pfeile führen zu freigeschalteten Nachbareinheiten."],
     ["1.50.0", "Flexible Seitenleiste und Entwickler-Modus", "Die Trennlinie lässt sich am Desktop ziehen. WebLab merkt sich die Breite; ein Doppelklick setzt sie zurück. Der Entwickler-Modus öffnet alle Einheiten zum Prüfen, ohne Abschlüsse oder Punkte zu vergeben."],
     ["1.49.3", "Projektdateien in Notepad++ bearbeiten", "Die Anleitungen verwenden Notepad++ und einen normalen Projektordner. Die Werkstatt verlinkt den kostenlosen offiziellen Download und erklärt die portable Ausgabe."],
     ["1.49.2", "EP für Erfahrungspunkte", "Profil, Lernpfad und Punkteübersicht verwenden die Bezeichnung EP. Vorhandene Einträge und die separate XP-Anzeige bleiben erhalten."],
@@ -5502,7 +5503,7 @@ function debugChallenge(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 // Reiter für index.html, alle Unterseiten und style.css.
 function fileTabs(d) {
@@ -5999,6 +6000,38 @@ function search() {
       )
       .join("") || "<p>Kein passender Eintrag gefunden.</p>";
 }
+function updateLessonHeading(lesson) {
+  $("#standardHeading").hidden = Boolean(lesson);
+  $("#lessonHeading").hidden = !lesson;
+  const pager = $("#lessonPager");
+  if (!lesson) {
+    pager.replaceChildren();
+    return;
+  }
+  const label = (item) => `${item.id.slice(1).padStart(2, "0")} ${item.title}`;
+  const current = $("#currentLessonLink");
+  current.href = "#lesson/" + lesson.id;
+  current.textContent = label(lesson);
+  const neighbors = journey[lesson.id];
+  pager.innerHTML = [
+    [neighbors.previous, "Vorherige Einheit", "arrow-left", "Keine vorherige Einheit"],
+    [neighbors.next, "Nächste Einheit", "arrow", "Keine weitere Einheit"],
+  ].map(([id, direction, symbol, end]) => {
+    const target = byId(id), artwork = icon(symbol);
+    if (target && viewLessonAccess(id).unlocked) {
+      const title = esc(`${direction}: ${label(target)}`);
+      return `<a class="icon-button" href="#lesson/${id}" title="${title}" aria-label="${title}">${artwork}</a>`;
+    }
+    const title = esc(target ? `${direction} noch gesperrt: ${label(target)}` : end);
+    return `<button class="icon-button" type="button" disabled title="${title}" aria-label="${title}">${artwork}</button>`;
+  }).join("");
+}
+$("#currentLessonLink").addEventListener("click", (event) => {
+  if (location.hash !== event.currentTarget.hash || event.ctrlKey || event.metaKey ||
+      event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  window.scrollTo({ top: 0 });
+});
 function render() {
   let focusedTarget = false;
   clearTimeout(timer);
@@ -6058,6 +6091,7 @@ function render() {
         html;
   }
   $("#viewTitle").textContent = title;
+  updateLessonHeading(l);
   document.title = `${title} · WebLab`;
   $("#mainContent").innerHTML = html;
   decorateIcons();
@@ -6470,6 +6504,8 @@ const paths = {
   browser:
     '<rect x="2" y="3" width="20" height="18" rx="3"/><path d="M2 8h20M6 5.5h.01m3 0h.01"/>',
   arrow: '<path d="M4 12h16m-6-6 6 6-6 6"/>',
+  "arrow-left": '<path d="M20 12H4m6-6-6 6 6 6"/>',
+  "chevron-right": '<path d="m9 5 7 7-7 7"/>',
   close: '<path d="m6 6 12 12M6 18 18 6"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   minus: '<path d="M5 12h14"/>',

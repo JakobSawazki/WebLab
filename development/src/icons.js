@@ -23,6 +23,8 @@ const paths = {
   browser:
     '<rect x="2" y="3" width="20" height="18" rx="3"/><path d="M2 8h20M6 5.5h.01m3 0h.01"/>',
   arrow: '<path d="M4 12h16m-6-6 6 6-6 6"/>',
+  "arrow-left": '<path d="M20 12H4m6-6-6 6 6 6"/>',
+  "chevron-right": '<path d="m9 5 7 7-7 7"/>',
   close: '<path d="m6 6 12 12M6 18 18 6"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   minus: '<path d="M5 12h14"/>',

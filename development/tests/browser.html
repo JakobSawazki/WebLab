@@ -920,6 +920,9 @@
       gateDoc.querySelectorAll(".journey-steps a").length === 16 &&
       localStorage.getItem(STORAGE_KEY) === beforeDeveloperMode,
       "Vorschau per Direktlink hat alle Lernschritte und ändert weder Punktestand noch Abschlüsse");
+    assert(gateDoc.querySelector('#lessonPager a[href="#lesson/l15"]') &&
+      gateDoc.querySelector('#lessonPager button:disabled[aria-label="Keine weitere Einheit"]'),
+      "Kopfnavigation: letzte Einheit hat einen Rückpfeil, aber keinen nächsten Schritt");
     gateDoc.getElementById("profileButton").click();
     profileNameInput.dispatchEvent(new gateWin.KeyboardEvent("keydown", {
       key: "Alt", code: "AltRight", altKey: true, ctrlKey: true, bubbles: true,
@@ -952,6 +955,24 @@
         gateDoc.querySelectorAll(".locked-step").length === 15,
       "Roter Faden erlaubt anfangs nur Schritt 01",
     );
+    const currentLessonLink = gateDoc.getElementById("currentLessonLink");
+    assert(!gateDoc.getElementById("lessonHeading").hidden &&
+      currentLessonLink.textContent === "01 " + lessons[0].title &&
+      currentLessonLink.getAttribute("href") === "#lesson/l1" &&
+      currentLessonLink.getAttribute("aria-current") === "page" &&
+      gateDoc.querySelector(".lesson-breadcrumb > a").getAttribute("href") === "#path" &&
+      gateDoc.querySelectorAll("#lessonPager button:disabled").length === 2 &&
+      gateDoc.querySelector('#lessonPager button[aria-label^="Nächste Einheit noch gesperrt"]') &&
+      gateDoc.documentElement.scrollWidth <= 360,
+      "Kopfnavigation: Lernpfad und Einheit 01 verlinkt, beide Pfeile anfangs inaktiv und mobiles Layout passt");
+    const followLessonLink = (link) => new Promise((resolve) => {
+      gateWin.addEventListener("hashchange", resolve, { once: true });
+      link.click();
+    });
+    await followLessonLink(gateDoc.querySelector(".lesson-breadcrumb > a"));
+    assert(gateWin.location.hash === "#path" && gateDoc.getElementById("lessonHeading").hidden,
+      "Kopfnavigation: Klick auf Lernpfad führt zur Übersicht");
+    await gateGo("#lesson/l1");
     gateDoc.querySelector("#htmlEditor").value = samples[0];
     gateDoc
       .querySelector("#htmlEditor")
@@ -970,6 +991,14 @@
         gateDoc.querySelector('a[href="#lesson/l2"].button'),
       "Abschluss schaltet Schritt 02 sofort ohne Neuladen frei",
     );
+    await followLessonLink(gateDoc.querySelector('#lessonPager a[href="#lesson/l2"]'));
+    assert(currentLessonLink.textContent === "02 " + lessons[1].title &&
+      gateDoc.querySelector('#lessonPager a[href="#lesson/l1"]') &&
+      gateDoc.querySelector('#lessonPager button[aria-label^="Nächste Einheit noch gesperrt"]'),
+      "Kopfnavigation: Vorwärtspfeil öffnet freigeschaltete Einheit 02 und zeigt Rückpfeil");
+    await followLessonLink(gateDoc.querySelector('#lessonPager a[href="#lesson/l1"]'));
+    assert(gateWin.location.hash === "#lesson/l1" && gateDoc.querySelector('#lessonPager button[aria-label="Keine vorherige Einheit"]'),
+      "Kopfnavigation: Rückpfeil führt zur ersten Einheit, dort ist links Schluss");
     const reloaded = new Promise((resolve) => (gateFrame.onload = resolve));
     gateFrame.src = "/?gate-reload=1#lesson/l2";
     await reloaded;

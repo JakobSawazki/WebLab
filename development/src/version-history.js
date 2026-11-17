@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-17", [
+    ["1.48.0", "Anzeigeoptionen für WebLab", "Oben rechts lassen sich Schriftgröße, Schriftfarbe und Hintergrund einstellen. Reset stellt das Standarddesign wieder her."],
     ["1.47.0", "Versionsverlauf in WebLab", "Die Versionsnummer unten links öffnet eine Übersicht der bisherigen Änderungen, auch offline."],
     ["1.46.1", "Kürzerer Untertitel", "Unter dem WebLab-Logo steht „Internetseiten“."],
     ["1.46.0", "Fotorealistische Karten auf der Startseite", "Alle 16 Einheiten haben ein eigenes Motiv. Karten zeigen Lernziel, Dauer, Punkte und Freischaltstatus; die Etappenauswahl führt direkt zum passenden Abschnitt."],

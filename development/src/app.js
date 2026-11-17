@@ -10,6 +10,7 @@ import { debugging } from "./debugging.js";
 import { decorateIcons, icon } from "./icons.js";
 import { VERSION, groups, lessons, byId } from "./content.js";
 import { versionHistory } from "./version-history.js";
+import { bindDisplayOptions } from "./display.js";
 import { glossary } from "./glossary.js";
 import { guidance } from "./guidance.js";
 import {
@@ -56,10 +57,7 @@ try {
 }
 let preventSave = Boolean(storageError);
 let savedSnapshot = JSON.stringify(state);
-try {
-  document.documentElement.dataset.theme =
-    localStorage.getItem("weblab-theme-v1") === "light" ? "light" : "dark";
-} catch {}
+bindDisplayOptions();
 let menuCollapsed = false;
 try {
   menuCollapsed = localStorage.getItem("weblab-menu-v1") === "collapsed";
@@ -1202,14 +1200,6 @@ document
       else dialog.close();
     };
   });
-$("#themeButton").onclick = () => {
-  const theme =
-    document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-  document.documentElement.dataset.theme = theme;
-  try {
-    localStorage.setItem("weblab-theme-v1", theme);
-  } catch {}
-};
 function resetPendingImport() {
   importRead++;
   pendingImport = null;

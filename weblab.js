@@ -279,7 +279,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.47.0";
+const VERSION = "1.48.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -837,6 +837,7 @@ return {VERSION,groups,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.48.0", "Anzeigeoptionen für WebLab", "Oben rechts lassen sich Schriftgröße, Schriftfarbe und Hintergrund einstellen. Reset stellt das Standarddesign wieder her."],
     ["1.47.0", "Versionsverlauf in WebLab", "Die Versionsnummer unten links öffnet eine Übersicht der bisherigen Änderungen, auch offline."],
     ["1.46.1", "Kürzerer Untertitel", "Unter dem WebLab-Logo steht „Internetseiten“."],
     ["1.46.0", "Fotorealistische Karten auf der Startseite", "Alle 16 Einheiten haben ein eigenes Motiv. Karten zeigen Lernziel, Dauer, Punkte und Freischaltstatus; die Etappenauswahl führt direkt zum passenden Abschnitt."],
@@ -911,6 +912,75 @@ const versionHistory = [
 ];
 
 return {versionHistory};
+},
+"display.js": function(require) {
+const DISPLAY_KEY = "weblab-display-v1";
+const THEME_KEY = "weblab-theme-v1";
+const defaults = { size: "100", ink: "default", surface: "default" };
+
+function bindDisplayOptions(doc = document) {
+  const root = doc.documentElement,
+    get = (id) => doc.getElementById(id),
+    fields = {
+      size: get("displaySize"),
+      ink: get("displayInk"),
+      surface: get("displaySurface"),
+    },
+    status = get("displayStatus");
+  let settings = { ...defaults };
+  try {
+    const stored = JSON.parse(localStorage.getItem(DISPLAY_KEY) || "null");
+    for (const [key, field] of Object.entries(fields)) {
+      if ([...field.options].some((option) => option.value === stored?.[key]))
+        settings[key] = stored[key];
+    }
+  } catch {}
+  try {
+    root.dataset.theme = localStorage.getItem(THEME_KEY) === "light" ? "light" : "dark";
+  } catch {}
+
+  function apply() {
+    root.dataset.fontSize = settings.size;
+    root.dataset.ink = settings.ink;
+    root.dataset.surface = settings.surface;
+    for (const [key, field] of Object.entries(fields)) field.value = settings[key];
+  }
+  apply();
+
+  get("optionsButton").onclick = () => get("optionsDialog").showModal();
+  for (const [key, field] of Object.entries(fields)) {
+    field.onchange = () => {
+      if (!field.value) return;
+      settings[key] = field.value;
+      apply();
+      try {
+        localStorage.setItem(DISPLAY_KEY, JSON.stringify(settings));
+        status.textContent = "";
+      } catch {
+        status.textContent = "Die Darstellung ist geändert, konnte aber nicht gespeichert werden.";
+      }
+    };
+  }
+  get("themeButton").onclick = () => {
+    const theme = root.dataset.theme === "dark" ? "light" : "dark";
+    root.dataset.theme = theme;
+    try { localStorage.setItem(THEME_KEY, theme); } catch {}
+  };
+  get("resetDisplay").onclick = () => {
+    settings = { ...defaults };
+    root.dataset.theme = "dark";
+    apply();
+    try {
+      localStorage.removeItem(DISPLAY_KEY);
+      localStorage.removeItem(THEME_KEY);
+      status.textContent = "Standarddarstellung wiederhergestellt.";
+    } catch {
+      status.textContent = "Die Standarddarstellung ist aktiv, konnte aber nicht gespeichert werden.";
+    }
+  };
+}
+
+return {bindDisplayOptions};
 },
 "guidance.js": function(require) {
 // Eigenständige Lernhilfen zu den Einheiten in content.js.
@@ -4920,6 +4990,7 @@ const { debugging } = require("debugging.js");
 const { decorateIcons, icon } = require("icons.js");
 const { VERSION, groups, lessons, byId } = require("content.js");
 const { versionHistory } = require("version-history.js");
+const { bindDisplayOptions } = require("display.js");
 const { glossary } = require("glossary.js");
 const { guidance } = require("guidance.js");
 const {
@@ -4966,10 +5037,7 @@ try {
 }
 let preventSave = Boolean(storageError);
 let savedSnapshot = JSON.stringify(state);
-try {
-  document.documentElement.dataset.theme =
-    localStorage.getItem("weblab-theme-v1") === "light" ? "light" : "dark";
-} catch {}
+bindDisplayOptions();
 let menuCollapsed = false;
 try {
   menuCollapsed = localStorage.getItem("weblab-menu-v1") === "collapsed";
@@ -6112,14 +6180,6 @@ document
       else dialog.close();
     };
   });
-$("#themeButton").onclick = () => {
-  const theme =
-    document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-  document.documentElement.dataset.theme = theme;
-  try {
-    localStorage.setItem("weblab-theme-v1", theme);
-  } catch {}
-};
 function resetPendingImport() {
   importRead++;
   pendingImport = null;
@@ -6225,6 +6285,7 @@ return {};
 "icons.js": function(require) {
 // Shared inline SVGs also work offline and with a direct file:// start.
 const paths = {
+  settings: '<path d="M10 2h4l.6 2.6 2 .9 2.3-1.4 2.8 2.8-1.4 2.3.9 2 2.8.8v3.8l-2.8.6-.9 2 1.4 2.3-2.8 2.8-2.3-1.4-2 .9-.6 2.6h-4l-.6-2.6-2-.9-2.3 1.4-2.8-2.8 1.4-2.3-.9-2-2.6-.6v-3.8l2.6-.8.9-2-1.4-2.3 2.8-2.8 2.3 1.4 2-.9z" transform="translate(2 0) scale(.83)"/><circle cx="12" cy="11.6" r="2.8"/>',
   menu: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16m4-10h4m-4 4h4"/>',
   lock: '<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/>',
   home: '<path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/>',

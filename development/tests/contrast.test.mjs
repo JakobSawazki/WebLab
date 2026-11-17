@@ -26,12 +26,25 @@ const contrast = (a, b) => {
   return (x + 0.05) / (y + 0.05);
 };
 
-test("Text colours keep at least 4.5:1 on every surface in both themes", () => {
-  for (const [name, t] of Object.entries(themes))
-    for (const fg of ["--text", "--muted", "--brand", "--green", "--amber", "--red"])
-      for (const bg of ["--bg", "--panel", "--panel-strong", "--metal-top", "--metal-mid", "--metal-bottom"]) {
-        assert.ok(t[fg] && t[bg], `${name}: ${fg} und ${bg} definiert`);
-        const ratio = contrast(t[fg], t[bg]);
-        assert.ok(ratio >= 4.5, `${name}: ${fg} auf ${bg} nur ${ratio.toFixed(2)}:1`);
+test("Text and background presets keep at least 4.5:1 across both themes", () => {
+  for (const [name, theme] of Object.entries(themes))
+    for (const ink of ["default", "neutral", "warm", "cool"])
+      for (const surface of ["default", "graphite", "petrol", "sand"]) {
+        const palette = (key, choice) => {
+          if (choice === "default") return {};
+          const basic = `:root[data-${key}="${choice}"]`,
+            selector = name === "light"
+              ? `:root[data-theme="light"][data-${key}="${choice}"]` : basic;
+          const result = tokens(block(selector));
+          assert.ok(Object.keys(result).length > 0, selector);
+          return result;
+        };
+        const t = { ...theme, ...palette("ink", ink), ...palette("surface", surface) };
+        for (const fg of ["--text", "--muted", "--brand", "--green", "--amber", "--red"])
+          for (const bg of ["--bg", "--panel", "--panel-strong", "--metal-top", "--metal-mid", "--metal-bottom"]) {
+            assert.ok(t[fg] && t[bg], `${name}: ${fg} und ${bg} definiert`);
+            const ratio = contrast(t[fg], t[bg]);
+            assert.ok(ratio >= 4.5, `${name}/${ink}/${surface}: ${fg} auf ${bg} nur ${ratio.toFixed(2)}:1`);
+          }
       }
 });

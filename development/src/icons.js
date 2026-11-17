@@ -1,5 +1,6 @@
 // Shared inline SVGs also work offline and with a direct file:// start.
 const paths = {
+  settings: '<path d="M10 2h4l.6 2.6 2 .9 2.3-1.4 2.8 2.8-1.4 2.3.9 2 2.8.8v3.8l-2.8.6-.9 2 1.4 2.3-2.8 2.8-2.3-1.4-2 .9-.6 2.6h-4l-.6-2.6-2-.9-2.3 1.4-2.8-2.8 1.4-2.3-.9-2-2.6-.6v-3.8l2.6-.8.9-2-1.4-2.3 2.8-2.8 2.3 1.4 2-.9z" transform="translate(2 0) scale(.83)"/><circle cx="12" cy="11.6" r="2.8"/>',
   menu: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16m4-10h4m-4 4h4"/>',
   lock: '<rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/>',
   home: '<path d="m3 10 9-7 9 7v10H3Z"/><path d="M9 20v-7h6v7"/>',

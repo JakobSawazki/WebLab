@@ -136,6 +136,11 @@
               title="Lernstand sichern oder laden"
               aria-haspopup="dialog"
             ></button>
+            <button id="optionsButton" class="icon-button" type="button"
+              title="Anzeigeoptionen" aria-label="Anzeigeoptionen"
+              aria-haspopup="dialog" aria-controls="optionsDialog">
+              <span data-icon="settings" aria-hidden="true"></span>
+            </button>
             <button
               id="profileButton"
               class="button profile-trigger"
@@ -172,6 +177,55 @@
         </footer>
       </div>
     </div>
+    <dialog id="optionsDialog" aria-labelledby="optionsTitle">
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">WebLab · Optionen</p>
+          <h2 id="optionsTitle">Darstellung anpassen</h2>
+        </div>
+        <button class="icon-button" type="button" data-close aria-label="Anzeigeoptionen schließen">×</button>
+      </div>
+      <p class="muted">Die Änderungen sind sofort sichtbar und werden in diesem Browser gespeichert.</p>
+      <div class="display-fields">
+        <div>
+          <label for="displaySize">Schriftgröße</label>
+          <select id="displaySize" autofocus>
+            <option value="90">Klein · 90 %</option>
+            <option value="100" selected>Standard · 100 %</option>
+            <option value="112">Groß · 112 %</option>
+            <option value="125">Sehr groß · 125 %</option>
+          </select>
+        </div>
+        <div>
+          <label for="displayInk">Schriftfarbe</label>
+          <select id="displayInk">
+            <option value="default">Standard</option>
+            <option value="neutral">Neutralgrau</option>
+            <option value="warm">Warm · Elfenbein / Braun</option>
+            <option value="cool">Kühl · Eisblau / Tintenblau</option>
+          </select>
+        </div>
+        <div>
+          <label for="displaySurface">Hintergrund</label>
+          <select id="displaySurface">
+            <option value="default">Standard</option>
+            <option value="graphite">Graphit</option>
+            <option value="petrol">Petrol</option>
+            <option value="sand">Sand</option>
+          </select>
+        </div>
+      </div>
+      <div class="display-sample">
+        <p class="eyebrow">Vorschau</p>
+        <p><strong>Deine erste Webseite</strong></p>
+        <p>Lerne HTML und CSS Schritt für Schritt.</p>
+      </div>
+      <p id="displayStatus" class="muted" role="status"></p>
+      <div class="actions display-actions">
+        <button class="button secondary" type="button" id="resetDisplay">Reset</button>
+        <button class="button" type="button" data-close>Fertig</button>
+      </div>
+    </dialog>
     <dialog id="versionDialog" aria-labelledby="versionTitle">
       <div class="dialog-heading version-heading">
         <div>

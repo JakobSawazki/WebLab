@@ -138,9 +138,9 @@
         const controls = [...menuDoc.querySelectorAll(".topbar-actions > button")],
           heights = controls.map((button) => button.getBoundingClientRect().height);
         assert(
-          controls.length === 3 && heights.every((height) => height >= 56 &&
+          controls.length === 4 && heights.every((height) => height >= 56 &&
             Math.abs(height - heights[0]) < 1),
-          width + " " + theme + ": alle drei oberen Bedienelemente gleich hoch",
+          width + " " + theme + ": alle vier oberen Bedienelemente gleich hoch",
         );
         const frames = [...menuDoc.querySelectorAll(".nav-item > [data-icon]")];
         assert(
@@ -294,6 +294,64 @@
     }
     if (savedMenu === null) localStorage.removeItem("weblab-menu-v1");
     else localStorage.setItem("weblab-menu-v1", savedMenu);
+    const displayKey = "weblab-display-v1",
+      savedDisplay = localStorage.getItem(displayKey),
+      displayTheme = localStorage.getItem("weblab-theme-v1"),
+      displayState = localStorage.getItem(STORAGE_KEY);
+    localStorage.removeItem(displayKey);
+    localStorage.removeItem("weblab-theme-v1");
+    const displayFrame = document.createElement("iframe");
+    displayFrame.style.cssText = "display:block;width:360px;height:760px;border:0";
+    displayFrame.title = "Anzeigeoptionen";
+    async function displayLoad(mark) {
+      const loaded = new Promise(resolve => displayFrame.onload = resolve);
+      displayFrame.src = "/?display-check=" + mark + "#home";
+      if (!displayFrame.isConnected) document.body.append(displayFrame);
+      await loaded;
+      return displayFrame.contentDocument;
+    }
+    try {
+      let doc = await displayLoad("initial");
+      const get = id => doc.getElementById(id);
+      get("optionsButton").focus();
+      get("optionsButton").click();
+      assert(get("optionsDialog").matches(":modal") && doc.activeElement === get("displaySize"),
+        "Optionen: Zahnrad öffnet Dialog und fokussiert Schriftgröße");
+      for (const [id, value] of [["displaySize", "125"], ["displayInk", "warm"], ["displaySurface", "petrol"]]) {
+        get(id).value = value;
+        get(id).dispatchEvent(new displayFrame.contentWindow.Event("change", { bubbles: true }));
+      }
+      const style = () => displayFrame.contentWindow.getComputedStyle(doc.body);
+      assert(
+        style().fontSize === "20px" && style().color === "rgb(255, 240, 214)" &&
+          style().getPropertyValue("--bg").trim() === "#07191b" &&
+          get("optionsDialog").scrollWidth <= get("optionsDialog").clientWidth &&
+          doc.documentElement.scrollWidth <= 360,
+        "Optionen: Schrift und Hintergrund ändern sich direkt, auch bei 125 % ohne Überlauf",
+      );
+      get("optionsDialog").querySelector(".display-actions [data-close]").click();
+      assert(doc.activeElement === get("optionsButton"), "Optionen: Fertig gibt Fokus an Zahnrad zurück");
+      get("themeButton").click();
+      assert(style().color === "rgb(76, 52, 29)" &&
+        style().getPropertyValue("--bg").trim() === "#e0eeed",
+        "Optionen: Schnellschalter behält Auswahl und wechselt passende Farbvariante");
+      doc = await displayLoad("reload");
+      assert(get("displaySize").value === "125" && get("displayInk").value === "warm" &&
+        get("displaySurface").value === "petrol" && doc.documentElement.dataset.theme === "light",
+        "Optionen: Darstellung bleibt nach Neuladen erhalten");
+      get("optionsButton").click();
+      get("resetDisplay").click();
+      assert(style().fontSize === "16px" && style().color === "rgb(241, 245, 251)" &&
+        style().getPropertyValue("--bg").trim() === "#050b15" && doc.documentElement.dataset.theme === "dark" &&
+        localStorage.getItem(displayKey) === null && localStorage.getItem(STORAGE_KEY) === displayState,
+        "Optionen: Reset stellt Standardwerte wieder her und erhält Lernstand");
+    } finally {
+      displayFrame.remove();
+      if (savedDisplay === null) localStorage.removeItem(displayKey);
+      else localStorage.setItem(displayKey, savedDisplay);
+      if (displayTheme === null) localStorage.removeItem("weblab-theme-v1");
+      else localStorage.setItem("weblab-theme-v1", displayTheme);
+    }
     const artworkFiles = [
       "html-struktur.webp", "inhalte-verknuepfen.webp",
       "css-gestaltung.webp", "webprojekt.webp",

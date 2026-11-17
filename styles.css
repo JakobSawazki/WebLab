@@ -57,6 +57,87 @@
   --bevel-dark: #5b6f861f;
   --panel-shadow: 0 10px 26px #213b5b1c;
 }
+:root[data-surface="graphite"] {
+  --bg: #101217;
+  --panel: #191c22;
+  --panel-strong: #252a33;
+  --metal-top: #2c323d;
+  --metal-mid: #20242c;
+  --metal-bottom: #14171d;
+}
+:root[data-surface="petrol"] {
+  --bg: #07191b;
+  --panel: #102326;
+  --panel-strong: #183338;
+  --metal-top: #1b363a;
+  --metal-mid: #122a2e;
+  --metal-bottom: #0a1b20;
+}
+:root[data-surface="sand"] {
+  --bg: #1a1410;
+  --panel: #271e17;
+  --panel-strong: #332820;
+  --metal-top: #392c23;
+  --metal-mid: #2e231c;
+  --metal-bottom: #1e1713;
+}
+:root[data-theme="light"][data-surface="graphite"] {
+  --bg: #e4e6eb;
+  --panel: #f2f3f5;
+  --panel-strong: #e0e2e6;
+  --metal-top: #fbfbfc;
+  --metal-mid: #e6e7ea;
+  --metal-bottom: #d3d6dc;
+}
+:root[data-theme="light"][data-surface="petrol"] {
+  --bg: #e0eeed;
+  --panel: #f1f8f7;
+  --panel-strong: #dcebe9;
+  --metal-top: #f7fdfc;
+  --metal-mid: #e0efed;
+  --metal-bottom: #cde4e2;
+}
+:root[data-theme="light"][data-surface="sand"] {
+  --bg: #eee5d7;
+  --panel: #fbf6ee;
+  --panel-strong: #f1e7d9;
+  --metal-top: #fffaf1;
+  --metal-mid: #f3e9da;
+  --metal-bottom: #e7d9c5;
+}
+:root[data-ink="neutral"] {
+  --text: #f7f7f7;
+  --muted: #c4c4c4;
+}
+:root[data-ink="warm"] {
+  --text: #fff0d6;
+  --muted: #d8bea3;
+}
+:root[data-ink="cool"] {
+  --text: #d9efff;
+  --muted: #aac9df;
+}
+:root[data-theme="light"][data-ink="neutral"] {
+  --text: #262626;
+  --muted: #4d4d4d;
+}
+:root[data-theme="light"][data-ink="warm"] {
+  --text: #4c341d;
+  --muted: #5e4932;
+}
+:root[data-theme="light"][data-ink="cool"] {
+  --text: #173e58;
+  --muted: #3b5266;
+}
+:root[data-font-size="90"] {
+  font-size: 90%;
+}
+:root[data-font-size="112"] {
+  font-size: 112%;
+}
+:root[data-font-size="125"] {
+  font-size: 125%;
+}
 :root {
   /* Static CSS grain keeps the brushed finish available offline. Several
      line rhythms overlap so the brushing does not read as a regular stripe. */
@@ -124,7 +205,7 @@ body {
     );
   background-attachment: fixed;
   color: var(--text);
-  font: 16px/1.65 var(--sans);
+  font: 1rem/1.65 var(--sans);
   -webkit-font-smoothing: antialiased;
 }
 button,
@@ -536,6 +617,7 @@ a.lesson-menu-item:hover,
   display: flex;
   gap: 0.6rem;
   align-items: stretch;
+  flex-wrap: wrap;
 }
 .storage-status {
   position: sticky;
@@ -1632,6 +1714,45 @@ dialog {
 dialog::backdrop {
   background: #020917b3;
   backdrop-filter: blur(3px);
+}
+.display-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+}
+.display-fields > :last-child {
+  grid-column: 1 / -1;
+}
+.display-fields select {
+  width: 100%;
+  min-height: 44px;
+}
+.display-sample {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--metal-rim);
+  border-radius: 12px;
+  background: var(--bg);
+}
+.display-sample p {
+  margin: 0;
+}
+.display-sample strong {
+  font-size: 1.25rem;
+}
+#displayStatus:empty {
+  display: none;
+}
+.display-actions {
+  justify-content: space-between;
+}
+@media (max-width: 540px) {
+  #optionsDialog {
+    padding: 1rem;
+  }
+  .display-fields {
+    grid-template-columns: 1fr;
+  }
 }
 #versionDialog[open] {
   display: flex;

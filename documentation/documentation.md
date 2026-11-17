@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.49.2** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.49.3** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -37,7 +37,7 @@ Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein
 | Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich |
 | Übungen | Übungswerkstatt in den Einheiten: kurze Aufgaben (Reparieren, Ergänzen, Selbst schreiben, Profi-Aufgabe je Etappe) mit Mini-Editor, Live-Vorschau, Sofortprüfung, Tipp nach Fehlversuch und Merksatz; ohne Punkte; gesammelte Merksätze und Wiederholungsrunde unter „Meine Notizen“ |
 | Labor | HTML-/CSS-Dateireiter, seit 1.41.0 bis zu vier Unterseiten wie kontakt.html mit Verweisprüfung, Zeilennummern, Einrückung, Live-/manuelle isolierte Vorschau, Handyansicht und große Browseransicht, eigenständiger freier Entwurf |
-| Informatik-Stick | HTML-/CSS-Import und Export einschließlich Unterseiten, Notepad++-Transferauftrag mit Strg+S/F5 und Dateiverknüpfung |
+| Notepad++ | HTML-/CSS-Import und Export einschließlich Unterseiten, Transferauftrag mit Strg+S/F5 und Dateiverknüpfung; offizieller Download für zu Hause |
 | Export | `index.html`, `style.css`, Projekt-ZIP, Lernstand als JSON, Übersicht als CSV |
 | Nachschlagen | 110 Glossareinträge (84 aus WebLab 0.5.0, 26 ergänzt), Suche mit Trefferreihenfolge, Bereichsfilter, „Siehe auch“-Verweise |
 | Datenschutz | Lernstand auf dem Gerät; kein Tracking, keine externe KI, keine zentrale Schülerdatenbank |
@@ -289,7 +289,7 @@ Dieser Abgleich betrifft Jakobs ursprünglichen Auftrag und die anschließend ko
 | Schülerprofil, Punkte und NAGOLD | Lokales Profil wie WorkbenchLab, state.js; state.test.mjs und Browserablauf Profil/Abschluss/Sicherung | Umgesetzt; keine Serveranmeldung beauftragt oder behauptet |
 | Anfangs nur Einheit 01, danach 02, 03 usw. | progression.test.mjs prüft sämtliche 16 Freischaltstufen, einmalige XP und Lücken; Browserprüfung prüft Direktlinks und Erhalt nach Neuladen | Umgesetzt |
 | HTML direkt programmieren und echte Darstellung sehen | HTML/CSS-Reiter, sandbox-Vorschau, Handyansicht, große Browseransicht; Browserprüfung kontrolliert Eingabe, Darstellung, manuelle Aktualisierung und Entwurftrennung | Umgesetzt |
-| Vorbereitung auf Notepad++ 7.5.1 vom Informatik-Stick | Import, HTML/CSS/ZIP-Export, Transferaufträge mit Strg+S/F5; ZIP-Struktur und Import geprüft | Umgesetzt; Schuleinsatz auf echtem Stick nicht vorgetäuscht |
+| Projektdateien in Notepad++ bearbeiten | Import, HTML/CSS/ZIP-Export, Transferaufträge mit Strg+S/F5 und Link zur offiziellen Downloadseite | Umgesetzt; Schulinstallation kann ohne zusätzlichen Download verwendet werden |
 | Eigene statische Webseite entwickeln | Abschlussprojekt in Einheit 16, Projektentwurf wächst fortlaufend; Export echter index.html, style.css und Unterseiten | Umgesetzt; Unterseite seit 1.41.0 auch direkt in WebLab |
 | Start durch index.html ohne start.cmd | Klassisches defer-Skript weblab.js, lokale CSS-/Bilddateien, keine Modulimporte oder Netzabrufe im Laufzeitpaket gefunden; start.cmd fehlt | Seit 1.35.0 per Edge-Dateitest und Jakobs Nutzung bestätigt |
 | Unnötige Dateien entfernen, Tests/tools aufräumen | Frameworkreste und Startskript archiviert; notwendige Entwicklungsdateien unter development/; keine start.cmd, node_modules, tests oder tools im Projektstamm; Build-Ausgaben außerhalb des Projekts archiviert | Aktiver Stammordner aufgeräumt; keine Laufzeitinstallation nötig |
@@ -322,6 +322,10 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.49.3: Mit Notepad++ weiterarbeiten
+
+Jakobs aktuelle Vorgabe ersetzt die alte Anleitung mit konkreter Notepad++-Version und Informatik-Stick. Die Werkstatt erklärt die vorhandene Schulinstallation, verweist für zu Hause auf die [offiziellen Notepad++-Downloads](https://notepad-plus-plus.org/downloads/) und beschreibt die portable ZIP-Ausgabe als freiwillige Option. Der Projekttransfer nutzt einen eigenen Ordner; Import, Export, Dateiendungen, UTF-8, Strg+S und F5 bleiben unverändert. Unterrichtsmaterial und Programmdateien der Schule wurden nicht verändert. Portable Ausgabe anhand des [offiziellen Handbuchs](https://github.com/notepad-plus-plus/npp-usermanual/blob/master/content/docs/getting-started.md) eingeordnet.
 
 ### 17.11.2026 – Codex – Version 1.49.2: Erfahrungspunkte (EP)
 

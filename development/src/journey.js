@@ -59,7 +59,7 @@ const stages = [
     [
       "Wähle ein eigenes Bild, das zu deinem Seitenthema passt, und füge es über den Bildknopf ein.",
       "Suche das neue img im HTML. Ersetze den Platzhalter im alt und kontrolliere width und height.",
-      "Vergleiche Bildgröße und Text in der Vorschau. Überlege den Dateipfad für den Bildordner auf dem Stick.",
+      "Vergleiche Bildgröße und Text in der Vorschau. Überlege den Dateipfad für den Bildordner in deinem Projekt.",
     ],
     "Dein Bild erscheint in der Seite. alt ist eine Textalternative, keine Bildunterschrift; du kontrollierst ihn im Code.",
   ],
@@ -147,7 +147,7 @@ const stages = [
     "Du hast eine gestaltete Seite mit Quellenangaben.",
     "Du testest die echten Dateien systematisch außerhalb des Labors.",
     [
-      "Exportiere das Projekt-ZIP und entpacke es auf dem Stick. Vorhandene Unterseiten sind enthalten. Ergänze fehlende Seiten in Notepad++ sowie Bilder und Medien an ihren relativen Pfaden.",
+      "Exportiere das Projekt-ZIP und entpacke es in einen Projektordner. Vorhandene Unterseiten sind enthalten. Ergänze fehlende Seiten in Notepad++ sowie Bilder und Medien an ihren relativen Pfaden.",
       "Öffne index.html im Browser. Teste Links, Bilder und eine schmale Fensterbreite; bearbeite gefundene Fehler in Notepad++.",
       "Dokumentiere drei konkrete Testergebnisse als Liste auf deiner Seite. Lade korrigierte HTML-/CSS-Dateien bei Bedarf wieder hier hinein.",
     ],
@@ -158,8 +158,8 @@ const stages = [
     "Du führst dein Projekt zu einer selbständig erklärbaren eigenen Webseite zusammen.",
     [
       "Vergleiche dein Projekt in der Werkstatt dieser Einheit mit dem Abschlussauftrag. Ergänze fehlende Inhalte passend zu deinem Thema.",
-      "Entpacke das Projekt-ZIP auf dem Stick. Öffne index.html, teste Hin- und Rücklink und kontrolliere Quellen und Gestaltung. Präsentiere deine Webseite.",
-      "Erkläre an deinem eigenen Code ein HTML-Element, eine CSS-Regel und einen relativen Pfad. Sichere zusätzlich deinen Lernstand als JSON und prüfe, dass die Datei auf deinem Stick liegt.",
+      "Entpacke das Projekt-ZIP in einen eigenen Ordner. Öffne index.html, teste Hin- und Rücklink und kontrolliere Quellen und Gestaltung. Präsentiere deine Webseite.",
+      "Erkläre an deinem eigenen Code ein HTML-Element, eine CSS-Regel und einen relativen Pfad. Sichere zusätzlich deinen Lernstand als JSON und bewahre die Datei an einem Ort auf, an dem du sie wiederfindest.",
     ],
     "Deine eigene statische Webseite stellt ein klares Thema vor. Du kannst Aufbau und Gestaltung begründen und Änderungen selbst durchführen.",
   ],

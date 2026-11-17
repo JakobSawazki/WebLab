@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-17", [
+    ["1.49.3", "Projektdateien in Notepad++ bearbeiten", "Die Anleitungen verwenden Notepad++ und einen normalen Projektordner. Die Werkstatt verlinkt den kostenlosen offiziellen Download und erklärt die portable Ausgabe."],
     ["1.49.2", "EP für Erfahrungspunkte", "Profil, Lernpfad und Punkteübersicht verwenden die Bezeichnung EP. Vorhandene Einträge und die separate XP-Anzeige bleiben erhalten."],
     ["1.49.1", "Tastenkürzel für Sichern und Laden", "Alt+S sichert den Lernstand als Datei, Alt+O öffnet die Dateiauswahl. Die Symbole zeigen die Kürzel beim Darüberfahren an."],
     ["1.49.0", "Lernstand direkt sichern und laden", "Die Diskette speichert sofort eine JSON-Sicherung. Das Ordnersymbol öffnet die Dateiauswahl und übernimmt die gewählte WebLab-Sicherung."],
@@ -74,7 +75,7 @@ export const versionHistory = [
     ["1.4.0", "Direktstart über index.html", "WebLab lässt sich ohne Startskript oder lokalen Server im Browser öffnen."],
     ["1.3.0", "Startseite und Ablauf pro Einheit", "Vier Etappen zeigen den Fortschritt; der Ablauf führt über Verstehen, Anwenden, Prüfen und Sichern."],
     ["1.2.0", "Eine eigene Webseite wächst mit", "Ein roter Faden verbindet die Lernschritte. Entwürfe können übernommen und in einer großen Vorschau getestet werden."],
-    ["1.1.0", "Editor und Informatik-Stick", "HTML- und CSS-Reiter, Live-Vorschau, Dateiimport und Export begleiten den Transfer zu Notepad++."],
+    ["1.1.0", "Editor und Notepad++", "HTML- und CSS-Reiter, Live-Vorschau, Dateiimport und Export begleiten den Transfer zu Notepad++."],
     ["1.0.0", "Start des neuen WebLab", "Erster veröffentlichter Stand mit 16 BPE2-Einheiten, freiem Labor, Profil, XP, EP, Nachschlagewerk und Lernstandsicherung."],
   ]],
 ];

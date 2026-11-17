@@ -26,7 +26,7 @@ const extensions = {
       "In Notepad++ gibt es keine Vorschau und keine automatische Prüfung. Umso wichtiger sind Grundgerüst, Dateiname und Kodierung. Die Statusleiste unten rechts zeigt die Kodierung der Datei. Steht dort nicht UTF-8, erscheinen Umlaute im Browser falsch, obwohl im head meta charset=\"utf-8\" steht.",
     code: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Grüße aus der AG</title>\n</head>\n<body>\n  <h1>Schöne Grüße</h1>\n  <p>Äpfel, Öl und Übungen.</p>\n</body>\n</html>',
     steps: [
-      "Starte Notepad++ vom Informatik-Stick und lege eine neue Datei an. Prüfe unten rechts in der Statusleiste die Kodierung; wähle bei Bedarf im Menü Kodierung den Eintrag UTF-8.",
+      "Starte Notepad++ und lege eine neue Datei an. Prüfe unten rechts in der Statusleiste die Kodierung; wähle bei Bedarf im Menü Kodierung den Eintrag UTF-8.",
       "Tippe das Grundgerüst aus dem Beispiel selbst ab, ohne zu kopieren. Wähle im Menü Sprache unter H den Eintrag HTML, damit Notepad++ die Tags farbig hervorhebt.",
       "Speichere die Datei mit Strg+S als index.html in deinem Projektordner. Öffne sie per Doppelklick im Browser und prüfe Titel im Tab und Umlaute.",
       "Wandle die Datei testweise über das Menü Kodierung in ANSI um, speichere und lade den Browser mit F5 neu. Beobachte die Umlaute und stelle danach UTF-8 wieder her.",
@@ -129,7 +129,7 @@ const extensions = {
       'Lasse das CSS-Feld für h2 zunächst ohne Farbregel. Ergänze bei genau einer deiner beiden h2-Überschriften style="color: navy;". Beobachte, welche Überschrift ihre Farbe ändert.',
       "Entferne dieses style-Attribut wieder. Ergänze im head ein style-Element mit der gezeigten h2-Regel. Prüfe in der Vorschau, dass nun beide h2-Überschriften gestaltet werden.",
       "Verschiebe die h2-Regel aus dem style-Element in den CSS-Reiter und entferne das nun leere style-Element. Behalte die Verknüpfung zu style.css im head. Die Vorschau sollte gleich aussehen.",
-      "Exportiere das Projekt-ZIP und entpacke es auf dem Informatik-Stick. Öffne index.html und style.css in Notepad++. Ändere die h2-Farbe nur in style.css, speichere mit Strg+S und lade index.html im Browser mit F5 neu. Prüfe, dass beide Überschriften reagieren.",
+      "Exportiere das Projekt-ZIP und entpacke es in einen Projektordner. Öffne index.html und style.css in Notepad++. Ändere die h2-Farbe nur in style.css, speichere mit Strg+S und lade index.html im Browser mit F5 neu. Prüfe, dass beide Überschriften reagieren.",
     ],
     observe:
       "Zeige im Code, wo die Gestaltung bei jeder Variante steht. Erkläre, warum eine gemeinsame CSS-Datei für mehrere Seiten praktisch ist. Im Labor wird das CSS-Feld direkt in die Vorschau eingesetzt; erst der Test der exportierten Dateien zeigt, ob dein link zur externen Datei richtig gesetzt ist. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
@@ -171,7 +171,7 @@ const extensions = {
       "Suche deine Tabelle aus Einheit 07 im HTML-Reiter. Falls sie fehlt, ergänze eine passende Datentabelle mit Beschreibung, zwei Spaltenüberschriften und zwei Datenzeilen.",
       "Ergänze die CSS-Regeln im CSS-Reiter. Verändere padding von 0.5rem auf 1rem und beobachte den Platz innerhalb der Zellen.",
       "Vergleiche border-collapse: collapse mit separate. Wähle danach eine gut lesbare Gestaltung für deine eigene Tabelle. Prüfe auch die schmale Vorschau.",
-      "Exportiere HTML und CSS. Öffne beide Dateien in Notepad++ vom Informatik-Stick, ändere eine Rahmenfarbe, speichere mit Strg+S und lade die Seite im Browser mit F5 neu.",
+      "Exportiere HTML und CSS. Öffne beide Dateien in Notepad++, ändere eine Rahmenfarbe, speichere mit Strg+S und lade die Seite im Browser mit F5 neu.",
     ],
     observe:
       "Kannst du an deiner Tabelle erklären, welche Regel die Rahmen, welche die Innenabstände und welche die Kopfzeile gestaltet? Die Tabelle dient weiterhin zur Darstellung von Daten; für das Seitenlayout verwendest du keine Tabelle. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
@@ -279,7 +279,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.49.2";
+const VERSION = "1.49.3";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -837,6 +837,7 @@ return {VERSION,groups,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.49.3", "Projektdateien in Notepad++ bearbeiten", "Die Anleitungen verwenden Notepad++ und einen normalen Projektordner. Die Werkstatt verlinkt den kostenlosen offiziellen Download und erklärt die portable Ausgabe."],
     ["1.49.2", "EP für Erfahrungspunkte", "Profil, Lernpfad und Punkteübersicht verwenden die Bezeichnung EP. Vorhandene Einträge und die separate XP-Anzeige bleiben erhalten."],
     ["1.49.1", "Tastenkürzel für Sichern und Laden", "Alt+S sichert den Lernstand als Datei, Alt+O öffnet die Dateiauswahl. Die Symbole zeigen die Kürzel beim Darüberfahren an."],
     ["1.49.0", "Lernstand direkt sichern und laden", "Die Diskette speichert sofort eine JSON-Sicherung. Das Ordnersymbol öffnet die Dateiauswahl und übernimmt die gewählte WebLab-Sicherung."],
@@ -909,7 +910,7 @@ const versionHistory = [
     ["1.4.0", "Direktstart über index.html", "WebLab lässt sich ohne Startskript oder lokalen Server im Browser öffnen."],
     ["1.3.0", "Startseite und Ablauf pro Einheit", "Vier Etappen zeigen den Fortschritt; der Ablauf führt über Verstehen, Anwenden, Prüfen und Sichern."],
     ["1.2.0", "Eine eigene Webseite wächst mit", "Ein roter Faden verbindet die Lernschritte. Entwürfe können übernommen und in einer großen Vorschau getestet werden."],
-    ["1.1.0", "Editor und Informatik-Stick", "HTML- und CSS-Reiter, Live-Vorschau, Dateiimport und Export begleiten den Transfer zu Notepad++."],
+    ["1.1.0", "Editor und Notepad++", "HTML- und CSS-Reiter, Live-Vorschau, Dateiimport und Export begleiten den Transfer zu Notepad++."],
     ["1.0.0", "Start des neuen WebLab", "Erster veröffentlichter Stand mit 16 BPE2-Einheiten, freiem Labor, Profil, XP, EP, Nachschlagewerk und Lernstandsicherung."],
   ]],
 ];
@@ -3321,7 +3322,7 @@ const stages = [
     [
       "Wähle ein eigenes Bild, das zu deinem Seitenthema passt, und füge es über den Bildknopf ein.",
       "Suche das neue img im HTML. Ersetze den Platzhalter im alt und kontrolliere width und height.",
-      "Vergleiche Bildgröße und Text in der Vorschau. Überlege den Dateipfad für den Bildordner auf dem Stick.",
+      "Vergleiche Bildgröße und Text in der Vorschau. Überlege den Dateipfad für den Bildordner in deinem Projekt.",
     ],
     "Dein Bild erscheint in der Seite. alt ist eine Textalternative, keine Bildunterschrift; du kontrollierst ihn im Code.",
   ],
@@ -3409,7 +3410,7 @@ const stages = [
     "Du hast eine gestaltete Seite mit Quellenangaben.",
     "Du testest die echten Dateien systematisch außerhalb des Labors.",
     [
-      "Exportiere das Projekt-ZIP und entpacke es auf dem Stick. Vorhandene Unterseiten sind enthalten. Ergänze fehlende Seiten in Notepad++ sowie Bilder und Medien an ihren relativen Pfaden.",
+      "Exportiere das Projekt-ZIP und entpacke es in einen Projektordner. Vorhandene Unterseiten sind enthalten. Ergänze fehlende Seiten in Notepad++ sowie Bilder und Medien an ihren relativen Pfaden.",
       "Öffne index.html im Browser. Teste Links, Bilder und eine schmale Fensterbreite; bearbeite gefundene Fehler in Notepad++.",
       "Dokumentiere drei konkrete Testergebnisse als Liste auf deiner Seite. Lade korrigierte HTML-/CSS-Dateien bei Bedarf wieder hier hinein.",
     ],
@@ -3420,8 +3421,8 @@ const stages = [
     "Du führst dein Projekt zu einer selbständig erklärbaren eigenen Webseite zusammen.",
     [
       "Vergleiche dein Projekt in der Werkstatt dieser Einheit mit dem Abschlussauftrag. Ergänze fehlende Inhalte passend zu deinem Thema.",
-      "Entpacke das Projekt-ZIP auf dem Stick. Öffne index.html, teste Hin- und Rücklink und kontrolliere Quellen und Gestaltung. Präsentiere deine Webseite.",
-      "Erkläre an deinem eigenen Code ein HTML-Element, eine CSS-Regel und einen relativen Pfad. Sichere zusätzlich deinen Lernstand als JSON und prüfe, dass die Datei auf deinem Stick liegt.",
+      "Entpacke das Projekt-ZIP in einen eigenen Ordner. Öffne index.html, teste Hin- und Rücklink und kontrolliere Quellen und Gestaltung. Präsentiere deine Webseite.",
+      "Erkläre an deinem eigenen Code ein HTML-Element, eine CSS-Regel und einen relativen Pfad. Sichere zusätzlich deinen Lernstand als JSON und bewahre die Datei an einem Ort auf, an dem du sie wiederfindest.",
     ],
     "Deine eigene statische Webseite stellt ein klares Thema vor. Du kannst Aufbau und Gestaltung begründen und Änderungen selbst durchführen.",
   ],
@@ -5250,7 +5251,7 @@ $("#retrySave").onclick = () => {
 $("#storageMessage").tabIndex = -1;
 $("#storageBackup").onclick = () => {
   backup();
-  toast("JSON-Download gestartet. Prüfe die Datei im Downloadordner oder auf deinem Stick.");
+  toast("JSON-Download gestartet. Prüfe die Datei im Downloadordner.");
 };
 $("#storageRaw").onclick = () => {
   if (unreadableStorage)
@@ -5376,8 +5377,8 @@ function studio(id, free = false) {
       <div class="actions"><button id="imageButton" class="button secondary">Bild einfügen</button><input id="imageFile" type="file" accept="image/png,image/jpeg,image/webp" hidden><button id="resetButton" class="button secondary">Startcode laden</button></div>
       <p class="muted">Entwürfe werden auf diesem Gerät gespeichert. Sichere deinen Lernstand regelmäßig im Profil. HTML und CSS bleiben beim Reiterwechsel erhalten.</p>
     </div><div class="preview-area"><div class="preview-tools"><label class="check-row"><input id="livePreview" type="checkbox" checked> Live-Vorschau</label><button class="button secondary" id="largePreviewButton">Webseite groß ansehen</button><label for="previewWidth">Ansicht <select id="previewWidth"><option value="full">Verfügbare Breite</option><option value="360">Handy · 360 px</option></select></label></div><div class="preview-viewport"><iframe id="previewFrame" title="Isolierte Vorschau deiner Webseite" sandbox=""></iframe></div><p id="previewStatus" role="status"></p><details class="link-report" open><summary>Verweise zwischen deinen Seiten</summary><div id="linkReport" role="status"></div></details><p class="muted">HTML beschreibt Inhalte, CSS gestaltet sie. Externe Medien und Skripte sind hier blockiert. Die Vorschau zeigt die gewählte Seite; Klicks auf Links öffnen hier keine andere Seite. Ob Links, Bilder und Medien im Projektordner wirklich funktionieren, prüfst du nach dem Export im Browser.</p></div></div>
-    <dialog id="largePreviewDialog" class="large-preview" aria-labelledby="largePreviewTitle"><div class="studio-header"><h3 id="largePreviewTitle">Deine Webseite im Browser</h3><button class="button secondary" id="closeLargePreview">Zurück zum Code</button></div><iframe id="largePreviewFrame" title="Große Browseransicht deiner Webseite" sandbox=""></iframe><p>Das ist dein aktueller HTML- und CSS-Code als Webseite. Relative Dateien und Links testest du nach dem Export im Projektordner.</p></dialog><div class="panel"><h3>Vom WebLab zum Informatik-Stick</h3><p>Hier übst du mit direkter Vorschau. Für die Klassenarbeit trainierst du auch mit <strong>Notepad++ 7.5.1 auf dem Informatik-Stick</strong>. Dort ist der Informatik-Stick das erlaubte Werkzeug; WebLab gehört nicht dazu.</p><div class="actions"><button class="button secondary" id="htmlExport">index.html speichern</button><button class="button secondary" id="cssExport">style.css</button><button class="button" id="zipExport">Projekt-ZIP herunterladen</button><button class="button secondary" id="codeImportButton">HTML / CSS vom Stick laden</button><input id="codeImportFile" type="file" accept=".html,.htm,.css" multiple hidden></div><p class="muted">Geladene Dateien ersetzen nach Bestätigung nur die ausgewählten Dateien im aktuellen Entwurf. Sie werden lokal verarbeitet. Wählst du mehrere HTML-Dateien, muss eine index.html heißen; die anderen werden Unterseiten. Das Projekt-ZIP enthält index.html, style.css und alle Unterseiten.</p>
-    <details><summary>Notepad++ üben: speichern → Browser → prüfen</summary><ol><li>Lade das Projekt-ZIP herunter und entpacke es in einen eigenen Projektordner auf deinem Stick. index.html, style.css und deine Unterseiten liegen im selben Ordner.</li><li>Starte Notepad++ vom Informatik-Stick. Öffne index.html, style.css und deine Unterseiten in Notepad++. Öffne index.html zusätzlich im Browser.</li><li>Ändere deinen Code in Notepad++. Speichere die bearbeitete Datei mit <kbd>Strg</kbd> + <kbd>S</kbd>. Wechsle zum Browser und aktualisiere mit <kbd>F5</kbd>.</li><li>Prüfe Dateinamen und Endungen: index.html, nicht index.html.txt. Verwende UTF-8. Der HTML-Kopf verknüpft die Gestaltung mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li><li>Teste auch Links und Bilder im Projektordner. Über „HTML / CSS vom Stick laden“ kannst du deinen Code später wieder in dieser Einheit weiterbearbeiten.</li></ol><p><strong>Transfer-Auftrag:</strong> Ändere eine Überschrift und eine CSS-Farbe ausschließlich in Notepad++. Speichere beide Dateien, aktualisiere den Browser und erkläre, welche Datei welche Änderung bewirkt hat.</p></details>
+    <dialog id="largePreviewDialog" class="large-preview" aria-labelledby="largePreviewTitle"><div class="studio-header"><h3 id="largePreviewTitle">Deine Webseite im Browser</h3><button class="button secondary" id="closeLargePreview">Zurück zum Code</button></div><iframe id="largePreviewFrame" title="Große Browseransicht deiner Webseite" sandbox=""></iframe><p>Das ist dein aktueller HTML- und CSS-Code als Webseite. Relative Dateien und Links testest du nach dem Export im Projektordner.</p></dialog><div class="panel"><h3>Mit Notepad++ weiterarbeiten</h3><p>Öffne deine HTML- und CSS-Dateien in <strong>Notepad++</strong> und prüfe das Ergebnis im Browser.</p><p><strong>In der Schule:</strong> Verwende das bereits vorhandene Notepad++. <strong>Zu Hause:</strong> Die aktuelle Version für Windows kannst du kostenlos installieren: <a href="https://notepad-plus-plus.org/downloads/" target="_blank" rel="noopener noreferrer">Offizielle Notepad++-Downloads</a>.</p><details><summary>Option: Notepad++ ohne Installation starten</summary><p>Wähle auf der Downloadseite die aktuelle portable ZIP-Ausgabe, entpacke sie vollständig in einen Ordner und öffne darin <code>notepad++.exe</code>. Wenn Notepad++ bereits vorhanden ist, brauchst du keinen zusätzlichen Download.</p></details><div class="actions"><button class="button secondary" id="htmlExport">index.html speichern</button><button class="button secondary" id="cssExport">style.css</button><button class="button" id="zipExport">Projekt-ZIP herunterladen</button><button class="button secondary" id="codeImportButton">HTML / CSS laden</button><input id="codeImportFile" type="file" accept=".html,.htm,.css" multiple hidden></div><p class="muted">Geladene Dateien ersetzen nach Bestätigung nur die ausgewählten Dateien im aktuellen Entwurf. Sie werden lokal verarbeitet. Wählst du mehrere HTML-Dateien, muss eine index.html heißen; die anderen werden Unterseiten. Das Projekt-ZIP enthält index.html, style.css und alle Unterseiten.</p>
+    <details><summary>Notepad++ üben: speichern → Browser → prüfen</summary><ol><li>Lade das Projekt-ZIP herunter und entpacke es in einen eigenen Projektordner. index.html, style.css und deine Unterseiten liegen im selben Ordner.</li><li>Öffne index.html, style.css und deine Unterseiten in Notepad++. Öffne index.html zusätzlich im Browser.</li><li>Ändere deinen Code in Notepad++. Speichere die bearbeitete Datei mit <kbd>Strg</kbd> + <kbd>S</kbd>. Wechsle zum Browser und aktualisiere mit <kbd>F5</kbd>.</li><li>Prüfe Dateinamen und Endungen: index.html, nicht index.html.txt. Verwende UTF-8. Der HTML-Kopf verknüpft die Gestaltung mit <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>.</li><li>Teste auch Links und Bilder im Projektordner. Über „HTML / CSS laden“ kannst du deinen Code später wieder in dieser Einheit weiterbearbeiten.</li></ol><p><strong>Transfer-Auftrag:</strong> Ändere eine Überschrift und eine CSS-Farbe ausschließlich in Notepad++. Speichere beide Dateien, aktualisiere den Browser und erkläre, welche Datei welche Änderung bewirkt hat.</p></details>
     </div></section>`;
 }
 function lessonJourney(l) {

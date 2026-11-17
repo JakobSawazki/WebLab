@@ -21,7 +21,7 @@ export const extensions = {
       "In Notepad++ gibt es keine Vorschau und keine automatische Prüfung. Umso wichtiger sind Grundgerüst, Dateiname und Kodierung. Die Statusleiste unten rechts zeigt die Kodierung der Datei. Steht dort nicht UTF-8, erscheinen Umlaute im Browser falsch, obwohl im head meta charset=\"utf-8\" steht.",
     code: '<!doctype html>\n<html lang="de">\n<head>\n  <meta charset="utf-8">\n  <title>Grüße aus der AG</title>\n</head>\n<body>\n  <h1>Schöne Grüße</h1>\n  <p>Äpfel, Öl und Übungen.</p>\n</body>\n</html>',
     steps: [
-      "Starte Notepad++ vom Informatik-Stick und lege eine neue Datei an. Prüfe unten rechts in der Statusleiste die Kodierung; wähle bei Bedarf im Menü Kodierung den Eintrag UTF-8.",
+      "Starte Notepad++ und lege eine neue Datei an. Prüfe unten rechts in der Statusleiste die Kodierung; wähle bei Bedarf im Menü Kodierung den Eintrag UTF-8.",
       "Tippe das Grundgerüst aus dem Beispiel selbst ab, ohne zu kopieren. Wähle im Menü Sprache unter H den Eintrag HTML, damit Notepad++ die Tags farbig hervorhebt.",
       "Speichere die Datei mit Strg+S als index.html in deinem Projektordner. Öffne sie per Doppelklick im Browser und prüfe Titel im Tab und Umlaute.",
       "Wandle die Datei testweise über das Menü Kodierung in ANSI um, speichere und lade den Browser mit F5 neu. Beobachte die Umlaute und stelle danach UTF-8 wieder her.",
@@ -124,7 +124,7 @@ export const extensions = {
       'Lasse das CSS-Feld für h2 zunächst ohne Farbregel. Ergänze bei genau einer deiner beiden h2-Überschriften style="color: navy;". Beobachte, welche Überschrift ihre Farbe ändert.',
       "Entferne dieses style-Attribut wieder. Ergänze im head ein style-Element mit der gezeigten h2-Regel. Prüfe in der Vorschau, dass nun beide h2-Überschriften gestaltet werden.",
       "Verschiebe die h2-Regel aus dem style-Element in den CSS-Reiter und entferne das nun leere style-Element. Behalte die Verknüpfung zu style.css im head. Die Vorschau sollte gleich aussehen.",
-      "Exportiere das Projekt-ZIP und entpacke es auf dem Informatik-Stick. Öffne index.html und style.css in Notepad++. Ändere die h2-Farbe nur in style.css, speichere mit Strg+S und lade index.html im Browser mit F5 neu. Prüfe, dass beide Überschriften reagieren.",
+      "Exportiere das Projekt-ZIP und entpacke es in einen Projektordner. Öffne index.html und style.css in Notepad++. Ändere die h2-Farbe nur in style.css, speichere mit Strg+S und lade index.html im Browser mit F5 neu. Prüfe, dass beide Überschriften reagieren.",
     ],
     observe:
       "Zeige im Code, wo die Gestaltung bei jeder Variante steht. Erkläre, warum eine gemeinsame CSS-Datei für mehrere Seiten praktisch ist. Im Labor wird das CSS-Feld direkt in die Vorschau eingesetzt; erst der Test der exportierten Dateien zeigt, ob dein link zur externen Datei richtig gesetzt ist. Diese Vertiefung vergibt keine zusätzlichen Punkte.",
@@ -166,7 +166,7 @@ export const extensions = {
       "Suche deine Tabelle aus Einheit 07 im HTML-Reiter. Falls sie fehlt, ergänze eine passende Datentabelle mit Beschreibung, zwei Spaltenüberschriften und zwei Datenzeilen.",
       "Ergänze die CSS-Regeln im CSS-Reiter. Verändere padding von 0.5rem auf 1rem und beobachte den Platz innerhalb der Zellen.",
       "Vergleiche border-collapse: collapse mit separate. Wähle danach eine gut lesbare Gestaltung für deine eigene Tabelle. Prüfe auch die schmale Vorschau.",
-      "Exportiere HTML und CSS. Öffne beide Dateien in Notepad++ vom Informatik-Stick, ändere eine Rahmenfarbe, speichere mit Strg+S und lade die Seite im Browser mit F5 neu.",
+      "Exportiere HTML und CSS. Öffne beide Dateien in Notepad++, ändere eine Rahmenfarbe, speichere mit Strg+S und lade die Seite im Browser mit F5 neu.",
     ],
     observe:
       "Kannst du an deiner Tabelle erklären, welche Regel die Rahmen, welche die Innenabstände und welche die Kopfzeile gestaltet? Die Tabelle dient weiterhin zur Darstellung von Daten; für das Seitenlayout verwendest du keine Tabelle. Diese Vertiefung vergibt keine zusätzlichen Punkte.",

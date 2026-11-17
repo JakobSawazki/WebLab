@@ -81,12 +81,10 @@
           <a
             class="nav-item"
             href="#achievements"
-            title="Erfolge &
-            NAGOLD"
-            aria-label="Erfolge &
-            NAGOLD"
+            title="Erfolge & EP"
+            aria-label="Erfolge & EP"
             ><span data-icon="award" aria-hidden="true"></span
-            ><span class="nav-label">Erfolge & NAGOLD</span></a
+            ><span class="nav-label">Erfolge & EP</span></a
           >
           <a
             class="nav-item"
@@ -153,7 +151,7 @@
               aria-haspopup="dialog"
             >
               <strong id="profileName">Gast</strong
-              ><small id="profileStats">0 XP · 0 NAG</small>
+              ><small id="profileStats">0 XP · 0 EP</small>
             </button>
           </div>
         </header>
@@ -283,7 +281,7 @@
         </section>
         <p class="muted">
           Kein Serverkonto. Sichere deinen Lernstand vor einem Gerätewechsel. XP
-          und NAGOLD sind lokal erfasst und durch die Lehrkraft zu prüfen.
+          und Erfahrungspunkte (EP) sind lokal erfasst und durch die Lehrkraft zu prüfen.
         </p>
         <button class="button" type="submit">Profil speichern</button>
       </form>
@@ -295,13 +293,13 @@
     </dialog>
     <dialog id="nagoldDialog" aria-labelledby="nagoldTitle">
       <form id="nagoldLedgerForm" novalidate>
-        <div class="dialog-heading"><div><p class="eyebrow">Deine gesammelten Punkte</p><h2 id="nagoldTitle">NAGOLD</h2></div><button type="button" class="icon-button" data-close aria-label="NAGOLD-Tabelle schließen">×</button></div>
-        <p class="muted">Einträge nach Absprache mit der Lehrkraft. Änderungen an NAGOLD verändern weder XP noch abgeschlossene Einheiten.</p>
-        <table class="nagold-table"><caption class="sr-only">Deine NAGOLD-Einträge</caption><thead><tr><th scope="col">Datum</th><th scope="col">Uhrzeit</th><th scope="col">Wofür</th><th scope="col">NAGOLD</th><th scope="col"><span class="sr-only">Aktionen</span></th></tr></thead><tbody id="nagoldRows"></tbody></table>
+        <div class="dialog-heading"><div><p class="eyebrow">Deine gesammelten Punkte</p><h2 id="nagoldTitle">Erfahrungspunkte (EP)</h2></div><button type="button" class="icon-button" data-close aria-label="EP-Tabelle schließen">×</button></div>
+        <p class="muted">Einträge nach Absprache mit der Lehrkraft. Änderungen an EP verändern weder XP noch abgeschlossene Einheiten.</p>
+        <table class="nagold-table"><caption class="sr-only">Deine EP-Einträge</caption><thead><tr><th scope="col">Datum</th><th scope="col">Uhrzeit</th><th scope="col">Wofür</th><th scope="col">EP</th><th scope="col"><span class="sr-only">Aktionen</span></th></tr></thead><tbody id="nagoldRows"></tbody></table>
         <datalist id="nagoldPresets"></datalist>
-        <div class="nagold-table-footer"><button type="button" class="icon-button" id="nagoldAdd" aria-label="NAGOLD-Zeile hinzufügen" title="Zeile hinzufügen"><span data-icon="plus"></span></button><output id="nagoldSum" aria-live="polite"></output></div>
+        <div class="nagold-table-footer"><button type="button" class="icon-button" id="nagoldAdd" aria-label="EP-Zeile hinzufügen" title="Zeile hinzufügen"><span data-icon="plus"></span></button><output id="nagoldSum" aria-live="polite"></output></div>
         <p id="nagoldError" role="alert"></p>
-        <div class="actions"><button type="submit" class="button">NAGOLD speichern</button></div>
+        <div class="actions"><button type="submit" class="button">EP speichern</button></div>
       </form>
     </dialog>
     <dialog id="backupDialog" aria-labelledby="backupTitle">

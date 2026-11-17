@@ -5,7 +5,7 @@ import { nagoldRows, ledgerDraft, ledgerChanges } from "../src/nagold.js";
 
 const fixture = () => ({ ...blank(), profile: { name: "MUS.MAX", className: "TEST" }, completed: ["l1", "l2"], completedAt: { l1: "2026-10-14T08:10:32.456Z" }, nagoldEntries: [{ at: "2026-10-13T10:35:21.123Z", purpose: "Mitarbeit", points: 3 }] });
 
-test("Existing automatic and manual NAGOLD retain their balance and exact timestamps", () => {
+test("Existing automatic and manual EP retain their balance and exact timestamps", () => {
   const state = fixture();
   assert.equal(nagold(state), 13);
   const draft = ledgerDraft(state), next = { ...state, ...ledgerChanges(state, draft) };

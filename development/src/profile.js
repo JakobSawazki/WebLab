@@ -22,12 +22,12 @@ export function bindProfilePanel({ getState, persistLedger, notify }) {
     $("#profileProgress").value = next ? total - level.min : 1;
     $("#profileNextLevel").textContent = next ? `Noch ${next.min - total} XP bis Level ${index + 2} · ${next.title}` : "Stark! Du hast alle Level erreicht.";
     $("#profileCompleted").textContent = `${state.completed.length} von ${lessons.length} Lerneinheiten abgeschlossen`;
-    $("#profileNagold").innerHTML = `<strong>${nagold(state)} NAGOLD</strong><span>${icon("note")}</span>`;
-    $("#profileNagold").setAttribute("aria-label", `${nagold(state)} NAGOLD: Tabelle öffnen`);
+    $("#profileNagold").innerHTML = `<strong>${nagold(state)} EP</strong><span>${icon("note")}</span>`;
+    $("#profileNagold").setAttribute("aria-label", `${nagold(state)} EP: Tabelle öffnen`);
   };
   const sum = () => {
     const total = draft.reduce((n, row) => n + (Number.isInteger(row.points) ? row.points : 0), 0);
-    $("#nagoldSum").textContent = `${total} NAGOLD gesamt`;
+    $("#nagoldSum").textContent = `${total} EP gesamt`;
   };
   const renderRows = () => {
     $("#nagoldRows").innerHTML = draft.map((row, index) => {
@@ -37,7 +37,7 @@ export function bindProfilePanel({ getState, persistLedger, notify }) {
         <td data-label="Datum">${edit ? `<input type="date" data-field="date" value="${esc(row.date)}" aria-label="Datum, ${label}">` : esc(date)}</td>
         <td data-label="Uhrzeit">${edit ? `<input type="time" step="60" data-field="time" value="${esc(row.time)}" aria-label="Uhrzeit, ${label}">` : (row.time ? esc(row.time) : '<span aria-label="Nicht erfasst">–</span>')}</td>
         <td data-label="Wofür">${edit ? `<input data-field="purpose" list="nagoldPresets" value="${esc(row.purpose)}" maxlength="160" placeholder="Auswählen oder eintippen" aria-label="Wofür, ${label}">` : esc(row.purpose)}${row.lessonId ? '<small class="muted nagold-origin">Lerneinheit</small>' : ""}</td>
-        <td data-label="NAGOLD">${edit ? `<input type="number" data-field="points" min="-10" max="5" step="1" value="${Number.isFinite(row.points) ? row.points : ""}" aria-label="NAGOLD, ${label}">` : row.points}</td>
+        <td data-label="EP">${edit ? `<input type="number" data-field="points" min="-10" max="5" step="1" value="${Number.isFinite(row.points) ? row.points : ""}" aria-label="EP, ${label}">` : row.points}</td>
         <td data-label="Aktionen" class="nagold-row-actions"><button type="button" class="icon-button" data-edit="${index}" aria-label="${label} bearbeiten" title="Eintrag bearbeiten" ${edit ? "disabled" : ""}>${icon("edit")}</button><button type="button" class="icon-button" data-remove="${index}" aria-label="${label} löschen" title="Eintrag löschen">${icon("minus")}</button></td>
       </tr>`;
     }).join("");
@@ -89,7 +89,7 @@ export function bindProfilePanel({ getState, persistLedger, notify }) {
       if (!state.profile.name || !state.profile.className.trim()) throw new Error("Bitte zuerst dein Schülerkürzel und deine Klasse im Profil speichern.");
       const changes = ledgerChanges(state, draft);
       if (!persistLedger(changes)) throw new Error("Speichern nicht möglich. Deine Tabellenänderungen stehen noch in diesem Dialog und sind noch nicht in der JSON-Sicherung enthalten. Lass den Dialog offen und versuche das Speichern erneut, wenn der Speicher verfügbar ist.");
-      dirty = false; refresh(); dialog.close(); notify("NAGOLD-Tabelle gespeichert.");
+      dirty = false; refresh(); dialog.close(); notify("EP-Tabelle gespeichert.");
     } catch (error) {
       $("#nagoldError").textContent = error.message;
       if (Number.isInteger(error.row)) {
@@ -103,7 +103,7 @@ export function bindProfilePanel({ getState, persistLedger, notify }) {
   };
   // Escape and the close button ask before unsaved changes are discarded.
   dialog.addEventListener("cancel", (event) => {
-    if (dirty && !confirm("Deine Änderungen an der NAGOLD-Tabelle sind noch nicht gespeichert. Verwerfen?"))
+    if (dirty && !confirm("Deine Änderungen an der EP-Tabelle sind noch nicht gespeichert. Verwerfen?"))
       event.preventDefault();
   });
   dialog.addEventListener("close", () => {

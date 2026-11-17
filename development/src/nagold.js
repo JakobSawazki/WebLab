@@ -34,7 +34,7 @@ export function ledgerChanges(state, draft) {
     if (typeof row.purpose !== "string" || !row.purpose.trim() || row.purpose.trim().length > 160)
       error("Bitte einen Anlass mit höchstens 160 Zeichen angeben.", "purpose");
     if (!Number.isInteger(row.points) || row.points === 0 || row.points < -10 || row.points > 5)
-      error("Bitte ganze NAGOLD von −10 bis +5 eintragen; 0 ist kein Eintrag.", "points");
+      error("Bitte ganze EP von −10 bis +5 eintragen; 0 ist kein Eintrag.", "points");
     if (row.lessonId && (!state.completed.includes(row.lessonId) || seen.has(row.lessonId)))
       error("Die Zuordnung zur abgeschlossenen Einheit ist ungültig.");
     let at;

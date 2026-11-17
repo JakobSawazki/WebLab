@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-17", [
+    ["1.49.2", "EP für Erfahrungspunkte", "Profil, Lernpfad und Punkteübersicht verwenden die Bezeichnung EP. Vorhandene Einträge und die separate XP-Anzeige bleiben erhalten."],
     ["1.49.1", "Tastenkürzel für Sichern und Laden", "Alt+S sichert den Lernstand als Datei, Alt+O öffnet die Dateiauswahl. Die Symbole zeigen die Kürzel beim Darüberfahren an."],
     ["1.49.0", "Lernstand direkt sichern und laden", "Die Diskette speichert sofort eine JSON-Sicherung. Das Ordnersymbol öffnet die Dateiauswahl und übernimmt die gewählte WebLab-Sicherung."],
     ["1.48.0", "Anzeigeoptionen für WebLab", "Oben rechts lassen sich Schriftgröße, Schriftfarbe und Hintergrund einstellen. Reset stellt das Standarddesign wieder her."],
@@ -58,7 +59,7 @@ export const versionHistory = [
     ["1.16.0", "Besser nachschlagen", "Verwandte Begriffe und eine Suche mit exakten Treffern zuerst erleichtern die Orientierung."],
     ["1.15.0", "Verständnischeck mit Erklärungen", "Antworten werden begründet, und eine Liste zeigt offene Schritte vor dem Abschluss."],
     ["1.14.0", "Konkrete Rückmeldungen zum Auftrag", "Offene Kriterien nennen nächste Schritte; typische Stolpersteine sind je Einheit erklärt."],
-    ["1.13.0–1.13.2", "Profil, XP-Level und NAGOLD-Tabelle", "Das Profil zeigt Fortschritt und Level. Die NAGOLD-Tabelle lässt sich bearbeiten; Sicherungsdialog und Eingaberückmeldungen wurden verbessert."],
+    ["1.13.0–1.13.2", "Profil, XP-Level und EP-Tabelle", "Das Profil zeigt Fortschritt und Level. Die EP-Tabelle lässt sich bearbeiten; Sicherungsdialog und Eingaberückmeldungen wurden verbessert."],
     ["1.12.0", "Schnellzugriff auf Lerneinheiten", "Ein schwebendes Lernpfadmenü öffnet die Einheiten direkt von der Navigation aus."],
     ["1.11.1–1.11.2", "Neues Metalllogo und sichtbarer Fokus", "Das fotorealistische Browserlogo wurde übernommen; markierte Bedienelemente sind besser erkennbar."],
   ]],
@@ -74,6 +75,6 @@ export const versionHistory = [
     ["1.3.0", "Startseite und Ablauf pro Einheit", "Vier Etappen zeigen den Fortschritt; der Ablauf führt über Verstehen, Anwenden, Prüfen und Sichern."],
     ["1.2.0", "Eine eigene Webseite wächst mit", "Ein roter Faden verbindet die Lernschritte. Entwürfe können übernommen und in einer großen Vorschau getestet werden."],
     ["1.1.0", "Editor und Informatik-Stick", "HTML- und CSS-Reiter, Live-Vorschau, Dateiimport und Export begleiten den Transfer zu Notepad++."],
-    ["1.0.0", "Start des neuen WebLab", "Erster veröffentlichter Stand mit 16 BPE2-Einheiten, freiem Labor, Profil, XP, NAGOLD, Nachschlagewerk und Lernstandsicherung."],
+    ["1.0.0", "Start des neuen WebLab", "Erster veröffentlichter Stand mit 16 BPE2-Einheiten, freiem Labor, Profil, XP, EP, Nachschlagewerk und Lernstandsicherung."],
   ]],
 ];

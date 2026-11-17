@@ -32,7 +32,7 @@ test("all 16 lessons unlock in sequence and award XP only once", () => {
   assert.equal(lessonAccess(state, "l16").nextId, null);
 });
 
-test("legacy XP, bonus NAGOLD and completions after a gap cannot skip lessons", () => {
+test("legacy XP, bonus EP and completions after a gap cannot skip lessons", () => {
   const state = blank();
   state.legacy = { completed: ["headline", "paragraph", "strong", "breaks"] };
   state.nagoldEntries = [{ points: 5, purpose: "Bonus", at: "2026-10-12" }];

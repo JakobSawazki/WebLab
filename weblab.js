@@ -279,7 +279,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.49.1";
+const VERSION = "1.49.2";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -837,6 +837,7 @@ return {VERSION,groups,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.49.2", "EP für Erfahrungspunkte", "Profil, Lernpfad und Punkteübersicht verwenden die Bezeichnung EP. Vorhandene Einträge und die separate XP-Anzeige bleiben erhalten."],
     ["1.49.1", "Tastenkürzel für Sichern und Laden", "Alt+S sichert den Lernstand als Datei, Alt+O öffnet die Dateiauswahl. Die Symbole zeigen die Kürzel beim Darüberfahren an."],
     ["1.49.0", "Lernstand direkt sichern und laden", "Die Diskette speichert sofort eine JSON-Sicherung. Das Ordnersymbol öffnet die Dateiauswahl und übernimmt die gewählte WebLab-Sicherung."],
     ["1.48.0", "Anzeigeoptionen für WebLab", "Oben rechts lassen sich Schriftgröße, Schriftfarbe und Hintergrund einstellen. Reset stellt das Standarddesign wieder her."],
@@ -893,7 +894,7 @@ const versionHistory = [
     ["1.16.0", "Besser nachschlagen", "Verwandte Begriffe und eine Suche mit exakten Treffern zuerst erleichtern die Orientierung."],
     ["1.15.0", "Verständnischeck mit Erklärungen", "Antworten werden begründet, und eine Liste zeigt offene Schritte vor dem Abschluss."],
     ["1.14.0", "Konkrete Rückmeldungen zum Auftrag", "Offene Kriterien nennen nächste Schritte; typische Stolpersteine sind je Einheit erklärt."],
-    ["1.13.0–1.13.2", "Profil, XP-Level und NAGOLD-Tabelle", "Das Profil zeigt Fortschritt und Level. Die NAGOLD-Tabelle lässt sich bearbeiten; Sicherungsdialog und Eingaberückmeldungen wurden verbessert."],
+    ["1.13.0–1.13.2", "Profil, XP-Level und EP-Tabelle", "Das Profil zeigt Fortschritt und Level. Die EP-Tabelle lässt sich bearbeiten; Sicherungsdialog und Eingaberückmeldungen wurden verbessert."],
     ["1.12.0", "Schnellzugriff auf Lerneinheiten", "Ein schwebendes Lernpfadmenü öffnet die Einheiten direkt von der Navigation aus."],
     ["1.11.1–1.11.2", "Neues Metalllogo und sichtbarer Fokus", "Das fotorealistische Browserlogo wurde übernommen; markierte Bedienelemente sind besser erkennbar."],
   ]],
@@ -909,7 +910,7 @@ const versionHistory = [
     ["1.3.0", "Startseite und Ablauf pro Einheit", "Vier Etappen zeigen den Fortschritt; der Ablauf führt über Verstehen, Anwenden, Prüfen und Sichern."],
     ["1.2.0", "Eine eigene Webseite wächst mit", "Ein roter Faden verbindet die Lernschritte. Entwürfe können übernommen und in einer großen Vorschau getestet werden."],
     ["1.1.0", "Editor und Informatik-Stick", "HTML- und CSS-Reiter, Live-Vorschau, Dateiimport und Export begleiten den Transfer zu Notepad++."],
-    ["1.0.0", "Start des neuen WebLab", "Erster veröffentlichter Stand mit 16 BPE2-Einheiten, freiem Labor, Profil, XP, NAGOLD, Nachschlagewerk und Lernstandsicherung."],
+    ["1.0.0", "Start des neuen WebLab", "Erster veröffentlichter Stand mit 16 BPE2-Einheiten, freiem Labor, Profil, XP, EP, Nachschlagewerk und Lernstandsicherung."],
   ]],
 ];
 
@@ -1509,7 +1510,7 @@ function ledgerChanges(state, draft) {
     if (typeof row.purpose !== "string" || !row.purpose.trim() || row.purpose.trim().length > 160)
       error("Bitte einen Anlass mit höchstens 160 Zeichen angeben.", "purpose");
     if (!Number.isInteger(row.points) || row.points === 0 || row.points < -10 || row.points > 5)
-      error("Bitte ganze NAGOLD von −10 bis +5 eintragen; 0 ist kein Eintrag.", "points");
+      error("Bitte ganze EP von −10 bis +5 eintragen; 0 ist kein Eintrag.", "points");
     if (row.lessonId && (!state.completed.includes(row.lessonId) || seen.has(row.lessonId)))
       error("Die Zuordnung zur abgeschlossenen Einheit ist ungültig.");
     let at;
@@ -1697,12 +1698,12 @@ function bindProfilePanel({ getState, persistLedger, notify }) {
     $("#profileProgress").value = next ? total - level.min : 1;
     $("#profileNextLevel").textContent = next ? `Noch ${next.min - total} XP bis Level ${index + 2} · ${next.title}` : "Stark! Du hast alle Level erreicht.";
     $("#profileCompleted").textContent = `${state.completed.length} von ${lessons.length} Lerneinheiten abgeschlossen`;
-    $("#profileNagold").innerHTML = `<strong>${nagold(state)} NAGOLD</strong><span>${icon("note")}</span>`;
-    $("#profileNagold").setAttribute("aria-label", `${nagold(state)} NAGOLD: Tabelle öffnen`);
+    $("#profileNagold").innerHTML = `<strong>${nagold(state)} EP</strong><span>${icon("note")}</span>`;
+    $("#profileNagold").setAttribute("aria-label", `${nagold(state)} EP: Tabelle öffnen`);
   };
   const sum = () => {
     const total = draft.reduce((n, row) => n + (Number.isInteger(row.points) ? row.points : 0), 0);
-    $("#nagoldSum").textContent = `${total} NAGOLD gesamt`;
+    $("#nagoldSum").textContent = `${total} EP gesamt`;
   };
   const renderRows = () => {
     $("#nagoldRows").innerHTML = draft.map((row, index) => {
@@ -1712,7 +1713,7 @@ function bindProfilePanel({ getState, persistLedger, notify }) {
         <td data-label="Datum">${edit ? `<input type="date" data-field="date" value="${esc(row.date)}" aria-label="Datum, ${label}">` : esc(date)}</td>
         <td data-label="Uhrzeit">${edit ? `<input type="time" step="60" data-field="time" value="${esc(row.time)}" aria-label="Uhrzeit, ${label}">` : (row.time ? esc(row.time) : '<span aria-label="Nicht erfasst">–</span>')}</td>
         <td data-label="Wofür">${edit ? `<input data-field="purpose" list="nagoldPresets" value="${esc(row.purpose)}" maxlength="160" placeholder="Auswählen oder eintippen" aria-label="Wofür, ${label}">` : esc(row.purpose)}${row.lessonId ? '<small class="muted nagold-origin">Lerneinheit</small>' : ""}</td>
-        <td data-label="NAGOLD">${edit ? `<input type="number" data-field="points" min="-10" max="5" step="1" value="${Number.isFinite(row.points) ? row.points : ""}" aria-label="NAGOLD, ${label}">` : row.points}</td>
+        <td data-label="EP">${edit ? `<input type="number" data-field="points" min="-10" max="5" step="1" value="${Number.isFinite(row.points) ? row.points : ""}" aria-label="EP, ${label}">` : row.points}</td>
         <td data-label="Aktionen" class="nagold-row-actions"><button type="button" class="icon-button" data-edit="${index}" aria-label="${label} bearbeiten" title="Eintrag bearbeiten" ${edit ? "disabled" : ""}>${icon("edit")}</button><button type="button" class="icon-button" data-remove="${index}" aria-label="${label} löschen" title="Eintrag löschen">${icon("minus")}</button></td>
       </tr>`;
     }).join("");
@@ -1764,7 +1765,7 @@ function bindProfilePanel({ getState, persistLedger, notify }) {
       if (!state.profile.name || !state.profile.className.trim()) throw new Error("Bitte zuerst dein Schülerkürzel und deine Klasse im Profil speichern.");
       const changes = ledgerChanges(state, draft);
       if (!persistLedger(changes)) throw new Error("Speichern nicht möglich. Deine Tabellenänderungen stehen noch in diesem Dialog und sind noch nicht in der JSON-Sicherung enthalten. Lass den Dialog offen und versuche das Speichern erneut, wenn der Speicher verfügbar ist.");
-      dirty = false; refresh(); dialog.close(); notify("NAGOLD-Tabelle gespeichert.");
+      dirty = false; refresh(); dialog.close(); notify("EP-Tabelle gespeichert.");
     } catch (error) {
       $("#nagoldError").textContent = error.message;
       if (Number.isInteger(error.row)) {
@@ -1778,7 +1779,7 @@ function bindProfilePanel({ getState, persistLedger, notify }) {
   };
   // Escape and the close button ask before unsaved changes are discarded.
   dialog.addEventListener("cancel", (event) => {
-    if (dirty && !confirm("Deine Änderungen an der NAGOLD-Tabelle sind noch nicht gespeichert. Verwerfen?"))
+    if (dirty && !confirm("Deine Änderungen an der EP-Tabelle sind noch nicht gespeichert. Verwerfen?"))
       event.preventDefault();
   });
   dialog.addEventListener("close", () => {
@@ -5263,7 +5264,7 @@ new ResizeObserver(([entry]) => {
 function stats() {
   $("#profileName").textContent = state.profile.name || "Gast";
   $("#profileStats").textContent =
-    `${xp(state)} XP · ${nagold(state)} NAG${state.profile.className ? " · " + state.profile.className : ""}`;
+    `${xp(state)} XP · ${nagold(state)} EP${state.profile.className ? " · " + state.profile.className : ""}`;
 }
 function download(name, data, type = "text/plain;charset=utf-8") {
   const url = URL.createObjectURL(
@@ -5294,19 +5295,19 @@ function lessonLink(l, label, classes = "button secondary") {
 function lockedLesson(l) {
   const access = lessonAccess(state, l.id),
     next = byId(access.nextId);
-  return `<section class="panel locked-lesson" aria-labelledby="lockedTitle"><div class="lock-mark">${icon("lock")}</div><p class="eyebrow">Einheit ${l.id.slice(1).padStart(2, "0")} · noch gesperrt</p><h2 id="lockedTitle">${esc(l.title)}</h2><p>Diese Einheit wird mit ${access.requiredXP} Lernpfad-XP freigeschaltet. Du hast bisher ${access.earnedXP} Lernpfad-XP verdient.</p><p>Schließe die Einheiten der Reihe nach ab. Jeder Abschluss bringt 100 XP und 5 NAGOLD. Deine Punkte bleiben erhalten und werden nicht ausgegeben.</p><div class="actions">${next ? lessonLink(next, "Weiter mit Einheit " + next.id.slice(1).padStart(2, "0"), "button") : ""}<a class="button secondary" href="#path">Zum Lernpfad</a></div></section>`;
+  return `<section class="panel locked-lesson" aria-labelledby="lockedTitle"><div class="lock-mark">${icon("lock")}</div><p class="eyebrow">Einheit ${l.id.slice(1).padStart(2, "0")} · noch gesperrt</p><h2 id="lockedTitle">${esc(l.title)}</h2><p>Diese Einheit wird mit ${access.requiredXP} Lernpfad-XP freigeschaltet. Du hast bisher ${access.earnedXP} Lernpfad-XP verdient.</p><p>Schließe die Einheiten der Reihe nach ab. Jeder Abschluss bringt 100 XP und 5 EP. Deine Punkte bleiben erhalten und werden nicht ausgegeben.</p><div class="actions">${next ? lessonLink(next, "Weiter mit Einheit " + next.id.slice(1).padStart(2, "0"), "button") : ""}<a class="button secondary" href="#path">Zum Lernpfad</a></div></section>`;
 }
 function card(l) {
   const done = state.completed.includes(l.id),
     access = lessonAccess(state, l.id),
     recommended = access.nextId === l.id;
-  return `<article class="card ${recommended ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${!access.unlocked ? icon("lock") + " Gesperrt" : done ? "Abgeschlossen" : "Dein nächster Schritt"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 NAGOLD</small>${access.unlocked && exercises[l.id] ? `<small class="exercise-count">Übungen: ${exerciseProgress(l.id)} von ${exercises[l.id].length} gelöst</small>` : ""}${lessonLink(l, access.unlocked ? (done ? "Wiederholen" : "Einheit öffnen") : "Noch gesperrt")}</article>`;
+  return `<article class="card ${recommended ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${!access.unlocked ? icon("lock") + " Gesperrt" : done ? "Abgeschlossen" : "Dein nächster Schritt"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 EP</small>${access.unlocked && exercises[l.id] ? `<small class="exercise-count">Übungen: ${exerciseProgress(l.id)} von ${exercises[l.id].length} gelöst</small>` : ""}${lessonLink(l, access.unlocked ? (done ? "Wiederholen" : "Einheit öffnen") : "Noch gesperrt")}</article>`;
 }
 function overview() {
   const next =
     lessons.find((l) => !state.completed.includes(l.id)) || lessons[0];
   return `<section class="hero"><div class="hero-copy"><p class="eyebrow">BPE2 · Deine eigene Webseite beginnt hier</p><h2>Aus deinen Ideen<br>wird eine Webseite.</h2><p>Lerne HTML und CSS Schritt für Schritt. Probiere deinen Code direkt aus und entwickle am Ende eine eigene statische Webseite.</p><div class="actions"><a class="button" href="#lesson/${next.id}">${state.completed.length ? "Weiterlernen" : "Jetzt starten"} </a><button class="button secondary" type="button" data-catalog-jump="catalogTitle">Alle Einheiten ansehen</button><a class="hero-lab-link" href="#lab">Freies Labor</a></div></div><div class="hero-art"><span>&lt;idee&gt; → &lt;webseite&gt;</span></div></section>
- <div class="stats"><div class="stat"><strong>${state.completed.length} / ${lessons.length}</strong><small>Lerneinheiten abgeschlossen</small></div><div class="stat"><strong>${xp(state)}</strong><small>XP gesammelt</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD lokal erfasst</small></div><div class="stat"><strong>Dein Projekt</strong><small>Eine eigene statische Webseite</small></div></div>
+ <div class="stats"><div class="stat"><strong>${state.completed.length} / ${lessons.length}</strong><small>Lerneinheiten abgeschlossen</small></div><div class="stat"><strong>${xp(state)}</strong><small>XP gesammelt</small></div><div class="stat"><strong>${nagold(state)}</strong><small>Erfahrungspunkte (EP)</small></div><div class="stat"><strong>Dein Projekt</strong><small>Eine eigene statische Webseite</small></div></div>
  ${lessonCatalog()}${resumePanel()}${practiceSuggestion(state)}`;
 }
 const phaseDescriptions = [
@@ -5327,7 +5328,7 @@ function lessonCatalogCard(l) {
   const action = access.unlocked
     ? `<a class="button ${isNext ? "" : "secondary"}" href="#lesson/${l.id}" aria-label="${done ? "Wiederholen" : "Einheit öffnen"}: Einheit ${number} – ${esc(l.title)}">${done ? "Wiederholen" : "Einheit öffnen"}</a>`
     : `<p class="catalog-lock">${icon("lock")} Ab ${access.requiredXP} Lernpfad-XP</p>`;
-  return `<article class="catalog-card ${isNext ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}">${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group])}<div class="catalog-copy"><div class="catalog-meta"><span class="catalog-number">Einheit ${number}</span><span class="badge ${done ? "done" : ""}">${status}</span></div><h4>${esc(l.title)}</h4><p class="catalog-goal">${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 NAGOLD</small>${action}</div></article>`;
+  return `<article class="catalog-card ${isNext ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}">${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group])}<div class="catalog-copy"><div class="catalog-meta"><span class="catalog-number">Einheit ${number}</span><span class="badge ${done ? "done" : ""}">${status}</span></div><h4>${esc(l.title)}</h4><p class="catalog-goal">${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 EP</small>${action}</div></article>`;
 }
 function lessonCatalog() {
   return `<section class="lesson-catalog" aria-labelledby="catalogTitle"><div class="section-heading"><div><p class="eyebrow">BPE2 · 4 Etappen · ${lessons.length} Lerneinheiten</p><h2 id="catalogTitle" tabindex="-1">Alle Lerneinheiten</h2></div><a href="#path">Zum Lernpfad →</a></div><p class="lead">Hier siehst du, was dich erwartet. Schließe eine Einheit ab, um die nächste freizuschalten.</p><nav class="catalog-nav" aria-label="Etappen der Kartenübersicht">${groups.map((group, i) => `<button class="button secondary" type="button" data-catalog-jump="catalog-phase-${i + 1}">${esc(group)}</button>`).join("")}</nav>${groups.map((group, index) => {
@@ -5401,7 +5402,7 @@ function debugChallenge(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 NAGOLD</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 // Reiter für index.html, alle Unterseiten und style.css.
 function fileTabs(d) {
@@ -5794,7 +5795,7 @@ function bindStudio(l) {
 }
 function achievements() {
   const rows = nagoldRows(state);
-  return `<p class="lead">Dein Fortschritt auf diesem Gerät. XP motivieren; NAGOLD wird mit der Lehrkraft abgeglichen. Ein abgeschlossener Auftrag zählt einmal: 100 XP und zunächst 5 NAGOLD.</p><div class="stats stats-auto"><div class="stat"><strong>${xp(state)}</strong><small>XP einschließlich Altbestand</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD</small></div><div class="stat"><strong>${state.completed.length}</strong><small>Abgeschlossene Einheiten</small></div><div class="stat"><strong>${lessons.reduce((n, l) => n + (exercises[l.id] ? exerciseProgress(l.id) : 0), 0)} / ${Object.values(exercises).flat().length}</strong><small>Übungen gelöst (ohne Punkte)</small></div><div class="stat"><strong>${state.completed.includes("l16") ? "★" : "◇"}</strong><small>Eigenes Webprojekt</small></div></div><section class="panel"><h2 class="panel-title">Meine NAGOLD-Tabelle</h2><div class="table-wrap"><table><thead><tr><th>Datum</th><th>Anlass</th><th>Punkte</th></tr></thead><tbody>${rows.map((e) => `<tr><td>${e.at ? esc(new Date(e.at).toLocaleString("de-DE")) : "Altbestand ohne Zeitangabe"}</td><td>${esc(e.purpose)}</td><td>${e.points}</td></tr>`).join("") || '<tr><td colspan="3">Noch keine Einträge.</td></tr>'}</tbody></table></div><div class="actions"><button type="button" class="button secondary" id="editNagoldTable">Tabelle bearbeiten</button><button class="button secondary" id="csvExport">Übersicht als CSV</button></div></section><section class="panel"><h2 class="panel-title">Eintrag nach Absprache mit der Lehrkraft</h2><p class="muted">Manuelle Einträge sind selbst erfasst. Sie ersetzen keine bestätigte Leistungsbewertung.</p><form id="nagoldForm"><label for="nagoldPurpose">Anlass</label><input id="nagoldPurpose" maxlength="160" required><label for="nagoldPoints">NAGOLD-Punkte (−10 bis +5, ohne 0)</label><input id="nagoldPoints" type="number" min="-10" max="5" step="1" value="1" required><div class="actions"><button class="button" type="submit">Eintrag dokumentieren</button></div></form></section>${state.legacy ? '<section class="panel"><h2 class="panel-title">Übernommener Altbestand</h2><p>Deine alten K1-Missionen und ihr XP-Stand bleiben erhalten. Die neue BPE2-Einheit wird separat bearbeitet.</p></section>' : ""}`;
+  return `<p class="lead">Dein Fortschritt auf diesem Gerät. XP zeigen deinen Lernfortschritt. Erfahrungspunkte (EP) werden mit der Lehrkraft abgeglichen. Ein abgeschlossener Auftrag zählt einmal: 100 XP und zunächst 5 EP.</p><div class="stats stats-auto"><div class="stat"><strong>${xp(state)}</strong><small>XP einschließlich Altbestand</small></div><div class="stat"><strong>${nagold(state)}</strong><small>EP</small></div><div class="stat"><strong>${state.completed.length}</strong><small>Abgeschlossene Einheiten</small></div><div class="stat"><strong>${lessons.reduce((n, l) => n + (exercises[l.id] ? exerciseProgress(l.id) : 0), 0)} / ${Object.values(exercises).flat().length}</strong><small>Übungen gelöst (ohne Punkte)</small></div><div class="stat"><strong>${state.completed.includes("l16") ? "★" : "◇"}</strong><small>Eigenes Webprojekt</small></div></div><section class="panel"><h2 class="panel-title">Meine EP-Tabelle</h2><div class="table-wrap"><table><thead><tr><th>Datum</th><th>Anlass</th><th>Punkte</th></tr></thead><tbody>${rows.map((e) => `<tr><td>${e.at ? esc(new Date(e.at).toLocaleString("de-DE")) : "Altbestand ohne Zeitangabe"}</td><td>${esc(e.purpose)}</td><td>${e.points}</td></tr>`).join("") || '<tr><td colspan="3">Noch keine Einträge.</td></tr>'}</tbody></table></div><div class="actions"><button type="button" class="button secondary" id="editNagoldTable">Tabelle bearbeiten</button><button class="button secondary" id="csvExport">Übersicht als CSV</button></div></section><section class="panel"><h2 class="panel-title">Eintrag nach Absprache mit der Lehrkraft</h2><p class="muted">Manuelle Einträge sind selbst erfasst. Sie ersetzen keine bestätigte Leistungsbewertung.</p><form id="nagoldForm"><label for="nagoldPurpose">Anlass</label><input id="nagoldPurpose" maxlength="160" required><label for="nagoldPoints">Erfahrungspunkte (EP; −10 bis +5, ohne 0)</label><input id="nagoldPoints" type="number" min="-10" max="5" step="1" value="1" required><div class="actions"><button class="button" type="submit">Eintrag dokumentieren</button></div></form></section>${state.legacy ? '<section class="panel"><h2 class="panel-title">Übernommener Altbestand</h2><p>Deine alten K1-Missionen und ihr XP-Stand bleiben erhalten. Die neue BPE2-Einheit wird separat bearbeitet.</p></section>' : ""}`;
 }
 function bindAchievements() {
   $("#editNagoldTable").onclick = () => profilePanel.open();
@@ -5803,7 +5804,7 @@ function bindAchievements() {
     const points = Number($("#nagoldPoints").value),
       purpose = $("#nagoldPurpose").value.trim();
     if (!validProfile(state.profile.name) || !state.profile.className.trim()) {
-      openProfile("Speichere zuerst dein Schülerkürzel und deine Klasse. Danach kannst du NAGOLD eintragen.");
+      openProfile("Speichere zuerst dein Schülerkürzel und deine Klasse. Danach kannst du EP eintragen.");
       return;
     }
     if (
@@ -5829,7 +5830,7 @@ function bindAchievements() {
       return;
     }
     render();
-    toast("NAGOLD-Eintrag gespeichert.");
+    toast("EP-Eintrag gespeichert.");
   };
   $("#csvExport").onclick = () => {
     const ledger = new Map(nagoldRows(state).filter((row) => row.lessonId).map((row) => [row.lessonId, row]));
@@ -5843,7 +5844,7 @@ function bindAchievements() {
             .replaceAll('"', '""') +
           '"';
     const rows = [
-      ["Kürzel", "Klasse", "Einheit", "Status", "XP", "NAGOLD"],
+      ["Kürzel", "Klasse", "Einheit", "Status", "XP", "EP"],
       ...lessons.map((l) => [
         state.profile.name,
         state.profile.className,
@@ -5931,7 +5932,7 @@ function render() {
     title = "Nachschlagen";
     html = reference();
   } else if (route === "achievements") {
-    title = "Erfolge & NAGOLD";
+    title = "Erfolge & EP";
     html = achievements();
   } else if (route === "notes") {
     title = "Meine Notizen";
@@ -6067,8 +6068,8 @@ function render() {
           return;
         }
         $("#completionResult").textContent = journey[l.id].next
-          ? "100 XP und 5 NAGOLD einmalig erfasst. Die nächste Einheit ist freigeschaltet. Sichere deinen Lernstand."
-          : "100 XP und 5 NAGOLD einmalig erfasst. Du hast alle 16 Einheiten abgeschlossen. Sichere deinen Lernstand.";
+          ? "100 XP und 5 EP einmalig erfasst. Die nächste Einheit ist freigeschaltet. Sichere deinen Lernstand."
+          : "100 XP und 5 EP einmalig erfasst. Du hast alle 16 Einheiten abgeschlossen. Sichere deinen Lernstand.";
         const next = journey[l.id].next;
         if (next) {
           const link = document.createElement("a");

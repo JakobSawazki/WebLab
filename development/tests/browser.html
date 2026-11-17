@@ -8,7 +8,7 @@
     import { checkLesson } from "/checks.js";
     import { blank, STORAGE_KEY, BACKUP_MAX_BYTES } from "/state.js";
     import { HTML_MAX, CSS_MAX } from "/pages.js";
-    // App frames trigger backup downloads (profile switch, NAGOLD, reset).
+    // App frames trigger backup downloads (profile switch, EP, reset).
     // A test run must never open save dialogs or fill the Downloads folder:
     // every frame gets a click() that records blob downloads instead.
     const suppressedDownloads = [];
@@ -1323,7 +1323,7 @@
     localStorage.setItem("weblab-menu-v1", "expanded");
     const profileFrame = document.createElement("iframe");
     profileFrame.style.cssText = "width:1200px;height:900px;border:0;display:block";
-    profileFrame.title = "Profil und NAGOLD";
+    profileFrame.title = "Profil und EP";
     const profileLoaded = new Promise(resolve => profileFrame.onload = resolve);
     profileFrame.src = "/?profile-check"; document.body.append(profileFrame); await profileLoaded;
     const pd = profileFrame.contentDocument, pw = profileFrame.contentWindow,
@@ -1333,19 +1333,19 @@
         input.value = value; input.dispatchEvent(new pw.Event("input", { bubbles: true }));
       };
     pe("profileButton").click();
-    assert(pe("profileDialog").open && pe("profileXP").textContent === "100 XP" && pe("profileNagold").textContent.includes("8 NAGOLD"), "Profil zeigt vorhandene XP und NAGOLD");
+    assert(pe("profileDialog").open && pe("profileXP").textContent === "100 XP" && pe("profileNagold").textContent.includes("8 EP"), "Profil zeigt vorhandene XP und EP");
     pe("profileNagold").click();
-    assert(pe("nagoldDialog").open && pe("nagoldRows").children.length === 2, "NAGOLD-Tabelle uebernimmt Abschluss und eigenen Eintrag");
+    assert(pe("nagoldDialog").open && pe("nagoldRows").children.length === 2, "EP-Tabelle uebernimmt Abschluss und eigenen Eintrag");
     pd.querySelector('[data-edit="0"]').click(); field("points", "-2");
-    assert(JSON.parse(localStorage.getItem(STORAGE_KEY)).nagoldOverrides.l1 === undefined, "NAGOLD-Aenderung bleibt bis Speichern ein Entwurf");
+    assert(JSON.parse(localStorage.getItem(STORAGE_KEY)).nagoldOverrides.l1 === undefined, "EP-Aenderung bleibt bis Speichern ein Entwurf");
     pe("nagoldLedgerForm").requestSubmit();
-    assert(!pe("nagoldDialog").open && pe("profileNagold").textContent.includes("1 NAGOLD"), "Speichern aktualisiert Profil und schliesst Tabelle");
+    assert(!pe("nagoldDialog").open && pe("profileNagold").textContent.includes("1 EP"), "Speichern aktualisiert Profil und schliesst Tabelle");
     const profileSaved = JSON.parse(localStorage.getItem(STORAGE_KEY));
     assert(profileSaved.completed.length === 1 && profileSaved.notes.l1 === "Bleibt erhalten" && profileSaved.nagoldEntries[0].at === profileState.nagoldEntries[0].at, "Punktebearbeitung erhaelt Abschluesse, Notizen und Zeitstempel");
     await new Promise(resolve => pw.requestAnimationFrame(resolve));
     pe("profileNagold").click(); pd.querySelector('[data-edit="0"]').click(); field("points", "0");
     pe("nagoldLedgerForm").requestSubmit();
-    assert(pe("nagoldDialog").open && Boolean(pe("nagoldError").textContent), "0 NAGOLD wird mit sichtbarer Fehlermeldung abgelehnt");
+    assert(pe("nagoldDialog").open && Boolean(pe("nagoldError").textContent), "0 EP wird mit sichtbarer Fehlermeldung abgelehnt");
     pe("nagoldDialog").close(); await new Promise(resolve => pw.requestAnimationFrame(resolve));
     assert(JSON.parse(localStorage.getItem(STORAGE_KEY)).nagoldOverrides.l1.points === -2, "Abbrechen verwirft ungespeicherte Tabellenwerte");
     for (const theme of ["dark", "light"]) {
@@ -1353,7 +1353,7 @@
       pe("profileNagold").click(); pd.querySelector('[data-edit="0"]').click();
       profileFrame.style.width = "360px";
       await new Promise(resolve => pw.requestAnimationFrame(resolve));
-      assert(pe("nagoldDialog").scrollWidth <= pe("nagoldDialog").clientWidth + 1 && pd.documentElement.scrollWidth <= 360, "NAGOLD-Tabelle passt bei 360 Pixeln in " + theme);
+      assert(pe("nagoldDialog").scrollWidth <= pe("nagoldDialog").clientWidth + 1 && pd.documentElement.scrollWidth <= 360, "EP-Tabelle passt bei 360 Pixeln in " + theme);
       pe("nagoldDialog").close(); await new Promise(resolve => pw.requestAnimationFrame(resolve));
     }
     // A quota failure must preserve both the stored and in-memory old state,

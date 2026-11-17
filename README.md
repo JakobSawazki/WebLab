@@ -5,7 +5,7 @@ Statische Lernumgebung zu **BPE2: Entwicklung von Internetseiten**, im Aufbau un
 - [WebLab öffnen](https://jakobsawazki.github.io/WebLab/)
 - [Zentrale Dokumentation für Jakob, Codex und Claude](documentation/documentation.md)
 
-16 aufeinander aufbauende Lerneinheiten führen von der ersten HTML-Datei zur eigenen statischen Webseite. Dazu gehören ein HTML-/CSS-Editor mit Live-Vorschau, Übungen, Nachschlagewerk, lokale Schülerprofile, XP und NAGOLD sowie Lernstandsicherung und Projektexport. Transferaufträge bereiten auf Notepad++ 7.5.1 vom Informatik-Stick vor.
+16 aufeinander aufbauende Lerneinheiten führen von der ersten HTML-Datei zur eigenen statischen Webseite. Dazu gehören ein HTML-/CSS-Editor mit Live-Vorschau, Übungen, Nachschlagewerk, lokale Schülerprofile, XP und Erfahrungspunkte (EP) sowie Lernstandsicherung und Projektexport. Transferaufträge bereiten auf Notepad++ 7.5.1 vom Informatik-Stick vor.
 
 ## Lokal starten
 

@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.49.1** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.49.2** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -30,9 +30,9 @@ Das bereits vorhandene öffentliche Repository wird weitergeführt. Es wird kein
 | Ablauf je Einheit | Ziel, Erklärung, Beispiel, optionale Fehlersuche und Vertiefung in allen 16 Einheiten, Praxisauftrag, Hinweis, typische Stolpersteine, Editor, technische Prüfung, Verständnischeck, Selbstkontrolle, Notizen; eigene Fallaufgaben zu Recht und Servern in 14/15 |
 | Roter Faden | Nächster offener Lernschritt, 16 Schritte mit aktueller Position, Vorwissen, drei konkrete Arbeitsschritte und Beobachtungsauftrag; eigene Webseite wächst durch Kopien des vorherigen Entwurfs |
 | Orientierung | Vier Etappen mit Fortschritt auf der Startseite; direkte Ablaufnavigation Verstehen → Anwenden → Prüfen → Sichern in den Einheiten |
-| Schülerprofil | Kürzel/Klasse, XP-Level und Fortschrittsbalken, direkte NAGOLD-Tabelle; kein Serverkonto |
+| Schülerprofil | Kürzel/Klasse, XP-Level und Fortschrittsbalken, direkte EP-Tabelle; kein Serverkonto |
 | XP | 100 je abgeschlossenem Auftrag, einmalig; frühere K1-Missions-XP bleiben zusätzlich erhalten |
-| NAGOLD | Zunächst 5 je Abschluss; bearbeitbare Tabelle mit Datum/Uhrzeit, Anlass, −10 bis +5 ohne 0, Ergänzen und Löschen |
+| Erfahrungspunkte (EP) | Zunächst 5 je Abschluss; bearbeitbare Tabelle mit Datum/Uhrzeit, Anlass, −10 bis +5 ohne 0, Ergänzen und Löschen |
 | Abschluss | Technische Kriterien erfüllt, Quiz richtig, alle Selbstkontrollen bestätigt, Profil vollständig |
 | Lehrkraft | Gespräch und Prüfung außerhalb der App; CSV-Übersicht für den Abgleich |
 | Übungen | Übungswerkstatt in den Einheiten: kurze Aufgaben (Reparieren, Ergänzen, Selbst schreiben, Profi-Aufgabe je Etappe) mit Mini-Editor, Live-Vorschau, Sofortprüfung, Tipp nach Fehlversuch und Merksatz; ohne Punkte; gesammelte Merksätze und Wiederholungsrunde unter „Meine Notizen“ |
@@ -322,6 +322,10 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.49.2: Erfahrungspunkte (EP)
+
+Die bisher als NAGOLD bezeichneten Punkte heißen in der Oberfläche und im CSV-Export „EP“ (Erfahrungspunkte). Profil, Navigation, Lernpfad, Karten, Punkteübersicht und Rückmeldungen verwenden die neue Bezeichnung. Bestehende Punkte, XP, Freischaltungen und das Format der JSON-Sicherungen bleiben unverändert. Die gespeicherten Feldnamen `nagoldEntries` und `nagoldOverrides` werden aus Kompatibilitätsgründen weiterhin gelesen und geschrieben.
 
 ### 17.11.2026 – Codex – Version 1.49.1: Tastenkürzel für Sichern und Laden
 

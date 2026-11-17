@@ -259,11 +259,19 @@ const phaseArtwork = [
 ];
 
 const lessonArtwork = {
+  l2: "html-grundgeruest.webp",
+  l3: "textstruktur.webp",
+  l4: "listen.webp",
   l5: "links-und-pfade.webp",
   l6: "bilder-und-alt-text.webp",
+  l7: "tabellen.webp",
   l8: "audio-und-video.webp",
+  l9: "inhalt-und-gestaltung.webp",
+  l10: "selektoren.webp",
   l11: "farben-und-typografie.webp",
+  l13: "seitenplanung.webp",
   l14: "quellen-und-rechte.webp",
+  l15: "geschuetzte-uebertragung.webp",
 };
 
 return {phaseArtwork,lessonArtwork};
@@ -271,7 +279,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.45.0";
+const VERSION = "1.46.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -5145,9 +5153,9 @@ function card(l) {
 function overview() {
   const next =
     lessons.find((l) => !state.completed.includes(l.id)) || lessons[0];
-  return `<section class="hero"><div class="hero-copy"><p class="eyebrow">BPE2 · Deine eigene Webseite beginnt hier</p><h2>Aus deinen Ideen<br>wird eine Webseite.</h2><p>Lerne HTML und CSS Schritt für Schritt. Probiere deinen Code direkt aus und entwickle am Ende eine eigene statische Webseite.</p><div class="actions"><a class="button" href="#lesson/${next.id}">${state.completed.length ? "Weiterlernen" : "Jetzt starten"} </a><a class="button secondary" href="#lab">Freies Labor</a></div></div><div class="hero-art"><span>&lt;idee&gt; → &lt;webseite&gt;</span></div></section>
+  return `<section class="hero"><div class="hero-copy"><p class="eyebrow">BPE2 · Deine eigene Webseite beginnt hier</p><h2>Aus deinen Ideen<br>wird eine Webseite.</h2><p>Lerne HTML und CSS Schritt für Schritt. Probiere deinen Code direkt aus und entwickle am Ende eine eigene statische Webseite.</p><div class="actions"><a class="button" href="#lesson/${next.id}">${state.completed.length ? "Weiterlernen" : "Jetzt starten"} </a><button class="button secondary" type="button" data-catalog-jump="catalogTitle">Alle Einheiten ansehen</button><a class="hero-lab-link" href="#lab">Freies Labor</a></div></div><div class="hero-art"><span>&lt;idee&gt; → &lt;webseite&gt;</span></div></section>
  <div class="stats"><div class="stat"><strong>${state.completed.length} / ${lessons.length}</strong><small>Lerneinheiten abgeschlossen</small></div><div class="stat"><strong>${xp(state)}</strong><small>XP gesammelt</small></div><div class="stat"><strong>${nagold(state)}</strong><small>NAGOLD lokal erfasst</small></div><div class="stat"><strong>Dein Projekt</strong><small>Eine eigene statische Webseite</small></div></div>
- ${resumePanel()}${practiceSuggestion(state)}${phaseOverview()}`;
+ ${lessonCatalog()}${resumePanel()}${practiceSuggestion(state)}`;
 }
 const phaseDescriptions = [
   "Deine ersten Texte und ein vollständiges HTML-Grundgerüst.",
@@ -5158,14 +5166,23 @@ const phaseDescriptions = [
 function artworkImage(file, priority = false) {
   return `<div class="phase-art"><img src="assets/${file}" alt="" width="960" height="540" ${priority ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></div>`;
 }
-function phaseOverview() {
-  return `<section aria-labelledby="phasesTitle"><div class="section-heading"><div><p class="eyebrow">Vier Etappen zu deiner Webseite</p><h2 id="phasesTitle">Dein Weg im WebLab</h2></div><a href="#path">Alle 16 Einheiten ansehen →</a></div><div class="phase-grid">${groups
-    .map((group, index) => {
-      const items = lessons.filter((l) => l.group === index),
-        done = items.filter((l) => state.completed.includes(l.id)).length;
-      return `<article class="panel phase-card">${artworkImage(phaseArtwork[index])}<p class="eyebrow">Etappe ${index + 1} / ${groups.length}</p><h3>${esc(group)}</h3><p>${phaseDescriptions[index]}</p><progress max="${items.length}" value="${done}" aria-label="${esc(group)}: ${done} von ${items.length} abgeschlossen"></progress><small>${done} / ${items.length} abgeschlossen</small>${lessonLink(items.find((l) => !state.completed.includes(l.id)) || items[0], done === items.length ? "Etappe wiederholen" : "Etappe öffnen")}</article>`;
-    })
-    .join("")}</div></section>`;
+function lessonCatalogCard(l) {
+  const access = lessonAccess(state, l.id),
+    done = access.unlocked && state.completed.includes(l.id),
+    isNext = access.nextId === l.id,
+    number = l.id.slice(1).padStart(2, "0");
+  const status = !access.unlocked ? "Gesperrt" : done ? "Abgeschlossen" : isNext ? "Als Nächstes" : "Verfügbar";
+  const action = access.unlocked
+    ? `<a class="button ${isNext ? "" : "secondary"}" href="#lesson/${l.id}" aria-label="${done ? "Wiederholen" : "Einheit öffnen"}: Einheit ${number} – ${esc(l.title)}">${done ? "Wiederholen" : "Einheit öffnen"}</a>`
+    : `<p class="catalog-lock">${icon("lock")} Ab ${access.requiredXP} Lernpfad-XP</p>`;
+  return `<article class="catalog-card ${isNext ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}">${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group])}<div class="catalog-copy"><div class="catalog-meta"><span class="catalog-number">Einheit ${number}</span><span class="badge ${done ? "done" : ""}">${status}</span></div><h4>${esc(l.title)}</h4><p class="catalog-goal">${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 NAGOLD</small>${action}</div></article>`;
+}
+function lessonCatalog() {
+  return `<section class="lesson-catalog" aria-labelledby="catalogTitle"><div class="section-heading"><div><p class="eyebrow">BPE2 · 4 Etappen · ${lessons.length} Lerneinheiten</p><h2 id="catalogTitle" tabindex="-1">Alle Lerneinheiten</h2></div><a href="#path">Zum Lernpfad →</a></div><p class="lead">Hier siehst du, was dich erwartet. Schließe eine Einheit ab, um die nächste freizuschalten.</p><nav class="catalog-nav" aria-label="Etappen der Kartenübersicht">${groups.map((group, i) => `<button class="button secondary" type="button" data-catalog-jump="catalog-phase-${i + 1}">${esc(group)}</button>`).join("")}</nav>${groups.map((group, index) => {
+    const items = lessons.filter((l) => l.group === index),
+      done = items.filter((l) => state.completed.includes(l.id)).length;
+    return `<section class="catalog-phase" aria-labelledby="catalog-phase-${index + 1}"><div class="catalog-heading"><span class="catalog-index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span><h3 id="catalog-phase-${index + 1}" tabindex="-1">${esc(group)}</h3><small>${done} / ${items.length} abgeschlossen</small></div><div class="catalog-grid">${items.map(lessonCatalogCard).join("")}</div></section>`;
+  }).join("")}</section>`;
 }
 function lessonWorkflow() {
   const steps = [
@@ -5791,6 +5808,13 @@ function render() {
   document.title = `${title} · WebLab`;
   $("#mainContent").innerHTML = html;
   decorateIcons();
+  document.querySelectorAll("[data-catalog-jump]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const target = document.getElementById(button.dataset.catalogJump);
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ block: "start" });
+    });
+  });
   stats();
   updateLessonMenu();
   document.querySelectorAll(".nav-item").forEach((a) => {

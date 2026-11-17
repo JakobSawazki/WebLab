@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.45.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.46.0** · Status: **lokal geprüft; Veröffentlichung läuft**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -322,6 +322,30 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.46.0: Fotorealistische Kartenübersicht auf der Startseite
+
+Die Startseite zeigt alle 16 Einheiten in vier Etappen mit eigenem Motiv, Nummer, Titel, Lernziel, Zeit, Punkten und Status. „Alle Einheiten ansehen“ führt vom Startbanner zur Übersicht. Vier Schaltflächen führen zum jeweiligen Etappenabschnitt und geben seiner Überschrift den Tastaturfokus. Der nächste Schritt ist hervorgehoben. Gesperrte Karten informieren über benötigte Lernpfad-XP und enthalten keinen Einheitslink. Abgeschlossene Einheiten bleiben wiederholbar. Bilder laden bei Bedarf, sind lokal und ergänzen den sichtbaren Text. Je nach Fensterbreite stehen eine, zwei oder drei Karten nebeneinander.
+
+Für 8 Einheiten wurden bestehende passende Bilder verwendet; 8 neue Motive entstanden mit integriertem Imagegen. Gemeinsamer Prompt einschließlich des anschließenden jeweiligen `Subject:`-Eintrags:
+
+> Use case: product-mockup. Wide 16:9 editorial photographs for WebLab lesson cards. Photorealistic premium macro product photograph of tangible objects, soft directional studio light, ink navy matte surface, fine brushed-aluminum grain, cool blue shadows and warm champagne accents. Elevated three-quarter view, legible focal point in the center for thumbnail use. Authentic shadows and reflections, refined and restrained. No people, no labels, no watermarks, no decorative neon.
+
+| Einheit | Datei | Subject |
+| --- | --- | --- |
+| 02 | `assets/html-grundgeruest.webp` | a physical cutaway of a single thin brushed-metal browser frame with a distinct narrow top header and a removable dark glass content slab sliding neatly inside, beside a tiny unmarked silver document tab, precise uncluttered product photography |
+| 03 | `assets/textstruktur.webp` | an editorial page mockup assembled from a large ivory heading bar, two medium champagne subheading bars, and groups of progressively shorter thin brushed-aluminium paragraph strips on a solid navy board, like tactile typography with no written glyphs |
+| 04 | `assets/listen.webp` | parallel arrays of precisely machined brushed aluminum markers on flat navy drafting surface, one row of round bullet discs and one row of sequentially sized slim metallic bars, a tactile metaphor for unordered and ordered lists, no digits |
+| 07 | `assets/tabellen.webp` | precision machined physical aluminum data table grid with two columns and three rows, a distinct champagne-colored header row, tactile blue glass tiles placed neatly in the cells, no markings |
+| 09 | `assets/inhalt-und-gestaltung.webp` | two separated physical layers of a browser page on one studio table: a bare silver structural browser frame with simple neutral content blocks and next to it a thin cobalt glass overlay with subtle bands of ivory color that would fit exactly into the frame, metaphor for separating content and style, no lettering |
+| 10 | `assets/selektoren.webp` | three thin brushed aluminum plates, with two small cobalt blue clips matching each other across two plates and a single distinct warm brass clip on the third, metaphor for reusable classes and a unique ID, no text |
+| 13 | `assets/seitenplanung.webp` | unbranded architect's webpage wireframe on cream drafting paper with distinct rectangular navigation, main content and footer blocks, real brushed silver pencil and straightedge on dark navy studio table, no letters or diagrams with text |
+| 15 | `assets/geschuetzte-uebertragung.webp` | short Ethernet cable plugged into a compact real navy brushed-aluminum server with one tiny status light, beside a minimalist aluminum laptop half visible in frame, dark blue desktop, no writing or logos |
+
+Die Karten verwenden denselben zentralen Lernstand wie der Lernpfad.
+
+68 Node-Tests und 286 Browserprüfungen lokal bestanden; geprüft sind alle Bildzuordnungen, die Lesereihenfolge, Status und Ziele für Gast und Lernende mit Fortschritt, Tastaturfokus beim Etappensprung und Layout bei 360/1200 Pixeln. Sichtproben in Edge bei 500/1440 Pixeln, hell und dunkel. Offline-ZIP aus den 23 öffentlichen Build-Dateien vollständig entpackt; Start per index.html geprüft. Veröffentlichung wird geprüft.
+
 
 ### 17.11.2026 – Codex – Version 1.45.0: Eigene Motive für ausgewählte Lerneinheiten
 

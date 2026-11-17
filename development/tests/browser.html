@@ -260,25 +260,37 @@
       "css-gestaltung.webp", "webprojekt.webp",
     ];
     const lessonPhotos = {
+      l2: "html-grundgeruest.webp",
+      l3: "textstruktur.webp",
+      l4: "listen.webp",
       l5: "links-und-pfade.webp",
       l6: "bilder-und-alt-text.webp",
+      l7: "tabellen.webp",
       l8: "audio-und-video.webp",
+      l9: "inhalt-und-gestaltung.webp",
+      l10: "selektoren.webp",
       l11: "farben-und-typografie.webp",
+      l13: "seitenplanung.webp",
       l14: "quellen-und-rechte.webp",
+      l15: "geschuetzte-uebertragung.webp",
     };
     const savedArtworkState = localStorage.getItem(STORAGE_KEY);
     const artworkState = blank();
     artworkState.completed = lessons.slice(0, -1).map((lesson) => lesson.id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(artworkState));
     try {
+      const catalogPhotos = lessons.map(l => lessonPhotos[l.id] ?? artworkFiles[l.group]);
       for (const [width, route, selector, expected] of [
-        [1200, "#home", ".phase-card img", artworkFiles],
+        [1200, "#home", ".catalog-card img", catalogPhotos],
+        [360, "#home", ".catalog-card img", catalogPhotos],
         [360, "#path", ".path-phase img", artworkFiles],
         ...lessons.map((lesson, i) => [
           i % 2 ? 1200 : 360, "#lesson/" + lesson.id,
           ".lesson-cover img", [lessonPhotos[lesson.id] ?? artworkFiles[lesson.group]],
         ]),
       ]) {
+        const guestCatalog = route === "#home" && width === 360;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(guestCatalog ? blank() : artworkState));
         const frame = document.createElement("iframe");
         frame.style.cssText = "display:block;border:0;width:" + width + "px;height:800px";
         frame.title = "Motivprüfung " + route;
@@ -302,6 +314,30 @@
             (!mobileCover || photoBounds?.height < photoBounds?.width / 2),
           route + " " + width + ": passende lokale Fotos geladen, kein Überlauf",
         );
+        if (route === "#home") {
+          const cards = [...doc.querySelectorAll(".catalog-card")];
+          assert(
+            doc.querySelectorAll(".catalog-phase").length === 4 &&
+            cards.length === lessons.length && cards.every((card, i) => {
+              const link = card.querySelector("a");
+              return card.querySelector("h4")?.textContent === lessons[i].title &&
+                card.querySelector(".catalog-goal")?.textContent === lessons[i].goal &&
+                (guestCatalog && i > 0
+                  ? !link && card.querySelector(".catalog-lock")?.textContent.includes(i * 100 + " Lernpfad-XP")
+                  : link?.getAttribute("href") === "#lesson/" + lessons[i].id) &&
+                card.querySelector(".badge")?.textContent === (guestCatalog
+                  ? (i === 0 ? "Als Nächstes" : "Gesperrt")
+                  : (i === 15 ? "Als Nächstes" : "Abgeschlossen")) &&
+                card.classList.contains("is-next") === (i === (guestCatalog ? 0 : 15));
+            }),
+            width + ": alle Karten in Lernreihenfolge, korrekte Ziele, Links und Sperren",
+          );
+          doc.querySelector('[data-catalog-jump="catalog-phase-3"]').click();
+          assert(
+            doc.activeElement.id === "catalog-phase-3" && frame.contentWindow.location.hash === "#home",
+            width + ": Etappenauswahl fokussiert die richtige Überschrift auf der Startseite",
+          );
+        }
         frame.remove();
       }
     } finally {
@@ -831,7 +867,7 @@
     }
     await navigateThread("#home");
     assert(
-      threadDoc.querySelectorAll(".phase-card").length === 4 &&
+      threadDoc.querySelectorAll(".catalog-phase").length === 4 &&
         threadDoc.querySelectorAll(".learning-thread").length === 1,
       "Startseite zeigt vier Etappen und genau eine Empfehlung zum Weiterlernen",
     );

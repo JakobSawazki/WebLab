@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.49.2** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
+Version: **1.49.2** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -325,7 +325,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 
 ### 17.11.2026 – Codex – Version 1.49.2: Erfahrungspunkte (EP)
 
-Die bisher als NAGOLD bezeichneten Punkte heißen in der Oberfläche und im CSV-Export „EP“ (Erfahrungspunkte). Profil, Navigation, Lernpfad, Karten, Punkteübersicht und Rückmeldungen verwenden die neue Bezeichnung. Bestehende Punkte, XP, Freischaltungen und das Format der JSON-Sicherungen bleiben unverändert. Die gespeicherten Feldnamen `nagoldEntries` und `nagoldOverrides` werden aus Kompatibilitätsgründen weiterhin gelesen und geschrieben.
+Die bisher als NAGOLD bezeichneten Punkte heißen in der Oberfläche und im CSV-Export „EP“ (Erfahrungspunkte). Profil, Navigation, Lernpfad, Karten, Punkteübersicht und Rückmeldungen verwenden die neue Bezeichnung. Bestehende Punkte, XP, Freischaltungen und das Format der JSON-Sicherungen bleiben unverändert. Die gespeicherten Feldnamen `nagoldEntries` und `nagoldOverrides` werden aus Kompatibilitätsgründen weiterhin gelesen und geschrieben. [Pages-Lauf 44072008215](https://github.com/JakobSawazki/WebLab/actions/runs/44072008215) mit 68 Node-Tests und 305 Browserprüfungen erfolgreich. Ausgelieferte Startseite und Skript mit dem Build abgeglichen. [Offline-ZIP](https://github.com/JakobSawazki/WebLab/releases/download/v1.49.2/WebLab-1.49.2-offline.zip) veröffentlicht.
 
 ### 17.11.2026 – Codex – Version 1.49.1: Tastenkürzel für Sichern und Laden
 

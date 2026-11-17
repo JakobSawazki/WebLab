@@ -12,6 +12,7 @@ const paths = {
   theme:
     '<circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" stroke="none"/>',
   save: '<path d="M5 3h12l4 4v14H3V3Zm2 0v6h10V3M7 21v-8h10v8"/>',
+  "folder-open": '<path d="M3 19V5h6l2 2h9v4M3 19l4-8h15l-4 8Z"/>',
   download: '<path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/>',
   upload: '<path d="M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5"/>',
   refresh:
@@ -48,13 +49,11 @@ export function decorateIcons(root = document) {
     cssExport: "download",
     zipExport: "download",
     codeImportButton: "upload",
-    exportButton: "download",
     lessonBackup: "save",
     completeButton: "check",
     takePrevious: "upload",
     csvExport: "download",
     editNagoldTable: "edit",
-    confirmImport: "upload",
   };
   root.querySelectorAll(".button, .icon-button").forEach((node) => {
     if (

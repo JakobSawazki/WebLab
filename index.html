@@ -132,10 +132,14 @@
             <button
               id="backupButton"
               class="icon-button"
-              aria-label="Lernstand sichern oder laden"
-              title="Lernstand sichern oder laden"
-              aria-haspopup="dialog"
+              type="button"
+              aria-label="Lernstand sichern"
+              title="Lernstand als JSON herunterladen"
             ></button>
+            <button id="loadBackupButton" class="icon-button" type="button"
+              aria-label="Lernstand laden" title="WebLab-Sicherung zum Laden auswählen">
+              <span data-icon="folder-open" aria-hidden="true"></span>
+            </button>
             <button id="optionsButton" class="icon-button" type="button"
               title="Anzeigeoptionen" aria-label="Anzeigeoptionen"
               aria-haspopup="dialog" aria-controls="optionsDialog">
@@ -300,33 +304,19 @@
     </dialog>
     <dialog id="backupDialog" aria-labelledby="backupTitle">
       <div class="dialog-heading">
-        <h2 id="backupTitle">Lernstand sichern und laden</h2>
-        <button class="icon-button" data-close aria-label="Sicherung schließen">
+        <h2 id="backupTitle">Lernstand laden</h2>
+        <button class="icon-button" type="button" data-close aria-label="Ladehinweis schließen">
           ×
         </button>
       </div>
-      <p>
-        Die JSON-Datei enthält dein Profil, alle Entwürfe mit Unterseiten,
-        Notizen und Fortschritt. Damit kannst du auf einem anderen Gerät weiterlernen.
-      </p>
-      <ol>
-        <li>Lade den Lernstand herunter. Die Datei liegt häufig zuerst im Ordner Downloads.</li>
-        <li>Kopiere die JSON-Datei auf deinen Informatik-Stick und prüfe, dass sie dort liegt.</li>
-        <li>Öffne am anderen Gerät „Lernstand sichern oder laden“, wähle die JSON-Datei aus und prüfe Kürzel und Anzahl der Abschlüsse. Bestätige dann das Laden.</li>
-      </ol>
-      <p class="muted">Das Projekt-ZIP aus der Werkstatt enthält deine Webseite. Für Profil, Notizen und Fortschritt brauchst du die JSON-Sicherung.</p>
-      <button id="exportButton" class="button">Lernstand herunterladen</button
-      ><label for="importFile">WebLab-Sicherung auswählen</label
-      ><input type="file" id="importFile" accept=".json,application/json" />
       <p id="importSummary" role="status"></p>
-      <button id="confirmImport" class="button" hidden>
-        Aktuellen Stand sichern und ausgewählte Datei laden
-      </button>
-      <p class="muted">
-        Auch Sicherungen der alten Formate 1 und 2 bleiben ladbar. Beim Laden
-        wird zuerst dein aktueller Stand heruntergeladen.
-      </p>
+      <div class="actions">
+        <button id="chooseAnotherBackup" type="button" class="button secondary">Andere Datei auswählen</button>
+        <button id="retryImport" type="button" class="button" hidden>Erneut laden</button>
+      </div>
     </dialog>
+    <input type="file" id="importFile" aria-label="WebLab-Sicherung auswählen"
+      accept=".json,application/json" hidden />
     <div id="toast" role="status" aria-live="polite"></div>
     <script defer src="weblab.js"></script>
   </body>

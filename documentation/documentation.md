@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.48.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.49.0** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -322,6 +322,12 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.49.0: Direkt sichern und laden
+
+Die Diskette startet den JSON-Download. Das neue Ordnersymbol öffnet direkt die Dateiauswahl. Eine gültige WebLab-Sicherung wird unmittelbar nach der Auswahl geladen. Vor dem Ersetzen startet die Sicherung des bisherigen Stands mit „vor-Laden“ im Dateinamen. Abbrechen und ungültige Dateien ändern nichts. Bei einem Speicherfehler bleibt der bisherige Stand erhalten; der Dialog bietet erneutes Laden ohne erneute Dateiauswahl an. Alte Sicherungsformate bleiben kompatibel.
+
+68 Node-Tests und 301 Browserprüfungen lokal erfolgreich. Zusätzlich im entpackten Offline-Paket in Edge mit Testdaten geprüft: echter JSON-Download per Diskette, native Dateiauswahl per Ordnersymbol, Übernahme ohne Bestätigung und separater JSON-Download des vorherigen Stands.
 
 ### 17.11.2026 – Codex – Version 1.48.0: Anzeigeoptionen oben rechts
 

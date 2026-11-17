@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-17", [
+    ["1.49.0", "Lernstand direkt sichern und laden", "Die Diskette speichert sofort eine JSON-Sicherung. Das Ordnersymbol öffnet die Dateiauswahl und übernimmt die gewählte WebLab-Sicherung."],
     ["1.48.0", "Anzeigeoptionen für WebLab", "Oben rechts lassen sich Schriftgröße, Schriftfarbe und Hintergrund einstellen. Reset stellt das Standarddesign wieder her."],
     ["1.47.0", "Versionsverlauf in WebLab", "Die Versionsnummer unten links öffnet eine Übersicht der bisherigen Änderungen, auch offline."],
     ["1.46.1", "Kürzerer Untertitel", "Unter dem WebLab-Logo steht „Internetseiten“."],

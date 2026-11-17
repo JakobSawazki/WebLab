@@ -40,7 +40,6 @@ let state,
   savedOnDevice = false,
   saveFailed = false,
   pendingImport = null,
-  pendingExercises = null,
   importRead = 0,
   activeId = "l1",
   htmlFile = "index.html",
@@ -294,9 +293,11 @@ function download(name, data, type = "text/plain;charset=utf-8") {
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
-function backup() {
+function backup({ beforeImport = false } = {}) {
+  const stamp = new Date().toISOString(),
+    suffix = beforeImport ? `-vor-Laden-${stamp.slice(11, 23).replace(/[:.]/g, "-")}` : "";
   download(
-    `WebLab-${state.profile.name || "Gast"}-${new Date().toISOString().slice(0, 10)}.json`,
+    `WebLab-${state.profile.name || "Gast"}-${stamp.slice(0, 10)}${suffix}.json`,
     // Solved exercise markers ride along as an optional field (still format 3).
     JSON.stringify({ ...exportBackup(state), exercisesSolved: [...solvedExercises()] }, null, 2),
     "application/json",
@@ -1200,70 +1201,89 @@ document
       else dialog.close();
     };
   });
+const backupDialog = $("#backupDialog"),
+  importFile = $("#importFile"),
+  retryImport = $("#retryImport");
 function resetPendingImport() {
   importRead++;
   pendingImport = null;
-  pendingExercises = null;
-  $("#confirmImport").hidden = true;
+  retryImport.hidden = true;
 }
-$("#backupDialog").addEventListener("close", () => {
-  if (!$("#backupDialog").open) resetPendingImport();
+function showImportError(message) {
+  $("#importSummary").textContent = message;
+  retryImport.hidden = !pendingImport;
+  if (!backupDialog.open) backupDialog.showModal();
+}
+backupDialog.addEventListener("close", () => {
+  // A new picker can be opened before the queued close event runs.
+  if (!backupDialog.open && pendingImport) resetPendingImport();
 });
-$("#backupButton").onclick = () => {
+function chooseBackup() {
   resetPendingImport();
-  $("#importFile").value = "";
-  $("#importSummary").textContent = "";
-  $("#confirmImport").hidden = true;
-  $("#backupDialog").showModal();
-};
-$("#exportButton").onclick = backup;
-$("#importFile").onchange = async (e) => {
+  if (backupDialog.open) backupDialog.close();
+  importFile.value = "";
+  importFile.click();
+}
+$("#backupButton").onclick = () => backup();
+$("#loadBackupButton").onclick = chooseBackup;
+$("#chooseAnotherBackup").onclick = chooseBackup;
+importFile.oncancel = resetPendingImport;
+importFile.onchange = async (event) => {
   resetPendingImport();
   const read = importRead,
-    file = e.target.files[0];
-  $("#importSummary").textContent = file ? "Sicherung wird eingelesen …" : "";
+    file = event.target.files[0];
   if (!file) return;
   try {
     if (file.size > BACKUP_MAX_BYTES)
       throw new Error("Diese Datei ist zu groß für eine WebLab-Sicherung.");
     const text = await file.text();
-    if (read !== importRead || !$("#backupDialog").open) return;
-    const raw = JSON.parse(text);
-    pendingImport = importBackup(raw);
-    pendingExercises = normalizeSolved(raw.exercisesSolved);
-    $("#importSummary").textContent =
-      `Bereit: ${pendingImport.profile.name || "ohne Profil"}, Klasse ${pendingImport.profile.className || "offen"}, ${pendingImport.completed.length} Einheiten${pendingExercises ? `, ${pendingExercises.length} gelöste Übungen` : ""}. Dein aktueller Stand wird vor dem Ersetzen gesichert.`;
-    $("#confirmImport").hidden = false;
+    if (read !== importRead) return;
+    let raw;
+    try { raw = JSON.parse(text); }
+    catch { throw new Error("Die Datei enthält keine gültige WebLab-Sicherung."); }
+    pendingImport = {
+      state: importBackup(raw),
+      exercises: normalizeSolved(raw.exercisesSolved),
+      backedUp: false,
+    };
+    applyPendingImport();
   } catch (err) {
-    if (read !== importRead || !$("#backupDialog").open) return;
-    $("#importSummary").textContent = err.message;
+    if (read !== importRead) return;
+    showImportError(err.message);
   }
 };
-$("#confirmImport").onclick = () => {
+function applyPendingImport() {
   if (!pendingImport) return;
-  backup();
+  if (!pendingImport.backedUp) {
+    try {
+      backup({ beforeImport: true });
+      pendingImport.backedUp = true;
+    } catch {
+      showImportError("Dein aktueller Lernstand konnte nicht als Datei gesichert werden. Er wurde nicht ersetzt.");
+      return;
+    }
+  }
   const before = state,
     wasPrevented = preventSave;
-  state = pendingImport;
+  state = pendingImport.state;
   preventSave = false;
   if (!save()) {
     state = before;
     preventSave = wasPrevented;
     updateStorageStatus();
-    $("#importSummary").textContent =
-      "Die Sicherung konnte nicht gespeichert werden. Dein bisheriger Lernstand und deine Übungsmarkierungen bleiben erhalten. Behalte die Sicherungsdatei und versuche den Import erneut, wenn der Browserspeicher verfügbar ist.";
+    showImportError("Die Sicherung konnte nicht gespeichert werden. Dein bisheriger Lernstand und deine Übungsmarkierungen bleiben erhalten. Versuche das Laden erneut, wenn der Browserspeicher verfügbar ist.");
     return;
   }
-  pendingImport = null;
-  // Older backups carry no exercise markers; the device's markers stay then.
-  const exercisesStored = !pendingExercises || storeSolvedExercises(pendingExercises);
-  pendingExercises = null;
-  $("#backupDialog").close();
+  // Older backups do not contain exercise markers; keep the ones on this device.
+  const exercisesStored = !pendingImport.exercises || storeSolvedExercises(pendingImport.exercises);
+  resetPendingImport();
+  if (backupDialog.open) backupDialog.close();
   render();
   toast(exercisesStored
     ? "Lernstand übernommen."
     : "Lernstand übernommen, aber die Übungsmarkierungen konnten nicht gespeichert werden. Behalte die Sicherungsdatei und lade sie erneut, wenn der Browserspeicher verfügbar ist.");
-};
+}
+retryImport.onclick = applyPendingImport;
 window.addEventListener("hashchange", () => {
   // render() returns true when it already placed focus on a target.
   if (render()) return;

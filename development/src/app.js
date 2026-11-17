@@ -11,6 +11,7 @@ import { decorateIcons, icon } from "./icons.js";
 import { VERSION, groups, lessons, byId } from "./content.js";
 import { versionHistory } from "./version-history.js";
 import { bindDisplayOptions } from "./display.js";
+import { bindSidebarDivider } from "./sidebar.js";
 import { glossary } from "./glossary.js";
 import { guidance } from "./guidance.js";
 import {
@@ -72,6 +73,7 @@ function updateMenu() {
   button.title = label;
 }
 updateMenu();
+bindSidebarDivider();
 $("#menuButton").onclick = () => {
   setLessonMenu(false);
   menuCollapsed = !menuCollapsed;
@@ -100,6 +102,13 @@ function positionLessonMenu() {
   lessonMenuPanel.style.left = `${left}px`;
   lessonMenuPanel.style.top = `${top}px`;
 }
+// Temporary view access never changes the XP-based progression in state.js.
+let developerMode = false;
+function viewLessonAccess(id) {
+  const access = lessonAccess(state, id);
+  if (!developerMode || access.requiredXP === null || access.unlocked) return access;
+  return { ...access, unlocked: true, previewOnly: true };
+}
 function updateLessonMenu() {
   const button = $("#lessonMenuButton"),
     menu = $("#lessonMenu"),
@@ -114,14 +123,14 @@ function updateLessonMenu() {
     ? lessons
         .map((l) => {
           const number = l.id.slice(1).padStart(2, "0"),
-            access = lessonAccess(state, l.id),
+            access = viewLessonAccess(l.id),
             done = state.completed.includes(l.id),
             current = location.hash.split("/")[1] === l.id && location.hash.startsWith("#lesson/"),
             status = !access.unlocked
               ? "is-locked"
               : done
                 ? "is-done"
-                : "is-next",
+                : access.previewOnly ? "is-preview" : "is-next",
             body = `<span class="lesson-menu-num">${number}</span><span class="lesson-menu-title">${esc(l.title)}</span>`;
           return access.unlocked
             ? `<a class="lesson-menu-item ${status}" href="#lesson/${l.id}" aria-label="Einheit ${number}: ${esc(l.title)}${done ? " (abgeschlossen)" : ""}"${current ? ' aria-current="page"' : ""}>${body}</a>`
@@ -304,21 +313,21 @@ function backup({ beforeImport = false } = {}) {
   );
 }
 function lessonLink(l, label, classes = "button secondary") {
-  const access = lessonAccess(state, l.id);
+  const access = viewLessonAccess(l.id);
   return access.unlocked
     ? `<a class="${classes}" href="#lesson/${l.id}">${esc(label)}</a>`
     : `<button type="button" class="${classes} locked-control" disabled aria-label="Einheit ${l.id.slice(1).padStart(2, "0")} gesperrt: ab ${access.requiredXP} Lernpfad-XP">${icon("lock")}<span>${esc(label)}</span><small>ab ${access.requiredXP} XP</small></button>`;
 }
 function lockedLesson(l) {
-  const access = lessonAccess(state, l.id),
+  const access = viewLessonAccess(l.id),
     next = byId(access.nextId);
   return `<section class="panel locked-lesson" aria-labelledby="lockedTitle"><div class="lock-mark">${icon("lock")}</div><p class="eyebrow">Einheit ${l.id.slice(1).padStart(2, "0")} · noch gesperrt</p><h2 id="lockedTitle">${esc(l.title)}</h2><p>Diese Einheit wird mit ${access.requiredXP} Lernpfad-XP freigeschaltet. Du hast bisher ${access.earnedXP} Lernpfad-XP verdient.</p><p>Schließe die Einheiten der Reihe nach ab. Jeder Abschluss bringt 100 XP und 5 EP. Deine Punkte bleiben erhalten und werden nicht ausgegeben.</p><div class="actions">${next ? lessonLink(next, "Weiter mit Einheit " + next.id.slice(1).padStart(2, "0"), "button") : ""}<a class="button secondary" href="#path">Zum Lernpfad</a></div></section>`;
 }
 function card(l) {
   const done = state.completed.includes(l.id),
-    access = lessonAccess(state, l.id),
+    access = viewLessonAccess(l.id),
     recommended = access.nextId === l.id;
-  return `<article class="card ${recommended ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${!access.unlocked ? icon("lock") + " Gesperrt" : done ? "Abgeschlossen" : "Dein nächster Schritt"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 EP</small>${access.unlocked && exercises[l.id] ? `<small class="exercise-count">Übungen: ${exerciseProgress(l.id)} von ${exercises[l.id].length} gelöst</small>` : ""}${lessonLink(l, access.unlocked ? (done ? "Wiederholen" : "Einheit öffnen") : "Noch gesperrt")}</article>`;
+  return `<article class="card ${recommended ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${!access.unlocked ? icon("lock") + " Gesperrt" : done ? "Abgeschlossen" : access.previewOnly ? "Entwickler-Modus" : "Dein nächster Schritt"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 EP</small>${access.unlocked && exercises[l.id] ? `<small class="exercise-count">Übungen: ${exerciseProgress(l.id)} von ${exercises[l.id].length} gelöst</small>` : ""}${lessonLink(l, access.unlocked ? (done ? "Wiederholen" : "Einheit öffnen") : "Noch gesperrt")}</article>`;
 }
 function overview() {
   const next =
@@ -337,11 +346,11 @@ function artworkImage(file, priority = false) {
   return `<div class="phase-art"><img src="assets/${file}" alt="" width="960" height="540" ${priority ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></div>`;
 }
 function lessonCatalogCard(l) {
-  const access = lessonAccess(state, l.id),
+  const access = viewLessonAccess(l.id),
     done = access.unlocked && state.completed.includes(l.id),
     isNext = access.nextId === l.id,
     number = l.id.slice(1).padStart(2, "0");
-  const status = !access.unlocked ? "Gesperrt" : done ? "Abgeschlossen" : isNext ? "Als Nächstes" : "Verfügbar";
+  const status = !access.unlocked ? "Gesperrt" : done ? "Abgeschlossen" : isNext ? "Als Nächstes" : access.previewOnly ? "Entwickler-Modus" : "Verfügbar";
   const action = access.unlocked
     ? `<a class="button ${isNext ? "" : "secondary"}" href="#lesson/${l.id}" aria-label="${done ? "Wiederholen" : "Einheit öffnen"}: Einheit ${number} – ${esc(l.title)}">${done ? "Wiederholen" : "Einheit öffnen"}</a>`
     : `<p class="catalog-lock">${icon("lock")} Ab ${access.requiredXP} Lernpfad-XP</p>`;
@@ -382,8 +391,7 @@ function path() {
   );
 }
 function studio(id, free = false) {
-  const l = byId(id),
-    d = state.drafts[free ? "lab" : id] || { html: l.starter, css: "" };
+  const d = draftFor(free ? "lab" : id);
   return `<section class="studio" aria-labelledby="studioTitle">
     <div class="studio-header"><h3 id="studioTitle">${free ? "Freies HTML- & CSS-Labor" : "Deine Werkstatt"}</h3><div class="actions"><button class="button secondary" id="runButton">Vorschau aktualisieren</button>${free ? "" : '<button class="button" id="checkButton">Auftrag prüfen</button>'}</div></div>
     <div class="studio-grid"><div class="editors">
@@ -401,7 +409,7 @@ function lessonJourney(l) {
   const step = journey[l.id],
     index = lessons.indexOf(l),
     next = lessons.find((item) => !state.completed.includes(item.id));
-  return `<section class="panel learning-thread" aria-label="Dein roter Faden"><p class="eyebrow">Deine eigene Webseite wächst weiter</p><h3>Schritt ${index + 1} von ${lessons.length}: ${esc(step.addition)}</h3><ol class="journey-steps" aria-label="Reihenfolge der Lerneinheiten">${lessons.map((item, i) => `<li>${lessonAccess(state, item.id).unlocked ? `<a href="#lesson/${item.id}" ${item.id === l.id ? 'aria-current="step"' : ""} class="${state.completed.includes(item.id) ? "done" : ""}" aria-label="Einheit ${i + 1}: ${esc(item.title)}${state.completed.includes(item.id) ? ", abgeschlossen" : ""}">${i + 1}</a>` : `<span class="locked-step" role="img" aria-label="Einheit ${i + 1} gesperrt: ab ${i * 100} Lernpfad-XP"><span>${i + 1}</span>${icon("lock")}</span>`}</li>`).join("")}</ol><p><strong>Daran knüpfst du an:</strong> ${esc(step.recall)}</p>${step.previous && !state.completed.includes(step.previous) ? `<p class="teacher-note">Bearbeite zuerst <a href="#lesson/${step.previous}">Einheit ${index}: ${esc(byId(step.previous).title)}</a>. Schließe zuerst diese Einheit ab, um den nächsten Schritt freizuschalten.</p>` : ""}<p>Behalte dein Thema bei und erweitere deine eigene Webseite. Beim ersten Öffnen beginnt diese Einheit mit einer Kopie deines vorherigen Entwurfs, sofern einer vorhanden ist. Bereits bearbeitete Einheiten behalten ihren eigenen Stand.</p>${step.previous && state.drafts[step.previous] ? `<div class="actions"><button class="button secondary" id="takePrevious">Entwurf aus Einheit ${index} übernehmen</button></div>` : ""}${next && next.id !== l.id ? `<a href="#lesson/${next.id}">Zu meinem nächsten offenen Schritt: ${esc(next.title)}</a>` : ""}</section>`;
+  return `<section class="panel learning-thread" aria-label="Dein roter Faden"><p class="eyebrow">Deine eigene Webseite wächst weiter</p><h3>Schritt ${index + 1} von ${lessons.length}: ${esc(step.addition)}</h3><ol class="journey-steps" aria-label="Reihenfolge der Lerneinheiten">${lessons.map((item, i) => `<li>${viewLessonAccess(item.id).unlocked ? `<a href="#lesson/${item.id}" ${item.id === l.id ? 'aria-current="step"' : ""} class="${state.completed.includes(item.id) ? "done" : ""}" aria-label="Einheit ${i + 1}: ${esc(item.title)}${state.completed.includes(item.id) ? ", abgeschlossen" : ""}">${i + 1}</a>` : `<span class="locked-step" role="img" aria-label="Einheit ${i + 1} gesperrt: ab ${i * 100} Lernpfad-XP"><span>${i + 1}</span>${icon("lock")}</span>`}</li>`).join("")}</ol><p><strong>Daran knüpfst du an:</strong> ${esc(step.recall)}</p>${!developerMode && step.previous && !state.completed.includes(step.previous) ? `<p class="teacher-note">Bearbeite zuerst <a href="#lesson/${step.previous}">Einheit ${index}: ${esc(byId(step.previous).title)}</a>. Schließe zuerst diese Einheit ab, um den nächsten Schritt freizuschalten.</p>` : ""}<p>Behalte dein Thema bei und erweitere deine eigene Webseite. Beim ersten Öffnen beginnt diese Einheit mit einer Kopie deines vorherigen Entwurfs, sofern einer vorhanden ist. Bereits bearbeitete Einheiten behalten ihren eigenen Stand.</p>${step.previous && state.drafts[step.previous] ? `<div class="actions"><button class="button secondary" id="takePrevious">Entwurf aus Einheit ${index} übernehmen</button></div>` : ""}${next && next.id !== l.id ? `<a href="#lesson/${next.id}">Zu meinem nächsten offenen Schritt: ${esc(next.title)}</a>` : ""}</section>`;
 }
 function lessonPractice(l) {
   const step = journey[l.id];
@@ -419,7 +427,7 @@ function debugChallenge(l) {
 }
 function lessonView(l) {
   const done = state.completed.includes(l.id);
-  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
+  return `<div class="breadcrumbs"><a href="#path">Lernpfad</a> / ${groups[l.group]} / Einheit ${l.id.slice(1).padStart(2, "0")}</div><section class="panel chapter-plate lesson-cover" aria-labelledby="lessonTitle"><div class="chapter-copy"><p class="eyebrow">Etappe ${l.group + 1} / ${groups.length} · Einheit ${l.id.slice(1).padStart(2, "0")}</p><h2 id="lessonTitle">${esc(l.title)}</h2><p class="lead">${esc(l.goal)}</p><small>${l.minutes} Minuten · 100 XP · 5 EP</small></div>${artworkImage(lessonArtwork[l.id] ?? phaseArtwork[l.group], true)}</section>${lessonWorkflow()}${lessonJourney(l)}<div class="lesson-layout" id="understand"><section class="panel"><h3>1. Verstehen</h3><p>${esc(l.explanation)}</p><h3>Ein Beispiel</h3><pre><code>${esc(l.example)}</code></pre>${debugChallenge(l)}${l.id === "l12" ? boxModelView() : ""}${l.id === "l10" ? selectorView() : ""}</section><aside class="panel"><p class="eyebrow">Dein Praxisauftrag</p><h3>Jetzt bist du dran</h3><p>${esc(l.task)}</p><details><summary>Ein Hinweis hilft mir weiter</summary><p>${esc(l.hint)}</p></details><details class="pitfalls"><summary>Typische Stolpersteine</summary><ul>${guidance[l.id].pitfalls.map((item) => `<li>${esc(item)}</li>`).join("")}</ul></details>${l.id === "l14" ? '<p><a href="https://creativecommons.org/cc-licenses/" target="_blank" rel="noopener">Creative-Commons-Lizenzen</a><br><a href="https://www.gesetze-im-internet.de/ddg/__5.html" target="_blank" rel="noopener">§ 5 DDG: Anbieterinformationen</a></p>' : ""}<p class="teacher-note">Die automatische Prüfung kontrolliert Bausteine. Besprich dein Ergebnis und die Selbstkontrolle mit der Lehrkraft.</p></aside></div>${lessonPractice(l)}${exercisePanel(l)}${lessonExtension(l)}${caseStudyPanel(l.id)}${studio(l.id)}<section class="panel" id="review"><h3>Rückmeldung zum Praxisauftrag</h3><div id="taskFeedback" role="status"><p>Bearbeite den Auftrag und klicke auf „Auftrag prüfen“.</p></div></section><div class="lesson-layout"><section class="panel"><h3>Verständnischeck</h3><p id="quizQuestion">${esc(l.question)}</p><div class="quiz-options" role="group" aria-labelledby="quizQuestion">${l.options.map((o, i) => `<button type="button" class="button secondary quiz-option" data-answer="${i}" aria-pressed="${state.quiz[l.id] && i === l.answer}">${esc(o)}</button>`).join("")}</div><p id="quizResult" role="status">${state.quiz[l.id] ? "✓ Bereits richtig beantwortet." : ""}</p></section><section class="panel"><h3>Meine Selbstkontrolle</h3>${l.checks.map((c, i) => `<label class="check-row"><input type="checkbox" data-check="${i}" ${state.checks[l.id]?.[i] ? "checked" : ""}><span>${esc(c)}</span></label>`).join("")}<p class="muted">Mit dem Abschluss dokumentierst du deinen eigenen Lernstand. Das ist keine authentifizierte Bestätigung der Lehrkraft.</p>${done ? "" : '<ul class="completion-status" id="completionStatus" aria-label="Voraussetzungen für den Abschluss"></ul>'}<button class="button" id="completeButton" ${done || developerMode ? "disabled" : ""}>${done ? "✓ Abgeschlossen" : developerMode ? "Abschluss im Entwicklermodus pausiert" : "Einheit abschließen"}</button><p id="completionResult" role="status"></p></section></div><section class="panel" id="secure"><h3>Deinen Lernweg sichern</h3><p>Halte fest, was du verstanden hast. Lade deinen gesamten Lernstand als JSON-Datei herunter, damit du ihn auch an einem anderen Gerät wieder laden kannst. Das Projekt-ZIP in der Werkstatt enthält deine Webseite.</p><button class="button secondary" id="lessonBackup">Lernstand sichern</button><h3>Meine Notizen zu dieser Einheit</h3><label for="lessonNotes">Was habe ich verstanden, was möchte ich noch fragen?</label><textarea class="notes" id="lessonNotes" maxlength="12000">${esc(state.notes[l.id] || "")}</textarea></section><div class="actions">${lessons.indexOf(l) > 0 ? `<a class="button secondary" href="#lesson/l${lessons.indexOf(l)}">Vorherige Einheit</a>` : ""}${lessons.indexOf(l) < 15 ? `${lessonLink(lessons[lessons.indexOf(l) + 1], "Nächste Einheit", "button")}` : '<a class="button" href="#achievements">Meine Erfolge ansehen</a>'}</div>`;
 }
 // Reiter für index.html, alle Unterseiten und style.css.
 function fileTabs(d) {
@@ -447,13 +455,13 @@ function showLinkReport(d) {
         .join("")}</ul>`
     : '<p class="muted">Noch keine Verweise auf andere HTML-Seiten deines Projekts.</p>';
 }
+function draftFor(id) {
+  return state.drafts[id] || (id === "lab"
+    ? { html: byId("l1").starter, css: "" }
+    : startingDraft(state.drafts, id));
+}
 function draft() {
-  return (
-    state.drafts[activeId] || {
-      html: (byId(activeId) || byId("l1")).starter,
-      css: "",
-    }
-  );
+  return draftFor(activeId);
 }
 function capture() {
   if (!$("#htmlEditor")) return;
@@ -470,8 +478,8 @@ function capture() {
   state.drafts[activeId] = next;
   save();
 }
-function run() {
-  capture();
+function run({ persist = true } = {}) {
+  if (persist) capture();
   const d = draft();
   $("#previewFrame").srcdoc = preview(pageHtml(d), d.css);
   showLinkReport(d);
@@ -808,7 +816,7 @@ function bindStudio(l) {
     download("style.css", files()["style.css"], "text/css;charset=utf-8");
   $("#zipExport").onclick = () =>
     download("WebLab-Projekt.zip", zipFiles(files()));
-  run();
+  run({ persist: !developerMode });
 }
 function achievements() {
   const rows = nagoldRows(state);
@@ -924,7 +932,7 @@ function render() {
       ? byId(route.split("/")[1])
       : null,
     l =
-      requestedLesson && lessonAccess(state, requestedLesson.id).unlocked
+      requestedLesson && viewLessonAccess(requestedLesson.id).unlocked
         ? requestedLesson
         : null;
   let title = "Übersicht",
@@ -934,7 +942,7 @@ function render() {
     html = lockedLesson(requestedLesson);
   } else if (l) {
     activeId = l.id;
-    if (!state.drafts[l.id])
+    if (!developerMode && !state.drafts[l.id])
       state.drafts[l.id] = startingDraft(state.drafts, l.id);
     title = l.title;
     html = lessonView(l);
@@ -955,7 +963,7 @@ function render() {
     title = "Meine Notizen";
     // Locked lessons only appear once they hold notes (e.g. after an import).
     const notable = lessons.filter(
-        (l) => lessonAccess(state, l.id).unlocked || state.notes[l.id],
+        (l) => viewLessonAccess(l.id).unlocked || state.notes[l.id],
       ),
       hidden = lessons.length - notable.length;
     html = rememberedRules() + reviewPanel(state) + notable
@@ -1067,6 +1075,7 @@ function render() {
       save();
     };
     $("#completeButton").onclick = () => {
+      if (developerMode) return;
       if (!state.profile.name || !state.profile.className.trim()) {
         openProfile("Speichere zuerst dein Schülerkürzel und deine Klasse. Danach kannst du die Einheit abschließen.");
         return;
@@ -1148,6 +1157,34 @@ function openProfile(reason = "") {
   $("#profileDialog").showModal();
 }
 $("#profileButton").onclick = () => openProfile();
+const developerButton = $("#developerModeButton");
+let rightAltDown = false;
+const profileDialog = $("#profileDialog");
+profileDialog.addEventListener("keydown", (event) => {
+  if (!profileDialog.open || event.defaultPrevented) return;
+  if (event.code === "AltRight") rightAltDown = true;
+  const altGr = event.getModifierState("AltGraph") || (rightAltDown && event.altKey);
+  if (!altGr || event.shiftKey || event.metaKey || event.isComposing ||
+      (event.code !== "KeyS" && event.key.toLowerCase() !== "s")) return;
+  event.preventDefault();
+  if (event.repeat) return;
+  const hide = !developerButton.hidden;
+  if (hide && document.activeElement === developerButton) $("#studentName").focus();
+  developerButton.hidden = hide;
+  if (!hide) developerButton.focus();
+});
+document.addEventListener("keyup", (event) => {
+  if (event.code === "AltRight") rightAltDown = false;
+});
+window.addEventListener("blur", () => { rightAltDown = false; });
+profileDialog.addEventListener("close", () => { rightAltDown = false; });
+developerButton.onclick = () => {
+  if (developerButton.hidden || !profileDialog.open) return;
+  developerMode = !developerMode;
+  developerButton.setAttribute("aria-pressed", String(developerMode));
+  $("#developerModeNotice").hidden = !developerMode;
+  render();
+};
 $(".skip-link").onclick = (e) => {
   e.preventDefault();
   $("#mainContent").focus();

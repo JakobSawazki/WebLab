@@ -113,6 +113,9 @@
     );
     const savedTheme = localStorage.getItem("weblab-theme-v1");
     const savedMenu = localStorage.getItem("weblab-menu-v1");
+    const sidebarWidthKey = "weblab-sidebar-width-v1",
+      savedSidebarWidth = localStorage.getItem(sidebarWidthKey);
+    localStorage.removeItem(sidebarWidthKey);
     for (const width of [1200, 360]) {
       localStorage.setItem("weblab-menu-v1", "expanded");
       const menuFrame = document.createElement("iframe");
@@ -187,6 +190,28 @@
       versionButton.click();
       assert(versionScroll.scrollTop === 0, width + ": erneutes Öffnen beginnt beim neuesten Eintrag");
       closeVersion.click();
+      let divider = menuDoc.getElementById("sidebarDivider");
+      if (width === 1200) {
+        const start = menuDoc.getElementById("sidebar").getBoundingClientRect().width;
+        const x = divider.getBoundingClientRect().left;
+        // Pointer capture requires a real pressed pointer; the QA frame dispatches events.
+        divider.setPointerCapture = () => {};
+        for (const [type, clientX] of [["pointerdown", x], ["pointermove", x+66], ["pointerup", x+66]])
+          divider.dispatchEvent(new menuFrame.contentWindow.PointerEvent(type, {
+            pointerId: 1, pointerType: "mouse", button: 0, clientX, bubbles: true, cancelable: true,
+          }));
+        assert(menuDoc.getElementById("sidebar").getBoundingClientRect().width === start + 66 &&
+          divider.getAttribute("aria-valuenow") === String(start + 66) &&
+          localStorage.getItem(sidebarWidthKey) === String(start + 66),
+          "Trennlinie: Ziehen ändert Breite und speichert sie");
+        divider.dispatchEvent(new menuFrame.contentWindow.KeyboardEvent("keydown", {
+          key: "End", bubbles: true, cancelable: true,
+        }));
+        assert(menuDoc.getElementById("sidebar").getBoundingClientRect().width === 440 &&
+          menuDoc.documentElement.scrollWidth <= width, "Trennlinie: Tastatur erreicht die Obergrenze ohne Überlauf");
+      } else {
+        assert(!divider.getClientRects().length, "Trennlinie: auf schmalen Bildschirmen ausgeblendet");
+      }
       menuDoc.querySelector("#menuButton").click();
       const side = menuDoc.querySelector("#sidebar");
       assert(
@@ -205,6 +230,7 @@
         const bounds = versionButton.getBoundingClientRect(), rail = side.getBoundingClientRect();
         assert(bounds.width > 0 && bounds.left >= rail.left && bounds.right <= rail.right,
           "Versionsnummer bleibt im eingeklappten Desktopmenü sichtbar");
+        assert(!divider.getClientRects().length, "Trennlinie: im eingeklappten Menü ausgeblendet");
       }
       menuLoaded = new Promise((resolve) => (menuFrame.onload = resolve));
       menuFrame.src = "/?menu-reload=" + width + "#home";
@@ -216,6 +242,15 @@
         width + ": Menueeinstellung bleibt nach Neuladen erhalten",
       );
       menuDoc.querySelector("#menuButton").click();
+      if (width === 1200) {
+        divider = menuDoc.getElementById("sidebarDivider");
+        assert(menuDoc.getElementById("sidebar").getBoundingClientRect().width === 440,
+          "Trennlinie: Breite bleibt nach Neuladen und Menüwechsel erhalten");
+        divider.dispatchEvent(new menuFrame.contentWindow.MouseEvent("dblclick", { bubbles: true }));
+        assert(menuDoc.getElementById("sidebar").getBoundingClientRect().width === 292 &&
+          localStorage.getItem(sidebarWidthKey) === null,
+          "Trennlinie: Doppelklick stellt die Standardbreite wieder her");
+      }
       assert(
         menuDoc.querySelector("#menuButton").getAttribute("aria-expanded") ===
           "true" &&
@@ -294,6 +329,8 @@
     }
     if (savedMenu === null) localStorage.removeItem("weblab-menu-v1");
     else localStorage.setItem("weblab-menu-v1", savedMenu);
+    if (savedSidebarWidth === null) localStorage.removeItem(sidebarWidthKey);
+    else localStorage.setItem(sidebarWidthKey, savedSidebarWidth);
     const displayKey = "weblab-display-v1",
       savedDisplay = localStorage.getItem(displayKey),
       displayTheme = localStorage.getItem("weblab-theme-v1"),
@@ -844,6 +881,61 @@
           15,
       "Neues Profil: nur Einheit 01 offen, 15 Karten gesperrt",
     );
+    const developerButton = gateDoc.getElementById("developerModeButton"),
+      gateProfile = gateDoc.getElementById("profileDialog"),
+      beforeDeveloperMode = localStorage.getItem(STORAGE_KEY);
+    const pressAltGrS = (target = gateDoc.activeElement) => {
+      const event = new gateWin.KeyboardEvent("keydown", {
+        key: "s", code: "KeyS", altKey: true, ctrlKey: true, bubbles: true, cancelable: true,
+      });
+      Object.defineProperty(event, "getModifierState", { value: (key) => key === "AltGraph" });
+      target.dispatchEvent(event);
+      return event.defaultPrevented;
+    };
+    pressAltGrS(gateDoc.body);
+    gateDoc.getElementById("profileButton").click();
+    const profileNameInput = gateDoc.getElementById("studentName");
+    profileNameInput.dispatchEvent(new gateWin.KeyboardEvent("keydown", {
+      key: "s", code: "KeyS", altKey: true, bubbles: true, cancelable: true,
+    }));
+    assert(developerButton.hidden && developerButton.getAttribute("aria-pressed") === "false",
+      "Entwickler-Modus bleibt außerhalb des Lernprofils und bei einfachem Alt+S verborgen");
+    assert(pressAltGrS(profileNameInput) && !developerButton.hidden && gateDoc.activeElement === developerButton,
+      "AltGr+S zeigt den Entwickler-Schalter im Lernprofil und gibt ihm den Fokus");
+    developerButton.click();
+    assert(gateProfile.open && developerButton.getAttribute("aria-pressed") === "true" &&
+      gateDoc.querySelectorAll('.card a[href^="#lesson/"]').length === 16 &&
+      !gateDoc.getElementById("developerModeNotice").hidden,
+      "Entwickler-Modus öffnet alle 16 Karten, ohne das Lernprofil zu schließen");
+    pressAltGrS();
+    assert(developerButton.hidden && developerButton.getAttribute("aria-pressed") === "true",
+      "AltGr+S blendet den Schalter aus, ohne den Modus umzuschalten");
+    gateProfile.close();
+    gateDoc.getElementById("lessonMenuButton").click();
+    assert(gateDoc.querySelectorAll("#lessonMenu a").length === 16,
+      "Das Lernpfadmenü öffnet im Entwicklermodus alle Einheiten");
+    await gateGo("#lesson/l16");
+    const devComplete = gateDoc.getElementById("completeButton");
+    assert(gateDoc.getElementById("htmlEditor") && devComplete?.disabled &&
+      gateDoc.querySelectorAll(".journey-steps a").length === 16 &&
+      localStorage.getItem(STORAGE_KEY) === beforeDeveloperMode,
+      "Vorschau per Direktlink hat alle Lernschritte und ändert weder Punktestand noch Abschlüsse");
+    gateDoc.getElementById("profileButton").click();
+    profileNameInput.dispatchEvent(new gateWin.KeyboardEvent("keydown", {
+      key: "Alt", code: "AltRight", altKey: true, ctrlKey: true, bubbles: true,
+    }));
+    profileNameInput.dispatchEvent(new gateWin.KeyboardEvent("keydown", {
+      key: "s", code: "KeyS", altKey: true, ctrlKey: true, bubbles: true, cancelable: true,
+    }));
+    developerButton.dispatchEvent(new gateWin.KeyboardEvent("keyup", {
+      key: "Alt", code: "AltRight", bubbles: true,
+    }));
+    assert(!developerButton.hidden, "Rechte Alt-Taste wird auch ohne AltGraph-Meldung erkannt");
+    developerButton.click();
+    assert(gateDoc.getElementById("lockedTitle") && !gateDoc.getElementById("htmlEditor") &&
+      gateDoc.getElementById("developerModeNotice").hidden && localStorage.getItem(STORAGE_KEY) === beforeDeveloperMode,
+      "Deaktivieren stellt reguläre Sperren und Punktestand wieder her, auch auf einer offenen Vorschau");
+    gateProfile.close();
     await gateGo("#lesson/l3");
     assert(
       gateDoc.querySelector("#lockedTitle") &&

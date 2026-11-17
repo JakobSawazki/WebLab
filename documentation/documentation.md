@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.49.3** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.50.0** · Status: **lokal geprüft; Veröffentlichung über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -322,6 +322,14 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.50.0: Verschiebbare Seitenleiste und Entwickler-Modus
+
+Die Trennlinie zwischen Seitenmenü und Inhalt lässt sich am Desktop ziehen. Mit Tastaturfokus ändern Links/Rechts die Breite, mit Umschalt in größeren Schritten; Doppelklick oder Enter stellt die Standardbreite wieder her. Die Einstellung bleibt im Browser gespeichert, auch wenn das Menü zwischenzeitlich eingeklappt ist. Kleine Fenster und das eingeklappte Menü zeigen keinen Ziehgriff.
+
+AltGr+S blendet im Lernprofil den Schalter „Entwickler-Modus“ ein und aus. Der Klick schaltet vorübergehenden Zugriff auf alle 16 Einheiten ein oder aus; die normale Freischaltkette bleibt unverändert. Der Modus ist im Seitenbereich sichtbar und pausiert formale Einheitenabschlüsse, sodass darüber keine XP oder EP vergeben werden. Der Schalter lässt sich ausblenden, ohne den Zugriff zu ändern. Beim Neuladen sind Schalter und Modus zurückgesetzt. Der Modus wird nicht im Profil gespeichert und ist kein Lehrkraft-Zugangsschutz.
+
+68 Node-Tests und 319 Browserprüfungen lokal bestanden. Geprüft sind Größenänderung, Obergrenze, Speicherung und Reset, AltGr im Profil, Zugriff auf alle 16 Einheiten und das Wiedersperren ohne Änderung des gespeicherten Lernstands. Zusätzlich im entpackten Offline-Paket in Edge Ziehen mit Pointer Capture, gespeicherte Breite und AltGr+S geprüft.
 
 ### 17.11.2026 – Codex – Version 1.49.3: Mit Notepad++ weiterarbeiten
 

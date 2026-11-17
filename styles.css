@@ -283,9 +283,53 @@ small,
   transform: none;
 }
 .app-shell {
+  --sidebar-default: 292px;
   display: grid;
-  grid-template-columns: 292px minmax(0, 1fr);
+  grid-template-columns: clamp(220px, var(--sidebar-width, var(--sidebar-default)), min(440px, 100vw - 540px)) minmax(0, 1fr);
   min-height: 100vh;
+}
+.sidebar-divider {
+  display: none;
+}
+@media (min-width: 761px) {
+  .page-column {
+    grid-area: 1 / 2;
+  }
+  :root[data-menu="expanded"] .sidebar-divider {
+    display: grid;
+    place-items: center;
+    grid-area: 1 / 2;
+    justify-self: start;
+    align-self: start;
+    position: sticky;
+    top: 0;
+    z-index: 11;
+    width: 15px;
+    height: 100vh;
+    transform: translateX(-50%);
+    cursor: col-resize;
+    touch-action: none;
+  }
+  .sidebar-divider span {
+    width: 7px;
+    height: 2.4rem;
+    border-radius: 6px;
+    border: 1px solid var(--metal-rim);
+    background: var(--metal-surface);
+  }
+  .sidebar-divider:hover span,
+  .sidebar-divider:focus-visible span,
+  :root[data-sidebar-dragging] .sidebar-divider span {
+    border-color: var(--brand);
+    background: var(--brand);
+  }
+  .sidebar-divider:focus-visible {
+    outline-offset: -2px;
+  }
+  :root[data-sidebar-dragging] {
+    cursor: col-resize;
+    user-select: none;
+  }
 }
 .sidebar {
   position: sticky;
@@ -638,6 +682,18 @@ html { scroll-padding-top: calc(var(--storage-offset, 0px) + 1rem); }
 }
 .storage-copy > div { min-width: 0; }
 .storage-status p { margin: 0; }
+.developer-mode-notice {
+  margin: 0;
+  padding: 0.5rem clamp(1rem, 2vw, 2rem);
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--amber);
+  font-size: 0.85rem;
+}
+#developerModeButton[aria-pressed="true"] {
+  border-color: var(--brand);
+  box-shadow: inset 0 0 0 1px var(--brand);
+}
 #storageMessage { font-weight: 600; }
 #storageDetail { margin-top: 0.35rem; }
 .storage-status[data-state="saved"] #storageSymbol { color: var(--green); }
@@ -1925,7 +1981,7 @@ dialog::backdrop {
 }
 @media (max-width: 1150px) {
   .app-shell {
-    grid-template-columns: 235px minmax(0, 1fr);
+    --sidebar-default: 235px;
   }
   .cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2436,6 +2492,7 @@ dialog::backdrop {
     color: #000;
   }
   .sidebar,
+  .sidebar-divider,
   .topbar-actions,
   #menuButton,
   .portal-footer,

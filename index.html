@@ -100,6 +100,12 @@
             aria-haspopup="dialog" aria-controls="versionDialog" hidden></button>
         </div>
       </aside>
+      <div id="sidebarDivider" class="sidebar-divider" role="separator" tabindex="0"
+        aria-label="Breite des Seitenmenüs" aria-orientation="vertical" aria-controls="sidebar"
+        aria-valuemin="220" aria-valuemax="440" aria-valuenow="292"
+        title="Menübreite ziehen oder mit ← und → ändern. Doppelklick setzt sie zurück.">
+        <span aria-hidden="true"></span>
+      </div>
       <div class="page-column">
         <header class="topbar">
           <div class="topbar-heading">
@@ -169,6 +175,9 @@
             <button type="button" id="storageRaw" class="button secondary" hidden>Vorhandene Rohdaten herunterladen</button>
           </div>
         </section>
+        <p id="developerModeNotice" class="developer-mode-notice" role="status" hidden>
+          Entwicklermodus aktiv · Alle Einheiten sind geöffnet. Abschlüsse und Punkte bleiben deaktiviert.
+        </p>
         <main id="mainContent" tabindex="-1"></main>
         <footer class="portal-footer">
           Designed by
@@ -283,7 +292,10 @@
           Kein Serverkonto. Sichere deinen Lernstand vor einem Gerätewechsel. XP
           und Erfahrungspunkte (EP) sind lokal erfasst und durch die Lehrkraft zu prüfen.
         </p>
-        <button class="button" type="submit">Profil speichern</button>
+        <div class="actions">
+          <button class="button" type="submit">Profil speichern</button>
+          <button class="button secondary" type="button" id="developerModeButton" aria-pressed="false" hidden>Entwickler-Modus</button>
+        </div>
       </form>
     </dialog>
     <dialog id="profileHelpDialog" aria-labelledby="profileHelpTitle">

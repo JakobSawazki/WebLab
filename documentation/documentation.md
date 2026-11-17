@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.56.2** · Status: **Veröffentlichung über GitHub Pages**.
+Version: **1.56.2** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -326,6 +326,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 ### 17.11.2026 – Codex – Version 1.56.2: Automatisch speichern ohne Hinweisleiste
 
 - Die Leiste erscheint auf allen Seiten nur bei einem Speicherfehler oder angehaltenem automatischem Speichern. Das automatische Speichern und der JSON-Export bleiben verfügbar. Nach einem erfolgreichen Wiederholungsversuch wandert der Fokus zum Sicherungssymbol.
+- Im bestehenden Offline-Ordner wurden die drei geänderten Programmdateien ausgetauscht. Die 28 Dateien stimmen mit dem Release überein. Lokal und auf GitHub bestanden 69 Node-Tests und 360 Browserprüfungen. Die öffentlichen Programmdateien stimmen mit dem geprüften Build überein. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44139221956) · [Offline-Release 1.56.2](https://github.com/JakobSawazki/WebLab/releases/tag/v1.56.2)
 
 ### 17.11.2026 – Codex – Version 1.56.1: Schmale Ansicht in Einheit 15
 

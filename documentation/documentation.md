@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.54.0** · Status: **Veröffentlichung über GitHub Pages**.
+Version: **1.54.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -328,6 +328,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 - Einheit 01 vergleicht eine HTML-Zeile und ihre Browserdarstellung. Neue Entwürfe starten mit einer Überschrift und einem Absatz. Im selben Live-Editor folgen drei einzelne Änderungen mit je einer Beobachtung. Freiwillige Vertiefung steht nach dem Kernauftrag.
 - Einheit 02 baut das Grundgerüst um den bisherigen Inhalt auf und lässt Dateiname, Tab-Titel und sichtbare Überschrift vergleichen. Einheit 03 führt Unterüberschriften vor weiteren Formatierungen ein. Einheit 09 beginnt mit einer einzelnen Farbregel, dann folgen Schrift und externe Datei.
 - Bestehende Entwürfe bleiben erhalten. Das freie Labor behält den vollständigen Startcode. Reihenfolge, Checks und Freischaltung verwenden die bisherigen IDs und Regeln.
+- Lokal und auf GitHub bestanden 68 Node-Tests sowie 337 Browserprüfungen. Das Offline-Paket wurde in Edge geöffnet, die öffentlichen Dateien mit dem geprüften Build abgeglichen. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44121448500) · [Offline-Release 1.54.0](https://github.com/JakobSawazki/WebLab/releases/tag/v1.54.0)
 
 ### 17.11.2026 – Codex – Version 1.53.0: Kopfzeile beim Scrollen
 

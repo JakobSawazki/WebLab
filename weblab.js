@@ -279,7 +279,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.49.0";
+const VERSION = "1.49.1";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -837,6 +837,7 @@ return {VERSION,groups,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.49.1", "Tastenkürzel für Sichern und Laden", "Alt+S sichert den Lernstand als Datei, Alt+O öffnet die Dateiauswahl. Die Symbole zeigen die Kürzel beim Darüberfahren an."],
     ["1.49.0", "Lernstand direkt sichern und laden", "Die Diskette speichert sofort eine JSON-Sicherung. Das Ordnersymbol öffnet die Dateiauswahl und übernimmt die gewählte WebLab-Sicherung."],
     ["1.48.0", "Anzeigeoptionen für WebLab", "Oben rechts lassen sich Schriftgröße, Schriftfarbe und Hintergrund einstellen. Reset stellt das Standarddesign wieder her."],
     ["1.47.0", "Versionsverlauf in WebLab", "Die Versionsnummer unten links öffnet eine Übersicht der bisherigen Änderungen, auch offline."],
@@ -6207,6 +6208,16 @@ function chooseBackup() {
 }
 $("#backupButton").onclick = () => backup();
 $("#loadBackupButton").onclick = chooseBackup;
+document.addEventListener("keydown", (event) => {
+  if (event.defaultPrevented || event.isComposing || !event.altKey ||
+      event.ctrlKey || event.metaKey || event.shiftKey || $("dialog[open]")) return;
+  const key = event.key.toLowerCase();
+  if (key !== "s" && key !== "o") return;
+  event.preventDefault();
+  if (event.repeat) return;
+  if (key === "s") backup();
+  else chooseBackup();
+});
 $("#chooseAnotherBackup").onclick = chooseBackup;
 importFile.oncancel = resetPendingImport;
 importFile.onchange = async (event) => {

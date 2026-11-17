@@ -710,6 +710,21 @@
       const backedUp = JSON.parse(await capturedBackup.text());
       assert(backedUp.state.drafts.lab.pages[0].html === largePage && !el("backupDialog").open,
         "Tatsächlicher JSON-Download erhält Unterseiten über der früheren 300000-Zeichen-Grenze");
+      capturedBackup = undefined;
+      el("htmlEditor").focus();
+      const saveShortcut = new win.KeyboardEvent("keydown", {
+        key: "s", altKey: true, bubbles: true, cancelable: true,
+      });
+      el("htmlEditor").dispatchEvent(saveShortcut);
+      assert(saveShortcut.defaultPrevented && capturedBackup &&
+        JSON.parse(await capturedBackup.text()).state.drafts.lab.pages[0].html === largePage &&
+        el("backupButton").title.includes("Alt+S") && el("backupButton").getAttribute("aria-keyshortcuts") === "Alt+S",
+        "Alt+S lädt auch aus dem Editor die aktuelle Sicherung herunter; der Tooltip nennt das Kürzel");
+      capturedBackup = undefined;
+      el("htmlEditor").dispatchEvent(new win.KeyboardEvent("keydown", {
+        key: "s", altKey: true, repeat: true, bubbles: true, cancelable: true,
+      }));
+      assert(!capturedBackup, "Gedrückthalten von Alt+S startet keine weiteren Downloads");
     } finally { win.URL.createObjectURL = createUrl; }
 
     // Finish an image read after changing files: it must not modify the new file.
@@ -1358,6 +1373,19 @@
     assert(pickerRequests === 1 && !pe("backupDialog").open &&
       localStorage.getItem(STORAGE_KEY) === beforeImport,
       "Ordnersymbol öffnet direkt die Dateiauswahl, ohne den Lernstand zu ändern");
+    const loadShortcut = (extra = {}) => new pw.KeyboardEvent("keydown", {
+      key: "o", altKey: true, bubbles: true, cancelable: true, ...extra,
+    });
+    const shortcut = loadShortcut();
+    pd.body.dispatchEvent(shortcut);
+    assert(shortcut.defaultPrevented && pickerRequests === 2 && !pe("backupDialog").open &&
+      pe("loadBackupButton").title.includes("Alt+O") && pe("loadBackupButton").getAttribute("aria-keyshortcuts") === "Alt+O",
+      "Alt+O öffnet die Dateiauswahl ohne Zwischendialog; der Tooltip nennt das Kürzel");
+    pd.body.dispatchEvent(loadShortcut({ ctrlKey: true }));
+    pe("optionsButton").click();
+    pe("displaySize").dispatchEvent(loadShortcut());
+    assert(pickerRequests === 2, "Alt+O bleibt bei Alt+Strg und in einem offenen Dialog ohne Aktion");
+    pe("optionsDialog").close();
     const selectBackup = file => backupInput.onchange({ target: { files: file ? [file] : [] } });
     const incomingRaw = { app: "WebLab", formatVersion: 3, state: incoming, exercisesSolved: ["l2-1"] };
     const originalSetItem = pw.Storage.prototype.setItem;
@@ -1367,7 +1395,7 @@
       localStorage.getItem(STORAGE_KEY) === beforeImport,
       "Übermäßig große Sicherungen werden vor dem Lesen abgewiesen und können keinen Stand ersetzen");
     pe("chooseAnotherBackup").click();
-    assert(pickerRequests === 2 && !pe("backupDialog").open, "Fehlerdialog führt direkt zur nächsten Dateiauswahl");
+    assert(pickerRequests === 3 && !pe("backupDialog").open, "Fehlerdialog führt direkt zur nächsten Dateiauswahl");
     try {
       pw.Storage.prototype.setItem = function(key, value) {
         if (key === STORAGE_KEY) throw new pw.DOMException("Test quota", "QuotaExceededError");

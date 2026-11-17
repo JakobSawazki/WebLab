@@ -1226,6 +1226,16 @@ function chooseBackup() {
 }
 $("#backupButton").onclick = () => backup();
 $("#loadBackupButton").onclick = chooseBackup;
+document.addEventListener("keydown", (event) => {
+  if (event.defaultPrevented || event.isComposing || !event.altKey ||
+      event.ctrlKey || event.metaKey || event.shiftKey || $("dialog[open]")) return;
+  const key = event.key.toLowerCase();
+  if (key !== "s" && key !== "o") return;
+  event.preventDefault();
+  if (event.repeat) return;
+  if (key === "s") backup();
+  else chooseBackup();
+});
 $("#chooseAnotherBackup").onclick = chooseBackup;
 importFile.oncancel = resetPendingImport;
 importFile.onchange = async (event) => {

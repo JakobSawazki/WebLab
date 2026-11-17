@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.56.5** · Status: **Veröffentlichung über GitHub Pages**.
+Version: **1.56.5** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -326,6 +326,7 @@ Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätz
 ### 17.11.2026 – Codex – Version 1.56.5: Logo öffnet den Anfang der Startseite
 
 - Ein normaler Klick auf das WebLab-Logo scrollt sofort zum Seitenanfang. Aus anderen Ansichten öffnet der vorhandene Link die Startseite. Auf der bereits offenen Startseite erhält der Hauptinhalt den Tastaturfokus. Klicks mit Zusatztasten behalten das übliche Linkverhalten.
+- Lokal und auf GitHub bestanden 368 Browserprüfungen, darunter der wiederholte Logo-Klick auf der Startseite und der Wechsel aus einer Einheit. GitHub bestätigt außerdem 69 Node-Tests. Die veröffentlichten Programmdateien entsprechen dem Build, die 28 Dateien der bestehenden Offline-Kopie dem Release. [GitHub Actions](https://github.com/JakobSawazki/WebLab/actions/runs/44172511041) · [Offline-Release 1.56.5](https://github.com/JakobSawazki/WebLab/releases/tag/v1.56.5)
 
 ### 17.11.2026 – Codex – Version 1.56.4: Dezente Trennleiste
 

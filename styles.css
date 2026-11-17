@@ -1704,6 +1704,12 @@ textarea#cssEditor {
   font: 1.5rem/1.35 Georgia, serif;
   overflow-wrap: anywhere;
 }
+.class-review {
+  margin-top: 1rem;
+}
+.class-review p:last-child {
+  margin-bottom: 0;
+}
 .practice-steps li {
   margin-bottom: 0.7rem;
 }

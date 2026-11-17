@@ -1,6 +1,6 @@
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 import { extensions } from "./extensions.js";
-export const VERSION = "1.54.0";
+export const VERSION = "1.55.0";
 export const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -51,7 +51,7 @@ export const lessons = [
     "Ich kann eine Überschrift und einen Absatz für meine erste Webseite schreiben.",
     "Der Browser ist das Programm, in dem du Webseiten ansiehst. Er liest deinen HTML-Code und zeigt zum Beispiel eine Überschrift an. HTML beschreibt, welche Aufgabe ein Text hat.",
     "<h1>Unser Schulgarten</h1>\n<p>Wir pflanzen <strong>gemeinsam</strong>.</p>",
-    "Schreibe zuerst deine Überschrift, dann einen Satz zu deinem Thema. Markiere zuletzt ein wichtiges Wort im Satz. Die Anleitung unten zeigt dir jeden Schritt einzeln.",
+    "Schreibe „Unser Schulgarten“ als Überschrift. Ergänze „Wir pflanzen gemeinsam Gemüse.“ und hebe „gemeinsam“ hervor.",
     "Der Absatz steht zwischen <p> und </p>. Setze <strong> und </strong> um ein Wort innerhalb des Absatzes.",
     "Welche Aufgabe hat HTML?",
     [
@@ -61,7 +61,7 @@ export const lessons = [
     ],
     0,
     [
-      "Ich kann im Code zeigen, welcher Text meine Überschrift und welcher mein Absatz ist.",
+      "Ich kann im Code zeigen, welcher Text die Überschrift und welcher der Absatz ist.",
       "Ich kann zeigen, wie ich ein wichtiges Wort im Absatz markiert habe.",
     ],
     [
@@ -69,13 +69,13 @@ export const lessons = [
         selector: "h1",
         text: 3,
         exclude: "Mein Webprojekt",
-        label: "Eigene Hauptüberschrift",
+        label: "Geänderte Hauptüberschrift",
       },
       {
         selector: "p",
         text: 25,
         exclude: "Hier entsteht meine Seite.",
-        label: "Eigener Absatz mit mindestens 25 Zeichen",
+        label: "Geänderter Absatz mit mindestens 25 Zeichen",
       },
       { selector: "p strong", text: 2, label: "Wichtiges Wort im Absatz" },
     ],
@@ -207,7 +207,7 @@ export const lessons = [
     "Ich kann ein Bild und seinen Zweck beschreiben.",
     'img ist ein leeres Element. src gibt die Datei an, alt beschreibt die relevante Bildinformation für Menschen, die das Bild nicht sehen. Bei rein dekorativen Bildern ist alt="" passend. width und height legen die Ausgangsgröße fest. Bewahre eigene Bilder im Unterordner bilder auf. In diesem Labor kannst du ein lokales Bild laden: Es wird als Datenadresse in den Entwurf eingebettet, ohne Upload.',
     '<img src="bilder/beet.jpg" alt="Drei frisch bepflanzte Hochbeete" width="640" height="360">',
-    "Lade über „Bild einfügen“ ein eigenes Bild und ergänze einen passenden Alternativtext. Gib width und height an. Erkläre bei der Selbstkontrolle, welcher relative Dateipfad außerhalb des Labors sinnvoll wäre.",
+    "Lade über „Bild einfügen“ den gemeinsamen Beetplan und ergänze einen passenden Alternativtext. Gib width und height an. Erkläre bei der Selbstkontrolle, welcher relative Dateipfad außerhalb des Labors sinnvoll wäre.",
     "Beschreibe die Information, nicht nur „Bild“. Der Bildknopf fügt ein img mit Datenadresse ein.",
     "Was beschreibt alt bei einem informativen Bild?",
     [
@@ -217,7 +217,7 @@ export const lessons = [
     ],
     2,
     [
-      "Ich besitze die Rechte an meinem Bild.",
+      "Ich kann die Herkunft des Beetplans nennen.",
       "Ich kann src und alt unterscheiden und einen relativen Bildpfad nennen.",
     ],
     [
@@ -271,8 +271,8 @@ export const lessons = [
     "Audio und Video",
     "Ich kann Medien mit einer Bedienung einbinden.",
     "audio und video binden Mediendateien ein. controls zeigt eine Bedienleiste. source benennt eine Quelle mit ihrem Medientyp. Für gesprochene Inhalte brauchst du eine zugängliche Textalternative; Videos können Untertitel über track erhalten. Automatisches Abspielen stört häufig. Die Laborvorschau lädt aus Datenschutzgründen keine entfernten Medien. Teste deine eigenen Dateien nach dem Export lokal.",
-    '<video controls width="480">\n <source src="medien/garten.mp4" type="video/mp4">\n Dein Browser unterstützt dieses Video nicht.\n</video>\n<p>Textfassung: Wir zeigen die Aussaat.</p>',
-    "Binde ein video mit controls und source ein. Ergänze eine sichtbare Textfassung als Absatz mit mindestens 25 Zeichen. Plane eine eigene lokale Mediendatei und teste den Pfad nach dem Export.",
+    '<video controls width="480">\n <source src="medien/aussaat.webm" type="video/webm">\n Dein Browser unterstützt dieses Video nicht.\n</video>\n<p>Textfassung: Wir zeigen die Aussaat.</p>',
+    "Binde ein video mit controls und source ein. Ergänze eine sichtbare Textfassung als Absatz mit mindestens 25 Zeichen. Nutze den gemeinsamen Aussaat-Clip und teste den Pfad nach dem Export.",
     "controls ist ein boolesches Attribut. Schreibe eine echte Inhaltszusammenfassung, nicht nur „Video“.",
     "Warum ergänzt du eine Textfassung?",
     [
@@ -283,12 +283,12 @@ export const lessons = [
     1,
     [
       "Ich habe die Medienbedienung erklärt.",
-      "Ich werde die eigene Datei im lokalen Projektordner testen.",
+      "Ich habe den gemeinsamen Clip im lokalen Projektordner getestet.",
     ],
     [
       {
-        selector: 'video[controls] source[src][type="video/mp4"]',
-        label: "Bedienbares Video mit MP4-Quelle",
+        selector: 'video[controls] source[src]:is([type="video/mp4"], [type="video/webm"])',
+        label: "Bedienbares Video mit WebM- oder MP4-Quelle",
       },
       {
         selector: "p",
@@ -511,7 +511,7 @@ export const lessons = [
     "Ich entwickle selbständig eine vollständige Webseite.",
     "Verbinde die erlernten Bausteine zu einer eigenen Informationswebseite. Wähle ein überschaubares Thema: Verein, Schulprojekt, Hobby oder eine erfundene Initiative. Passend zum bisherigen Unterrichtsprojekt kannst du ein Thema aus BPE3 erklären, etwa Client-Server, WLAN oder Datenschutz. Dokumentiere dabei auch verwendete KI-Hilfen. Entwickle mindestens zwei verknüpfte Seiten mit gemeinsamer externer CSS-Datei. Nutze eine begründete Auswahl aus Bildern, Listen und Tabellen. Erkläre deine Entscheidungen und zeige, dass du den Code selbst verändern kannst.",
     "<!-- Plane → Entwickle → Teste → Verbessere → Präsentiere -->",
-    "Arbeite in der Werkstatt dieser Einheit an deinem übernommenen Projekt weiter. Falls kontakt.html noch fehlt, lege sie mit „+ Unterseite“ oder nach dem Export in Notepad++ an. Ergänze auf beiden Seiten Navigation und Rücklink. Füge Bild, Liste, sinnvolle Tabelle und Quellenangaben hinzu. Exportiere das Projekt-ZIP mit allen Seiten und style.css. Entpacke es, teste alle Dateien gemeinsam und präsentiere sie auf der geschützten Unterrichtsplattform.",
+    "Beginne mit dem Grundgerüst in dieser Werkstatt und gib der Seite dein eigenes Thema. Lege kontakt.html mit „+ Unterseite“ oder nach dem Export in Notepad++ an. Ergänze auf beiden Seiten Navigation und Rücklink. Füge Bild, Liste, sinnvolle Tabelle und Quellenangaben hinzu. Exportiere das Projekt-ZIP mit allen Seiten und style.css. Entpacke es, teste alle Dateien gemeinsam und präsentiere sie auf der geschützten Unterrichtsplattform.",
     "Die automatische Prüfung kontrolliert nur Bausteine der Startseite. Eigenständigkeit, Qualität, Unterseite, Links und Veröffentlichung werden im Gespräch geprüft.",
     "Wann ist dein Projekt bereit zur Präsentation?",
     [
@@ -549,6 +549,7 @@ export const lessons = [
         label: "Gemeinsame Gestaltung",
       },
     ],
+    page("<!-- Hier beginnt deine eigene Webseite. -->"),
   ),
 ];
 export const byId = (id) => lessons.find((l) => l.id === id);

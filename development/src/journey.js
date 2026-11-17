@@ -1,175 +1,182 @@
 import { lessons } from "./content.js";
 import { copyDraft } from "./pages.js";
 
-// Each step adds to the same student-chosen website; no completed solutions.
+// Gemeinsame Arbeit am Schulgarten, danach ein eigenständiges Projekt.
 const stages = [
   [
-    "Du brauchst noch keine HTML-Kenntnisse. Wähle ein Thema, das du auf deiner eigenen Webseite vorstellen möchtest.",
-    "Du gibst deiner Webseite einen Namen und schreibst ihren ersten Inhalt.",
+    "Die Garten-AG möchte neuen Schülerinnen und Schülern ihren Schulgarten zeigen. Die Klasse baut dafür eine Informationsseite.",
+    "Wir schreiben die erste Überschrift und den ersten Absatz.",
     [
-      "Suche im HTML-Editor die Zeile mit <h1>. Ersetze nur den Text „Mein Webprojekt“ durch dein Thema. Lass <h1> und </h1> stehen. Schau in die Vorschau: Dort steht jetzt deine Überschrift.",
-      "Suche danach die Zeile mit <p>. Ersetze „Hier entsteht meine Seite.“ durch einen ganzen Satz zu deinem Thema. Schreibe mindestens 25 Zeichen. In der Vorschau steht der Satz unter der Überschrift.",
-      "Wähle ein wichtiges Wort in deinem Satz. Tippe <strong> direkt davor und </strong> direkt dahinter. Schau nach, ob das Wort jetzt fett erscheint. Klicke dann auf „Auftrag prüfen“.",
+      "Ändere zwischen <h1> und </h1> nur den Text zu „Unser Schulgarten“. Schau in die Live-Vorschau.",
+      "Ersetze den Startsatz zwischen <p> und </p> durch „Wir pflanzen gemeinsam Gemüse.“. Vergleiche die Vorschau.",
+      "Setze <strong> direkt vor „gemeinsam“ und </strong> direkt danach. Prüfe deinen Auftrag."
     ],
-    "Du siehst deine eigene Überschrift, einen Absatz und ein fett hervorgehobenes Wort. Die Tags selbst erscheinen nicht auf der Seite.",
+    "Alle sehen dieselbe Überschrift und denselben Satz. Vergleicht, welches Wort fett ist. Zeigt im Code, wo die Überschrift beginnt und endet. Welche Zeichen haben euch beim Tippen Schwierigkeiten gemacht?"
   ],
   [
-    "Du kannst bereits eine Überschrift und einen Absatz schreiben.",
-    "Du ordnest deinen bisherigen Inhalt in das HTML-Grundgerüst ein.",
+    "Überschrift und Absatz sind schon da. Jetzt machen wir daraus eine vollständige HTML-Datei.",
+    "Wir setzen den vorhandenen Inhalt in ein Grundgerüst.",
     [
-      "Sieh im HTML-Editor nach, ob dein Code mit <!doctype html> beginnt. Fehlt das Grundgerüst, tippe es aus dem Beispiel ab. Setze deine vorhandene Überschrift und deinen Absatz an die Stelle der Beispielüberschrift zwischen <body> und </body>.",
-      "Vergib zwischen <title> und </title> einen eigenen Tab-Titel. Zum Vergleichen darf er etwas anders lauten als deine sichtbare Überschrift.",
-      "Exportiere index.html und öffne sie im Browser. Vergleiche den Browser-Tab mit der sichtbaren Überschrift.",
+      "Tippe das Grundgerüst aus dem Beispiel ab, falls es noch fehlt. Setze die Überschrift und den Satz aus Einheit 01 zwischen <body> und </body>.",
+      "Schreibe „Garten-AG unserer Schule“ zwischen <title> und </title>. Behalte „Unser Schulgarten“ als sichtbare Überschrift.",
+      "Speichere index.html aus der Werkstatt und öffne die Datei im Browser."
     ],
-    "Der title steht im Browser-Tab; die h1 steht auf der Seite. Eine Änderung im head erzeugt keinen neuen Absatz im body.",
+    "Vergleicht „Garten-AG unserer Schule“ im Browser-Tab und „Unser Schulgarten“ auf der Seite. Zeigt die beiden Stellen im Code. Wofür brauchen wir UTF-8?"
   ],
   [
-    "Deine Seite hat ein Grundgerüst und erste eigene Inhalte.",
-    "Du machst aus deinem Text zwei verständliche Themenabschnitte.",
+    "Unsere Seite hat ein Grundgerüst und eine Hauptüberschrift.",
+    "Wir gliedern den Schulgarten in zwei Abschnitte.",
     [
-      "Überlege zwei Unterthemen zu deiner eigenen Webseite.",
-      "Ergänze im body je eine h2 und einen Absatz. Behalte deine h1 bei und betone eine Stelle mit em.",
-      "Lies die Vorschau von oben nach unten. Erkennst du Thema und Unterthemen ohne den Code?",
+      "Füge unter dem ersten Absatz eine h2 mit dem Text „Unsere Ideen“ ein. Schreibe darunter den Absatz „Wir bauen Gemüse und Kräuter an.“.",
+      "Ergänze die zweite h2 „Mitmachen“ und den Absatz „Jeden Mittwoch treffen wir uns im Garten.“.",
+      "Setze <em> und </em> um „Mittwoch“. Prüfe die Reihenfolge der Abschnitte in der Vorschau."
     ],
-    "Eine Hauptüberschrift und zwei Unterüberschriften gliedern deine Seite. Absätze sind getrennt, em wird normalerweise kursiv angezeigt.",
+    "Vergleicht die Reihenfolge der Überschriften und die Betonung von „Mittwoch“. Erklärt am gemeinsamen Beispiel, wann eine h2 sinnvoll ist."
   ],
   [
-    "Du kannst deinen Inhalt mit Überschriften und Absätzen gliedern.",
-    "Du ergänzt Materialien oder Merkmale und eine passende Schrittfolge.",
+    "Unter „Unsere Ideen“ und „Mitmachen“ stehen bereits zwei Absätze.",
+    "Wir listen Material und Arbeitsschritte auf.",
     [
-      "Wähle drei Dinge, die zu deinem Thema gehören, und drei Schritte eines Ablaufs.",
-      "Füge eine ul und eine ol im body hinzu. Schreibe jeden Eintrag in ein li.",
-      "Vertausche zwei Schritte und beobachte die automatische Nummerierung.",
+      "Ergänze im Abschnitt „Unsere Ideen“ eine ungeordnete Liste (ul) mit Erde, Samen und Gießkanne.",
+      "Ergänze im Abschnitt „Mitmachen“ eine geordnete Liste (ol) mit „Beet vorbereiten“, „Samen aussäen“ und „Beet gießen“.",
+      "Vertausche probeweise zwei Arbeitsschritte und beobachte die Nummern. Stelle dann die vorgegebene Reihenfolge wieder her."
     ],
-    "Die ul zeigt Aufzählungszeichen, die ol nummeriert die Schritte. Deine bisherigen Texte bleiben erhalten.",
+    "Vergleicht die drei Materialien und die Schritte 1 bis 3. Warum braucht nur der Ablauf eine feste Reihenfolge?"
   ],
   [
-    "Deine Webseite enthält Texte und Listen.",
-    "Du machst Abschnitte und weitere Seiten über Links erreichbar.",
+    "Der Schulgarten hat Abschnitte und Listen. Jetzt sollen Besucher ihre Ziele schnell finden.",
+    "Wir verlinken einen Abschnitt, eine Unterseite und eine Beispieladresse.",
     [
-      "Ergänze einen Link zu kontakt.html und einen HTTPS-Link mit verständlichem Text.",
-      "Gib einer h2 die id ideen und ergänze davor den Link mit href #ideen.",
-      "Teste den Sprunglink in der Vorschau. kontakt.html kannst du mit „+ Unterseite“ oder nach dem Export in Notepad++ anlegen. Teste den relativen Link im entpackten Projekt.",
+      "Gib „Unsere Ideen“ die id ideen. Füge nach der Hauptüberschrift einen Link mit href=\"#ideen\" und dem Text „Zu unseren Ideen“ ein.",
+      "Lege über „+ Unterseite“ kontakt.html an. Setze dort die sichtbare Überschrift „Kontakt zur Garten-AG“ und einen Link „Zur Startseite“ zu index.html. Auf der Startseite ergänzt du den Link „Kontakt“ zu kontakt.html.",
+      "Ergänze auf der Startseite den Link „Beispielseite im Internet“ zu https://example.org/. Entpacke das Projekt-ZIP und teste Sprunglink, Hin- und Rücklink im Browser."
     ],
-    "Ein Sprunglink führt zum passenden Abschnitt. Externe und relative Ziele prüfst du im exportierten Projekt im Browser.",
+    "Zeigt, welcher Link mit # beginnt, welcher nur einen Dateinamen hat und welcher mit https:// beginnt. Prüft gemeinsam, ob Kontaktseite und Rückweg im entpackten Projekt funktionieren."
   ],
   [
-    "Du kennst href und relative Pfade für Links.",
-    "Du ergänzt ein eigenes Bild und beschreibst seine Information.",
+    "Du kennst bereits die Zieladresse eines Links. Ein Bild hat ebenfalls eine Quelle.",
+    "Wir fügen denselben Beetplan mit Alternativtext ein.",
     [
-      "Wähle ein eigenes Bild, das zu deinem Seitenthema passt, und füge es über den Bildknopf ein.",
-      "Suche das neue img im HTML. Ersetze den Platzhalter im alt und kontrolliere width und height.",
-      "Vergleiche Bildgröße und Text in der Vorschau. Überlege den Dateipfad für den Bildordner in deinem Projekt.",
+      "Lade den Beetplan über den Link unter der Anleitung herunter. Füge ihn über „Bild einfügen“ unter „Unsere Ideen“ ein.",
+      "Setze als alt-Text „Zwei Beete: Radieschen links, Bohnen rechts.“. Prüfe am neuen img-Element, ob width und height eingetragen sind.",
+      "Vergleiche Bild und Beschreibung. Nenne bilder/beetplan.png als möglichen Pfad, wenn das Bild in einem Ordner neben index.html abgelegt wird."
     ],
-    "Dein Bild erscheint in der Seite. alt ist eine Textalternative, keine Bildunterschrift; du kontrollierst ihn im Code.",
+    "Vergleicht den Beetplan und den alt-Text im Code. Erklärt, warum der Text auch ohne das Bild verrät, wo Radieschen und Bohnen wachsen."
   ],
   [
-    "Du kannst Texte, Listen, Links und ein Bild in deine Seite einfügen.",
-    "Du ergänzt zusammengehörige Daten als Tabelle.",
+    "Der Beetplan zeigt Radieschen und Bohnen. Jetzt vergleichen wir ihre Pflanzzeiten.",
+    "Wir stellen zwei Beispieldaten in einer Tabelle dar.",
     [
-      "Wähle zwei Spalten für dein Thema, zum Beispiel Angebot und Termin.",
-      "Baue table mit caption, einer Kopfzeile und zwei Datenzeilen. Nutze th mit scope und td.",
-      "Zähle in der Vorschau die Zellen jeder Zeile. Die Tabelle benötigt noch keine dekorativen Rahmen.",
+      "Setze unter den Beetplan eine Tabelle mit der Beschriftung „Pflanzzeiten“ (caption).",
+      "Schreibe die Kopfzeile „Pflanze“ und „Monat“ als th mit scope=\"col\". Ergänze die Datenzeilen „Radieschen | April“ und „Bohnen | Mai“ mit td-Zellen.",
+      "Lies die Tabelle in der Vorschau. In jeder Zeile sollen genau zwei Zellen stehen."
     ],
-    "Deine Daten stehen in zwei Spalten. Die Kopfzellen heben sich hervor; fehlende Rahmen sind kein HTML-Fehler.",
+    "Vergleicht Tabellenbeschriftung, Spaltenköpfe und beide Datenzeilen. Zeigt im Code je ein Beispiel für th und td."
   ],
   [
-    "Du kannst Bilder und tabellarische Daten einbinden.",
-    "Du ergänzt ein Medium mit Bedienung und einer Textalternative.",
+    "Bild und Tabelle sind fertig. Ein kurzer Clip zeigt zusätzlich die Arbeitsschritte.",
+    "Wir binden einen gemeinsamen Clip mit Textfassung ein.",
     [
-      "Lies das Video-Beispiel und übertrage die Struktur auf ein passendes Medium zu deinem Thema.",
-      "Ergänze controls, source mit Dateipfad und Medientyp sowie einen erklärenden Text.",
-      "Exportiere das Projekt, lege deine Mediendatei im angegebenen Ordner ab und teste sie im Browser.",
+      "Lade den Clip zur Aussaat unter dieser Anleitung herunter. Setze nach den Arbeitsschritten ein video mit controls ein.",
+      "Verwende in source den Pfad medien/aussaat.webm und type=\"video/webm\". Schreibe darunter „Textfassung: Beet vorbereiten, Samen aussäen, Beet gießen.“ als Absatz.",
+      "Entpacke dein Projekt-ZIP. Lege dort den Ordner medien an, speichere aussaat.webm darin und teste den Clip in index.html."
     ],
-    "Im Labor können Bedienelemente erscheinen, relative Mediendateien spielen dort nicht ab. Den tatsächlichen Film oder Ton prüfst du im Projektordner.",
+    "Vergleicht die Bedienleiste und die Textfassung. Spielt den Clip im entpackten Projekt ab. Prüft gemeinsam den Pfad, falls er bei jemandem fehlt."
   ],
   [
-    "Deine HTML-Seite enthält inzwischen mehrere Inhaltsbausteine.",
-    "Du trennst zum ersten Mal Inhalt und Gestaltung in zwei Dateien.",
+    "Unser HTML hat jetzt mehrere Inhalte. Mit CSS ändern wir ihr Aussehen.",
+    "Wir färben die Überschrift und verbinden zwei Dateien.",
     [
-      "Öffne in der Werkstatt den Reiter style.css. Tippe als erste Regel h1 { color: navy; } ein. Schau, ob sich die Farbe der Hauptüberschrift ändert.",
-      "Ersetze navy durch darkgreen und beobachte die Änderung. Schreibe dann in einer neuen Zeile die zweite Regel: body { font-family: Arial, sans-serif; }.",
-      "Wechsle zu index.html und ergänze die link-Zeile aus dem Beispiel im head. Lade das Projekt-ZIP herunter, entpacke es und öffne index.html im Browser. Prüfe, ob die Überschrift dort dieselbe Farbe hat.",
+      "Öffne style.css in der Werkstatt und tippe h1 { color: navy; }. Beobachte die Überschrift.",
+      "Ersetze navy durch darkgreen. Ergänze body { font-family: Arial, sans-serif; } in einer neuen Zeile.",
+      "Füge im HTML-Kopf die link-Zeile aus dem Beispiel ein. Öffne index.html aus dem entpackten Projekt und prüfe, ob die Farbe gleich bleibt."
     ],
-    "Der Inhalt bleibt gleich, seine Darstellung verändert sich. Die externe CSS-Verknüpfung prüfst du zusätzlich im exportierten Projekt.",
+    "Vergleicht die dunkelgrüne Überschrift. Zeigt gemeinsam, welche Datei den Text enthält, welche die Farbe festlegt und wie die Dateien verbunden sind."
   ],
   [
-    "Deine Seite verwendet eine eigene CSS-Datei.",
-    "Du gestaltest mehrere Hinweise gemeinsam und einen Abschnitt gezielt.",
+    "Eine einfache CSS-Regel färbt die Überschrift bereits dunkelgrün.",
+    "Wir gestalten zwei Hinweise gemeinsam und die Überschrift gezielt.",
     [
-      "Gib zwei eigenen Absätzen die Klasse hinweis und deiner Hauptüberschrift die id start.",
-      "Schreibe im CSS Regeln für .hinweis und #start. Vergleiche diese mit einem Tagselektor wie p.",
-      "Ändere die gemeinsame Hinweisfarbe. Prüfe, welche Elemente davon betroffen sind.",
+      "Gib den Absätzen „Wir bauen Gemüse und Kräuter an.“ und „Jeden Mittwoch treffen wir uns im Garten.“ jeweils class=\"hinweis\".",
+      "Gib der h1 id=\"start\". Schreibe .hinweis { color: darkgreen; } und #start { text-align: center; } in style.css.",
+      "Ändere probeweise nur die Farbe der Hinweise. Prüfe, welche Texte sich ändern, und stelle darkgreen wieder her."
     ],
-    "Beide Hinweise reagieren auf eine Klassenregel; die ID-Regel trifft dein einzelnes Element. Ein Punkt oder # gehört zum CSS-Selektor.",
+    "Vergleicht die zwei grünen Absätze und die mittige Überschrift. Warum hat die Klasse im CSS einen Punkt und die ID eine Raute?"
   ],
   [
-    "Du kannst Elemente mit Tag-, Klassen- und ID-Selektoren auswählen.",
-    "Du machst deine gesamte Webseite gut lesbar.",
+    "Die gemeinsamen Hinweise und die Hauptüberschrift lassen sich bereits gezielt gestalten.",
+    "Wir geben der Schulgartenseite ein lesbares Schriftbild.",
     [
-      "Lege für body Textfarbe, Hintergrund, Schriftfamilie, Schriftgröße und Zeilenhöhe fest.",
-      "Ergänze eine passende Textausrichtung für h1. Ändere jeweils nur einen Wert.",
-      "Lies deine Seite in normaler und schmaler Vorschau. Prüfe Kontrast und Lesbarkeit.",
+      "Ergänze in der body-Regel color: #182c35; und background-color: #f4f7f6;. Behalte Arial, sans-serif als Schriftfamilie.",
+      "Ergänze font-size: 1rem; und line-height: 1.6;. Füge in der h1-Regel text-align: center; hinzu.",
+      "Vergleiche normale Breite und Handyansicht. Ändere probeweise line-height auf 1.0 und stelle anschließend 1.6 wieder her."
     ],
-    "Du erkennst die Wirkung jeder Eigenschaft einzeln. Text und Hintergrund sind unterscheidbar, längere Absätze bleiben gut lesbar.",
+    "Vergleicht Hintergrund, Text und Zeilenabstand. Erklärt, welche Änderung beim Lesen eines längeren Absatzes hilft."
   ],
   [
-    "Schrift und Farben deiner Webseite passen bereits zusammen.",
-    "Du gibst einem Inhaltsbereich Abstände, Rahmen und eine begrenzte Breite.",
+    "Die Schrift und die Farben der Schulgartenseite sind festgelegt.",
+    "Wir fassen die Ideen in einem Bereich mit Rahmen zusammen.",
     [
-      "Umschließe einen eigenen Abschnitt mit einem Element der Klasse karte.",
-      "Gestalte .karte mit padding, border, margin, max-width und box-sizing.",
-      "Ändere erst padding, dann margin. Vergleiche die Position des Textes zum Rahmen und zu den Nachbarelementen.",
+      "Umschließe den Bereich „Unsere Ideen“ samt zugehörigem Inhalt bis vor „Mitmachen“ mit <section class=\"karte\"> und </section>.",
+      "Gib .karte die Werte padding: 1rem; border: 1px solid darkgreen; margin: 1rem auto; max-width: 40rem; und box-sizing: border-box;.",
+      "Ändere probeweise nur padding. Stelle danach 1rem wieder her und prüfe die Karte in der Handyansicht."
     ],
-    "padding schafft Raum innerhalb des Rahmens, margin außerhalb. In der Handyansicht passt der Bereich in die verfügbare Breite.",
+    "Vergleicht Text, Rahmen und Abstand. Zeigt an derselben Karte, wo padding und wo margin sichtbar wird."
   ],
   [
-    "Du kannst Inhalt und Gestaltung deiner Seite aufbauen.",
-    "Du ordnest dein gewachsenes Projekt für eine konkrete Zielgruppe.",
+    "Die Inhalte sind fertig. Wir ordnen sie so, dass neue Schülerinnen und Schüler sich schnell zurechtfinden.",
+    "Wir gliedern die Startseite in Kopf, Navigation, Hauptinhalt und Fuß.",
     [
-      "Schreibe auf, für wen die Seite gedacht ist und was Besucher dort finden sollen.",
-      "Ordne vorhandene Inhalte in header, nav, main und footer ein. Vermeide eine zweite h1 und doppelte IDs.",
-      "Kontrolliere die Reihenfolge im Code und in der Vorschau. Passe Navigation und Texte an die Zielgruppe an.",
+      "Schreibe in deine Notizen die Zielgruppe „Neue Schülerinnen und Schüler“ und zeichne Start- und Kontaktseite als Skizze.",
+      "Verschiebe die h1 in header, die Links zu „Unseren Ideen“ und „Kontakt“ in nav und die Inhaltsabschnitte in main.",
+      "Ergänze am Anfang von main „Diese Seite zeigt neuen Schülerinnen und Schülern, wie sie in der Garten-AG mitmachen können.“ als Absatz. Setze unten einen footer mit „Schulprojekt Garten-AG“ ein."
     ],
-    "Die Seite bleibt lesbar und hat nachvollziehbare Bereiche. Semantische Tags erzeugen allein noch kein fertiges Layout.",
+    "Vergleicht die vier Bereiche anhand eures Codes. Wo sucht ein neuer Schüler nach dem Kontakt? Was hat sich in der sichtbaren Seite geändert?"
   ],
   [
-    "Dein Projekt hat eine Zielgruppe und eine Seitenstruktur.",
-    "Du prüfst die Herkunft deiner Inhalte und ergänzt nachvollziehbare Quellen.",
+    "Die Schulgartenseite hat eine klare Zielgruppe und eine übersichtliche Struktur.",
+    "Wir dokumentieren die Herkunft des gemeinsamen Materials.",
     [
-      "Prüfe deine eigenen Bilder, Texte und Medien: selbst erstellt oder mit passender Nutzungserlaubnis?",
-      "Ergänze im footer einen Abschnitt zu Quellen und Rechten mit konkreten Angaben zu deinem Projekt.",
-      "Lies die Quellenangaben wie ein Besucher. Besprich mit der Lehrkraft, welche Anbieterinformationen für die geplante Veröffentlichung nötig sind.",
+      "Ergänze im footer die h2 „Quellen und Rechte“.",
+      "Schreibe darunter „Beetplan und Aussaat-Clip: WebLab-Unterrichtsmaterial. Texte: gemeinsamer Unterrichtsentwurf.“.",
+      "Besprecht mit der Lehrkraft, welche Angaben für Material aus fremden Quellen und eine Veröffentlichung nötig wären."
     ],
-    "Die Herkunft deiner Inhalte ist sichtbar. Ein allgemeiner Disclaimer ersetzt keine Erlaubnis für fremde Bilder oder Texte.",
+    "Vergleicht die Quellenzeile. Welche zusätzlichen Informationen bräuchtet ihr für ein fremdes Foto? Wo würdet ihr eine passende Erlaubnis nachschlagen?"
   ],
   [
-    "Du hast eine gestaltete Seite mit Quellenangaben.",
-    "Du testest die echten Dateien systematisch außerhalb des Labors.",
+    "Die gestaltete Schulgartenseite ist fertig und hat Quellenangaben.",
+    "Wir testen die exportierten Dateien mit demselben Protokoll.",
     [
-      "Exportiere das Projekt-ZIP und entpacke es in einen Projektordner. Vorhandene Unterseiten sind enthalten. Ergänze fehlende Seiten in Notepad++ sowie Bilder und Medien an ihren relativen Pfaden.",
-      "Öffne index.html im Browser. Teste Links, Bilder und eine schmale Fensterbreite; bearbeite gefundene Fehler in Notepad++.",
-      "Dokumentiere drei konkrete Testergebnisse als Liste auf deiner Seite. Lade korrigierte HTML-/CSS-Dateien bei Bedarf wieder hier hinein.",
+      "Entpacke das Projekt-ZIP. Lege den Aussaat-Clip wieder unter medien/aussaat.webm ab. Öffne index.html im Browser.",
+      "Prüfe nacheinander den Hin- und Rücklink, den Aussaat-Clip und die Karte bei schmaler Fensterbreite. Behebe Fehler in Notepad++.",
+      "Schreibe ins Testprotokoll auf der Startseite eine ol mit drei Einträgen. Nenne darin je Test und tatsächliches Ergebnis. Nutze für die Übertragung das von der Lehrkraft vorgegebene geschützte Ziel."
     ],
-    "Die exportierte Seite funktioniert mit ihrer Ordnerstruktur. Ein Häkchen im Labor ersetzt diesen Dateitest nicht.",
+    "Vergleicht die Ergebnisse der gleichen drei Tests. Haltet einen typischen Fehler und seinen Lösungsweg fest. Welche Fragen sind vor dem eigenen Projekt offen?"
   ],
   [
-    "Du hast alle Bausteine geübt und dein Projekt im Browser getestet.",
-    "Du führst dein Projekt zu einer selbständig erklärbaren eigenen Webseite zusammen.",
+    "Du hast am Schulgarten eine vollständige Website aufgebaut und gemeinsam geprüft.",
+    "Jetzt planst, baust und präsentierst du eine Webseite zu deinem eigenen Thema.",
     [
-      "Vergleiche dein Projekt in der Werkstatt dieser Einheit mit dem Abschlussauftrag. Ergänze fehlende Inhalte passend zu deinem Thema.",
-      "Entpacke das Projekt-ZIP in einen eigenen Ordner. Öffne index.html, teste Hin- und Rücklink und kontrolliere Quellen und Gestaltung. Präsentiere deine Webseite.",
-      "Erkläre an deinem eigenen Code ein HTML-Element, eine CSS-Regel und einen relativen Pfad. Sichere zusätzlich deinen Lernstand als JSON und bewahre die Datei an einem Ort auf, an dem du sie wiederfindest.",
+      "Wähle ein Thema und notiere Zielgruppe, Ziel und zwei Seiten. Starte im neuen Entwurf dieser Einheit mit deinem eigenen Inhalt.",
+      "Entwickle index.html und kontakt.html mit Hin- und Rücklink und gemeinsamer style.css. Nutze den Abschlussauftrag als Checkliste.",
+      "Entpacke das Projekt-ZIP, teste Links und Darstellung, dokumentiere die Quellen und präsentiere deine Webseite. Erkläre ein HTML-Element, eine CSS-Regel und einen relativen Pfad."
     ],
-    "Deine eigene statische Webseite stellt ein klares Thema vor. Du kannst Aufbau und Gestaltung begründen und Änderungen selbst durchführen.",
+    "Du kannst erklären, für wen deine Seite gedacht ist, wie sie aufgebaut ist und wie du geprüft hast, dass sie funktioniert."
   ],
 ];
+
+const materials = {
+  l6: ["assets/beetplan.png", "Beetplan herunterladen"],
+  l8: ["assets/aussaat.webm", "Aussaat-Clip herunterladen"],
+};
 
 export const journey = Object.fromEntries(
   lessons.map((lesson, index) => [
     lesson.id,
     {
       previous: lessons[index - 1]?.id || null,
+      shared: index < lessons.length - 1,
+      material: materials[lesson.id],
       next: lessons[index + 1]?.id || null,
       recall: stages[index][0],
       addition: stages[index][1],
@@ -181,7 +188,8 @@ export const journey = Object.fromEntries(
 
 export function startingDraft(drafts, id) {
   if (drafts[id]) return copyDraft(drafts[id]);
-  const previous = journey[id]?.previous;
+  const step = journey[id];
+  const previous = step?.shared && step.previous;
   if (previous && drafts[previous]) return copyDraft(drafts[previous]);
   return { html: lessons.find((lesson) => lesson.id === id).starter, css: "" };
 }

@@ -914,7 +914,26 @@
     gateDoc.getElementById("lessonMenuButton").click();
     assert(gateDoc.querySelectorAll("#lessonMenu a").length === 16,
       "Das Lernpfadmenü öffnet im Entwicklermodus alle Einheiten");
+    await gateGo("#lesson/l6");
+    const beetplan = gateDoc.querySelector("#practice a[download]");
+    assert(beetplan?.getAttribute("href") === "assets/beetplan.png" && (await fetch(beetplan.href)).ok,
+      "Schulgarten: Klasse verwendet denselben bereitgestellten Beetplan");
+    await gateGo("#lesson/l8");
+    const aussaat = gateDoc.querySelector("#practice a[download]");
+    const video = document.createElement("video");
+    const playable = new Promise((resolve) => {
+      video.onloadedmetadata = () => resolve(video.videoWidth === 640 && video.videoHeight === 360);
+      video.onerror = () => resolve(false);
+    });
+    video.src = aussaat?.href || "";
+    video.preload = "metadata";
+    assert(aussaat?.getAttribute("href") === "assets/aussaat.webm" &&
+      await Promise.race([playable, new Promise(resolve => setTimeout(() => resolve(false), 3000))]),
+      "Schulgarten: bereitgestellter Aussaat-Clip kann als Video geladen werden");
     await gateGo("#lesson/l16");
+    assert(!gateDoc.getElementById("takePrevious") && !gateDoc.querySelector(".class-review") &&
+      gateDoc.getElementById("htmlEditor").value.includes("Hier beginnt deine eigene Webseite"),
+      "Abschlussprojekt: eigene Webseite startet im neuen Grundgerüst");
     const devComplete = gateDoc.getElementById("completeButton");
     assert(gateDoc.getElementById("htmlEditor") && devComplete?.disabled &&
       gateDoc.querySelectorAll(".journey-steps a").length === 16 &&
@@ -1005,6 +1024,11 @@
     }
     gateFrame.style.width = "360px";
     gateWin.scrollTo({ top: 0, behavior: "instant" });
+    const classReview = gateDoc.querySelector(".class-review");
+    classReview.querySelector("summary").click();
+    assert(classReview.open && classReview.textContent.includes("welches Wort fett ist") &&
+      gateDoc.getElementById("practice").textContent.includes("Wir pflanzen gemeinsam Gemüse."),
+      "Gemeinsamer Einstieg: fester Schulgarten-Auftrag und Vergleichsfrage zur Ergebnissicherung");
     const beginnerIntro = gateDoc.getElementById("first-html-title");
     const firstStarter = gateEditor.value;
     assert(firstStarter.split("\n").length === 2 && firstStarter.startsWith("<h1>") && firstStarter.includes("\n<p>") &&

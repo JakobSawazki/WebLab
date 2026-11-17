@@ -10,8 +10,8 @@ export const guidance = {
       "Farben und Gestaltung legt CSS fest; HTML bestimmt die Bedeutung der Inhalte.",
     ],
     tips: [
-      "Ersetze den Text zwischen <h1> und </h1> durch einen eigenen Projektnamen mit mindestens drei Zeichen.",
-      "Schreibe einen eigenen Satz zwischen <p> und </p>. Der Startsatz zählt nicht.",
+      "Setze „Unser Schulgarten“ zwischen <h1> und </h1>.",
+      "Setze „Wir pflanzen gemeinsam Gemüse.“ zwischen <p> und </p>.",
       "strong muss innerhalb des Absatzes stehen: <p>… <strong>Wort</strong> …</p>.",
     ],
     pitfalls: [

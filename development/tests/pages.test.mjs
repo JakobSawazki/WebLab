@@ -50,12 +50,12 @@ test("Unterseiten überstehen Sicherung und Laden; ältere Stände bleiben gült
 });
 
 test("Übernommene Entwürfe teilen keine Unterseiten mit der Vorlage", () => {
-  const drafts = { l15: { html: "a", css: "b", pages: [{ name: "kontakt.html", html: "k" }] } };
-  const next = startingDraft(drafts, "l16");
+  const drafts = { l14: { html: "a", css: "b", pages: [{ name: "kontakt.html", html: "k" }] } };
+  const next = startingDraft(drafts, "l15");
   next.pages[0].html = "geändert";
-  assert.equal(drafts.l15.pages[0].html, "k");
-  const copy = copyDraft(drafts.l15);
-  assert.notEqual(copy.pages, drafts.l15.pages);
+  assert.equal(drafts.l14.pages[0].html, "k");
+  const copy = copyDraft(drafts.l14);
+  assert.notEqual(copy.pages, drafts.l14.pages);
   assert.deepEqual(copyDraft({ html: "a", css: "" }), { html: "a", css: "" });
 });
 

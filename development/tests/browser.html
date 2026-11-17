@@ -1808,7 +1808,7 @@
         assert(storageElement("backupDialog").open && storageElement("storageStatus").dataset.unsaved === "false" &&
           storageElement("retrySave").hidden && storageElement("profileName").textContent === "MUS.MAX",
           "Speicherrueckmeldung: Fehlgeschlagener Import zeigt nach Rollback keinen verworfenen Entwurf als ungespeichert");
-        storageElement("backupDialog").close();
+        if (storageElement("backupDialog").open) storageElement("backupDialog").close();
         storageElement("livePreview").checked = false;
         const unsavedHtml = "<h1>Nur im geoeffneten Tab</h1>", unsavedCss = "h1 { color: teal; }";
         storageElement("htmlEditor").value = unsavedHtml;
@@ -1833,7 +1833,7 @@
         await prepareStorageImport();
         assert(storageElement("backupDialog").open && storageElement("storageStatus").dataset.unsaved === "true" && !storageElement("retrySave").hidden,
           "Speicherrueckmeldung: Import-Rollback erhaelt schon vorher ungespeicherte Arbeit");
-        storageElement("backupDialog").close();
+        if (storageElement("backupDialog").open) storageElement("backupDialog").close();
         storageElement("storageBackup").click();
         const rescuedStorageState = JSON.parse(await storageDownloads.at(-1).text()).state;
         assert(rescuedStorageState.profile.className === "EG-1" && rescuedStorageState.drafts.lab.html === unsavedHtml &&
@@ -1882,6 +1882,126 @@
         assert(fallbackStorageBackup.state.drafts.lab.html.includes("trotz Lesefehler") &&
           localStorage.getItem(STORAGE_KEY) === brokenStorageText && storageElement("storageStatus").dataset.state === "blocked" && storageElement("retrySave").hidden,
           "Speicherrueckmeldung: JSON rettet neue Arbeit bei Lesefehler und laesst den geschuetzten Originalbestand unangetastet");
+        // Solved mini-exercises use a separate key, but failed writes must
+        // still survive navigation, JSON backup and a later save attempt.
+        const solveFirstStorageExercise = () => {
+          const exercise = storageDoc.querySelector('.exercise[data-exercise="0"]');
+          exercise.open = true;
+          exercise.querySelector("textarea").value = "<h1>Unser Schulgarten</h1><p>Wir pflanzen <strong>Gemüse</strong></p>";
+          exercise.querySelector("textarea").dispatchEvent(new storageWin.Event("input", { bubbles: true }));
+          exercise.querySelector("[data-exercise-check]").click();
+          return exercise;
+        };
+        const failExerciseWrites = () => {
+          const originalWrite = storageWin.Storage.prototype.setItem;
+          storageWin.Storage.prototype.setItem = function (key, value) {
+            if (key === exerciseKey) throw new storageWin.DOMException("Test quota", "QuotaExceededError");
+            return originalWrite.call(this, key, value);
+          };
+        };
+        localStorage.setItem(exerciseKey, JSON.stringify(["l1-2"]));
+        await openStorageFrame(JSON.stringify(initialStorageState), "lesson/l1/1");
+        failExerciseWrites();
+        const solvedExercise = solveFirstStorageExercise();
+        assert(!solvedExercise.querySelector(".exercise-solved").hidden &&
+          storageElement("exerciseProgress").textContent.includes("2 von") &&
+          storageElement("storageStatus").dataset.unsaved === "true" &&
+          storageElement("storageMessage").textContent.includes("Übungsstand") &&
+          localStorage.getItem(exerciseKey) === JSON.stringify(["l1-2"]),
+          "Uebungsspeicher: Richtig geloeste Aufgabe bleibt sichtbar und meldet die fehlgeschlagene Speicherung");
+        solvedExercise.querySelector("[data-exercise-reset]").click();
+        await storageRoute("notes");
+        assert(storageElement("rulesTitle").parentElement.querySelectorAll("li").length === 2 &&
+          storageElement("storageStatus").dataset.unsaved === "true",
+          "Uebungsspeicher: Neu beginnen und Navigation erhalten die ungespeicherten Markierungen und Merksaetze");
+        await storageRoute("lab");
+        storageElement("htmlEditor").value = "<h1>Entwurf gespeichert, Übungen noch offen</h1>";
+        storageElement("htmlEditor").dispatchEvent(new storageWin.Event("input", { bubbles: true }));
+        assert(JSON.parse(localStorage.getItem(STORAGE_KEY)).drafts.lab.html.includes("Entwurf gespeichert") &&
+          storageElement("storageStatus").dataset.state === "error" && !storageElement("retrySave").hidden,
+          "Uebungsspeicher: Erfolgreiches Speichern des Hauptentwurfs verdeckt ausstehende Uebungsmarkierungen nicht");
+        storageElement("storageBackup").click();
+        const exercisesRescue = JSON.parse(await storageDownloads.at(-1).text());
+        assert(exercisesRescue.exercisesSolved.join(",") === "l1-2,l1-1" &&
+          exercisesRescue.state.drafts.lab.html.includes("Entwurf gespeichert") &&
+          storageElement("storageStatus").dataset.unsaved === "true",
+          "Uebungsspeicher: JSON enthaelt neue und alte Markierungen sowie den aktuellen Entwurf, ohne eine Speicherung vorzutäuschen");
+        restoreStorageWrite();
+        storageElement("retrySave").click();
+        assert(storageElement("storageStatus").hidden && storageElement("storageStatus").dataset.state === "ready" && storageElement("retrySave").hidden &&
+          localStorage.getItem(exerciseKey) === JSON.stringify(["l1-2", "l1-1"]),
+          "Uebungsspeicher: Wiederholen speichert die vollstaendige Markierungsliste und entfernt die Warnung");
+        await openStorageFrame(localStorage.getItem(STORAGE_KEY), "lesson/l1/1");
+        assert(storageElement("exerciseProgress").textContent.includes("2 von") &&
+          !storageDoc.querySelector('.exercise[data-exercise="0"] .exercise-solved').hidden,
+          "Uebungsspeicher: Erneutes Oeffnen erhaelt die erfolgreich wiederholten Markierungen");
+        // An explicit import replaces the marker list even if only that
+        // second write fails; the imported list remains recoverable in RAM.
+        failExerciseWrites();
+        storageElement("loadBackupButton").click();
+        await storageElement("importFile").onchange({ target: { files: [new storageWin.File([
+          JSON.stringify({ app: "WebLab", formatVersion: 3, state: initialStorageState, exercisesSolved: ["l2-1"] }),
+        ], "exercise-import.json", { type: "application/json" })] } });
+        const automaticExerciseBackup = JSON.parse(await storageDownloads.at(-1).text());
+        storageElement("storageBackup").click();
+        const importedExerciseBackup = JSON.parse(await storageDownloads.at(-1).text());
+        assert(automaticExerciseBackup.exercisesSolved.join(",") === "l1-2,l1-1" &&
+          importedExerciseBackup.exercisesSolved.join(",") === "l2-1" &&
+          storageElement("storageStatus").dataset.unsaved === "true" &&
+          localStorage.getItem(exerciseKey) === JSON.stringify(["l1-2", "l1-1"]),
+          "Uebungsspeicher: Import sichert den vorherigen Stand und haelt die neue Liste bei separatem Schreibfehler in der JSON-Sicherung");
+        restoreStorageWrite();
+        storageElement("retrySave").click();
+        assert(localStorage.getItem(exerciseKey) === JSON.stringify(["l2-1"]) &&
+          storageElement("storageStatus").hidden && storageElement("storageStatus").dataset.state === "ready",
+          "Uebungsspeicher: Importierte Markierungen lassen sich ohne erneutes Laden der Datei speichern");
+        localStorage.setItem(exerciseKey, JSON.stringify(["l1-2"]));
+        await openStorageFrame(JSON.stringify(initialStorageState), "lesson/l1/1");
+        failExerciseWrites();
+        solveFirstStorageExercise();
+        restoreStorageWrite();
+        await storageEventFrom(storageWin.localStorage, () => localStorage.setItem(exerciseKey, JSON.stringify(["l3-1"])));
+        storageElement("retrySave").click();
+        solveFirstStorageExercise();
+        storageElement("storageBackup").click();
+        const protectedExercises = JSON.parse(await storageDownloads.at(-1).text());
+        assert(storageElement("storageStatus").dataset.state === "blocked" && storageElement("retrySave").hidden &&
+          localStorage.getItem(exerciseKey) === JSON.stringify(["l3-1"]) &&
+          protectedExercises.exercisesSolved.join(",") === "l1-2,l1-1",
+          "Uebungsspeicher: Externe Aenderung schuetzt fremden Stand vor Wiederholen und weiterem Pruefen, eigener Stand bleibt sicherbar");
+        localStorage.setItem(exerciseKey, JSON.stringify(["l1-2"]));
+        await openStorageFrame(JSON.stringify(initialStorageState), "lesson/l1/1");
+        const blockedExerciseKeys = new Set([STORAGE_KEY, exerciseKey]),
+          originalCombinedWrite = storageWin.Storage.prototype.setItem;
+        storageWin.Storage.prototype.setItem = function (key, value) {
+          if (blockedExerciseKeys.has(key)) throw new storageWin.DOMException("Test quota", "QuotaExceededError");
+          return originalCombinedWrite.call(this, key, value);
+        };
+        storageElement("htmlEditor").value = "<h1>Entwurf und Übungen retten</h1>";
+        storageElement("htmlEditor").dispatchEvent(new storageWin.Event("input", { bubbles: true }));
+        solveFirstStorageExercise();
+        blockedExerciseKeys.delete(STORAGE_KEY);
+        storageElement("retrySave").click();
+        assert(JSON.parse(localStorage.getItem(STORAGE_KEY)).drafts.l1.html.includes("Entwurf und Übungen retten") &&
+          storageElement("storageStatus").dataset.state === "error" &&
+          storageElement("storageMessage").textContent.includes("Übungsstand") &&
+          localStorage.getItem(exerciseKey) === JSON.stringify(["l1-2"]),
+          "Uebungsspeicher: Teilweise erfolgreiche Wiederholung laesst die Warnung fuer den verbleibenden Speicherfehler bestehen");
+        blockedExerciseKeys.clear();
+        storageElement("retrySave").click();
+        assert(storageElement("storageStatus").hidden && storageElement("storageStatus").dataset.state === "ready" &&
+          localStorage.getItem(exerciseKey) === JSON.stringify(["l1-2", "l1-1"]),
+          "Uebungsspeicher: Zweite Wiederholung sichert die verbleibenden Markierungen ohne Verlust des Hauptentwurfs");
+        // Corrupt main state already blocks writes; a solved exercise must
+        // obey the same protection and can still travel in the JSON backup.
+        localStorage.setItem(exerciseKey, JSON.stringify(["l3-1"]));
+        await openStorageFrame(brokenStorageText, "lesson/l1/1");
+        solveFirstStorageExercise();
+        storageElement("storageBackup").click();
+        assert(localStorage.getItem(exerciseKey) === JSON.stringify(["l3-1"]) &&
+          storageElement("storageStatus").dataset.state === "blocked" &&
+          JSON.parse(await storageDownloads.at(-1).text()).exercisesSolved.includes("l1-1"),
+          "Uebungsspeicher: Schutz bei unlesbarem Hauptstand gilt auch fuer neue Markierungen, JSON rettet die neue Arbeit");
       } catch (error) {
         assert(false, "Speicherrueckmeldung: Unerwarteter Prueffehler: " + error.message);
       } finally {

@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-17", [
+    ["1.57.0", "Ein gemeinsamer Projektordner", "Die aktuelle Fassung startet direkt über index.html im gemeinsamen Projektordner. Übungsmarkierungen bleiben bei einem Speicherfehler im geöffneten Tab verfügbar und lassen sich erneut speichern."],
     ["1.56.6", "Menüschalter neben dem Logo", "Am Desktop sitzt der Schalter zum Ein- und Ausklappen neben dem WebLab-Logo in der Menüleiste. Auf schmalen Bildschirmen bleibt er in der Kopfzeile erreichbar."],
     ["1.56.5", "Mit dem Logo zum Seitenanfang", "Ein Klick auf das WebLab-Logo führt zur Startseite und scrollt ganz nach oben, auch wenn die Startseite bereits geöffnet ist."],
     ["1.56.4", "Dezente verschiebbare Trennleiste", "Ein schmaler, zurückhaltender Griff kennzeichnet die verstellbare Menübreite. Der Tastaturfokus hebt nur den Griff hervor."],

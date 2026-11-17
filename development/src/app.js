@@ -3,7 +3,8 @@ import { boxModelView, bindBoxModel } from "./box-model.js";
 import { caseStudyPanel } from "./case-studies.js";
 import { selectorView, bindSelectorHelper } from "./selector-helper.js";
 import { exercises, normalizeSolved } from "./exercises.js";
-import { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises, solvedExercises, storeSolvedExercises } from "./exercise-panel.js";
+import { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises, solvedExercises, storeSolvedExercises, unsavedExercises, retrySolvedExercises, protectExerciseStorage } from "./exercise-panel.js";
+import { EXERCISE_KEY } from "./exercise-state.js";
 import { esc } from "./html.js";
 import { reviewPanel, bindReview } from "./review.js";
 import { debugging } from "./debugging.js";
@@ -54,6 +55,7 @@ try {
     "Der vorhandene Lernstand konnte nicht gelesen werden. Er wurde nicht überschrieben. Lade eine Sicherung oder sichere den bisherigen Browserspeicher vor weiteren Änderungen.";
 }
 let preventSave = Boolean(storageError);
+protectExerciseStorage(preventSave);
 let savedSnapshot = JSON.stringify(state);
 bindDisplayOptions();
 let menuCollapsed = false;
@@ -249,19 +251,24 @@ function save() {
 }
 function updateStorageStatus() {
   const blocked = preventSave,
-    problem = blocked || saveFailed,
-    dirty = problem && JSON.stringify(state) !== savedSnapshot,
-    mode = blocked ? "blocked" : saveFailed ? "error" : "ready",
+    exercisesPending = unsavedExercises(),
+    problem = blocked || saveFailed || exercisesPending,
+    dirty = exercisesPending || (problem && JSON.stringify(state) !== savedSnapshot),
+    mode = blocked ? "blocked" : saveFailed || exercisesPending ? "error" : "ready",
     message = blocked
       ? "Automatisches Speichern angehalten."
       : saveFailed
         ? dirty ? "Änderungen noch nicht auf diesem Gerät gespeichert." : "Speichern gerade nicht möglich. Dein bisheriger Stand bleibt erhalten."
-        : "",
+        : exercisesPending
+          ? "Dein Übungsstand ist noch nicht auf diesem Gerät gespeichert."
+          : "",
     detail = blocked ? storageError : saveFailed
       ? dirty
         ? "Deine Änderungen sind nur in diesem geöffneten Tab. Lade den aktuellen Lernstand als JSON herunter, bevor du die Seite neu lädst oder schließt. Du kannst das Speichern erneut versuchen."
         : "Der Browserspeicher ist voll oder gesperrt. Eine abgebrochene Änderung musst du im jeweiligen Dialog oder Formular erneut speichern."
-      : "";
+      : exercisesPending
+        ? "Deine Änderungen an den „gelöst“-Markierungen sind nur in diesem geöffneten Tab. Lade den aktuellen Lernstand als JSON herunter, bevor du die Seite neu lädst oder schließt, oder versuche das Speichern erneut."
+        : "";
   const box = $("#storageStatus"),
     text = $("#storageMessage"),
     description = $("#storageDetail");
@@ -277,7 +284,11 @@ function updateStorageStatus() {
   $("#storageRaw").hidden = !blocked || !unreadableStorage;
 }
 $("#retrySave").onclick = () => {
-  if (save()) $("#backupButton").focus({ preventScroll: true });
+  if (preventSave) return;
+  const stateSaved = !saveFailed || save(),
+    exercisesSaved = retrySolvedExercises();
+  updateStorageStatus();
+  if (stateSaved && exercisesSaved) $("#backupButton").focus({ preventScroll: true });
 };
 $("#storageBackup").onclick = () => {
   backup();
@@ -1098,7 +1109,7 @@ function render() {
   if (l) {
     bindBoxModel();
     bindSelectorHelper();
-    bindExercises(l);
+    bindExercises(l, updateStorageStatus);
     // #lesson/<id>/<n> opens exercise n directly (from the home suggestion).
     const target = document.querySelector(`.exercise[data-exercise="${Number(route.split("/")[2]) - 1}"]`);
     if (target) {
@@ -1412,14 +1423,16 @@ function applyPendingImport() {
     showImportError("Die Sicherung konnte nicht gespeichert werden. Dein bisheriger Lernstand und deine Übungsmarkierungen bleiben erhalten. Versuche das Laden erneut, wenn der Browserspeicher verfügbar ist.");
     return;
   }
+  protectExerciseStorage(false);
   // Older backups do not contain exercise markers; keep the ones on this device.
   const exercisesStored = !pendingImport.exercises || storeSolvedExercises(pendingImport.exercises);
+  updateStorageStatus();
   resetPendingImport();
   if (backupDialog.open) backupDialog.close();
   render();
   toast(exercisesStored
     ? "Lernstand übernommen."
-    : "Lernstand übernommen, aber die Übungsmarkierungen konnten nicht gespeichert werden. Behalte die Sicherungsdatei und lade sie erneut, wenn der Browserspeicher verfügbar ist.");
+    : "Lernstand übernommen, aber die Übungsmarkierungen konnten nicht gespeichert werden. Sie bleiben in diesem Tab und in deiner JSON-Sicherung. Nutze „Erneut speichern“, wenn der Browserspeicher verfügbar ist.");
 }
 retryImport.onclick = applyPendingImport;
 $(".brand").addEventListener("click", (event) => {
@@ -1437,8 +1450,9 @@ window.addEventListener("hashchange", () => {
   window.scrollTo(0, 0);
 });
 window.addEventListener("storage", (e) => {
-  if (e.storageArea === localStorage && (e.key === STORAGE_KEY || e.key === null)) {
+  if (e.storageArea === localStorage && (e.key === STORAGE_KEY || e.key === null || (e.key === EXERCISE_KEY && unsavedExercises()))) {
     preventSave = true;
+    protectExerciseStorage(true);
     storageError =
       "Ein anderer Tab hat den Lernstand verändert. Sichere deinen Entwurf als Datei und lade die Seite neu, bevor du weiterarbeitest.";
     updateStorageStatus();

@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.56.6** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.57.0** · Status: **lokal geprüft, Veröffentlichung über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -172,15 +172,15 @@ WebLab/
   index.html                 direkt per Doppelklick starten
   weblab.js                  erzeugtes klassisches Skript
   styles.css                 gemeinsame Gestaltung
-  assets/                    Logo, Titelbild, Favicon
+  assets/                    Logo, Titelbild, Lernmotive und Unterrichtsmedien
   development/
     src/                     gepflegte Quellmodule: Inhalte (content, extensions, exercises,
                              guidance, glossary), Oberfläche (app, exercise-panel, profile),
                              Lernstand (state, nagold), Hilfsmodule (html, editor, checks, …)
     tools/                   Bundler, Build und lokaler Browserprüfserver
-    tests/                   68 Node-Tests und Browserprüfseite
+    tests/                   Node-Tests und Browserprüfseite
   documentation/documentation.md
-  documentation/WebLab-1.11.0.png
+  documentation/tasks.md     lokale Rückfragen und Antworten
   ressources/BPE2/            lokale, nicht versionierte Unterrichtsquellen
   README.md                  kurze Startanleitung
   CLAUDE.md                  Wegweiser auf diese Dokumentation
@@ -223,17 +223,7 @@ Eine zentrale Funktion `lessonAccess()` in `development/src/state.js` steuert Ka
 
 ## 6. Sicherung und Aufräumen
 
-Vor dem Umbau wurden auch die vorhandenen uncommitteten Änderungen gesichert:
-
-```text
-C:\Users\PC\WebLab-Sicherungen\vor-umbau-2026-10-12\
-C:\Users\PC\WebLab-Sicherungen\vor-umbau-2026-10-12.bundle
-C:\Users\PC\WebLab-Sicherungen\aus-projekt-entfernt-2026-10-12\
-C:\Users\PC\WebLab-Sicherungen\dist-vor-statischem-build-2026-10-12\
-G:\Meine Ablage\Codex\.archive\WebLab-dependencies-2026-10-12\
-```
-
-Das Git-Bundle enthält den bisherigen main-Verlauf. Die Arbeitskopie enthält zusätzlich die zuvor uncommitteten Dateien. Entfernte Quelldateien liegen im externen Archiv. Alte node_modules wurden teilweise dorthin verschoben; der verbleibende Teil liegt im genannten Archiv auf G:, um eine langsame dateiweise Übertragung zu vermeiden. Im aktiven Projekt liegt kein node_modules mehr; damit bleibt der aktive Ordner übersichtlich und alte Arbeit wiederherstellbar. Die bisherigen Dokumente TASKS.md und UEBERGABE.md wurden dort archiviert und durch diese Dokumentation ersetzt. CLAUDE.md bleibt als kurzer Wegweiser erhalten.
+Seit der Zusammenführung am 17.11.2026 liegt der aktuelle Arbeitsstand direkt im gemeinsamen Drive-Projektordner. Frühere lokale Versionskopien und Testprofile werden nicht mehr benötigt. Änderungen werden in Git festgehalten und nach erfolgreicher Prüfung auf GitHub veröffentlicht.
 
 Google Drive erzeugt `desktop.ini` in jedem synchronisierten Ordner, auch innerhalb `.git/refs`. Git deutet diese als ungültige Referenzen; `git fetch` scheitert dann mit „bad object refs/desktop.ini“. Abhilfe: ausschließlich die `desktop.ini` im refs-Unterbaum von `.git` entfernen; fachliche Git-Referenzen bleiben erhalten. Die Dateien sind von Drive erzeugte 106-Byte-Platzhalter und müssen nicht archiviert werden. Im `dist/`-Ordner entfernt der Build sie seit dem 12.10.2026 selbst; alle anderen unerwarteten Dateien lassen den Build weiterhin scheitern.
 
@@ -246,7 +236,7 @@ Jakob arbeitet an zwei Geräten mit demselben Google-Drive-Ordner. Pfade in dies
 | Lenovo-Laptop (bisherige Codex-Arbeit) | `G:\Meine Ablage\Codex\WebLab` | `C:\Users\PC` |
 | Gaming-Laptop (seit 12.10.2026) | `D:\Google Drive\Codex\WebLab` | `C:\Users\Jakob` |
 
-Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Sicherungen unter `C:\Users\PC\WebLab-Sicherungen\` liegen dagegen nur auf der lokalen SSD des Lenovo. Das ist nach Jakobs Entscheidung in Ordnung: Gearbeitet wird im Drive-Ordner, der verbindliche Verlauf liegt auf GitHub. Vor Arbeitsbeginn auf dem jeweils anderen Gerät abwarten, bis Drive fertig synchronisiert hat, und `git status` sowie `git fetch` prüfen. Nicht auf beiden Geräten gleichzeitig am Projekt arbeiten.
+Gearbeitet und gestartet wird direkt im Drive-Projektordner. Der Programmverlauf liegt auf GitHub. Zusätzliche lokale Versionsordner werden seit der Entscheidung vom 17.11.2026 nicht angelegt. Vor Arbeitsbeginn auf dem jeweils anderen Gerät abwarten, bis Drive fertig synchronisiert hat, und `git status` sowie `git fetch` prüfen. Nicht auf beiden Geräten gleichzeitig am Projekt arbeiten.
 
 **Arbeitsabsprache seit 12.10.2026:** Jakob öffnet `index.html` aus dem Projektordner in Edge und gibt Rückmeldungen. Claude und Codex arbeiten dazwischen selbständig weiter, committen sinnvolle Stände und veröffentlichen bei geeigneten Versionsständen. Nicht benötigte Dateien werden entfernt; der erzeugte `dist/`-Ordner bleibt nach der Arbeit nicht im Projektordner liegen.
 
@@ -263,7 +253,7 @@ Das Drive-Archiv `Codex\.archive\` ist auf beiden Geräten erreichbar. Die Siche
 - Profil und erste Einheit per Oberfläche durchgespielt, Punkte nach Neuladen erhalten.
 - Glossarsuche, unabhängiger freier Entwurf, beide Farbschemata und manuelle NAGOLD-Einträge über die Oberfläche geprüft. Keine Anwendungsfehler im Browserprotokoll.
 - ZIP-Inhalt und CRC32 zusätzlich unabhängig mit Python zipfile geprüft.
-- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Aktueller Screenshot: `WebLab-1.11.0.png` in diesem Dokumentationsordner; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
+- GitHub-Actions-Workflow erfolgreich, Live-Startseite und Einheit 1 unter dem /WebLab/-Unterpfad geöffnet. Historischer Screenshot in Git-Version 1.11.0; frühere Screenshots liegen im externen Archiv und in den jeweiligen Git-Tags.
 - Responsive Prüfung: Startseite, Einheiten 1 und 12 sowie Glossar bei tatsächlich 360 Pixel breiten eingebetteten Browserfenstern ohne horizontalen Überlauf. Der direkte Viewport-Schalter des Browserwerkzeugs änderte die native Ansicht nicht; deshalb wurde die Breite unabhängig in der lokalen Browser-Testseite geprüft. Physische Mobilgeräte und Bildschirmleser bleiben noch ungetestet.
 
 Offene Erweiterungen, nach Priorität:
@@ -322,6 +312,15 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.57.0: Ein gemeinsamer Projektordner
+
+- Maßgeblicher Arbeits- und Startordner ist G:\Meine Ablage\Codex\WebLab. Der dortige main-Stand wurde mit allen zwischenzeitlich veröffentlichten Änderungen zusammengeführt. Ressourcen und tasks.md wurden vor und nach der Migration per SHA-256 geprüft, 126 Dateien sind erhalten.
+- Die bisher nur lokal vorhandene Verbesserung für Übungsmarkierungen wurde übernommen. Bei einem Schreibfehler bleiben gelöste Übungen im Tab verfügbar, gelangen in JSON-Exporte und lassen sich erneut speichern. Die Warnleiste verschwindet nach erfolgreicher Wiederholung.
+- Unterrichtsmaterialien bleiben unter ressources, Dokumentation unter documentation. 13 alte, nicht mehr verwendete Lernmotive und ein historischer Screenshot wurden aus dem aktiven Projekt entfernt. Ihr Verlauf bleibt in Git.
+- Auf Jakobs Wunsch werden keine neuen lokalen Versionssicherungen oder zusätzlichen Offline-Projektordner angelegt. Der Sicherungsordner unter C:\Users\PC\WebLab-Sicherungen enthielt 51.742 Dateien mit rund 5,51 GiB, darunter alte Fassungen und Browser-Prüfprofile. Die automatische Prüfung lehnte die endgültige rekursive Löschung ab. Der Ordner wurde stattdessen erfolgreich über den Windows-Papierkorb entfernt.
+- Verbindlicher Programmverlauf ist GitHub. Die lokalen Unterrichtsoriginale unter ressources sowie tasks.md werden weiterhin nicht veröffentlicht.
+- Prüfung direkt auf G: 73 Node-Tests und 380 Browserprüfungen bestanden. Der Dateistart in Edge lädt Version 1.57.0 und alle 16 Lernmotive. Logo-Sprung zum Seitenanfang, fixierte Kopfzeile, Menüschalter und ausgeblendete normale Speichermeldung wurden am tatsächlichen file:-Start geprüft.
 
 ### 17.11.2026 – Codex – Version 1.56.6: Menüschalter neben dem Logo
 

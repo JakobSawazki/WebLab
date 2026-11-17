@@ -9,7 +9,9 @@ Statische Lernumgebung zu **BPE2: Entwicklung von Internetseiten**, im Aufbau un
 
 ## Lokal starten
 
-`index.html` per Doppelklick öffnen. Den Projektordner zusammenlassen; zum Lernen sind weder Node.js noch ein Server erforderlich.
+`G:\Meine Ablage\Codex\WebLab\index.html` per Doppelklick öffnen. Dieser gemeinsame Drive-Ordner enthält den aktuellen Stand, die Unterrichtsmaterialien unter `ressources/` und die zentrale Dokumentation unter `documentation/`.
+
+Zum Lernen reicht der Browser. Nach Änderungen an den Quellmodulen aktualisiert `npm run build` die direkt startbare `weblab.js`. Der veröffentlichte Verlauf liegt auf GitHub. Zusätzliche lokale Versionskopien werden nicht angelegt.
 
 ## Weiterentwickeln
 

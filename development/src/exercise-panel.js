@@ -6,27 +6,27 @@ import { preview } from "./checks.js";
 import { bindCodeEditor } from "./editor.js";
 import { esc } from "./html.js";
 import { exercises, exerciseId, checkExercise, exerciseTypes, exerciseHints } from "./exercises.js";
+import { createExerciseStore } from "./exercise-state.js";
 const $ = (selector) => document.querySelector(selector);
 
 // Short exercises with their own mini editor and live preview. The code lives
-// only in this view; solved exercises are remembered per device under a
-// separate key, outside the learning state and its backups.
-export const EXERCISE_KEY = "weblab-exercises-v1";
+// only in this view. Solved markers have their own device store and travel in
+// JSON backups, including markers still waiting for a successful device save.
+const exerciseStore = createExerciseStore(() => localStorage);
 export function solvedExercises() {
-  try {
-    const list = JSON.parse(localStorage.getItem(EXERCISE_KEY) || "[]");
-    return new Set(Array.isArray(list) ? list.filter((x) => typeof x === "string") : []);
-  } catch {
-    return new Set();
-  }
+  return exerciseStore.solved();
 }
 export function storeSolvedExercises(list) {
-  try {
-    localStorage.setItem(EXERCISE_KEY, JSON.stringify(list));
-    return true;
-  } catch {
-    return false;
-  }
+  return exerciseStore.store(list);
+}
+export function unsavedExercises() {
+  return exerciseStore.hasPending();
+}
+export function retrySolvedExercises() {
+  return exerciseStore.retry();
+}
+export function protectExerciseStorage(value) {
+  exerciseStore.protect(value);
 }
 export function exerciseProgress(lessonId) {
   const solved = solvedExercises();
@@ -70,7 +70,7 @@ export function exercisePanel(l) {
     })
     .join("")}</section>`;
 }
-export function bindExercises(l) {
+export function bindExercises(l, onStorageChange = () => {}) {
   const list = exercises[l.id];
   if (!list || !$("#exercises")) return;
   document.querySelectorAll(".exercise").forEach((box) => {
@@ -114,6 +114,7 @@ export function bindExercises(l) {
       const solved = solvedExercises();
       solved.add(exerciseId(l.id, i));
       storeSolvedExercises([...solved]);
+      onStorageChange();
       const done = list.filter((_, n) => solved.has(exerciseId(l.id, n))).length;
       $("#exerciseProgress").textContent = `Kurze Übungen · ${done} von ${list.length} gelöst`;
     };

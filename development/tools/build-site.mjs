@@ -30,6 +30,7 @@ const modules = [
   "case-studies.js",
   "exercises.js",
   "css-practice.js",
+  "exercise-state.js",
   "exercise-panel.js",
   "review.js",
   "app.js",

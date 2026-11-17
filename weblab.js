@@ -283,7 +283,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.56.6";
+const VERSION = "1.57.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -845,6 +845,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.57.0", "Ein gemeinsamer Projektordner", "Die aktuelle Fassung startet direkt über index.html im gemeinsamen Projektordner. Übungsmarkierungen bleiben bei einem Speicherfehler im geöffneten Tab verfügbar und lassen sich erneut speichern."],
     ["1.56.6", "Menüschalter neben dem Logo", "Am Desktop sitzt der Schalter zum Ein- und Ausklappen neben dem WebLab-Logo in der Menüleiste. Auf schmalen Bildschirmen bleibt er in der Kopfzeile erreichbar."],
     ["1.56.5", "Mit dem Logo zum Seitenanfang", "Ein Klick auf das WebLab-Logo führt zur Startseite und scrollt ganz nach oben, auch wenn die Startseite bereits geöffnet ist."],
     ["1.56.4", "Dezente verschiebbare Trennleiste", "Ein schmaler, zurückhaltender Griff kennzeichnet die verstellbare Menübreite. Der Tastaturfokus hebt nur den Griff hervor."],
@@ -4934,6 +4935,46 @@ function cssPracticeValue(source, selectorMatches, property) {
 
 return {stripCssComments,cssPracticeValue};
 },
+"exercise-state.js": function(require) {
+const { normalizeSolved } = require("exercises.js");
+const EXERCISE_KEY = "weblab-exercises-v1";
+
+// Keep failed writes in this tab until they can be saved or backed up.
+// Reading an unchanged store still picks up the device's latest markers.
+function createExerciseStore(getStorage) {
+  let pending = null,
+    protectedFromWrites = false;
+  function solved() {
+    if (pending !== null) return new Set(pending);
+    try {
+      return new Set(normalizeSolved(JSON.parse(getStorage().getItem(EXERCISE_KEY) || "[]")) || []);
+    } catch {
+      return new Set();
+    }
+  }
+  function store(list) {
+    // Imports replace the list; do not merge markers from the previous backup.
+    pending = normalizeSolved(list) || [];
+    if (protectedFromWrites) return false;
+    try {
+      getStorage().setItem(EXERCISE_KEY, JSON.stringify(pending));
+      pending = null;
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  return {
+    solved,
+    store,
+    hasPending: () => pending !== null,
+    retry: () => pending === null || store(pending),
+    protect: (value) => { protectedFromWrites = Boolean(value); },
+  };
+}
+
+return {EXERCISE_KEY,createExerciseStore};
+},
 "exercise-panel.js": function(require) {
 // The exercise workshop: panels with a mini editor and live preview, the home
 // suggestion and the collected rules. Exercise data lives in exercises.js.
@@ -4943,27 +4984,27 @@ const { preview } = require("checks.js");
 const { bindCodeEditor } = require("editor.js");
 const { esc } = require("html.js");
 const { exercises, exerciseId, checkExercise, exerciseTypes, exerciseHints } = require("exercises.js");
+const { createExerciseStore } = require("exercise-state.js");
 const $ = (selector) => document.querySelector(selector);
 
 // Short exercises with their own mini editor and live preview. The code lives
-// only in this view; solved exercises are remembered per device under a
-// separate key, outside the learning state and its backups.
-const EXERCISE_KEY = "weblab-exercises-v1";
+// only in this view. Solved markers have their own device store and travel in
+// JSON backups, including markers still waiting for a successful device save.
+const exerciseStore = createExerciseStore(() => localStorage);
 function solvedExercises() {
-  try {
-    const list = JSON.parse(localStorage.getItem(EXERCISE_KEY) || "[]");
-    return new Set(Array.isArray(list) ? list.filter((x) => typeof x === "string") : []);
-  } catch {
-    return new Set();
-  }
+  return exerciseStore.solved();
 }
 function storeSolvedExercises(list) {
-  try {
-    localStorage.setItem(EXERCISE_KEY, JSON.stringify(list));
-    return true;
-  } catch {
-    return false;
-  }
+  return exerciseStore.store(list);
+}
+function unsavedExercises() {
+  return exerciseStore.hasPending();
+}
+function retrySolvedExercises() {
+  return exerciseStore.retry();
+}
+function protectExerciseStorage(value) {
+  exerciseStore.protect(value);
 }
 function exerciseProgress(lessonId) {
   const solved = solvedExercises();
@@ -5007,7 +5048,7 @@ function exercisePanel(l) {
     })
     .join("")}</section>`;
 }
-function bindExercises(l) {
+function bindExercises(l, onStorageChange = () => {}) {
   const list = exercises[l.id];
   if (!list || !$("#exercises")) return;
   document.querySelectorAll(".exercise").forEach((box) => {
@@ -5051,6 +5092,7 @@ function bindExercises(l) {
       const solved = solvedExercises();
       solved.add(exerciseId(l.id, i));
       storeSolvedExercises([...solved]);
+      onStorageChange();
       const done = list.filter((_, n) => solved.has(exerciseId(l.id, n))).length;
       $("#exerciseProgress").textContent = `Kurze Übungen · ${done} von ${list.length} gelöst`;
     };
@@ -5064,7 +5106,7 @@ function bindExercises(l) {
   });
 }
 
-return {EXERCISE_KEY,solvedExercises,storeSolvedExercises,exerciseProgress,practiceSuggestion,rememberedRules,exercisePanel,bindExercises};
+return {solvedExercises,storeSolvedExercises,unsavedExercises,retrySolvedExercises,protectExerciseStorage,exerciseProgress,practiceSuggestion,rememberedRules,exercisePanel,bindExercises};
 },
 "review.js": function(require) {
 // Revision round on the notes page: five random comprehension questions from
@@ -5126,7 +5168,8 @@ const { boxModelView, bindBoxModel } = require("box-model.js");
 const { caseStudyPanel } = require("case-studies.js");
 const { selectorView, bindSelectorHelper } = require("selector-helper.js");
 const { exercises, normalizeSolved } = require("exercises.js");
-const { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises, solvedExercises, storeSolvedExercises } = require("exercise-panel.js");
+const { exerciseProgress, practiceSuggestion, rememberedRules, exercisePanel, bindExercises, solvedExercises, storeSolvedExercises, unsavedExercises, retrySolvedExercises, protectExerciseStorage } = require("exercise-panel.js");
+const { EXERCISE_KEY } = require("exercise-state.js");
 const { esc } = require("html.js");
 const { reviewPanel, bindReview } = require("review.js");
 const { debugging } = require("debugging.js");
@@ -5177,6 +5220,7 @@ try {
     "Der vorhandene Lernstand konnte nicht gelesen werden. Er wurde nicht überschrieben. Lade eine Sicherung oder sichere den bisherigen Browserspeicher vor weiteren Änderungen.";
 }
 let preventSave = Boolean(storageError);
+protectExerciseStorage(preventSave);
 let savedSnapshot = JSON.stringify(state);
 bindDisplayOptions();
 let menuCollapsed = false;
@@ -5372,19 +5416,24 @@ function save() {
 }
 function updateStorageStatus() {
   const blocked = preventSave,
-    problem = blocked || saveFailed,
-    dirty = problem && JSON.stringify(state) !== savedSnapshot,
-    mode = blocked ? "blocked" : saveFailed ? "error" : "ready",
+    exercisesPending = unsavedExercises(),
+    problem = blocked || saveFailed || exercisesPending,
+    dirty = exercisesPending || (problem && JSON.stringify(state) !== savedSnapshot),
+    mode = blocked ? "blocked" : saveFailed || exercisesPending ? "error" : "ready",
     message = blocked
       ? "Automatisches Speichern angehalten."
       : saveFailed
         ? dirty ? "Änderungen noch nicht auf diesem Gerät gespeichert." : "Speichern gerade nicht möglich. Dein bisheriger Stand bleibt erhalten."
-        : "",
+        : exercisesPending
+          ? "Dein Übungsstand ist noch nicht auf diesem Gerät gespeichert."
+          : "",
     detail = blocked ? storageError : saveFailed
       ? dirty
         ? "Deine Änderungen sind nur in diesem geöffneten Tab. Lade den aktuellen Lernstand als JSON herunter, bevor du die Seite neu lädst oder schließt. Du kannst das Speichern erneut versuchen."
         : "Der Browserspeicher ist voll oder gesperrt. Eine abgebrochene Änderung musst du im jeweiligen Dialog oder Formular erneut speichern."
-      : "";
+      : exercisesPending
+        ? "Deine Änderungen an den „gelöst“-Markierungen sind nur in diesem geöffneten Tab. Lade den aktuellen Lernstand als JSON herunter, bevor du die Seite neu lädst oder schließt, oder versuche das Speichern erneut."
+        : "";
   const box = $("#storageStatus"),
     text = $("#storageMessage"),
     description = $("#storageDetail");
@@ -5400,7 +5449,11 @@ function updateStorageStatus() {
   $("#storageRaw").hidden = !blocked || !unreadableStorage;
 }
 $("#retrySave").onclick = () => {
-  if (save()) $("#backupButton").focus({ preventScroll: true });
+  if (preventSave) return;
+  const stateSaved = !saveFailed || save(),
+    exercisesSaved = retrySolvedExercises();
+  updateStorageStatus();
+  if (stateSaved && exercisesSaved) $("#backupButton").focus({ preventScroll: true });
 };
 $("#storageBackup").onclick = () => {
   backup();
@@ -6221,7 +6274,7 @@ function render() {
   if (l) {
     bindBoxModel();
     bindSelectorHelper();
-    bindExercises(l);
+    bindExercises(l, updateStorageStatus);
     // #lesson/<id>/<n> opens exercise n directly (from the home suggestion).
     const target = document.querySelector(`.exercise[data-exercise="${Number(route.split("/")[2]) - 1}"]`);
     if (target) {
@@ -6535,14 +6588,16 @@ function applyPendingImport() {
     showImportError("Die Sicherung konnte nicht gespeichert werden. Dein bisheriger Lernstand und deine Übungsmarkierungen bleiben erhalten. Versuche das Laden erneut, wenn der Browserspeicher verfügbar ist.");
     return;
   }
+  protectExerciseStorage(false);
   // Older backups do not contain exercise markers; keep the ones on this device.
   const exercisesStored = !pendingImport.exercises || storeSolvedExercises(pendingImport.exercises);
+  updateStorageStatus();
   resetPendingImport();
   if (backupDialog.open) backupDialog.close();
   render();
   toast(exercisesStored
     ? "Lernstand übernommen."
-    : "Lernstand übernommen, aber die Übungsmarkierungen konnten nicht gespeichert werden. Behalte die Sicherungsdatei und lade sie erneut, wenn der Browserspeicher verfügbar ist.");
+    : "Lernstand übernommen, aber die Übungsmarkierungen konnten nicht gespeichert werden. Sie bleiben in diesem Tab und in deiner JSON-Sicherung. Nutze „Erneut speichern“, wenn der Browserspeicher verfügbar ist.");
 }
 retryImport.onclick = applyPendingImport;
 $(".brand").addEventListener("click", (event) => {
@@ -6560,8 +6615,9 @@ window.addEventListener("hashchange", () => {
   window.scrollTo(0, 0);
 });
 window.addEventListener("storage", (e) => {
-  if (e.storageArea === localStorage && (e.key === STORAGE_KEY || e.key === null)) {
+  if (e.storageArea === localStorage && (e.key === STORAGE_KEY || e.key === null || (e.key === EXERCISE_KEY && unsavedExercises()))) {
     preventSave = true;
+    protectExerciseStorage(true);
     storageError =
       "Ein anderer Tab hat den Lernstand verändert. Sichere deinen Entwurf als Datei und lade die Seite neu, bevor du weiterarbeitest.";
     updateStorageStatus();

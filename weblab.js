@@ -283,7 +283,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.56.5";
+const VERSION = "1.56.6";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -845,6 +845,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-17", [
+    ["1.56.6", "Menüschalter neben dem Logo", "Am Desktop sitzt der Schalter zum Ein- und Ausklappen neben dem WebLab-Logo in der Menüleiste. Auf schmalen Bildschirmen bleibt er in der Kopfzeile erreichbar."],
     ["1.56.5", "Mit dem Logo zum Seitenanfang", "Ein Klick auf das WebLab-Logo führt zur Startseite und scrollt ganz nach oben, auch wenn die Startseite bereits geöffnet ist."],
     ["1.56.4", "Dezente verschiebbare Trennleiste", "Ein schmaler, zurückhaltender Griff kennzeichnet die verstellbare Menübreite. Der Tastaturfokus hebt nur den Griff hervor."],
     ["1.56.3", "Bedienelemente beim Scrollen erreichbar", "Die Kopfzeile mit Hell-Dunkel-Schalter, Sicherung, Laden, Optionen und Profil bleibt auf allen Seiten sichtbar."],
@@ -5193,6 +5194,15 @@ function updateMenu() {
   button.title = label;
 }
 updateMenu();
+// On narrow screens keep the toggle reachable when the sidebar is hidden.
+const mobileMenuLayout = matchMedia("(max-width: 760px)");
+function positionMenuToggle() {
+  const button = $("#menuButton");
+  if (mobileMenuLayout.matches) $(".topbar-heading").prepend(button);
+  else $(".sidebar-header").append(button);
+}
+positionMenuToggle();
+mobileMenuLayout.addEventListener("change", positionMenuToggle);
 bindSidebarDivider();
 $("#menuButton").onclick = () => {
   setLessonMenu(false);

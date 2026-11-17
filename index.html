@@ -21,16 +21,28 @@
     <a class="skip-link" href="#mainContent">Zum Inhalt springen</a>
     <div class="app-shell">
       <aside class="sidebar" id="sidebar">
-        <a class="brand" href="#home" aria-label="WebLab Startseite"
-          ><img
-            src="assets/weblab-logo.png?v=1.40.3"
-            width="48"
-            height="48"
-            alt=""
-          /><span
-            ><strong>WebLab</strong><small>Internetseiten</small></span
-          ></a
-        >
+        <div class="sidebar-header">
+          <a class="brand" href="#home" aria-label="WebLab Startseite"
+            ><img
+              src="assets/weblab-logo.png?v=1.40.3"
+              width="48"
+              height="48"
+              alt=""
+            /><span
+              ><strong>WebLab</strong><small>Internetseiten</small></span
+            ></a
+          >
+          <button
+            id="menuButton"
+            class="icon-button"
+            aria-controls="sidebar"
+            aria-expanded="true"
+            aria-label="Menü einklappen"
+            title="Menü einklappen"
+          >
+            <span data-icon="menu" aria-hidden="true"></span>
+          </button>
+        </div>
         <nav class="main-nav" aria-label="Hauptnavigation">
           <a
             class="nav-item"
@@ -110,16 +122,6 @@
         <div id="workspaceHeader" class="workspace-header">
           <header class="topbar">
             <div class="topbar-heading">
-              <button
-                id="menuButton"
-                class="icon-button"
-                aria-controls="sidebar"
-                aria-expanded="true"
-                aria-label="Menü einklappen"
-                title="Menü einklappen"
-              >
-                <span data-icon="menu" aria-hidden="true"></span>
-              </button>
               <div id="standardHeading">
                 <p class="eyebrow">Deine Webwerkstatt</p>
                 <h1 id="viewTitle">Übersicht</h1>

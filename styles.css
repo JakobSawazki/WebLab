@@ -361,13 +361,28 @@ small,
 .version-button:focus-visible {
   color: var(--text);
 }
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+.sidebar-header .brand {
+  min-width: 0;
+}
+.sidebar-header #menuButton {
+  width: 44px;
+  min-height: 44px;
+  padding: 0.5rem;
+}
 .brand {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr);
   gap: 0.75rem;
   align-items: center;
   color: var(--text);
-  margin-bottom: 2rem;
+  margin-bottom: 0;
 }
 .brand img {
   object-fit: cover;
@@ -2310,6 +2325,10 @@ dialog::backdrop {
   }
   :root[data-menu="collapsed"] .sidebar {
     padding: 1.05rem 0.6rem;
+  }
+  :root[data-menu="collapsed"] .sidebar-header {
+    flex-direction: column;
+    gap: 0.75rem;
   }
   :root[data-menu="collapsed"] .brand {
     display: flex;

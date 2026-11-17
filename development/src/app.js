@@ -71,6 +71,15 @@ function updateMenu() {
   button.title = label;
 }
 updateMenu();
+// On narrow screens keep the toggle reachable when the sidebar is hidden.
+const mobileMenuLayout = matchMedia("(max-width: 760px)");
+function positionMenuToggle() {
+  const button = $("#menuButton");
+  if (mobileMenuLayout.matches) $(".topbar-heading").prepend(button);
+  else $(".sidebar-header").append(button);
+}
+positionMenuToggle();
+mobileMenuLayout.addEventListener("change", positionMenuToggle);
 bindSidebarDivider();
 $("#menuButton").onclick = () => {
   setLessonMenu(false);

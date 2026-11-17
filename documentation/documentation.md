@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.58.0** · Status: **lokal geprüft; Veröffentlichung wird abschließend abgeglichen**.
+Version: **1.58.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Einziger aktueller Projektordner ist `G:\Meine Ablage\Codex\WebLab`; der direkte Einstieg ist dessen `index.html`. Die früheren lokalen Sicherungsordner wurden auf Jakobs Wunsch entfernt. Historische Archivpfade weiter unten beschreiben den damaligen Zustand und sind keine aktuellen Ablageorte. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -242,7 +242,7 @@ Gearbeitet und gestartet wird direkt im Drive-Projektordner. Der Programmverlauf
 
 ## 7. Prüfstand und verbleibende Arbeit
 
-**Aktueller Stand (20.10.2026, Codex, Version 1.43.0):** 68 Node-Tests, Build und 263 Browserprüfungen bestanden. Neu abgedeckt sind Schreibfehler, wiederholtes Speichern, JSON-Rettung ungespeicherter Entwürfe, unveränderte beschädigte Originaldaten und echte Speicherereignisse anderer Fenster. Veröffentlichungsnachweis siehe neuestes Arbeitsprotokoll. HTML-/CSS-Mini-Prüfungen bleiben ausdrücklich auf die beschriebenen einfachen Aufgabenformen begrenzt.
+**Aktueller Stand (17.11.2026, Codex, Version 1.58.0):** 73 Node-Tests, Build und 382 Browserprüfungen lokal sowie in GitHub Actions bestanden. Alle 16 Lehrkraftlösungen über die App geprüft und nacheinander abgeschlossen; ihre HTML-Dateien direkt im Browser geöffnet. Alle 32 Seiten der 16 Word-Dokumente gerendert und visuell kontrolliert. Die 27 über HTTP ausgelieferten Dateien stimmen mit dem geprüften Veröffentlichungspaket überein (Textdateien mit normalisierten Zeilenenden, Medien bytegleich); .nojekyll dient nur dem Build und wird von Pages nicht als Webseite ausgeliefert. Veröffentlichungsnachweis siehe neuestes Arbeitsprotokoll. HTML-/CSS-Mini-Prüfungen bleiben ausdrücklich auf die beschriebenen einfachen Aufgabenformen begrenzt.
 
 **Vorheriger Stand (14.10.2026, Claude, Version 1.36.0):** 40 Node-Tests in 13 Dateien (Lernstand und Migration, Freischaltung, NAGOLD-Tabelle, Lernpfad-Kette, Editor, Bundle mit Syntaxprüfung, Box-Modell, Selektorhilfe, Übungswerkstatt, Fehlersuche, Lernhilfen, Glossar, Farbkontraste) und 173 Browserprüfungen unter `/__qa` bestehen. Die Prüfseite fängt Sicherungsdownloads der App ab und löst keine Speichern-Dialoge mehr aus. Jede Veröffentlichung dieser Runde wurde per SHA-256-Vergleich des ausgelieferten `weblab.js` mit dem lokal geprüften Bundle bestätigt. Ergebnis der Qualitätsrunde vom 14.10.2026 (Pakete 1–6, Versionen 1.13.1 bis 1.17.0): siehe Arbeitsprotokoll.
 
@@ -263,9 +263,9 @@ Offene Erweiterungen, nach Priorität:
 3. **Lehrkraftablauf:** Nach Jakobs Unterrichtserprobung entscheiden, ob wie bei WorkbenchLab eine separate lokale Klassenübersicht und Lehrkraft-Bestätigungsliste ergänzt wird. Der aktuelle Schülerabschluss ist bewusst als Selbstmeldung kenntlich.
 4. **Didaktische Vertiefung:** Optionale Fehlersuchaufträge gibt es seit 1.8.0 (01–12) und seit 1.17.0 in allen 16 Einheiten; seit 1.14.0 nennen offene Kriterien einen konkreten nächsten Schritt, und jede Einheit listet typische Stolpersteine, seit 1.15.0 erklärt der Verständnischeck jede Antwort; seit 1.9.0 gibt es eine interaktive Box-Modell-Hilfe in Einheit 12. Seit 1.18.0/1.19.0 gibt es Vertiefungen zu Pfaden, Testprotokoll, Kaskade und Kontrast. Seit 1.23.0 gibt es eine interaktive Selektorhilfe in Einheit 10, seit 1.24.0/1.25.0 eine Übungswerkstatt mit Mini-Editor, Live-Vorschau und Merksätzen. Seit 1.33.0 gibt es auch eine Audio-Übung, seit 1.34.0 Profi-Aufgaben am Ende der Etappen 1–3 als oberste Stufe. Tabellenformatierung wird seit 1.9.1 als Transfer von Einheit 07 zu 12 geübt.
 5. **Projektwerkstatt:** Seit 1.41.0 bis zu vier Unterseiten neben index.html und style.css, mit Verweisprüfung, Mehrdatei-Import und ZIP-Export. Offen bleibt eine Medienverwaltung für echte Bild-/Mediendateien statt eingebetteter Datenadressen.
-6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser, weitere Browser und optionale Offline-Kopie. Browserprüfungen laufen seit 1.22.1 in CI.
+6. **Betrieb:** echter Schul-PC-/Tablet-Test, Bildschirmleser und weitere Browser. Die Offline-Version startet direkt aus dem gemeinsamen Projektordner; Browserprüfungen laufen seit 1.22.1 in CI.
 7. **ThommyWeb:** K2/K6 im Detail, alle übrigen Kapitel seit 1.32.0 über Übersicht und Stichworte abgeglichen; Lücken (Zellen verbinden, b/i, Webfonts) eigenständig geschlossen. Detailtexte der übrigen Kapitel bei Bedarf noch prüfen.
-8. **Übungsmarkierungen bei Speicherfehlern:** Beim Review am 20.10.2026 wurde außerhalb der Haupt-Lernstandsanzeige ein konkreter Folgefehler gefunden: Die Mini-Übungen ignorieren einen fehlgeschlagenen Schreibversuch ihrer separat gespeicherten „gelöst“-Markierungen. Die Anzeige kann deshalb nach Navigation verschwinden; die bisherige JSON-Sicherung liest diese Markierungen wieder aus dem Browserspeicher. Nächster Korrekturschritt: ungespeicherte Markierungen im Arbeitsspeicher erhalten, sichern und sichtbar als ungespeichert kennzeichnen. Die Anzeige von 1.43.0 bezieht sich ausdrücklich auf Entwürfe, Profil und Lernpfad.
+Der am 20.10.2026 gefundene Fehler ungesicherter Übungsmarkierungen wurde mit 1.57.0 behoben und ist keine offene Erweiterung mehr; Nachweis im Arbeitsprotokoll.
 
 ### Anforderungsabgleich am 17.10.2026
 
@@ -323,7 +323,9 @@ Unter `ressources/Lösungen/` liegen 16 nummerierte Ordner mit jeweils `Loesung-
 
 Prüfung: 73 Node-Tests und 382 Browserprüfungen bestanden, darunter neue Negativfälle zu cite und Testprotokoll sowie das Laden aller 16 unterschiedlichen fotorealistischen Lernmotive. Alle Motive zusätzlich als Übersicht visuell kontrolliert. Sämtliche Lehrkraftlösungen wurden in einem isolierten Edge-Profil über die normale WebLab-Oberfläche nacheinander eingegeben, geprüft und zu 100 % abgeschlossen; Entwurfsübernahme und unabhängiger Start von 16 bestätigt. Alle 16 HTML-Dateien direkt über file:// geöffnet; Kontaktseiten, Bilddecodierung und Videometadaten geprüft. Die Lösungen ab 12 passen bei 360 Pixeln ohne horizontalen Überlauf; 12 und 16 visuell kontrolliert. Alle 16 Word-Dateien mit Microsoft Word gerendert: jeweils zwei Seiten, alle 32 Seiten visuell auf Lesbarkeit, Umbruch und Beschnitt kontrolliert. Der standardmäßige LibreOffice-Renderer war auf diesem Windows-System nicht verfügbar, deshalb erfolgte die Ausgabe mit Word. Keine zusätzlichen Softwarepakete installiert.
 
-Der einzige aktuelle Projektordner bleibt `G:\Meine Ablage\Codex\WebLab`. Zusätzliche lokale Versionsarchive und Offline-ZIPs werden nicht angelegt. Temporäre Prüf- und Buildausgaben werden nach dem Veröffentlichungsabgleich entfernt. Noch offene Rückmeldungen in tasks.md bleiben unverändert.
+Der einzige aktuelle Projektordner bleibt `G:\Meine Ablage\Codex\WebLab`. Zusätzliche lokale Versionsarchive und Offline-ZIPs werden nicht angelegt. Die temporären Prüf- und Buildausgaben `.tmp/` und `dist/` wurden nach dem Veröffentlichungsabgleich entfernt. Noch offene Rückmeldungen in tasks.md bleiben unverändert.
+
+Veröffentlicht mit Implementierungscommit `8d463b6627a429727158cad1596821b7e118985e`; [Pages-Lauf 44180623184](https://github.com/JakobSawazki/WebLab/actions/runs/44180623184) erfolgreich mit 73 Node- und 382 Browserprüfungen. Alle 27 ausgelieferten Laufzeitdateien mit dem lokalen Paket abgeglichen; Versionsnummer 1.58.0 im Bundle bestätigt. [Release v1.58.0](https://github.com/JakobSawazki/WebLab/releases/tag/v1.58.0) ohne zusätzliches Offline-Archiv erstellt. Eine verwaiste leere AUTO_MERGE.lock aus dem vorherigen Arbeitslauf nach Prüfung auf fehlende Git-Prozesse entfernt; keine fachlichen Git-Referenzen geändert.
 
 ### 17.11.2026 – Codex – Version 1.57.0: Ein gemeinsamer Projektordner
 

@@ -2,7 +2,7 @@
 
 Stand: **17. November 2026, Europe/Berlin · Codex**
 
-Version: **1.46.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.46.1** · Status: **Veröffentlichung über GitHub Pages**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Frühere verteilte Projektstände wurden außerhalb des Projekts gesichert. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -322,6 +322,10 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 17.11.2026 – Codex – Version 1.46.1: Kürzerer Untertitel am Logo
+
+Unter „WebLab“ steht nur noch „Internetseiten“. Die BPE2-Zuordnung in den Lerninhalten bleibt erhalten.
 
 ### 17.11.2026 – Codex – Version 1.46.0: Fotorealistische Kartenübersicht auf der Startseite
 

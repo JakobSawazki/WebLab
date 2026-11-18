@@ -2,7 +2,7 @@
 
 Stand: **18. November 2026, Europe/Berlin · Codex**
 
-Version: **1.59.0** · Status: **lokal geprüft; Veröffentlichung über den Pages-Workflow**.
+Version: **1.59.1** · Status: **lokal geprüft; Veröffentlichung über den Pages-Workflow**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Einziger aktueller Projektordner ist `G:\Meine Ablage\Codex\WebLab`; der direkte Einstieg ist dessen `index.html`. Die früheren lokalen Sicherungsordner wurden auf Jakobs Wunsch entfernt. Historische Archivpfade weiter unten beschreiben den damaligen Zustand und sind keine aktuellen Ablageorte. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -312,6 +312,12 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 18.11.2026 – Codex – Version 1.59.1: Hover-Effekt für die Einheiten im Lernpfad
+
+Die Einheitenkarten unter den vier Etappen erhalten dieselbe dezente Hervorhebung wie die Kartenübersicht: 1 % Vergrößerung, 3 Pixel Anheben und ein metallischer Lichtschein. Die CSS-Regeln werden gemeinsam genutzt. Gilt auch für den Tastaturfokus innerhalb einer Karte; Touch-Hover wird vermieden, bei reduzierter Bewegung entfällt die Animation. Gesperrte Einheiten bleiben gesperrt und werden durch den Effekt nicht klickbar.
+
+Prüfung: Build, 73 Node-Tests und 385 Browserprüfungen bestanden. Direkter Offline-Einstieg neu gebaut; Veröffentlichung als 1.59.1 auf main mit erneuter Prüfung im Pages-Workflow. Temporäre dist-Ausgabe wird entfernt, keine zusätzlichen Versionskopien.
 
 ### 18.11.2026 – Codex – Version 1.59.0: Fotorealistischer Einstieg in den Lernpfad
 

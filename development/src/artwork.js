@@ -1,4 +1,5 @@
 // Public artwork only. The build copies exactly these lesson and phase files.
+export const learningPathArtwork = "lernpfad-einstieg.png";
 export const phaseArtwork = [
   "html-struktur.webp",
   "inhalte-verknuepfen.webp",

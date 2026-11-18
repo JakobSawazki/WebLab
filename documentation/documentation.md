@@ -2,7 +2,7 @@
 
 Stand: **18. November 2026, Europe/Berlin · Codex**
 
-Version: **1.58.2** · Status: **lokal geprüft; Veröffentlichung über den Pages-Workflow**.
+Version: **1.59.0** · Status: **lokal geprüft; Veröffentlichung über den Pages-Workflow**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Einziger aktueller Projektordner ist `G:\Meine Ablage\Codex\WebLab`; der direkte Einstieg ist dessen `index.html`. Die früheren lokalen Sicherungsordner wurden auf Jakobs Wunsch entfernt. Historische Archivpfade weiter unten beschreiben den damaligen Zustand und sind keine aktuellen Ablageorte. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -312,6 +312,14 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 18.11.2026 – Codex – Version 1.59.0: Fotorealistischer Einstieg in den Lernpfad
+
+Der Einstiegsbereich „Dein roter Faden“ auf dem Lernpfad enthält rechts neben Text und Weiterlern-Button ein eigenes fotorealistisches Motiv. Zwei fiktive Jugendliche entwickeln am Laptop im Schulgarten gemeinsam eine Webseite; Notizbuch, Seitenplan und Setzlinge verbinden die Lernaufgabe mit der gemeinsamen Lernsituation. Unter 1050 Pixeln steht das Bild unter dem Text. Metallrahmen, abgerundete Ecken, sanfter Schatten und vorhandene Farben binden es in das Design ein. Alt-Text beschreibt das Motiv; feste Bildmaße reservieren Platz beim Laden. Die Weiterlernempfehlung auf der Startseite erhält kein zusätzliches doppeltes Foto.
+
+Neue lokale Bilddatei: `assets/lernpfad-einstieg.png`, 1536 × 1024 Pixel. Erzeugt mit dem integrierten image_gen-Werkzeug (Skill imagegen), ohne API-Schlüssel oder zusätzliche Software. Prompt: „Photorealistic editorial photograph: two teenage students collaborate on a laptop in a welcoming German school garden with raised beds and greenhouse; a school-garden website and HTML editor on screen, notebook with a page plan, seedlings, warm natural morning light, realistic hands, landscape 3:2, responsive crop, no text overlays, logos or watermark.“ Die erzeugte Datei liegt im Projekt; der Build nimmt sie ausdrücklich in die öffentliche Asset-Liste auf. Keine Schülerfotos oder personenbezogenen Unterrichtsdaten verwendet.
+
+Prüfung: 73 Node-Tests, Build und 385 Browserprüfungen bestanden. Zusätzlich wird das neue Foto bei 1200 und 360 Pixeln auf erfolgreiche Decodierung, Alt-Text und Platzierung neben beziehungsweise unter dem Text geprüft. Den direkten Dateistart mit geladenem Foto bei 1600 und 390 Pixeln als Screenshot visuell kontrolliert: Motiv, Rahmen, Text und Button vollständig sichtbar, kein horizontaler Überlauf. Veröffentlichung als 1.59.0 auf main mit erneuter Prüfung im Pages-Workflow. Temporäre Prüfprofile, Screenshots und dist-Ausgabe werden nach Abschluss entfernt; die einzige neue dauerhafte Mediendatei ist das eingebundene Foto.
 
 ### 18.11.2026 – Codex – Version 1.58.2: Dezenter Effekt für die Lernkarten
 

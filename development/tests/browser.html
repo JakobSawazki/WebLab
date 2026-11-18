@@ -428,6 +428,7 @@
       for (const [width, route, selector, expected] of [
         [1200, "#home", ".catalog-card img", catalogPhotos],
         [360, "#home", ".catalog-card img", catalogPhotos],
+        [1200, "#path", ".path-phase img", artworkFiles],
         [360, "#path", ".path-phase img", artworkFiles],
         ...lessons.map((lesson, i) => [
           i % 2 ? 1200 : 360, "#lesson/" + lesson.id,
@@ -445,6 +446,19 @@
         await loaded;
         const doc = frame.contentDocument;
         const photos = [...doc.querySelectorAll(selector)];
+        if (route === "#path") {
+          const introPhoto = doc.querySelector(".learning-thread-art img");
+          if (introPhoto) await introPhoto.decode();
+          const copyBounds = doc.querySelector(".learning-thread-copy").getBoundingClientRect();
+          const imageBounds = introPhoto?.getBoundingClientRect();
+          assert(introPhoto?.naturalWidth === 1536 && introPhoto.naturalHeight === 1024 &&
+            introPhoto.getAttribute("alt").includes("Schulgarten") &&
+            new URL(introPhoto.src).pathname === "/assets/lernpfad-einstieg.png" &&
+            imageBounds.width > 0 && (width === 360
+              ? imageBounds.top >= copyBounds.bottom
+              : imageBounds.left >= copyBounds.right),
+            width + ": neues Lernpfad-Foto geladen, am Desktop rechts und mobil unter dem Text");
+        }
         if (route.startsWith("#lesson/")) {
           const blocks = doc.querySelector(".practice-blocks");
           assert(blocks?.querySelectorAll("code").length >= 2 && (route === "#lesson/l16"

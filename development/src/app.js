@@ -1,4 +1,4 @@
-import { phaseArtwork, lessonArtwork } from "./artwork.js";
+import { phaseArtwork, lessonArtwork, learningPathArtwork } from "./artwork.js";
 import { boxModelView, bindBoxModel } from "./box-model.js";
 import { caseStudyPanel } from "./case-studies.js";
 import { selectorView, bindSelectorHelper } from "./selector-helper.js";
@@ -390,9 +390,9 @@ function lessonWorkflow() {
   ];
   return `<nav class="lesson-workflow" aria-label="Ablauf dieser Lerneinheit">${steps.map(([id, title, detail], index) => `<a href="#${id}" data-lesson-anchor="${id}"><span>${index + 1}</span><div><strong>${title}</strong><small>${detail}</small></div></a>`).join("")}</nav>`;
 }
-function resumePanel() {
+function resumePanel(withArtwork = false) {
   const next = lessons.find((l) => !state.completed.includes(l.id));
-  return `<section class="panel learning-thread"><p class="eyebrow">Dein roter Faden · ${state.completed.length} / ${lessons.length} abgeschlossen</p><h2>${next ? `Weiter mit Einheit ${lessons.indexOf(next) + 1}: ${esc(next.title)}` : "Vom Schulgarten zur eigenen Webseite"}</h2><p>In Einheit 01 bis 15 baut die Klasse dieselbe Schulgartenseite. Ihr vergleicht eure Ergebnisse und klärt offene Fragen. In Einheit 16 entwickelst du deine eigene Webseite.</p><p class="unlock-rule"><strong>${lessonAccess(state, "l1").earnedXP} Lernpfad-XP verdient.</strong> Einheit 01 ist frei. Jeder erfolgreiche Abschluss bringt 100 XP und schaltet die nächste Einheit frei. Die Punkte werden nicht ausgegeben.</p><a class="button" href="#lesson/${next?.id || "l1"}">${next ? "Nächsten Lernschritt öffnen" : "Grundlagen wiederholen"}</a></section>`;
+  return `<section class="panel learning-thread${withArtwork ? " learning-thread-intro" : ""}"><div class="learning-thread-copy"><p class="eyebrow">Dein roter Faden · ${state.completed.length} / ${lessons.length} abgeschlossen</p><h2>${next ? `Weiter mit Einheit ${lessons.indexOf(next) + 1}: ${esc(next.title)}` : "Vom Schulgarten zur eigenen Webseite"}</h2><p>In Einheit 01 bis 15 baut die Klasse dieselbe Schulgartenseite. Ihr vergleicht eure Ergebnisse und klärt offene Fragen. In Einheit 16 entwickelst du deine eigene Webseite.</p><p class="unlock-rule"><strong>${lessonAccess(state, "l1").earnedXP} Lernpfad-XP verdient.</strong> Einheit 01 ist frei. Jeder erfolgreiche Abschluss bringt 100 XP und schaltet die nächste Einheit frei. Die Punkte werden nicht ausgegeben.</p><a class="button" href="#lesson/${next?.id || "l1"}">${next ? "Nächsten Lernschritt öffnen" : "Grundlagen wiederholen"}</a></div>${withArtwork ? `<div class="learning-thread-art"><img src="assets/${learningPathArtwork}" alt="Zwei Jugendliche entwickeln gemeinsam am Laptop eine Webseite für den Schulgarten." width="1536" height="1024" fetchpriority="high" decoding="async"></div>` : ""}</section>`;
 }
 function path() {
   return (
@@ -1047,7 +1047,7 @@ function render() {
     html = lessonView(l);
   } else if (route === "path") {
     title = "Dein Lernpfad";
-    html = resumePanel() + path();
+    html = resumePanel(true) + path();
   } else if (route === "lab") {
     activeId = "lab";
     title = "Freies Labor";

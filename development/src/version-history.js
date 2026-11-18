@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-18", [
+    ["1.59.0", "Ein motivierender Einstieg in den Lernpfad", "Ein neues fotorealistisches Schulgarten-Motiv begleitet den nächsten Lernschritt: gemeinsam am Laptop planen und eine Webseite entwickeln. Auf schmalen Bildschirmen steht das Foto unter dem Text."],
     ["1.58.2", "Sanfte Effekte für die Lernkarten", "Beim Darüberfahren hebt sich die Lernkarte leicht an, das Bild zoomt sanft und der Rahmen leuchtet dezent. Auch per Tastatur hervorgehoben; reduzierte Bewegung wird berücksichtigt."],
     ["1.58.1", "Klare Abschnittsüberschriften", "Die Bereiche der Kartenübersicht tragen nur ihren Titel. Die Nummerierung bleibt bei den Lerneinheiten, damit beides eindeutig unterscheidbar ist."],
   ]],

@@ -1415,6 +1415,38 @@ textarea#cssEditor {
       var(--panel)
     );
 }
+.learning-thread-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+}
+.learning-thread-copy {
+  min-width: 0;
+}
+.learning-thread-art {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--metal-rim);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 20%), inset 0 1px var(--metal-glint);
+}
+.learning-thread-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+@media (max-width: 1050px) {
+  .learning-thread-intro {
+    grid-template-columns: 1fr;
+  }
+  .learning-thread-art img {
+    max-height: 25rem;
+    aspect-ratio: 16 / 9;
+  }
+}
 .phase-art {
   min-width: 0;
   overflow: hidden;

@@ -251,6 +251,7 @@ return {extensions};
 },
 "artwork.js": function(require) {
 // Public artwork only. The build copies exactly these lesson and phase files.
+const learningPathArtwork = "lernpfad-einstieg.png";
 const phaseArtwork = [
   "html-struktur.webp",
   "inhalte-verknuepfen.webp",
@@ -278,12 +279,12 @@ const lessonArtwork = {
   l16: "lerneinheit-16-abschlussprojekt.webp",
 };
 
-return {phaseArtwork,lessonArtwork};
+return {learningPathArtwork,phaseArtwork,lessonArtwork};
 },
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.58.2";
+const VERSION = "1.59.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -847,6 +848,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-18", [
+    ["1.59.0", "Ein motivierender Einstieg in den Lernpfad", "Ein neues fotorealistisches Schulgarten-Motiv begleitet den nächsten Lernschritt: gemeinsam am Laptop planen und eine Webseite entwickeln. Auf schmalen Bildschirmen steht das Foto unter dem Text."],
     ["1.58.2", "Sanfte Effekte für die Lernkarten", "Beim Darüberfahren hebt sich die Lernkarte leicht an, das Bild zoomt sanft und der Rahmen leuchtet dezent. Auch per Tastatur hervorgehoben; reduzierte Bewegung wird berücksichtigt."],
     ["1.58.1", "Klare Abschnittsüberschriften", "Die Bereiche der Kartenübersicht tragen nur ihren Titel. Die Nummerierung bleibt bei den Lerneinheiten, damit beides eindeutig unterscheidbar ist."],
   ]],
@@ -5172,7 +5174,7 @@ function bindReview(root = document) {
 return {reviewQuestions,reviewPanel,bindReview};
 },
 "app.js": function(require) {
-const { phaseArtwork, lessonArtwork } = require("artwork.js");
+const { phaseArtwork, lessonArtwork, learningPathArtwork } = require("artwork.js");
 const { boxModelView, bindBoxModel } = require("box-model.js");
 const { caseStudyPanel } = require("case-studies.js");
 const { selectorView, bindSelectorHelper } = require("selector-helper.js");
@@ -5564,9 +5566,9 @@ function lessonWorkflow() {
   ];
   return `<nav class="lesson-workflow" aria-label="Ablauf dieser Lerneinheit">${steps.map(([id, title, detail], index) => `<a href="#${id}" data-lesson-anchor="${id}"><span>${index + 1}</span><div><strong>${title}</strong><small>${detail}</small></div></a>`).join("")}</nav>`;
 }
-function resumePanel() {
+function resumePanel(withArtwork = false) {
   const next = lessons.find((l) => !state.completed.includes(l.id));
-  return `<section class="panel learning-thread"><p class="eyebrow">Dein roter Faden · ${state.completed.length} / ${lessons.length} abgeschlossen</p><h2>${next ? `Weiter mit Einheit ${lessons.indexOf(next) + 1}: ${esc(next.title)}` : "Vom Schulgarten zur eigenen Webseite"}</h2><p>In Einheit 01 bis 15 baut die Klasse dieselbe Schulgartenseite. Ihr vergleicht eure Ergebnisse und klärt offene Fragen. In Einheit 16 entwickelst du deine eigene Webseite.</p><p class="unlock-rule"><strong>${lessonAccess(state, "l1").earnedXP} Lernpfad-XP verdient.</strong> Einheit 01 ist frei. Jeder erfolgreiche Abschluss bringt 100 XP und schaltet die nächste Einheit frei. Die Punkte werden nicht ausgegeben.</p><a class="button" href="#lesson/${next?.id || "l1"}">${next ? "Nächsten Lernschritt öffnen" : "Grundlagen wiederholen"}</a></section>`;
+  return `<section class="panel learning-thread${withArtwork ? " learning-thread-intro" : ""}"><div class="learning-thread-copy"><p class="eyebrow">Dein roter Faden · ${state.completed.length} / ${lessons.length} abgeschlossen</p><h2>${next ? `Weiter mit Einheit ${lessons.indexOf(next) + 1}: ${esc(next.title)}` : "Vom Schulgarten zur eigenen Webseite"}</h2><p>In Einheit 01 bis 15 baut die Klasse dieselbe Schulgartenseite. Ihr vergleicht eure Ergebnisse und klärt offene Fragen. In Einheit 16 entwickelst du deine eigene Webseite.</p><p class="unlock-rule"><strong>${lessonAccess(state, "l1").earnedXP} Lernpfad-XP verdient.</strong> Einheit 01 ist frei. Jeder erfolgreiche Abschluss bringt 100 XP und schaltet die nächste Einheit frei. Die Punkte werden nicht ausgegeben.</p><a class="button" href="#lesson/${next?.id || "l1"}">${next ? "Nächsten Lernschritt öffnen" : "Grundlagen wiederholen"}</a></div>${withArtwork ? `<div class="learning-thread-art"><img src="assets/${learningPathArtwork}" alt="Zwei Jugendliche entwickeln gemeinsam am Laptop eine Webseite für den Schulgarten." width="1536" height="1024" fetchpriority="high" decoding="async"></div>` : ""}</section>`;
 }
 function path() {
   return (
@@ -6221,7 +6223,7 @@ function render() {
     html = lessonView(l);
   } else if (route === "path") {
     title = "Dein Lernpfad";
-    html = resumePanel() + path();
+    html = resumePanel(true) + path();
   } else if (route === "lab") {
     activeId = "lab";
     title = "Freies Labor";

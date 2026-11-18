@@ -2,7 +2,7 @@
 
 Stand: **18. November 2026, Europe/Berlin · Codex**
 
-Version: **1.59.1** · Status: **lokal geprüft; Veröffentlichung über den Pages-Workflow**.
+Version: **1.60.0** · Status: **lokal geprüft; Veröffentlichung über den Pages-Workflow**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Einziger aktueller Projektordner ist `G:\Meine Ablage\Codex\WebLab`; der direkte Einstieg ist dessen `index.html`. Die früheren lokalen Sicherungsordner wurden auf Jakobs Wunsch entfernt. Historische Archivpfade weiter unten beschreiben den damaligen Zustand und sind keine aktuellen Ablageorte. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -312,6 +312,14 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 18.11.2026 – Codex – Version 1.60.0: Ganze Einheitenkarten öffnen
+
+Freigeschaltete Einheiten lassen sich auf der gesamten Kartenfläche öffnen, sowohl im Lernpfad als auch auf der Startseite einschließlich Foto und Text. Ein kleiner metallisch gerahmter Pfeil mit Tooltip „Einheit öffnen“ ersetzt die bisherigen Buttons. Technisch liegt ein einziger echter Link mit per CSS ausgeweiteter Klickfläche in jeder offenen Karte: damit funktionieren Tastatur, Linkadresse kopieren und Öffnen in einem neuen Tab weiterhin ohne zusätzliche JavaScript-Klickhandler. Der Tastaturfokus umrandet die ganze Karte.
+
+Gesperrte Karten enthalten keinen Link und keinen deaktivierten Öffnen-Button. Ein einzelnes Schloss ersetzt die doppelte Sperrbeschriftung; Karte und Symbol zeigen „Noch gesperrt (ab … XP)“ als Tooltip. Das Symbol besitzt dieselbe zugängliche Beschriftung für Bildschirmleser. Freischaltlogik, XP und Hover-Effekte bleiben erhalten.
+
+Prüfung: Build, 73 Node-Tests und 394 Browserprüfungen bestanden. Neue Prüfungen treffen die freie Kartenfläche außerhalb des Pfeils, öffnen von dort die richtige Einheit und prüfen Sperren sowie Tooltips; jeweils für Kartenübersicht und Lernpfad am Desktop und bei schmaler Ansicht. Die feste Kopfzeile wird bei der Auswahl des Test-Klickpunkts berücksichtigt. Ein erster Prüflauf wartete wegen eines vom Header verdeckten Klickpunkts auf einen Routenwechsel; die Prüfung wurde korrigiert und der vollständige Lauf erfolgreich wiederholt. Veröffentlichung auf main als 1.60.0 mit erneutem Pages-Workflow; temporäre Buildausgabe wird entfernt.
 
 ### 18.11.2026 – Codex – Version 1.59.1: Hover-Effekt für die Einheiten im Lernpfad
 

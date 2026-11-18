@@ -284,7 +284,7 @@ return {learningPathArtwork,phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.59.1";
+const VERSION = "1.60.0";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -848,6 +848,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-18", [
+    ["1.60.0", "Einheiten mit einem Klick öffnen", "Freigeschaltete Karten sind auf ihrer gesamten Fläche verlinkt. Ein Pfeil ersetzt den Öffnen-Button; gesperrte Einheiten zeigen ein Schloss mit der benötigten XP-Zahl im Tooltip."],
     ["1.59.1", "Auch im Lernpfad lebendige Einheiten", "Die Einheiten unter den Etappen vergrößern sich beim Darüberfahren leicht, heben sich sanft an und erhalten einen metallischen Lichtschein. Tastaturfokus und reduzierte Bewegung werden berücksichtigt."],
     ["1.59.0", "Ein motivierender Einstieg in den Lernpfad", "Ein neues fotorealistisches Schulgarten-Motiv begleitet den nächsten Lernschritt: gemeinsam am Laptop planen und eine Webseite entwickeln. Auf schmalen Bildschirmen steht das Foto unter dem Text."],
     ["1.58.2", "Sanfte Effekte für die Lernkarten", "Beim Darüberfahren hebt sich die Lernkarte leicht an, das Bild zoomt sanft und der Rahmen leuchtet dezent. Auch per Tastatur hervorgehoben; reduzierte Bewegung wird berücksichtigt."],
@@ -5518,11 +5519,17 @@ function lockedLesson(l) {
     next = byId(access.nextId);
   return `<section class="panel locked-lesson" aria-labelledby="lockedTitle"><div class="lock-mark">${icon("lock")}</div><p class="eyebrow">Einheit ${l.id.slice(1).padStart(2, "0")} · noch gesperrt</p><h2 id="lockedTitle">${esc(l.title)}</h2><p>Diese Einheit wird mit ${access.requiredXP} Lernpfad-XP freigeschaltet. Du hast bisher ${access.earnedXP} Lernpfad-XP verdient.</p><p>Schließe die Einheiten der Reihe nach ab. Jeder Abschluss bringt 100 XP und 5 EP. Deine Punkte bleiben erhalten und werden nicht ausgegeben.</p><div class="actions">${next ? lessonLink(next, "Weiter mit Einheit " + next.id.slice(1).padStart(2, "0"), "button") : ""}<a class="button secondary" href="#path">Zum Lernpfad</a></div></section>`;
 }
+function lessonCardAction(l, access) {
+  const lockedTitle = `Noch gesperrt (ab ${access.requiredXP} XP)`;
+  return access.unlocked
+    ? `<a class="lesson-card-action lesson-card-link" href="#lesson/${l.id}" title="Einheit öffnen" aria-label="Einheit öffnen: ${l.id.slice(1).padStart(2, "0")} ${esc(l.title)}">${icon("arrow")}</a>`
+    : `<span class="lesson-card-action lesson-card-lock" role="img" aria-label="${lockedTitle}" title="${lockedTitle}">${icon("lock")}</span>`;
+}
 function card(l) {
   const done = state.completed.includes(l.id),
     access = viewLessonAccess(l.id),
     recommended = access.nextId === l.id;
-  return `<article class="card ${recommended ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}"><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span><span class="badge ${done ? "done" : ""}">${!access.unlocked ? icon("lock") + " Gesperrt" : done ? "Abgeschlossen" : access.previewOnly ? "Entwickler-Modus" : "Dein nächster Schritt"}</span></div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 EP</small>${access.unlocked && exercises[l.id] ? `<small class="exercise-count">Übungen: ${exerciseProgress(l.id)} von ${exercises[l.id].length} gelöst</small>` : ""}${lessonLink(l, access.unlocked ? (done ? "Wiederholen" : "Einheit öffnen") : "Noch gesperrt")}</article>`;
+  return `<article class="card ${recommended ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}"${access.unlocked ? "" : ` title="Noch gesperrt (ab ${access.requiredXP} XP)"`}><div class="card-top"><span class="card-num">${l.id.slice(1).padStart(2, "0")}</span>${access.unlocked ? `<span class="badge ${done ? "done" : ""}">${done ? "Abgeschlossen" : access.previewOnly ? "Entwickler-Modus" : "Dein nächster Schritt"}</span>` : ""}</div><h3>${esc(l.title)}</h3><p>${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 EP</small>${access.unlocked && exercises[l.id] ? `<small class="exercise-count">Übungen: ${exerciseProgress(l.id)} von ${exercises[l.id].length} gelöst</small>` : ""}${lessonCardAction(l, access)}</article>`;
 }
 function overview() {
   const next =
@@ -5546,10 +5553,7 @@ function lessonCatalogCard(l) {
     isNext = access.nextId === l.id,
     number = l.id.slice(1).padStart(2, "0");
   const status = !access.unlocked ? "Gesperrt" : done ? "Abgeschlossen" : isNext ? "Als Nächstes" : access.previewOnly ? "Entwickler-Modus" : "Verfügbar";
-  const action = access.unlocked
-    ? `<a class="button ${isNext ? "" : "secondary"}" href="#lesson/${l.id}" aria-label="${done ? "Wiederholen" : "Einheit öffnen"}: Einheit ${number} – ${esc(l.title)}">${done ? "Wiederholen" : "Einheit öffnen"}</a>`
-    : `<p class="catalog-lock">${icon("lock")} Ab ${access.requiredXP} Lernpfad-XP</p>`;
-  return `<article class="catalog-card ${isNext ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}">${artworkImage(lessonArtwork[l.id])}<div class="catalog-copy"><div class="catalog-meta"><span class="catalog-number">Einheit ${number}</span><span class="badge ${done ? "done" : ""}">${status}</span></div><h4>${esc(l.title)}</h4><p class="catalog-goal">${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 EP</small>${action}</div></article>`;
+  return `<article class="catalog-card ${isNext ? "is-next" : ""} ${access.unlocked ? "" : "is-locked"}"${access.unlocked ? "" : ` title="Noch gesperrt (ab ${access.requiredXP} XP)"`}>${artworkImage(lessonArtwork[l.id])}<div class="catalog-copy"><div class="catalog-meta"><span class="catalog-number">Einheit ${number}</span>${access.unlocked ? `<span class="badge ${done ? "done" : ""}">${status}</span>` : ""}</div><h4>${esc(l.title)}</h4><p class="catalog-goal">${esc(l.goal)}</p><small>${l.minutes} Min. · 100 XP · 5 EP</small>${lessonCardAction(l, access)}</div></article>`;
 }
 function lessonCatalog() {
   return `<section class="lesson-catalog" aria-labelledby="catalogTitle"><div class="section-heading"><div><p class="eyebrow">BPE2 · 4 Etappen · ${lessons.length} Lerneinheiten</p><h2 id="catalogTitle" tabindex="-1">Alle Lerneinheiten</h2></div><a href="#path">Zum Lernpfad →</a></div><p class="lead">Hier siehst du, was dich erwartet. Schließe eine Einheit ab, um die nächste freizuschalten.</p><nav class="catalog-nav" aria-label="Etappen der Kartenübersicht">${groups.map((group, i) => `<button class="button secondary" type="button" data-catalog-jump="catalog-phase-${i + 1}">${esc(group)}</button>`).join("")}</nav>${groups.map((group, index) => {

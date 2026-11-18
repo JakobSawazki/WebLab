@@ -1014,8 +1014,40 @@ main {
   font-size: 0.9rem;
   flex: 1;
 }
-.card .button {
-  align-self: start;
+.card,
+.catalog-card {
+  position: relative;
+}
+.lesson-card-action {
+  display: inline-flex;
+  align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  margin-top: 0.4rem;
+  border: 1px solid var(--metal-rim);
+  border-radius: 12px;
+  background: var(--metal-surface);
+  box-shadow: inset 0 1px var(--metal-glint);
+  color: var(--brand);
+}
+.lesson-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+}
+.lesson-card-link:focus-visible {
+  outline: none;
+}
+.lesson-card-link:focus-visible::after {
+  outline: 3px solid var(--brand);
+  outline-offset: -4px;
+}
+.lesson-card-lock {
+  color: var(--muted);
 }
 .badge {
   display: inline-block;
@@ -1652,18 +1684,6 @@ textarea#cssEditor {
 }
 .catalog-copy small {
   color: var(--muted);
-}
-.catalog-copy .button {
-  margin-top: 0.2rem;
-}
-.catalog-lock {
-  display: flex;
-  align-items: center;
-  gap: 0.48rem;
-  min-height: 46px;
-  margin: 0.2rem 0 0;
-  color: var(--muted);
-  font-size: 0.85rem;
 }
 @media (max-width: 1120px) {
   .catalog-grid {

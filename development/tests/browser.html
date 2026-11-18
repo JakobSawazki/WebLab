@@ -489,10 +489,10 @@
               return card.querySelector("h4")?.textContent === lessons[i].title &&
                 card.querySelector(".catalog-goal")?.textContent === lessons[i].goal &&
                 (guestCatalog && i > 0
-                  ? !link && card.querySelector(".catalog-lock")?.textContent.includes(i * 100 + " Lernpfad-XP")
+                  ? !link && card.querySelector(".lesson-card-lock")?.getAttribute("title") === `Noch gesperrt (ab ${i * 100} XP)`
                   : link?.getAttribute("href") === "#lesson/" + lessons[i].id) &&
                 card.querySelector(".badge")?.textContent === (guestCatalog
-                  ? (i === 0 ? "Als Nächstes" : "Gesperrt")
+                  ? (i === 0 ? "Als Nächstes" : undefined)
                   : (i === 15 ? "Als Nächstes" : "Abgeschlossen")) &&
                 card.classList.contains("is-next") === (i === (guestCatalog ? 0 : 15));
             }),
@@ -530,6 +530,25 @@
           assert(win.location.hash === "#home" && win.scrollY === 0 && doc.querySelector(".hero"),
             width + ": Logo führt aus einer heruntergescrollten Einheit zur Startseite nach oben");
 
+        }
+        if (route === "#home" || route === "#path") {
+          const firstCard = doc.querySelector(route === "#home" ? ".catalog-card" : ".path-phase .card");
+          const link = firstCard.querySelector(".lesson-card-link");
+          firstCard.scrollIntoView({ block: "center", behavior: "instant" });
+          const rect = firstCard.getBoundingClientRect();
+          const headerBottom = doc.getElementById("workspaceHeader").getBoundingClientRect().bottom;
+          const hit = doc.elementFromPoint(rect.left + 18, Math.max(rect.top + 18, headerBottom + 18));
+          assert(link?.title === "Einheit öffnen" && hit === link &&
+            firstCard.querySelectorAll("a").length === 1 && !firstCard.querySelector("button"),
+            route + " " + width + ": freie Kartenfläche am Rand ist ein einziger Link mit Tooltip");
+          const win = frame.contentWindow;
+          if (hit === link) {
+            const changed = new Promise(resolve => win.addEventListener("hashchange", resolve, { once: true }));
+            hit.click();
+            await changed;
+          }
+          assert(win.location.hash === "#lesson/l1" && doc.querySelector("#htmlEditor"),
+            route + " " + width + ": Klick außerhalb des Pfeils öffnet die richtige Einheit");
         }
         frame.remove();
       }
@@ -936,10 +955,15 @@
     };
     assert(
       gateDoc.querySelectorAll('.card a[href^="#lesson/"]').length === 1 &&
-        gateDoc.querySelectorAll(".card .locked-control:disabled").length ===
+        gateDoc.querySelectorAll(".card .lesson-card-lock").length ===
           15,
       "Neues Profil: nur Einheit 01 offen, 15 Karten gesperrt",
     );
+    assert([...gateDoc.querySelectorAll(".card.is-locked")].every((card, index) =>
+      !card.querySelector("a, button") && !card.querySelector(".badge") &&
+      card.title === `Noch gesperrt (ab ${(index + 1) * 100} XP)` &&
+      card.querySelector(".lesson-card-lock")?.getAttribute("aria-label") === card.title),
+      "Gesperrte Einheiten zeigen nur ein Schloss mit XP-Tooltip und besitzen keinen öffnenden Link");
     const developerButton = gateDoc.getElementById("developerModeButton"),
       gateProfile = gateDoc.getElementById("profileDialog"),
       beforeDeveloperMode = localStorage.getItem(STORAGE_KEY);

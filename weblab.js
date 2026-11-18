@@ -283,7 +283,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.58.0";
+const VERSION = "1.58.1";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -846,6 +846,9 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Public summaries only. Full development notes stay in documentation.md.
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
+  ["2026-11-18", [
+    ["1.58.1", "Klare Abschnittsüberschriften", "Die Bereiche der Kartenübersicht tragen nur ihren Titel. Die Nummerierung bleibt bei den Lerneinheiten, damit beides eindeutig unterscheidbar ist."],
+  ]],
   ["2026-11-17", [
     ["1.58.0", "Schritt für Schritt durch den Schulgarten", "Erklärungen und Beispiele folgen dem gemeinsamen Projekt. Der Editor steht vor der freiwilligen Vertiefung. Quellenangaben und das Testprotokoll werden gezielt geprüft."],
     ["1.57.0", "Ein gemeinsamer Projektordner", "Die aktuelle Fassung startet direkt über index.html im gemeinsamen Projektordner. Übungsmarkierungen bleiben bei einem Speicherfehler im geöffneten Tab verfügbar und lassen sich erneut speichern."],
@@ -5548,7 +5551,7 @@ function lessonCatalog() {
   return `<section class="lesson-catalog" aria-labelledby="catalogTitle"><div class="section-heading"><div><p class="eyebrow">BPE2 · 4 Etappen · ${lessons.length} Lerneinheiten</p><h2 id="catalogTitle" tabindex="-1">Alle Lerneinheiten</h2></div><a href="#path">Zum Lernpfad →</a></div><p class="lead">Hier siehst du, was dich erwartet. Schließe eine Einheit ab, um die nächste freizuschalten.</p><nav class="catalog-nav" aria-label="Etappen der Kartenübersicht">${groups.map((group, i) => `<button class="button secondary" type="button" data-catalog-jump="catalog-phase-${i + 1}">${esc(group)}</button>`).join("")}</nav>${groups.map((group, index) => {
     const items = lessons.filter((l) => l.group === index),
       done = items.filter((l) => state.completed.includes(l.id)).length;
-    return `<section class="catalog-phase" aria-labelledby="catalog-phase-${index + 1}"><div class="catalog-heading"><span class="catalog-index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span><h3 id="catalog-phase-${index + 1}" tabindex="-1">${esc(group)}</h3><small>${done} / ${items.length} abgeschlossen</small></div><div class="catalog-grid">${items.map(lessonCatalogCard).join("")}</div></section>`;
+    return `<section class="catalog-phase" aria-labelledby="catalog-phase-${index + 1}"><div class="catalog-heading"><h3 id="catalog-phase-${index + 1}" tabindex="-1">${esc(group)}</h3><small>${done} / ${items.length} abgeschlossen</small></div><div class="catalog-grid">${items.map(lessonCatalogCard).join("")}</div></section>`;
   }).join("")}</section>`;
 }
 function lessonWorkflow() {

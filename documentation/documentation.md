@@ -1,8 +1,8 @@
 # WebLab – gemeinsame Projektdokumentation
 
-Stand: **17. November 2026, Europe/Berlin · Codex**
+Stand: **18. November 2026, Europe/Berlin · Codex**
 
-Version: **1.58.0** · Status: **geprüft und auf GitHub Pages veröffentlicht**.
+Version: **1.58.1** · Status: **lokal geprüft; Veröffentlichung über den Pages-Workflow**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Einziger aktueller Projektordner ist `G:\Meine Ablage\Codex\WebLab`; der direkte Einstieg ist dessen `index.html`. Die früheren lokalen Sicherungsordner wurden auf Jakobs Wunsch entfernt. Historische Archivpfade weiter unten beschreiben den damaligen Zustand und sind keine aktuellen Ablageorte. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -312,6 +312,12 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 18.11.2026 – Codex – Version 1.58.1: Abschnittsüberschriften ohne Nummern
+
+Auf Jakobs Hinweis entfallen die Nummernplaketten vor den vier Bereichsüberschriften der Kartenübersicht, beispielsweise vor „HTML verstehen“. Die Überschriften stehen jetzt allein; die Lerneinheiten behalten ihre eindeutigen Nummern 01–16. Die ungenutzte CSS-Regel für die Plaketten wurde entfernt. Sprungziele, Fortschrittsanzeigen und Freischaltung bleiben erhalten. Änderungen sind auch im integrierten Versionsverlauf dokumentiert.
+
+Prüfung: 73 Node-Tests, Build und 382 Browserprüfungen bestanden, einschließlich schmaler Ansichten und Sprungnavigation zu den Bereichen. Der direkte Offline-Einstieg weblab.js wurde neu gebaut. Veröffentlichung als 1.58.1 auf main; der zugehörige GitHub-Actions-Lauf dokumentiert die erneute Prüfung und das Pages-Deployment. Keine zusätzlichen Sicherungskopien; der temporäre dist-Ordner wird nach Prüfung entfernt.
 
 ### 17.11.2026 – Codex – Version 1.58.0: Durchgängige Lernsituation und Lehrkraftlösungen
 

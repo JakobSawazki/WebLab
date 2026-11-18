@@ -378,7 +378,7 @@ function lessonCatalog() {
   return `<section class="lesson-catalog" aria-labelledby="catalogTitle"><div class="section-heading"><div><p class="eyebrow">BPE2 · 4 Etappen · ${lessons.length} Lerneinheiten</p><h2 id="catalogTitle" tabindex="-1">Alle Lerneinheiten</h2></div><a href="#path">Zum Lernpfad →</a></div><p class="lead">Hier siehst du, was dich erwartet. Schließe eine Einheit ab, um die nächste freizuschalten.</p><nav class="catalog-nav" aria-label="Etappen der Kartenübersicht">${groups.map((group, i) => `<button class="button secondary" type="button" data-catalog-jump="catalog-phase-${i + 1}">${esc(group)}</button>`).join("")}</nav>${groups.map((group, index) => {
     const items = lessons.filter((l) => l.group === index),
       done = items.filter((l) => state.completed.includes(l.id)).length;
-    return `<section class="catalog-phase" aria-labelledby="catalog-phase-${index + 1}"><div class="catalog-heading"><span class="catalog-index" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span><h3 id="catalog-phase-${index + 1}" tabindex="-1">${esc(group)}</h3><small>${done} / ${items.length} abgeschlossen</small></div><div class="catalog-grid">${items.map(lessonCatalogCard).join("")}</div></section>`;
+    return `<section class="catalog-phase" aria-labelledby="catalog-phase-${index + 1}"><div class="catalog-heading"><h3 id="catalog-phase-${index + 1}" tabindex="-1">${esc(group)}</h3><small>${done} / ${items.length} abgeschlossen</small></div><div class="catalog-grid">${items.map(lessonCatalogCard).join("")}</div></section>`;
   }).join("")}</section>`;
 }
 function lessonWorkflow() {

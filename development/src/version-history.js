@@ -1,6 +1,9 @@
 // Public summaries only. Full development notes stay in documentation.md.
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
+  ["2026-11-18", [
+    ["1.58.1", "Klare Abschnittsüberschriften", "Die Bereiche der Kartenübersicht tragen nur ihren Titel. Die Nummerierung bleibt bei den Lerneinheiten, damit beides eindeutig unterscheidbar ist."],
+  ]],
   ["2026-11-17", [
     ["1.58.0", "Schritt für Schritt durch den Schulgarten", "Erklärungen und Beispiele folgen dem gemeinsamen Projekt. Der Editor steht vor der freiwilligen Vertiefung. Quellenangaben und das Testprotokoll werden gezielt geprüft."],
     ["1.57.0", "Ein gemeinsamer Projektordner", "Die aktuelle Fassung startet direkt über index.html im gemeinsamen Projektordner. Übungsmarkierungen bleiben bei einem Speicherfehler im geöffneten Tab verfügbar und lassen sich erneut speichern."],

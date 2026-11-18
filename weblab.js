@@ -283,7 +283,7 @@ return {phaseArtwork,lessonArtwork};
 "content.js": function(require) {
 // Eigenständige Lerntexte. BPE2-Abgleich und Quellen: documentation/documentation.md.
 const { extensions } = require("extensions.js");
-const VERSION = "1.58.1";
+const VERSION = "1.58.2";
 const groups = [
   "HTML verstehen",
   "Inhalte verbinden",
@@ -847,6 +847,7 @@ return {VERSION,groups,labStarter,lessons,byId};
 // Add new releases at the top, with the most recent version first.
 const versionHistory = [
   ["2026-11-18", [
+    ["1.58.2", "Sanfte Effekte für die Lernkarten", "Beim Darüberfahren hebt sich die Lernkarte leicht an, das Bild zoomt sanft und der Rahmen leuchtet dezent. Auch per Tastatur hervorgehoben; reduzierte Bewegung wird berücksichtigt."],
     ["1.58.1", "Klare Abschnittsüberschriften", "Die Bereiche der Kartenübersicht tragen nur ihren Titel. Die Nummerierung bleibt bei den Lerneinheiten, damit beides eindeutig unterscheidbar ist."],
   ]],
   ["2026-11-17", [

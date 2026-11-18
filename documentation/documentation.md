@@ -2,7 +2,7 @@
 
 Stand: **18. November 2026, Europe/Berlin · Codex**
 
-Version: **1.58.1** · Status: **lokal geprüft; Veröffentlichung über den Pages-Workflow**.
+Version: **1.58.2** · Status: **lokal geprüft; Veröffentlichung über den Pages-Workflow**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Einziger aktueller Projektordner ist `G:\Meine Ablage\Codex\WebLab`; der direkte Einstieg ist dessen `index.html`. Die früheren lokalen Sicherungsordner wurden auf Jakobs Wunsch entfernt. Historische Archivpfade weiter unten beschreiben den damaligen Zustand und sind keine aktuellen Ablageorte. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -312,6 +312,12 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 18.11.2026 – Codex – Version 1.58.2: Dezenter Effekt für die Lernkarten
+
+Auf Jakobs Wunsch hebt sich eine Lernkarte beim Darüberfahren mit der Maus um 3 Pixel und vergrößert sich um 1 %. Das Foto zoomt innerhalb seines unveränderten Ausschnitts um 3,5 %. Rahmen und Schatten greifen den vorhandenen metallischen Farbakzent auf. Tastaturfokus innerhalb einer Karte erzeugt dieselbe Hervorhebung. Maus-Hover gilt nur bei geeigneten Zeigegeräten; bei reduzierter Bewegung entfallen Zoom, Verschieben und Übergänge. Bild und Karte verändern weder den Dokumentfluss noch die Freischaltregeln. Keine neuen Bilddateien oder Bibliotheken.
+
+Prüfung: Build, 73 Node-Tests und 382 Browserprüfungen bestanden. Veröffentlichung auf main als 1.58.2 mit erneuter Prüfung durch den Pages-Workflow. Der direkte Offline-Einstieg wurde neu gebaut; temporäre Buildausgabe wird anschließend entfernt. Keine zusätzlichen Versionskopien.
 
 ### 18.11.2026 – Codex – Version 1.58.1: Abschnittsüberschriften ohne Nummern
 

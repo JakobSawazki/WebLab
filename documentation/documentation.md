@@ -2,7 +2,7 @@
 
 Stand: **18. November 2026, Europe/Berlin · Codex**
 
-Version: **1.60.0** · Status: **lokal geprüft; Veröffentlichung über den Pages-Workflow**.
+Version: **1.61.0** · Status: **Kopfzeile visuell geprüft; Veröffentlichung und Browserprüfung über Pages-Workflow**.
 
 Diese Datei ist der zentrale Einstieg für **Jakob, Codex und Claude**. Einziger aktueller Projektordner ist `G:\Meine Ablage\Codex\WebLab`; der direkte Einstieg ist dessen `index.html`. Die früheren lokalen Sicherungsordner wurden auf Jakobs Wunsch entfernt. Historische Archivpfade weiter unten beschreiben den damaligen Zustand und sind keine aktuellen Ablageorte. README und CLAUDE.md verweisen hierher. Künftige Änderungen werden hier mit Autor, Datum, Ergebnis, Prüfung und offenen Punkten dokumentiert.
 
@@ -312,6 +312,14 @@ Nachtrag 17.10.2026 (Claude): Punkt 2 wurde mit Version 1.41.0 entschieden und u
 Die unbeantworteten Punkte 2–5 in tasks.md bleiben unverändert offen: zusätzliche HTML-Dateien im Editor, zusätzliche Lehrkraftübersicht, Unterrichtsrückmeldungen und reale Schulgeräte. Das sind mögliche Folgearbeiten beziehungsweise Rückmeldungen; sie werden weder als erledigt markiert noch durch Annahmen beantwortet. Der anfänglich gewünschte Live-Editor und der Notepad++-Transfer sind bereits vorhanden. ThommyWeb bleibt entsprechend Jakobs Formulierung „mit der Zeit“ eine fortlaufende Quellenoption; ein vollständiger Import wurde nicht vereinbart. Die Grenzen der Bild-/Medienprüfung der Originalsammlung bleiben im Quellenabschnitt transparent.
 
 ## 8. Gemeinsames Arbeitsprotokoll
+
+### 18.11.2026 – Codex – Version 1.61.0: Kompakte und einheitliche Kopfzeile
+
+Der Fortschritt einer Lerneinheit steht jetzt oberhalb der Navigation: schmaler Balken und Prozentzahl, ohne sichtbare Detailzeilen. Der native progress-Balken bleibt beschriftet; die laufend aktualisierten Details sind für Bildschirmleser vorhanden. Lernpfad und Einheitenname haben dieselbe Schriftgröße, Schriftstärke und Farbe. Ein echter Pfeil ersetzt das Chevron. Die Kapitelpfeile messen 40 × 40 Pixel, die fünf rechten Bedienelemente sind einheitlich 44 Pixel hoch; die Aktionssymbole selbst sind ebenfalls kleiner. Kürzel und Punkte bleiben im kompakten Profilfeld erhalten.
+
+Die doppelte Zeile „Deine Webwerkstatt“ entfällt aus der Kopfzeile auf allen Ansichten. Unter dem Logo bleibt wie zuvor vereinbart „Internetseiten“ stehen. Die gesamte Kopfzeile mit Fortschritt, Navigation und Aktionen bleibt beim Scrollen fixiert; die Höhenberechnung für Sprungziele passt sich weiterhin automatisch an. Schmale Ansichten dürfen die Bedienreihen umbrechen. Speichern, Laden, Tastenkürzel, Kapitelgrenzen und Fortschrittsberechnung wurden nicht verändert.
+
+Prüfung: Build und 73 Node-Tests bestanden. Desktopansicht bei 1600 Pixeln und gescrollte mobile Ansicht bei 390 Pixeln im direkten Dateistart visuell kontrolliert. Vier zusätzliche Browserprüfungen messen Fortschritt oberhalb der Navigation, gleiche Linkgestaltung, kleinere Bedienelemente und fehlenden horizontalen Überlauf bei 360 und 1280 Pixeln. Die bisherige Mindesthöhe von 44 Pixeln gilt weiterhin für die normalen Bedienelemente; nur die ausdrücklich verkleinerten Kapitelpfeile werden mit 40 Pixeln geprüft. Ein lokaler Zwischenlauf meldete ausschließlich diese zwei veralteten Höhenannahmen als Fehler; die Prüfregel wurde entsprechend angepasst. Der Headless-Prüflauf aktiviert jetzt fortlaufend seinen eigenen Tab, damit unter Windows ein durch verwaltete Browsererweiterungen geöffnetes Begrüßungstab die für die Prüfungen benötigten Animationsframes nicht anhält. Benutzer-Browserfenster sind davon nicht betroffen. Veröffentlichung als 1.61.0 mit erneuter vollständiger Browserprüfung im Pages-Workflow; temporäre Ansichten und Buildausgaben werden entfernt.
 
 ### 18.11.2026 – Codex – Version 1.60.0: Ganze Einheitenkarten öffnen
 

@@ -141,7 +141,7 @@
         const controls = [...menuDoc.querySelectorAll(".topbar-actions > button")],
           heights = controls.map((button) => button.getBoundingClientRect().height);
         assert(
-          controls.length === 5 && heights.every((height) => height >= 56 &&
+          controls.length === 5 && heights.every((height) => height >= 44 && height <= 45 &&
             Math.abs(height - heights[0]) < 1),
           width + " " + theme + ": alle fünf oberen Bedienelemente gleich hoch",
         );
@@ -651,8 +651,8 @@
         ].filter((n) => n.getClientRects().length);
         assert(
           doc.documentElement.scrollWidth <= 360 &&
-            visibleButtons.every((n) => n.getBoundingClientRect().height >= 44),
-          route + " " + theme + ": kein Ueberlauf und Buttons mindestens 44px",
+            visibleButtons.every((n) => n.getBoundingClientRect().height >= (n.closest("#lessonPager") ? 40 : 44)),
+          route + " " + theme + ": kein Ueberlauf, Kapitelpfeile mindestens 40px und weitere Buttons mindestens 44px",
         );
         assert(
           doc.querySelectorAll('.main-nav svg[aria-hidden="true"]').length ===
@@ -1100,6 +1100,25 @@
           gateDoc.getElementById("profileButton"), progressPanel].every(visibleInHeader) &&
         !gateDoc.getElementById("storageStatus").getClientRects().length,
         width + ": Lernpfad, Pfeile, Aktionen und Fortschritt bleiben ohne normale Speichermeldung oben");
+      const breadcrumbStyle = gateWin.getComputedStyle(currentLessonLink);
+      const pathStyle = gateWin.getComputedStyle(gateDoc.querySelector(".lesson-breadcrumb > a"));
+      const topbarBounds = gateDoc.querySelector(".topbar").getBoundingClientRect();
+      assert(progressPanel.getBoundingClientRect().bottom <= topbarBounds.top &&
+        progressPanel.getBoundingClientRect().height <= 32 &&
+        progressDetail.classList.contains("sr-only") &&
+        breadcrumbStyle.fontSize === pathStyle.fontSize && breadcrumbStyle.fontWeight === pathStyle.fontWeight &&
+        breadcrumbStyle.color === pathStyle.color &&
+        gateDoc.querySelector('.lesson-breadcrumb [data-icon="arrow"] svg') &&
+        !gateDoc.querySelector(".topbar .eyebrow"),
+        width + ": schmaler Fortschritt ganz oben, einheitliche Links mit echtem Pfeil ohne doppelte Überschrift");
+      assert([...gateDoc.querySelectorAll(".topbar-actions > button")].every(button => {
+        const bounds = button.getBoundingClientRect();
+        return bounds.height >= 44 && bounds.height <= 45;
+      }) && [...gateDoc.querySelectorAll("#lessonPager > *")].every(button => {
+        const bounds = button.getBoundingClientRect();
+        return bounds.width === 40 && bounds.height === 40;
+      }) && gateDoc.documentElement.scrollWidth <= width,
+        width + ": kompakte Aktionssymbole und Kapitelpfeile ohne horizontalen Überlauf");
       const studioTitle = gateDoc.getElementById("studioTitle");
       studioTitle.scrollIntoView({ block: "start", behavior: "instant" });
       assert(studioTitle.getBoundingClientRect().top >= workspaceHeader.bottom,

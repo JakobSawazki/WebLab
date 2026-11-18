@@ -140,6 +140,9 @@ try {
   socket.send(JSON.stringify({ id: ++id, method: "Runtime.enable" }));
   let status;
   for (let i = 0; i < 300 && !status; i++) {
+    // A managed browser extension can open a first-run tab and pause this
+    // headless page's animation frames. Keep our own test page active.
+    socket.send(JSON.stringify({ id: ++id, method: "Page.bringToFront" }));
     await sleep(500);
     if (scriptError) { socket.close(); throw new Error(scriptError); }
     status = await evaluate("document.documentElement.dataset.testStatus");

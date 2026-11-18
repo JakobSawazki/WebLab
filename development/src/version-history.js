@@ -2,6 +2,7 @@
 // Add new releases at the top, with the most recent version first.
 export const versionHistory = [
   ["2026-11-18", [
+    ["1.61.0", "Eine kompakte Leiste für deinen Lernweg", "Der schmale Fortschrittsbalken steht ganz oben. Lernpfad und Einheit verwenden dieselbe Schrift und Farbe, getrennt durch einen echten Pfeil. Kleinere Symbole und Kapitelpfeile schaffen Platz; beim Scrollen bleibt alles erreichbar."],
     ["1.60.0", "Einheiten mit einem Klick öffnen", "Freigeschaltete Karten sind auf ihrer gesamten Fläche verlinkt. Ein Pfeil ersetzt den Öffnen-Button; gesperrte Einheiten zeigen ein Schloss mit der benötigten XP-Zahl im Tooltip."],
     ["1.59.1", "Auch im Lernpfad lebendige Einheiten", "Die Einheiten unter den Etappen vergrößern sich beim Darüberfahren leicht, heben sich sanft an und erhalten einen metallischen Lichtschein. Tastaturfokus und reduzierte Bewegung werden berücksichtigt."],
     ["1.59.0", "Ein motivierender Einstieg in den Lernpfad", "Ein neues fotorealistisches Schulgarten-Motiv begleitet den nächsten Lernschritt: gemeinsam am Laptop planen und eine Webseite entwickeln. Auf schmalen Bildschirmen steht das Foto unter dem Text."],
